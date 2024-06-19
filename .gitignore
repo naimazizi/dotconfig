@@ -9,3 +9,6 @@
 !/fish/
 !/wezterm/
 !/helix/
+
+fish/fish_variables
+fish/fishd.*
