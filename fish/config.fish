@@ -1,5 +1,4 @@
 fish_add_path ~/.cargo/bin
-pyenv init - | source
 
 
 set -x GPG_TTY (tty)
