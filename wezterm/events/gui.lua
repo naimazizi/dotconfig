@@ -10,7 +10,7 @@ M.setup = function()
         for _, window in ipairs(mux.all_windows()) do
           if window:get_workspace() == workspace then
             -- window:gui_window():maximize()
-            window:gui_window():set_position(1050,700)
+            window:gui_window():set_position(700,500)
             window:gui_window():set_inner_size(2000,1500)
           end
         end
