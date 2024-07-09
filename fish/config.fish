@@ -27,3 +27,5 @@ alias ai='gh copilot'
 alias dbtx='FINSERV_ETL_DEV_BQ_DATASET=naim_azizi dbt --profiles-dir profiles/'
 
 set RG_PREFIX "rg --column --line-number --no-heading --color=always --smart-case "
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
