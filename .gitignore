@@ -9,6 +9,7 @@
 !/fish/
 !/wezterm/
 !/helix/
+!/nvim/
 
 fish/fish_variables
 fish/fishd.*
