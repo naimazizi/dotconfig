@@ -1,6 +1,6 @@
 fish_add_path ~/.cargo/bin
 
-
+set -gx HOMEBREW_CASK_OPTS "--appdir=~/Applications"
 set -x GPG_TTY (tty)
 
 # >>> conda initialize >>>
