@@ -1,0 +1,4 @@
+(
+    command_fg: Some("DarkGray"),
+    disabled_fg: Some("Magenta"),
+)
