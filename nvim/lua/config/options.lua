@@ -5,3 +5,9 @@
 if vim.fn.executable("fish") == 1 then
   vim.o.shell = "fish"
 end
+
+-- python config
+vim.g.lazyvim_python_lsp = "basedpyright"
+vim.g.lazyvim_python_ruff = "ruff"
+
+vim.g.lazyvim_picker = "telescope"
