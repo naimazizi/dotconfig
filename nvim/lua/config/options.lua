@@ -51,6 +51,11 @@ opts = function()
     servers = {
       basedpyright = {
         typeCheckingMode = "strict",
+        analysis = {
+          autoSearchPaths = true,
+          diagnosticMode = "openFilesOnly",
+          useLibraryCodeForTypes = true,
+        },
       },
     },
   }
