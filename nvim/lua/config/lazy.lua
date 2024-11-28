@@ -20,6 +20,7 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = {
       colorscheme = "kanagawa-paper",
     } },
+    { import = "lazyvim.plugins.extras.vscode" },
     {
       import = "lazyvim.plugins.extras.ui.mini-indentscope",
       opts = {
