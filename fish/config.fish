@@ -86,4 +86,4 @@ set -g fish_pager_color_completion $foreground
 set -g fish_pager_color_description $comment
 
 # Created by `pipx` on 2024-12-03 14:54:48
-set PATH $PATH /home/virion/.local/bin
+set PATH $PATH ~/.local/bin
