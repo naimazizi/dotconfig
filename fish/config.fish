@@ -35,6 +35,10 @@ if test -f "/opt/homebrew/Caskroom/mambaforge/base/etc/fish/conf.d/mamba.fish"
 end
 # <<< conda initialize <<<
 
+if type -q micromamba
+    eval "$(micromamba shell hook --shell fish)"
+end
+
 alias ls='lsd'
 alias ll="lsd -ltr"
 alias find='fd'
@@ -80,3 +84,6 @@ set -g fish_pager_color_progress $comment
 set -g fish_pager_color_prefix $cyan
 set -g fish_pager_color_completion $foreground
 set -g fish_pager_color_description $comment
+
+# Created by `pipx` on 2024-12-03 14:54:48
+set PATH $PATH /home/virion/.local/bin
