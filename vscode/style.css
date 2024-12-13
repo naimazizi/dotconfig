@@ -1,0 +1,63 @@
+
+
+/* Scroll Bar */
+.slider {
+  position: absolute !important;
+  right: 2px !important;
+  width: 2px !important;
+  background: #bc9abc !important;
+  left: auto !important;
+}
+
+/* Statusbar Left */
+.statusbar-item.left:has(.codicon-git-branch) {
+  background: #cba6f7 !important;
+  color: #1e1e2e !important;
+  font-weight: 600 !important;
+}
+#vscodevim\.vim\.primary {
+  background: #89b4fa !important;
+  color: #1e1e2e !important;
+  font-weight: 600 !important;
+}
+#vscodevim\.vim\.primary[aria-label="-- INSERT --"] {
+  background: #a6e3a1 !important;
+}
+#vscodevim\.vim\.primary[aria-label="-- VISUAL --"] {
+  background: #cba6f7 !important;
+}
+#vscodevim\.vim\.primary[aria-label="-- VISUAL LINE --"] {
+  background: #cba6f7 !important;
+}
+#vscodevim\.vim\.primary[aria-label="-- VISUAL BLOCK --"] {
+  background: #cba6f7 !important;
+}
+#vscodevim\.vim\.primary[aria-label="-- VIM: DISABLED --"] {
+  background: #f38ba8 !important;
+}
+#vscodevim\.vim\.showcmd[aria-label="<ExtensionDisable>"] {
+  display: none !important;
+}
+#RoscoP\.ActiveFileInStatusBar {
+  order: 999 !important;
+  font-weight: 600 !important;
+}
+
+/* Statusbar Right */
+.statusbar-item.right.__CUSTOM_CSS_JS_INDICATOR_CLS {
+  display: none !important;
+}
+#status\.editor\.selection {
+  background: #89b4fa !important;
+  color: #1e1e2e !important;
+  font-weight: 600 !important;
+  text-transform: lowercase !important;
+}
+#GitHub\.copilot\.status {
+  background: #a6da95 !important;
+  color: #1e1e2e !important;
+}
+#vscodevim\.vim\.showcmd {
+  font-weight: 600 !important;
+}
+
