@@ -11,6 +11,7 @@
 !/helix/
 !/nvim/
 !/vscode/
+!/television/
 
 fish/fish_variables
 fish/fishd.*
