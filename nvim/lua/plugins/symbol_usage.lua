@@ -7,15 +7,4 @@ return {
       require("symbol-usage").setup()
     end,
   },
-  -- {
-  --   "soulis-1256/eagle.nvim",
-  -- },
-  -- {
-  --   "ray-x/lsp_signature.nvim",
-  --   event = "VeryLazy",
-  --   opts = {},
-  --   config = function(_, opts)
-  --     require("lsp_signature").setup(opts)
-  --   end,
-  -- },
 }
