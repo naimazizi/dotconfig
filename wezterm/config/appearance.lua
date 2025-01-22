@@ -49,7 +49,6 @@ return {
    tabline.setup({
       options = {
          icons_enabled = true,
-         theme = 'Catppuccin Mocha',
          tabs_enabled = true,
          theme_overrides = {},
          section_separators = {
