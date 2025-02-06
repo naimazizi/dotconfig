@@ -13,6 +13,8 @@
 !/vscode/
 !/television/
 !/ghostty/
+!/zellij/
+!/gitui/
 
 fish/fish_variables
 fish/fishd.*

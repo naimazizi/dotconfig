@@ -1,4 +1,8 @@
 return {
-  -- add gruvbox
-  { "sho-87/kanagawa-paper.nvim" },
+  {
+    "thesimonho/kanagawa-paper.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
 }
