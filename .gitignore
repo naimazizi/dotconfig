@@ -12,6 +12,7 @@
 !/nvim/
 !/vscode/
 !/television/
+!/ghostty/
 
 fish/fish_variables
 fish/fishd.*

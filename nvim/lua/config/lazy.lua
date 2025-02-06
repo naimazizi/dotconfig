@@ -20,22 +20,6 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = {
       colorscheme = "kanagawa-paper",
     } },
-    { import = "lazyvim.plugins.extras.vscode" },
-    {
-      import = "lazyvim.plugins.extras.ui.mini-indentscope",
-      opts = {
-        -- symbol = "▏",
-        symbol = "│",
-        options = { try_as_border = true },
-      },
-    },
-    {
-      "Bekaboo/dropbar.nvim",
-      -- optional, but required for fuzzy finder support
-      dependencies = {
-        "nvim-telescope/telescope-fzf-native.nvim",
-      },
-    },
     -- import/override with your plugins
     { import = "plugins" },
   },
