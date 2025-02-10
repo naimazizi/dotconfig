@@ -13,12 +13,8 @@ else
     vim.o.shell = "fish"
   end
 
-  local opt = vim.opt
-  opt.conceallevel = 0
-  opt.clipboard = "unnamedplus"
-
   -- python config
-  vim.g.lazyvim_python_lsp = "basedpyright"
+  -- vim.g.lazyvim_python_lsp = "basedpyright" -- Use pyright for the time being, basedpyright is slow
   vim.g.lazyvim_python_ruff = "ruff"
 
   opts = function()
@@ -27,6 +23,14 @@ else
       ---@type lspconfig.options
       servers = {
         basedpyright = {
+          typeCheckingMode = "strict",
+          analysis = {
+            autoSearchPaths = true,
+            diagnosticMode = "openFilesOnly",
+            useLibraryCodeForTypes = true,
+          },
+        },
+        pyright = {
           typeCheckingMode = "strict",
           analysis = {
             autoSearchPaths = true,
