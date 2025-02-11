@@ -44,6 +44,7 @@ alias ll="lsd -ltr"
 alias find='fd'
 alias ai='gh copilot'
 alias dbtx='FINSERV_ETL_DEV_BQ_DATASET=naim_azizi dbt --profiles-dir profiles/'
+alias quarto='~/.pyenv/shims/uvx --from quarto-cli quarto'
 
 set RG_PREFIX "rg --column --line-number --no-heading --color=always --smart-case "
 eval "$(pyenv init -)"
