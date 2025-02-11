@@ -224,7 +224,36 @@ return {
       },
     },
   },
+  -- {
+  --   "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+  -- },
   {
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy", -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
+    config = function()
+      require("tiny-inline-diagnostic").setup({
+        preset = "modern",
+        show_source = true,
+        options = {
+          softwrap = 60,
+          use_icons_from_diagnostic = true,
+          virt_texts = {
+            priority = 4096,
+          },
+          multilines = {
+            enabled = true,
+            always_show = false,
+          },
+          break_line = {
+            -- Enable the feature to break messages after a specific length
+            enabled = true,
+
+            -- Number of characters after which to break the line
+            after = 30,
+          },
+        },
+      })
+    end,
   },
 }
