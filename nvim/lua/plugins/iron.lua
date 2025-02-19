@@ -17,6 +17,8 @@ return {
     { "<localleader>sl", desc = "Iron - Send Current Line to Repl" },
     { "<localleader>su", desc = "Iron - Send start until cursor to Repl" },
     { "<localleader>sm", desc = "Iron - Send mark to Repl" },
+    { "<localleader>sb", desc = "Iron - Send code block to Repl" },
+    { "<localleader>sn", desc = "Iron - Send code block and move to Repl" },
     { "<localleader>mc", desc = "Iron - Mark Motion" },
     { "<localleader>mc", desc = "Iron - Mark Visual" },
     { "<localleader>md", desc = "Iron - Delete Mark" },
@@ -42,11 +44,12 @@ return {
         },
         python = {
           command = { "ipython", "--no-autoindent" },
+          block_deviders = { "# %%", "#%%" },
         },
       },
       -- How the repl window will be displayed
       -- See below for more information
-      repl_open_cmd = "vertical botright 40 split",
+      repl_open_cmd = "vertical botright 60 split",
     },
     -- Iron doesn't set keymaps by default anymore.
     -- You can set them here or manually add keymaps to the functions in iron.core
@@ -57,6 +60,8 @@ return {
       send_line = "<localleader>sl",
       send_until_cursor = "<localleader>su",
       send_mark = "<localleader>sm",
+      send_code_block = "<localleader>sb",
+      send_code_block_and_move = "<localleader>sn",
       mark_motion = "<localleader>mc",
       mark_visual = "<localleader>mc",
       remove_mark = "<localleader>md",

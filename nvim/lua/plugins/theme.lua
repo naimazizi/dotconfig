@@ -20,4 +20,9 @@ return {
       end,
     },
   },
+  {
+    "ramojus/mellifluous.nvim",
+    lazy = false,
+    priority = 1000,
+  },
 }
