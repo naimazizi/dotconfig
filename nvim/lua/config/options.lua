@@ -13,6 +13,7 @@ else
     vim.o.shell = "fish"
   end
 
+  vim.g.lazyvim_picker = "snacks"
   -- python config
   -- vim.g.lazyvim_python_lsp = "basedpyright" -- Use pyright for the time being, basedpyright is slow
   vim.g.lazyvim_python_ruff = "ruff"
