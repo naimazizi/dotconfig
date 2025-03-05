@@ -11,6 +11,7 @@ return {
       -- configured in lua/plugins/lsp.lua and
       -- added as a nvim-cmp source in lua/plugins/completion.lua
       "jmbuhr/otter.nvim",
+      "nvim-treesitter/nvim-treesitter",
     },
   },
 
