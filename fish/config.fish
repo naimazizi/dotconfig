@@ -47,9 +47,11 @@ alias dbtx='FINSERV_ETL_DEV_BQ_DATASET=naim_azizi dbt --profiles-dir profiles/'
 alias quarto='~/.pyenv/shims/uvx --from quarto-cli quarto'
 
 set RG_PREFIX "rg --column --line-number --no-heading --color=always --smart-case "
+set FZF_DEFAULT_OPTS "--color=bg:-1,bg+:#363646,fg:-1,fg+:#DCD7BA,hl:#938AA9,hl+:#c4746e
+--color=header:#b6927b,info:#658594,pointer:#7AA89F
+--color=marker:#7AA89F,prompt:#c4746e,spinner:#8ea49e"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-
 
 # Kanagawa Theme
 ## Kanagawa Paper Fish shell theme
