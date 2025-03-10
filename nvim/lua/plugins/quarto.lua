@@ -3,9 +3,32 @@ return {
   { -- requires plugins in lua/plugins/treesitter.lua and lua/plugins/lsp.lua
     -- for complete functionality (language features)
     "quarto-dev/quarto-nvim",
+    event = "VeryLazy",
     ft = { "quarto" },
     dev = false,
-    opts = {},
+    opts = {
+      debug = false,
+      closePreviewOnExit = true,
+      lspFeatures = {
+        enabled = true,
+        chunks = "curly",
+        languages = { "r", "python", "julia", "bash", "html" },
+        diagnostics = {
+          enabled = true,
+          triggers = { "BufWritePost" },
+        },
+        completion = {
+          enabled = true,
+        },
+      },
+      codeRunner = {
+        enabled = true,
+        default_method = "iron", -- "molten", "slime", "iron" or <function>
+        ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
+        -- Takes precedence over `default_method`
+        never_run = { "yaml" }, -- filetypes which are never sent to a code runner
+      },
+    },
     dependencies = {
       -- for language features in code cells
       -- configured in lua/plugins/lsp.lua and
@@ -18,6 +41,7 @@ return {
   { -- directly open ipynb files as quarto docuements
     -- and convert back behind the scenes
     "GCBallesteros/jupytext.nvim",
+    event = "VeryLazy",
     opts = {
       custom_language_formatting = {
         python = {

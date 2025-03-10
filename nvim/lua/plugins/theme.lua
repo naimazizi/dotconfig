@@ -4,34 +4,57 @@ return {
     lazy = false,
     priority = 1000,
     opts = {
+
+      -- enable undercurls for underlined text
       undercurl = true,
+      -- transparent background
       transparent = false,
+      -- highlight background for the left gutter
       gutter = true,
-      dimInactive = true, -- disabled when transparent
-      terminalColors = true,
-      commentStyle = { italic = true },
-      functionStyle = { italic = true },
-      keywordStyle = { italic = false, bold = false },
-      statementStyle = { italic = false, bold = true },
-      typeStyle = { italic = true },
-      colors = { theme = {}, palette = {} }, -- override default palette and theme colors
-      overrides = function() -- override highlight groups
-        return {}
-      end,
-    },
-  },
-  {
-    "ramojus/mellifluous.nvim",
-    lazy = false,
-    priority = 1000,
-  },
-  {
-    "comfysage/evergarden",
-    priority = 1000, -- Colorscheme plugin is loaded first before any other plugins
-    opts = {
-      transparent_background = false,
-      variant = "hard", -- 'hard'|'medium'|'soft'
-      overrides = {}, -- add custom overrides
+      -- background for diagnostic virtual text
+      diag_background = true,
+      -- dim inactive windows. Disabled when transparent
+      dim_inactive = true,
+      -- set colors for terminal buffers
+      terminal_colors = true,
+      -- cache highlights and colors for faster startup.
+      -- see Cache section for more details.
+      cache = false,
+
+      styles = {
+        -- style for comments
+        comment = { italic = true },
+        -- style for functions
+        functions = { italic = true },
+        -- style for keywords
+        keyword = { italic = true, bold = false },
+        -- style for statements
+        statement = { italic = false, bold = true },
+        -- style for types
+        type = { italic = true },
+      },
+      -- uses lazy.nvim, if installed, to automatically enable needed plugins
+      auto_plugins = true,
+      -- enable highlights for all plugins (disabled if using lazy.nvim)
+      all_plugins = package.loaded.lazy == nil,
+      -- manually enable/disable individual plugins.
+      -- check the `groups/plugins` directory for the exact names
+      plugins = {
+        -- examples:
+        -- rainbow_delimiters = true
+        -- which_key = false
+      },
+
+      -- enable integrations with other applications
+      integrations = {
+        -- automatically set wezterm theme to match the current neovim theme
+        wezterm = {
+          enabled = false,
+          -- neovim will write the theme name to this file
+          -- wezterm will read from this file to know which theme to use
+          path = (os.getenv("TEMP") or "/tmp") .. "/nvim-theme",
+        },
+      },
     },
   },
 }
