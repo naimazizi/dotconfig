@@ -4,7 +4,7 @@ macos-option-as-alt = true
 
 window-theme = dark
 window-padding-color = background
-background-opacity = 0.75
+background-opacity = 0.85
 background-blur-radius = 10
 font-family = FiraCode Nerd Font Mono
 
