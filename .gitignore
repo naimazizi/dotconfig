@@ -15,6 +15,8 @@
 !/ghostty/
 !/zellij/
 !/gitui/
+!/zed/settings.json
+!/zed/keymap.json
 
 fish/fish_variables
 fish/fishd.*
