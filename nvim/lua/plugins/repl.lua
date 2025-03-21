@@ -38,6 +38,7 @@ return {
   -- },
   {
     "michaelb/sniprun",
+    event = "VeryLazy",
     branch = "master",
     build = "sh install.sh",
     config = function()
@@ -140,6 +141,7 @@ return {
   },
   {
     "jpalardy/vim-slime",
+    event = "VeryLazy",
     keys = {
       { "<localleader>sc", "<cmd>SlimeConfig<cr>", desc = "Slime Config" },
       { "<localleader>ss", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", desc = "Slime Send Cell" },
@@ -152,6 +154,7 @@ return {
   },
   {
     "kiyoon/jupynium.nvim",
+    event = "VeryLazy",
     build = "uv pip install . --python=$HOME/.pyenv/versions/fs-lending/bin/python",
     config = function()
       require("jupynium").setup({
