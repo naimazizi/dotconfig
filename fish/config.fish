@@ -16,6 +16,7 @@ set -gx INFOPATH "$HOMEBREW_PREFIX/share/info" $INFOPATH
 fish_add_path ~/.cargo/bin
 fish_add_path ~/.local/share/bob/nvim-bin
 
+set -gx EDITOR = ~/.local/share/bob/nvim-bin/nvim
 set -gx HOMEBREW_CASK_OPTS "--appdir=~/Applications"
 set -x GPG_TTY (tty)
 
