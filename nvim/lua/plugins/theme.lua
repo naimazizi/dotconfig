@@ -19,7 +19,7 @@ return {
       terminal_colors = true,
       -- cache highlights and colors for faster startup.
       -- see Cache section for more details.
-      cache = false,
+      cache = true,
 
       styles = {
         -- style for comments
@@ -41,8 +41,8 @@ return {
       -- check the `groups/plugins` directory for the exact names
       plugins = {
         -- examples:
-        -- rainbow_delimiters = true
-        -- which_key = false
+        rainbow_delimiters = true,
+        which_key = true,
       },
 
       -- enable integrations with other applications

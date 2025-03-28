@@ -19,15 +19,15 @@ return {
   --     -- Define key mappings for enhanced functionality
   --     vim.keymap.set("n", "<localleader>rs", function()
   --       pyrola.send_statement_definition()
-  --     end, { noremap = true, desc = "Send the current line to the REPL" })
+  --     end, { noremap = true, desc = "Pyrola - Send the current line" })
   --
   --     vim.keymap.set("v", "<localleader>rs", function()
   --       require("pyrola").send_visual_to_repl()
-  --     end, { noremap = true, desc = "Send the visual selection to the REPL" })
+  --     end, { noremap = true, desc = "Pyrola - Send the visual selection" })
   --
-  --     vim.keymap.set("n", "<localleader>ri", function()
+  --     vim.keymap.set("n", "<localleader>rw", function()
   --       pyrola.inspect()
-  --     end, { noremap = true, desc = "Inspect the current line in the REPL" })
+  --     end, { noremap = true, desc = "Pyrola - Inspect the current line in the REPL" })
   --
   --     -- Configure Treesitter for enhanced code parsing
   --     require("nvim-treesitter.configs").setup({
@@ -36,6 +36,95 @@ return {
   --     })
   --   end,
   -- },
+  {
+    "Vigemus/iron.nvim",
+    event = "VeryLazy",
+    cmd = {
+      "IronRepl",
+      "IronReplHere",
+      "IronRestart",
+      "IronSend",
+      "IronFocus",
+      "IronHide",
+      "IronWatch",
+      "IronAttach",
+    },
+    keys = {
+      { "<localleader>ss", desc = "Iron - Toggle Repl" },
+      { "<localleader>sc", mode = { "n" }, desc = "Iron - Send Motion to Repl" },
+      { "<localleader>sc", mode = { "v" }, desc = "Iron - Send Visual to Repl" },
+      { "<localleader>sf", desc = "Iron - Send File to Repl" },
+      { "<localleader>sl", desc = "Iron - Send Current Line to Repl" },
+      { "<localleader>su", desc = "Iron - Send start until cursor to Repl" },
+      { "<localleader>sm", desc = "Iron - Send mark to Repl" },
+      { "<localleader>sb", desc = "Iron - Send code block to Repl" },
+      { "<localleader>sn", desc = "Iron - Send code block and move to Repl" },
+      { "<localleader>sq", desc = "Iron - Mark Motion" },
+      { "<localleader>sq", desc = "Iron - Mark Visual" },
+      { "<localleader>sd", desc = "Iron - Delete Mark" },
+      { "<localleader>s<cr>", desc = "Iron - Send new line" },
+      { "<localleader>s<localleader>", desc = "Iron - Interrupt Iron Repl" },
+      { "<localleader>sq", desc = "Iron - Exit Iron Repl" },
+      { "<localleader>sz", desc = "Iron - Clear Iron Repl" },
+      { "<localleader>si", "<cmd>IronRepl<cr>", desc = "Iron - Start Iron Repl" },
+      { "<localleader>sf", "<cmd>IronFocus<cr>", desc = "Iron - Focus to Iron Repl" },
+      { "<localleader>sh", "<cmd>IronHide<cr>", desc = "Iron - Hide Iron Repl" },
+    },
+    main = "iron.core", -- <== This informs lazy.nvim to use the entrypoint of `iron.core` to load the configuration.
+    config = function(_, opts)
+      local iron = require("iron")
+      local common = require("iron.fts.common")
+      iron.setup({
+        config = {
+          -- Whether a repl should be discarded or not
+          scratch_repl = true,
+          -- Your repl definitions come here
+          repl_definition = {
+            sh = {
+              -- Can be a table or a function that
+              -- returns a table (see below)
+              command = { "fish" },
+            },
+            python = {
+              command = { "ipython", "--no-autoindent" },
+              format = common.bracketed_paste_python,
+              block_deviders = { "# %%", "#%%" },
+            },
+            quarto = {
+              command = { "ipython", "--no-autoindent" },
+              format = common.bracketed_paste_python,
+              block_deviders = { "# %%", "#%%" },
+            },
+          },
+          -- How the repl window will be displayed
+          -- See below for more information
+          repl_open_cmd = "vertical botright 60 split",
+        },
+        keymaps = {
+          toggle_repl = "<localleader>ss",
+          send_motion = "<localleader>sc",
+          visual_send = "<localleader>sc",
+          send_file = "<localleader>sf",
+          send_line = "<localleader>sl",
+          send_until_cursor = "<localleader>su",
+          send_mark = "<localleader>sm",
+          send_code_block = "<localleader>sb",
+          send_code_block_and_move = "<localleader>sn",
+          mark_motion = "<localleader>sq",
+          mark_visual = "<localleader>sq",
+          remove_mark = "<localleader>sd",
+          cr = "<localleader>s<cr>",
+          interrupt = "<localleader>s<localleader>",
+          exit = "<localleader>sq",
+          clear = "<localleader>sz",
+        },
+        -- If the highlight is on, you can change how it looks
+        -- For the available options, check nvim_set_hl
+        highlight = { italic = true },
+        ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+      })
+    end,
+  },
   {
     "michaelb/sniprun",
     event = "VeryLazy",
@@ -140,19 +229,6 @@ return {
     end,
   },
   {
-    "jpalardy/vim-slime",
-    event = "VeryLazy",
-    keys = {
-      { "<localleader>sc", "<cmd>SlimeConfig<cr>", desc = "Slime Config" },
-      { "<localleader>ss", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", desc = "Slime Send Cell" },
-    },
-    config = function()
-      vim.g.slime_target = "zellij"
-      vim.g.slime_cell_delimiter = "# %%"
-      vim.g.slime_bracketed_paste = 1
-    end,
-  },
-  {
     "kiyoon/jupynium.nvim",
     event = "VeryLazy",
     build = "uv pip install . --python=$HOME/.pyenv/versions/fs-lending/bin/python",
@@ -240,7 +316,7 @@ return {
         -- Modify this if you already have lots of files in Jupytext format, for example.
         jupynium_file_pattern = { "*.ju.*" },
 
-        use_default_keybindings = true,
+        use_default_keybindings = false,
         textobjects = {
           use_default_keybindings = true,
         },
@@ -271,11 +347,9 @@ return {
             -- "notebook_closed",
           },
         },
+        colorscheme = "tokyonight",
       })
 
-      colorscheme = "tokyonight"
-
-      use_default_keybindings = false
       vim.keymap.set(
         { "n", "x" },
         "<localleader>jj",

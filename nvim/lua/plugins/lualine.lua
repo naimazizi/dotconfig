@@ -13,6 +13,13 @@ return {
       end
     end,
     opts = function()
+      local kanagawa_paper = require("lualine.themes.kanagawa-paper-ink")
+      require("lualine").setup({
+        options = {
+          theme = kanagawa_paper,
+        },
+      })
+
       -- PERF: we don't need this lualine require madness 🤷
       local lualine_require = require("lualine_require")
       lualine_require.require = require
