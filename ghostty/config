@@ -1,3 +1,4 @@
+shell-integration= fish
 macos-option-as-alt = true
 
 window-theme = dark
