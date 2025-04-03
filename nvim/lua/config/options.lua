@@ -25,6 +25,7 @@ else
       servers = {
         basedpyright = {
           typeCheckingMode = "strict",
+          single_file_support = true,
           analysis = {
             autoSearchPaths = true,
             diagnosticMode = "openFilesOnly",
@@ -33,6 +34,7 @@ else
         },
         pyright = {
           typeCheckingMode = "strict",
+          single_file_support = true,
           analysis = {
             autoSearchPaths = true,
             diagnosticMode = "openFilesOnly",
