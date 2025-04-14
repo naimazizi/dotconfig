@@ -15,6 +15,7 @@ else
   end
 
   vim.g.lazyvim_picker = "snacks"
+  vim.g.root_spec = { "cwd" }
 
   -- python config
   -- vim.g.lazyvim_python_lsp = "basedpyright" -- Use pyright for the time being, basedpyright is slow
