@@ -43,6 +43,18 @@ return {
         -- examples:
         rainbow_delimiters = true,
         which_key = true,
+        blink = true,
+        snacks = true,
+        trouble = true,
+        yanky = true,
+        nvim_dap_ui = true,
+        nvim_navic = true,
+        nvim_treesitter_context = true,
+        noice = true,
+        neotest = true,
+        grug_far = true,
+        overseer = true,
+        mini = true,
       },
 
       -- enable integrations with other applications
