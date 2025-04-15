@@ -89,6 +89,7 @@ return {
         -- adding any nvim-cmp sources here will enable them
         -- with blink.compat
         compat = {},
+
         default = { "lsp", "path", "snippets", "buffer", "env", "references" },
         providers = {
           env = {
@@ -109,7 +110,7 @@ return {
       },
 
       cmdline = {
-        enabled = true,
+        enabled = false,
       },
 
       keymap = {
@@ -191,11 +192,62 @@ return {
   },
   {
     "nvim-lspconfig",
-    opts = {
-      diagnostics = {
+    opts = function(_, opts)
+      opts.diagnostics = {
         virtual_text = false,
-      },
-    },
+      }
+      opts.servers.pyright = {
+        settings = {
+          pyright = {
+            analysis = {
+              typeCheckingMode = "strict",
+              single_file_support = true,
+              analysis = {
+                autoSearchPaths = true,
+                diagnosticMode = "openFilesOnly",
+                useLibraryCodeForTypes = true,
+              },
+            },
+            disableOrganizeImports = true,
+          },
+        },
+      }
+      opts.servers.harper_ls = {
+        filetypes = {
+          "markdown",
+          "gitcommit",
+        },
+        settings = {
+          ["harper-ls"] = {
+
+            userDictPath = "",
+            fileDictPath = "",
+            linters = {
+              SpellCheck = true,
+              SpelledNumbers = false,
+              AnA = true,
+              SentenceCapitalization = true,
+              UnclosedQuotes = true,
+              WrongQuotes = false,
+              LongSentences = true,
+              RepeatedWords = true,
+              Spaces = true,
+              Matcher = true,
+              CorrectNumberSuffix = true,
+            },
+            codeActions = {
+              ForceStable = false,
+            },
+            markdown = {
+              IgnoreLinkTitle = false,
+            },
+            diagnosticSeverity = "hint",
+            isolateEnglish = false,
+            dialect = "British",
+          },
+        },
+      }
+    end,
   },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
