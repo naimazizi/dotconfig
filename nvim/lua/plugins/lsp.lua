@@ -17,7 +17,6 @@ return {
         opts = {},
         version = not vim.g.lazyvim_blink_main and "*",
       },
-      "niuiic/blink-cmp-rg",
       "bydlw98/blink-cmp-env",
       "jmbuhr/cmp-pandoc-references",
       "xzbdmw/colorful-menu.nvim",
@@ -90,34 +89,8 @@ return {
         -- adding any nvim-cmp sources here will enable them
         -- with blink.compat
         compat = {},
-        default = { "lsp", "path", "snippets", "buffer", "ripgrep", "env" },
+        default = { "lsp", "path", "snippets", "buffer", "env", "references" },
         providers = {
-          ripgrep = {
-            module = "blink-cmp-rg",
-            name = "Ripgrep",
-            -- options below are optional, these are the default values
-            ---@type blink-cmp-rg.Options
-            opts = {
-              -- `min_keyword_length` only determines whether to show completion items in the menu,
-              -- not whether to trigger a search. And we only has one chance to search.
-              prefix_min_len = 3,
-              get_command = function(context, prefix)
-                return {
-                  "rg",
-                  "--no-config",
-                  "--json",
-                  "--word-regexp",
-                  "--ignore-case",
-                  "--",
-                  prefix .. "[\\w_-]+",
-                  vim.fs.root(0, ".git") or vim.fn.getcwd(),
-                }
-              end,
-              get_prefix = function(context)
-                return context.line:sub(1, context.cursor[2]):match("[%w_-]+$") or ""
-              end,
-            },
-          },
           env = {
             name = "Env",
             module = "blink-cmp-env",
@@ -221,26 +194,6 @@ return {
     opts = {
       diagnostics = {
         virtual_text = false,
-      },
-      servers = {
-        basedpyright = {
-          typeCheckingMode = "strict",
-          single_file_support = true,
-          analysis = {
-            autoSearchPaths = true,
-            diagnosticMode = "openFilesOnly",
-            useLibraryCodeForTypes = true,
-          },
-        },
-        pyright = {
-          typeCheckingMode = "strict",
-          single_file_support = true,
-          analysis = {
-            autoSearchPaths = true,
-            diagnosticMode = "openFilesOnly",
-            useLibraryCodeForTypes = true,
-          },
-        },
       },
     },
   },
