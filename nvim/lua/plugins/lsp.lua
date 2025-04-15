@@ -17,6 +17,9 @@ return {
         opts = {},
         version = not vim.g.lazyvim_blink_main and "*",
       },
+      "niuiic/blink-cmp-rg",
+      "bydlw98/blink-cmp-env",
+      "jmbuhr/cmp-pandoc-references",
       "xzbdmw/colorful-menu.nvim",
     },
     event = "InsertEnter",
@@ -30,7 +33,7 @@ return {
         -- sets the fallback highlight groups to nvim-cmp's highlight groups
         -- useful for when your theme doesn't support blink.cmp
         -- will be removed in a future release, assuming themes add support
-        use_nvim_cmp_as_default = false,
+        use_nvim_cmp_as_default = true,
         -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- adjusts spacing to ensure icons are aligned
         nerd_font_variant = "mono",
@@ -87,7 +90,49 @@ return {
         -- adding any nvim-cmp sources here will enable them
         -- with blink.compat
         compat = {},
-        default = { "lsp", "path", "snippets", "buffer" },
+        default = { "lsp", "path", "snippets", "buffer", "ripgrep", "env" },
+        providers = {
+          ripgrep = {
+            module = "blink-cmp-rg",
+            name = "Ripgrep",
+            -- options below are optional, these are the default values
+            ---@type blink-cmp-rg.Options
+            opts = {
+              -- `min_keyword_length` only determines whether to show completion items in the menu,
+              -- not whether to trigger a search. And we only has one chance to search.
+              prefix_min_len = 3,
+              get_command = function(context, prefix)
+                return {
+                  "rg",
+                  "--no-config",
+                  "--json",
+                  "--word-regexp",
+                  "--ignore-case",
+                  "--",
+                  prefix .. "[\\w_-]+",
+                  vim.fs.root(0, ".git") or vim.fn.getcwd(),
+                }
+              end,
+              get_prefix = function(context)
+                return context.line:sub(1, context.cursor[2]):match("[%w_-]+$") or ""
+              end,
+            },
+          },
+          env = {
+            name = "Env",
+            module = "blink-cmp-env",
+            --- @type blink-cmp-env.Options
+            opts = {
+              item_kind = require("blink.cmp.types").CompletionItemKind.Variable,
+              show_braces = false,
+              show_documentation_window = true,
+            },
+          },
+          references = {
+            name = "pandoc_references",
+            module = "cmp-pandoc-references.blink",
+          },
+        },
       },
 
       cmdline = {
