@@ -17,7 +17,6 @@ return {
         opts = {},
         version = not vim.g.lazyvim_blink_main and "*",
       },
-      "bydlw98/blink-cmp-env",
       "jmbuhr/cmp-pandoc-references",
       "xzbdmw/colorful-menu.nvim",
     },
@@ -70,11 +69,12 @@ return {
         trigger = {
           show_on_trigger_character = true,
           show_on_blocked_trigger_characters = { " ", "\n", "\t" },
+          show_in_snippet = false,
         },
       },
 
       fuzzy = {
-        implementation = "prefer_rust_with_warning",
+        implementation = "rust",
         sorts = {
           "exact",
           -- defaults
@@ -90,21 +90,18 @@ return {
         -- with blink.compat
         compat = {},
 
-        default = { "lsp", "path", "snippets", "buffer", "env", "references" },
+        default = { "lsp", "path", "snippets", "buffer", "references", "path" },
         providers = {
-          env = {
-            name = "Env",
-            module = "blink-cmp-env",
-            --- @type blink-cmp-env.Options
-            opts = {
-              item_kind = require("blink.cmp.types").CompletionItemKind.Variable,
-              show_braces = false,
-              show_documentation_window = true,
-            },
-          },
           references = {
             name = "pandoc_references",
             module = "cmp-pandoc-references.blink",
+          },
+          path = {
+            opts = {
+              get_cwd = function(_)
+                return vim.fn.getcwd()
+              end,
+            },
           },
         },
       },
@@ -114,7 +111,7 @@ return {
       },
 
       keymap = {
-        preset = "enter",
+        preset = "super-tab",
         ["<C-y>"] = { "select_and_accept" },
       },
     },
@@ -251,7 +248,7 @@ return {
   },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
-    event = "VeryLazy", -- Or `LspAttach`
+    event = "LspAttach",
     priority = 1000, -- needs to be loaded in first
     config = function()
       require("tiny-inline-diagnostic").setup({
