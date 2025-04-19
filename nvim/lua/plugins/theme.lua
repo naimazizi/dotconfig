@@ -8,7 +8,7 @@ return {
       -- enable undercurls for underlined text
       undercurl = true,
       -- transparent background
-      transparent = false,
+      transparent = true,
       -- highlight background for the left gutter
       gutter = true,
       -- background for diagnostic virtual text
@@ -25,7 +25,7 @@ return {
         -- style for comments
         comment = { italic = true },
         -- style for functions
-        functions = { italic = true },
+        functions = { italic = false },
         -- style for keywords
         keyword = { italic = true, bold = false },
         -- style for statements

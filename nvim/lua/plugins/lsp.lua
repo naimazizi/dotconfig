@@ -69,8 +69,8 @@ return {
         trigger = {
           show_on_trigger_character = true,
           show_on_blocked_trigger_characters = { " ", "\n", "\t" },
-          show_in_snippet = false,
         },
+        -- list = { selection = { preselect = false, auto_insert = true } },
       },
 
       fuzzy = {
@@ -111,7 +111,7 @@ return {
       },
 
       keymap = {
-        preset = "super-tab",
+        preset = "enter",
         ["<C-y>"] = { "select_and_accept" },
       },
     },
