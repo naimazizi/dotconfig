@@ -119,6 +119,6 @@ local function vscodeMappings()
 end
 
 if vim.g.vscode then
-  print("⚡connected to neovim!💯‼️🤗😎")
+  print("⚡connected to neovim!")
   vscodeMappings()
 end

@@ -5,8 +5,8 @@ local act = wezterm.action
 local mod = {}
 
 if platform.is_mac then
-   mod.SUPER = 'SUPER'
-   mod.SUPER_REV = 'SUPER|CTRL'
+   mod.SUPER = 'CMD'
+   mod.SUPER_REV = 'CMD|SHIFT'
 elseif platform.is_win then
    mod.SUPER = 'SUPER'
    mod.SUPER_REV = 'ALT|CTRL'

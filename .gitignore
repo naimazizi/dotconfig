@@ -17,6 +17,7 @@
 !/gitui/
 !/zed/settings.json
 !/zed/keymap.json
+!/yazi/
 
 fish/fish_variables
 fish/fishd.*
