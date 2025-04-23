@@ -19,6 +19,7 @@ return {
       },
       "jmbuhr/cmp-pandoc-references",
       "xzbdmw/colorful-menu.nvim",
+      "fang2hou/blink-copilot",
     },
     event = "InsertEnter",
     opts = {
@@ -28,10 +29,6 @@ return {
         end,
       },
       appearance = {
-        -- sets the fallback highlight groups to nvim-cmp's highlight groups
-        -- useful for when your theme doesn't support blink.cmp
-        -- will be removed in a future release, assuming themes add support
-        use_nvim_cmp_as_default = true,
         -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- adjusts spacing to ensure icons are aligned
         nerd_font_variant = "mono",
@@ -69,8 +66,8 @@ return {
         trigger = {
           show_on_trigger_character = true,
           show_on_blocked_trigger_characters = { " ", "\n", "\t" },
+          show_in_snippet = false,
         },
-        -- list = { selection = { preselect = false, auto_insert = true } },
       },
 
       fuzzy = {
@@ -90,7 +87,7 @@ return {
         -- with blink.compat
         compat = {},
 
-        default = { "lsp", "path", "snippets", "buffer", "references", "path" },
+        default = { "lsp", "path", "snippets", "buffer", "references", "path", "copilot" },
         providers = {
           references = {
             name = "pandoc_references",
@@ -103,6 +100,9 @@ return {
               end,
             },
           },
+          copilot = {
+            module = "blink-copilot",
+          },
         },
       },
 
@@ -111,8 +111,24 @@ return {
       },
 
       keymap = {
-        preset = "enter",
-        ["<C-y>"] = { "select_and_accept" },
+        preset = "super-tab",
+
+        -- preset = "super-tab",
+        -- ["<Tab>"] = {
+        --   function(cmp)
+        --     if vim.b[vim.api.nvim_get_current_buf()].nes_state then
+        --       cmp.hide()
+        --       return require("copilot-lsp.nes").apply_pending_nes()
+        --     end
+        --     if cmp.snippet_active() then
+        --       return cmp.accept()
+        --     else
+        --       return cmp.select_and_accept()
+        --     end
+        --   end,
+        --   "snippet_forward",
+        --   "fallback",
+        -- },
       },
     },
   },

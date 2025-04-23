@@ -3,12 +3,7 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 --
-if vim.g.vscode then
-  -- VSCode extension
-  vim.keymap.set({ "n", "x", "i" }, "<C-d>", function()
-    require("vscode-multi-cursor").addSelectionToNextFindMatch()
-  end)
-else
+if not vim.g.vscode then
   -- ordinary Neovim
   if vim.fn.executable("fish") == 1 then
     vim.o.shell = "fish"
@@ -20,4 +15,9 @@ else
   -- python config
   -- vim.g.lazyvim_python_lsp = "basedpyright" -- Use pyright for the time being, basedpyright is slow
   vim.g.lazyvim_python_ruff = "ruff"
+
+  vim.o.smoothscroll = true
+  vim.o.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
+  vim.o.foldmethod = "expr"
+  vim.o.foldtext = ""
 end

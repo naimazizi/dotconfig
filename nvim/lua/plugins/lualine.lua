@@ -13,13 +13,6 @@ return {
       end
     end,
     opts = function()
-      local kanagawa_paper = require("lualine.themes.kanagawa-paper-ink")
-      require("lualine").setup({
-        options = {
-          theme = kanagawa_paper,
-        },
-      })
-
       -- PERF: we don't need this lualine require madness 🤷
       local lualine_require = require("lualine_require")
       lualine_require.require = require
@@ -108,27 +101,11 @@ return {
             end,
           },
         },
-        extensions = { "neo-tree", "lazy", "fzf" },
+        extensions = { "lazy", "overseer", "trouble" },
       }
 
-      -- do not add trouble symbols if aerial is enabled
-      -- And allow it to be overriden for some buffer types (see autocmds)
-      if vim.g.trouble_lualine and LazyVim.has("trouble.nvim") then
-        local trouble = require("trouble")
-        local symbols = trouble.statusline({
-          mode = "symbols",
-          groups = {},
-          title = false,
-          filter = { range = true },
-          format = "{kind_icon}{symbol.name:Normal}",
-          hl_group = "lualine_c_normal",
-        })
-        table.insert(opts.sections.lualine_c, {
-          symbols and symbols.get,
-          cond = function()
-            return vim.b.trouble_lualine ~= false and symbols.has()
-          end,
-        })
+      if vim.g.trouble_lualine then
+        table.insert(opts.sections.lualine_c, { "navic", color_correction = "dynamic" })
       end
 
       if LazyVim.has("git-blame.nvim") then
@@ -139,7 +116,20 @@ return {
         )
       end
 
+      table.insert(opts.sections.lualine_c, {
+        "harpoon2",
+      })
+
       return opts
     end,
+  },
+  {
+    "SmiteshP/nvim-navic",
+    opts = {
+      highlight = false,
+    },
+  },
+  {
+    "letieu/harpoon-lualine",
   },
 }

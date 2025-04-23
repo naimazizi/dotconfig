@@ -116,6 +116,10 @@ local function vscodeMappings()
   map("n", "<leader>co", function()
     callVSCodeFunction("call VSCodeNotify('editor.action.organizeImports')")
   end, { noremap = true, desc = "organize import" })
+
+  map({ "n", "x", "i" }, "<C-d>", function()
+    require("vscode-multi-cursor").addSelectionToNextFindMatch()
+  end)
 end
 
 if vim.g.vscode then
