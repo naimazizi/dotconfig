@@ -94,6 +94,7 @@ return {
             { "progress", separator = " ", padding = { left = 1, right = 0 } },
             { "location", padding = { left = 0, right = 1 } },
             { require("recorder").displaySlots },
+            { "harpoon2" },
           },
           lualine_z = {
             function()
@@ -115,10 +116,6 @@ return {
           { git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available }
         )
       end
-
-      table.insert(opts.sections.lualine_c, {
-        "harpoon2",
-      })
 
       return opts
     end,
