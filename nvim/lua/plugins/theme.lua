@@ -8,7 +8,7 @@ return {
       -- enable undercurls for underlined text
       undercurl = true,
       -- transparent background
-      transparent = true,
+      transparent = false,
       -- highlight background for the left gutter
       gutter = true,
       -- background for diagnostic virtual text
@@ -61,7 +61,7 @@ return {
       integrations = {
         -- automatically set wezterm theme to match the current neovim theme
         wezterm = {
-          enabled = false,
+          enabled = true,
           -- neovim will write the theme name to this file
           -- wezterm will read from this file to know which theme to use
           path = (os.getenv("TEMP") or "/tmp") .. "/nvim-theme",

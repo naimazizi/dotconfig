@@ -5,7 +5,7 @@ window-theme = dark
 window-padding-color = background
 background-opacity = 0.95
 background-blur-radius = 20
-font-family = MonaspiceAr Nerd Font Propo
+font-family = JetBrains Maple Mono
 
 # Kanagawa Paper
 palette = 0=#393836
