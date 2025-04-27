@@ -8,8 +8,8 @@ if platform.is_mac then
    mod.SUPER = 'CMD'
    mod.SUPER_REV = 'CMD|SHIFT'
 elseif platform.is_win then
-   mod.SUPER = 'CTRL|SHIFT'
-   mod.SUPER_REV = 'ALT|CTRL'
+   mod.SUPER = 'CTRL|ALT'
+   mod.SUPER_REV = 'CTRL|SUPER'
 elseif platform.is_linux then
    mod.SUPER = 'CTRL|SHIFT' -- to not conflict with Windows key shortcuts
    mod.SUPER_REV = 'ALT|CTRL'
@@ -62,7 +62,6 @@ local keys = {
    -- tabs --
    -- tabs: spawn+close
    { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('DefaultDomain') },
-   { key = 't',          mods = mod.SUPER_REV, action = act.SpawnTab({ DomainName = 'WSL:Ubuntu' }) },
    { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
    -- tabs: navigation
