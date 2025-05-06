@@ -1,0 +1,15 @@
+themes {
+    posterpole {
+        fg 174 167 156
+        bg 36 34 42
+        black 44 44 48
+        red 169 112 112
+        green 119 140 115
+        yellow 217 172 140
+        blue 108 127 147
+        magenta 184 148 175
+        cyan 142 164 162
+        white 175 167 157
+        orange 204 145 102
+    }
+}

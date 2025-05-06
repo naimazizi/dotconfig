@@ -8,7 +8,7 @@ return {
    front_end = 'WebGpu',
    webgpu_power_preference = 'HighPerformance',
    webgpu_preferred_adapter = gpu_adapters:pick_best(),
-   color_scheme = 'kanagawa-paper',
+   color_scheme = 'posterpole',
    -- background
    background = {
       {
@@ -50,6 +50,7 @@ return {
       options = {
          icons_enabled = true,
          tabs_enabled = true,
+         theme = 'kanagawabones',
          theme_overrides = {},
          section_separators = {
             left = wezterm.nerdfonts.pl_left_hard_divider,
@@ -62,38 +63,6 @@ return {
          tab_separators = {
             left = wezterm.nerdfonts.pl_left_hard_divider,
             right = wezterm.nerdfonts.pl_right_hard_divider,
-         },
-         color_overrides = {
-            normal_mode = {
-               a = { fg = '#282834', bg = '#c4b28a' },
-               b = { fg = '#c4b28a', bg = '#353545' },
-               c = { fg = '#696861', bg = '#282834' },
-            },
-            copy_mode = {
-               a = { fg = '#282834', bg = '#87a987' },
-               b = { fg = '#87a987', bg = '#353545' },
-               c = { fg = '#696861', bg = '#282834' },
-            },
-            search_mode = {
-               a = { fg = '#282834', bg = '#938AA9' },
-               b = { fg = '#938AA9', bg = '#353545' },
-               c = { fg = '#696861', bg = '#282834' },
-            },
-            window_mode = {
-               a = { fg = '#282834', bg = '#658594' },
-               b = { fg = '#658594', bg = '#353545' },
-               c = { fg = '#696861', bg = '#282834' },
-            },
-            resize_mode = {
-               a = { fg = '#282834', bg = '#c4746e' },
-               b = { fg = '#c4746e', bg = '#353545' },
-               c = { fg = '#696861', bg = '#282834' },
-            },
-            tab = {
-               active = { fg = '#c4b28a', bg = '#353545' },
-               inactive = { fg = '#696861', bg = '#282834' },
-               inactive_hover = { fg = '#c4b28a', bg = '#353545' },
-            },
          },
       },
       sections = {
@@ -112,6 +81,6 @@ return {
          tabline_y = { 'datetime', 'battery' },
          tabline_z = { 'domain' },
       },
-      extensions = {},
+      extensions = { 'resurrect', 'smart_workspace_switcher', 'quick_domains' },
    }),
 }

@@ -120,6 +120,22 @@ local function vscodeMappings()
   map({ "n", "x", "i" }, "<C-d>", function()
     require("vscode-multi-cursor").addSelectionToNextFindMatch()
   end)
+
+  map({ "n", "v" }, "[e", function()
+    callVSCodeFunction("call VSCodeNotify('editor.action.marker.prev')")
+  end, { noremap = true, desc = "Go to Previous Problem (error, warning, info)" })
+
+  map({ "n", "v" }, "]e", function()
+    callVSCodeFunction("call VSCodeNotify('editor.action.marker.next')")
+  end, { noremap = true, desc = "Go to Next Problem (error, warning, info)" })
+
+  map("n", "[n", function()
+    callVSCodeFunction("call VSCodeNotify('editor.action.wordHighlight.prev')")
+  end, { noremap = true, desc = "Go to Prev Highlight" })
+
+  map("n", "]n", function()
+    callVSCodeFunction("call VSCodeNotify('editor.action.wordHighlight.next')")
+  end, { noremap = true, desc = "Go to Next Highlight" })
 end
 
 if vim.g.vscode then
