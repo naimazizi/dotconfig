@@ -10,7 +10,7 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Kanagawa"
+    "dark": "Kanso Zen"
   },
   "shell": {
     "program": "/opt/homebrew/bin/fish"
@@ -97,7 +97,7 @@
   },
   // Use zed commit editor
   "terminal": {
-    "font_family": "FiraCode Nerd Font Mono",
+    "font_family": "JetBrains Maple Mono",
     "env": {
       "EDITOR": "zed --wait"
     }

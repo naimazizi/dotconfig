@@ -11,8 +11,8 @@ elseif platform.is_win then
    mod.SUPER = 'CTRL|ALT'
    mod.SUPER_REV = 'CTRL|SUPER'
 elseif platform.is_linux then
-   mod.SUPER = 'CTRL|SHIFT' -- to not conflict with Windows key shortcuts
-   mod.SUPER_REV = 'ALT|CTRL'
+   mod.SUPER = 'CTRL|ALT' -- to not conflict with Windows key shortcuts
+   mod.SUPER_REV = 'CTRL|SHIFT'
 end
 
 -- stylua: ignore
