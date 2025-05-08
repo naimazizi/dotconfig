@@ -21,6 +21,7 @@ return {
       "xzbdmw/colorful-menu.nvim",
       "fang2hou/blink-copilot",
       "copilotlsp-nvim/copilot-lsp",
+      "kristijanhusak/vim-dadbod-completion",
     },
     event = "InsertEnter",
     opts = {
@@ -88,7 +89,7 @@ return {
         -- with blink.compat
         compat = {},
 
-        default = { "lsp", "path", "snippets", "buffer", "references", "path", "copilot" },
+        default = { "lsp", "path", "snippets", "buffer", "references", "path", "copilot", "dadbod" },
         providers = {
           references = {
             name = "pandoc_references",
@@ -102,8 +103,21 @@ return {
             },
           },
           copilot = {
+            name = "copilot",
             module = "blink-copilot",
+            score_offset = 100,
+            async = true,
+            opts = {
+              -- Local options override global ones
+              max_completions = 3, -- Override global max_completions
+
+              -- Final settings:
+              -- * max_completions = 3
+              -- * max_attempts = 2
+              -- * all other options are default
+            },
           },
+          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
       },
 
