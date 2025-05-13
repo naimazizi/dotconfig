@@ -7,7 +7,6 @@ return {
         { "<localleader>r", group = "+REPL" },
         { "<localleader>m", group = "+Molten (Inline REPL)" },
         { "<localleader>s", group = "+Slime Repl" },
-        { "<localleader>j", group = "+Jupynium" },
       },
     },
   },
