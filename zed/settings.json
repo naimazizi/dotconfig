@@ -54,7 +54,7 @@
     "modal_width": "medium"
   },
   // NOTE: Change the font family to your preference
-  "buffer_font_family": "FiraCode Nerd Font Mono",
+  "buffer_font_family": "JetBrains Maple Mono",
   // Vim mode settings
   "vim_mode": true,
   "vim": {
@@ -83,7 +83,7 @@
     "right_padding": 0.15
   },
   // Use Copilot Chat AI as default
-  "assistant": {
+  "agent": {
     "default_model": {
       "provider": "copilot_chat",
       "model": "claude-3-7-sonnet"
