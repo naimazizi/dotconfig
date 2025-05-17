@@ -68,7 +68,7 @@ return {
         trigger = {
           show_on_trigger_character = true,
           show_on_blocked_trigger_characters = { " ", "\n", "\t" },
-          show_in_snippet = false,
+          show_in_snippet = true,
         },
       },
 
@@ -82,7 +82,7 @@ return {
         },
       },
       -- experimental signature help support
-      signature = { enabled = true },
+      signature = { enabled = false, trigger = { show_on_accept = true } },
 
       sources = {
         -- adding any nvim-cmp sources here will enable them
@@ -227,11 +227,27 @@ return {
       opts.diagnostics = {
         virtual_text = false,
       }
-      opts.servers.pyright = {
+      -- opts.servers.pyright = {
+      --   settings = {
+      --     pyright = {
+      --       analysis = {
+      --         typeCheckingMode = "strict",
+      --         single_file_support = true,
+      --         analysis = {
+      --           autoSearchPaths = true,
+      --           diagnosticMode = "openFilesOnly",
+      --           useLibraryCodeForTypes = true,
+      --         },
+      --       },
+      --       disableOrganizeImports = true,
+      --     },
+      --   },
+      -- }
+      opts.servers.basedpyright = {
         settings = {
-          pyright = {
+          basedpyright = {
             analysis = {
-              typeCheckingMode = "strict",
+              typeCheckingMode = "standard",
               single_file_support = true,
               analysis = {
                 autoSearchPaths = true,

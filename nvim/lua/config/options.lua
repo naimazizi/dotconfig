@@ -13,11 +13,14 @@ if not vim.g.vscode then
   vim.g.root_spec = { "cwd" }
 
   -- python config
-  -- vim.g.lazyvim_python_lsp = "basedpyright" -- Use pyright for the time being, basedpyright is slow
+  vim.g.lazyvim_python_lsp = "basedpyright" -- Use pyright for the time being, basedpyright is slow
   vim.g.lazyvim_python_ruff = "ruff"
 
   vim.o.smoothscroll = true
   vim.o.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
   vim.o.foldmethod = "expr"
   vim.o.foldtext = ""
+
+  -- vim.lsp.config("pyrefly", {})
+  -- vim.lsp.enable({ "pyrefly" })
 end
