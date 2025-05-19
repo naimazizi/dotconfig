@@ -22,6 +22,8 @@ return {
       "fang2hou/blink-copilot",
       "copilotlsp-nvim/copilot-lsp",
       "kristijanhusak/vim-dadbod-completion",
+      "yetone/avante.nvim",
+      "Kaiser-Yang/blink-cmp-avante",
     },
     event = "InsertEnter",
     opts = {
@@ -89,7 +91,17 @@ return {
         -- with blink.compat
         compat = {},
 
-        default = { "lsp", "path", "snippets", "buffer", "references", "path", "copilot", "dadbod" },
+        default = {
+          "lsp",
+          "path",
+          "snippets",
+          "buffer",
+          "references",
+          "path",
+          "copilot",
+          "dadbod",
+          "avante",
+        },
         providers = {
           references = {
             name = "pandoc_references",
@@ -118,6 +130,13 @@ return {
             },
           },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+          avante = {
+            module = "blink-cmp-avante",
+            name = "Avante",
+            opts = {
+              -- options for blink-cmp-avante
+            },
+          },
         },
       },
 
