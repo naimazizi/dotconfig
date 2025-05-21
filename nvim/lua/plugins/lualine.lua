@@ -21,6 +21,14 @@ return {
 
       vim.o.laststatus = vim.g.lualine_laststatus
 
+      -- local dmode_enabled = false
+      -- vim.api.nvim_create_autocmd("User", {
+      --   pattern = "DebugModeChanged",
+      --   callback = function(args)
+      --     dmode_enabled = args.data.enabled
+      --   end,
+      -- })
+
       local opts = {
         options = {
           theme = "auto",
@@ -28,7 +36,18 @@ return {
           disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
         },
         sections = {
-          lualine_a = { "mode" },
+          lualine_a = {
+            "mode",
+            -- {
+            --   "mode",
+            --   fmt = function(str)
+            --     return dmode_enabled and "DEBUG" or str
+            --   end,
+            --   color = function(tb)
+            --     return dmode_enabled and "dCursor" or tb
+            --   end,
+            -- },
+          },
           lualine_b = { "branch" },
 
           lualine_c = {

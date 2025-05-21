@@ -112,4 +112,21 @@ return {
       )
     end,
   },
+  {
+    "GCBallesteros/NotebookNavigator.nvim",
+    dependencies = {
+      "echasnovski/mini.comment",
+      "benlubas/molten-nvim",
+    },
+    event = "VeryLazy",
+    config = function()
+      local nn = require("notebook-navigator")
+      vim.keymap.set({ "n", "v" }, "[3", function()
+        nn.move_cell("u")
+      end, { silent = true, desc = "Notebook - Move cell up" })
+      vim.keymap.set({ "n", "v" }, "]3", function()
+        nn.move_cell("d")
+      end, { silent = true, desc = "Notebook - Move cell down" })
+    end,
+  },
 }
