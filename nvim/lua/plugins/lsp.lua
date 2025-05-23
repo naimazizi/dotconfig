@@ -133,9 +133,7 @@ return {
           avante = {
             module = "blink-cmp-avante",
             name = "Avante",
-            opts = {
-              -- options for blink-cmp-avante
-            },
+            opts = {},
           },
         },
       },
@@ -245,38 +243,6 @@ return {
     opts = function(_, opts)
       opts.diagnostics = {
         virtual_text = false,
-      }
-      -- opts.servers.pyright = {
-      --   settings = {
-      --     pyright = {
-      --       analysis = {
-      --         typeCheckingMode = "strict",
-      --         single_file_support = true,
-      --         analysis = {
-      --           autoSearchPaths = true,
-      --           diagnosticMode = "openFilesOnly",
-      --           useLibraryCodeForTypes = true,
-      --         },
-      --       },
-      --       disableOrganizeImports = true,
-      --     },
-      --   },
-      -- }
-      opts.servers.basedpyright = {
-        settings = {
-          basedpyright = {
-            analysis = {
-              typeCheckingMode = "standard",
-              single_file_support = true,
-              analysis = {
-                autoSearchPaths = true,
-                diagnosticMode = "openFilesOnly",
-                useLibraryCodeForTypes = true,
-              },
-            },
-            disableOrganizeImports = true,
-          },
-        },
       }
       opts.servers.harper_ls = {
         filetypes = {
