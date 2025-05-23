@@ -1,5 +1,23 @@
 return {
   {
+    "saghen/blink.compat",
+    -- use the latest release, via version = '*', if you also use the latest release for blink.cmp
+    version = "*",
+    -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
+    lazy = true,
+    -- make sure to set opts so that lazy.nvim calls blink.compat's setup
+    opts = {},
+  },
+  {
+    "saghen/blink.compat",
+    -- use the latest release, via version = '*', if you also use the latest release for blink.cmp
+    version = "*",
+    -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
+    lazy = true,
+    -- make sure to set opts so that lazy.nvim calls blink.compat's setup
+    opts = {},
+  },
+  {
     "saghen/blink.cmp",
     version = not vim.g.lazyvim_blink_main and "*",
     build = vim.g.lazyvim_blink_main and "cargo build --release",
@@ -21,9 +39,15 @@ return {
       "xzbdmw/colorful-menu.nvim",
       "fang2hou/blink-copilot",
       "copilotlsp-nvim/copilot-lsp",
-      "kristijanhusak/vim-dadbod-completion",
       "yetone/avante.nvim",
       "Kaiser-Yang/blink-cmp-avante",
+      {
+        "MattiasMTS/cmp-dbee",
+        ft = "sql",
+        dependencies = {
+          { "kndndrj/nvim-dbee" },
+        },
+      },
     },
     event = "InsertEnter",
     opts = {
@@ -99,8 +123,11 @@ return {
           "references",
           "path",
           "copilot",
-          "dadbod",
           "avante",
+          "dbee",
+        },
+        per_filetype = {
+          sql = { "dbee", "buffer" }, -- Add any other source to include here
         },
         providers = {
           references = {
@@ -120,21 +147,15 @@ return {
             score_offset = 100,
             async = true,
             opts = {
-              -- Local options override global ones
               max_completions = 3, -- Override global max_completions
-
-              -- Final settings:
-              -- * max_completions = 3
-              -- * max_attempts = 2
-              -- * all other options are default
             },
           },
-          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
           avante = {
             module = "blink-cmp-avante",
             name = "Avante",
             opts = {},
           },
+          dbee = { name = "cmp-dbee", module = "blink.compat.source" },
         },
       },
 
