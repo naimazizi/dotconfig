@@ -117,9 +117,6 @@ return {
           "avante",
           "dbee",
         },
-        per_filetype = {
-          sql = { "dbee", "buffer" }, -- Add any other source to include here
-        },
         providers = {
           references = {
             name = "pandoc_references",
