@@ -18,24 +18,27 @@ return {
       --     },
       --   },
       -- }
-      opts.servers.basedpyright = {
-        settings = {
-          basedpyright = {
-            analysis = {
-              typeCheckingMode = "standard",
-              single_file_support = true,
-              analysis = {
-                autoSearchPaths = true,
-                diagnosticMode = "openFilesOnly",
-                useLibraryCodeForTypes = true,
-              },
-            },
-            disableOrganizeImports = true,
-          },
-        },
-      }
-      -- vim.lsp.config("pyrefly", {})
-      -- vim.lsp.enable({ "pyrefly" })
+      -- opts.servers.basedpyright = {
+      --   settings = {
+      --     basedpyright = {
+      --       analysis = {
+      --         typeCheckingMode = "standard",
+      --         single_file_support = true,
+      --         analysis = {
+      --           autoSearchPaths = true,
+      --           diagnosticMode = "openFilesOnly",
+      --           useLibraryCodeForTypes = true,
+      --         },
+      --       },
+      --       disableOrganizeImports = true,
+      --     },
+      --   },
+      -- }
+      vim.lsp.config("pyrefly", {})
+      vim.lsp.enable({ "pyrefly" })
+
+      -- vim.lsp.config("ty", {})
+      -- vim.lsp.enable({ "ty" })
     end,
   },
   {

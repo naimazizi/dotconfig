@@ -4,11 +4,7 @@ return {
     event = "BufRead",
     init = function()
       vim.g.copilot_nes_debounce = 500
-      vim.lsp.enable("copilot")
+      vim.lsp.enable("copilot_ls")
     end,
-  },
-  {
-    "giuxtaposition/blink-cmp-copilot",
-    enabled = false, -- disabled in favor of fang2hou/blink-copilot
   },
 }
