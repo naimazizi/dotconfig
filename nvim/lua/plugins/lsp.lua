@@ -33,6 +33,7 @@ return {
       "yetone/avante.nvim",
       "Kaiser-Yang/blink-cmp-avante",
       "mikavilpas/blink-ripgrep.nvim",
+      "t3ntxcl3s/ecolog.nvim",
       {
         "MattiasMTS/cmp-dbee",
         ft = "sql",
@@ -118,6 +119,7 @@ return {
           "avante",
           "dbee",
           "ripgrep",
+          "ecolog",
         },
         providers = {
           references = {
@@ -263,6 +265,7 @@ return {
               return items
             end,
           },
+          ecolog = { name = "ecolog", module = "ecolog.integrations.cmp.blink_cmp" },
         },
       },
 
