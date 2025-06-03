@@ -2,22 +2,22 @@ return {
   {
     "nvim-lspconfig",
     opts = function(_, opts)
-      -- opts.servers.pyright = {
-      --   settings = {
-      --     pyright = {
-      --       analysis = {
-      --         typeCheckingMode = "strict",
-      --         single_file_support = true,
-      --         analysis = {
-      --           autoSearchPaths = true,
-      --           diagnosticMode = "openFilesOnly",
-      --           useLibraryCodeForTypes = true,
-      --         },
-      --       },
-      --       disableOrganizeImports = true,
-      --     },
-      --   },
-      -- }
+      opts.servers.pyright = {
+        settings = {
+          pyright = {
+            analysis = {
+              typeCheckingMode = "strict",
+              single_file_support = true,
+              analysis = {
+                autoSearchPaths = true,
+                diagnosticMode = "openFilesOnly",
+                useLibraryCodeForTypes = true,
+              },
+            },
+            disableOrganizeImports = true,
+          },
+        },
+      }
       -- opts.servers.basedpyright = {
       --   settings = {
       --     basedpyright = {
@@ -34,8 +34,8 @@ return {
       --     },
       --   },
       -- }
-      vim.lsp.config("pyrefly", {})
-      vim.lsp.enable({ "pyrefly" })
+      -- vim.lsp.config("pyrefly", {})
+      -- vim.lsp.enable({ "pyrefly" })
 
       -- vim.lsp.config("ty", {})
       -- vim.lsp.enable({ "ty" })

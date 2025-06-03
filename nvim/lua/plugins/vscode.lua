@@ -5,23 +5,6 @@ if not vim.g.vscode then
   return {}
 end
 
-local enabled = {
-  "lazy.nvim",
-  "flit.nvim",
-  "leap.nvim",
-  "mini.ai",
-  "mini.comment",
-  "mini.pairs",
-  "mini.surround",
-  "nvim-treesitter",
-  "nvim-treesitter-textobjects",
-  "nvim-ts-context-commentstring",
-  "nvim-ts-rainbow2", -- not used but required for loading treesitter
-  "vim-repeat",
-  "dial.nvim",
-  "LazyVim",
-}
-
 local Config = require("lazy.core.config")
 Config.options.checker.enabled = false
 Config.options.change_detection.enabled = false
