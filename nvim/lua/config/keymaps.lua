@@ -141,4 +141,13 @@ end
 if vim.g.vscode then
   print("⚡connected to neovim!")
   vscodeMappings()
+else
+  -- Clear search and stop snippet on escape
+  vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
+    if not require("copilot-lsp.nes").clear() then
+      vim.cmd("noh")
+      LazyVim.cmp.actions.snippet_stop()
+    end
+    return "<esc>"
+  end, { expr = true, desc = "Escape and Clear hlsearch" })
 end
