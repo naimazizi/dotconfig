@@ -21,6 +21,7 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    vscode = true,
     opts = { highlight = { enable = false }, rainbow = { enable = false } },
   },
   {
@@ -32,6 +33,17 @@ return {
       default_mappings = true,
       -- If set to true, only multiple cursors will be created without multiple selections
       no_selection = false,
+    },
+  },
+  {
+    "RRethy/vim-illuminate",
+    vscode = true,
+    opts = {
+      delay = 200,
+      large_file_cutoff = 2000,
+      large_file_overrides = {
+        providers = { "lsp" },
+      },
     },
   },
 }

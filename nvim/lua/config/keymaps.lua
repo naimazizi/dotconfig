@@ -19,7 +19,24 @@ local function callVSCodeFunction(vsCodeCommand)
   vim.cmd(vsCodeCommand)
 end
 
+local function map_illuminate(key, dir, buffer)
+  vim.keymap.set("n", key, function()
+    require("illuminate")["goto_" .. dir .. "_reference"](false)
+  end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+end
+
 local function vscodeMappings()
+  map_illuminate("]]", "next")
+  map_illuminate("[[", "prev")
+
+  vim.api.nvim_create_autocmd("FileType", {
+    callback = function()
+      local buffer = vim.api.nvim_get_current_buf()
+      map_illuminate("]]", "next", buffer)
+      map_illuminate("[[", "prev", buffer)
+    end,
+  })
+
   map("n", "<leader>cs", function()
     print("go to symbols in editor")
     callVSCodeFunction("call VSCodeCall('workbench.action.gotoSymbol')")
@@ -139,7 +156,7 @@ local function vscodeMappings()
 end
 
 if vim.g.vscode then
-  print("⚡connected to neovim!")
+  print("⚡connected to NEOVIM")
   vscodeMappings()
 else
   -- Clear search and stop snippet on escape

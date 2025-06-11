@@ -79,8 +79,8 @@ return {
     "GCBallesteros/NotebookNavigator.nvim",
     dependencies = {
       "echasnovski/mini.comment",
-      "benlubas/molten-nvim",
     },
+    vscode = true,
     event = "VeryLazy",
     config = function()
       local nn = require("notebook-navigator")
