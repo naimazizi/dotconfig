@@ -26,9 +26,9 @@ local function map_illuminate(key, dir, buffer)
 end
 
 local function vscodeMappings()
+  -- Vim Illuminate
   map_illuminate("]]", "next")
   map_illuminate("[[", "prev")
-
   vim.api.nvim_create_autocmd("FileType", {
     callback = function()
       local buffer = vim.api.nvim_get_current_buf()
@@ -37,11 +37,7 @@ local function vscodeMappings()
     end,
   })
 
-  map("n", "<leader>cs", function()
-    print("go to symbols in editor")
-    callVSCodeFunction("call VSCodeCall('workbench.action.gotoSymbol')")
-  end, { noremap = true, silent = true, desc = "go to symbols in editor" })
-
+  -- Tab Navigation
   map("n", "<S-l>", function()
     callVSCodeFunction("call VSCodeNotify('workbench.action.nextEditor')")
   end, { noremap = true, desc = "switch between editor to next" })
@@ -50,6 +46,7 @@ local function vscodeMappings()
     callVSCodeFunction("call VSCodeNotify('workbench.action.previousEditor')")
   end, { noremap = true, desc = "switch between editor to previous" })
 
+  -- LSP
   map("n", "gr", function()
     callVSCodeFunction("call VSCodeNotify('editor.action.referenceSearch.trigger')")
   end, { noremap = true, desc = "peek references inside vs code" })
@@ -74,6 +71,7 @@ local function vscodeMappings()
     callVSCodeFunction("call VSCodeNotify('workbench.action.problems.focus')")
   end, { noremap = true, desc = "open problems and errors infos" })
 
+  -- Focus window
   map("n", "<leader>e", function()
     callVSCodeFunction("call VSCodeNotify('workbench.files.action.focusFilesExplorer')")
   end, { noremap = true, desc = "focus to file explorer" })
@@ -90,26 +88,7 @@ local function vscodeMappings()
     callVSCodeFunction("call VSCodeNotify('workbench.view.scm')")
   end, { noremap = true, desc = "open git source control" })
 
-  map("n", "<leader>sml", function()
-    callVSCodeFunction("call VSCodeNotify('bookmarks.list')")
-  end, { noremap = true, desc = "open bookmarks list for current files" })
-
-  map("n", "<leader>smL", function()
-    callVSCodeFunction("call VSCodeNotify('bookmarks.listFromAllFiles')")
-  end, { noremap = true, desc = "open bookmarks list for all files" })
-
-  map("n", "<leader>smm", function()
-    callVSCodeFunction("call VSCodeNotify('bookmarks.toggle')")
-  end, { noremap = true, desc = "toggle bookmarks" })
-
-  map("n", "<leader>smd", function()
-    callVSCodeFunction("call VSCodeNotify('bookmarks.clear')")
-  end, { noremap = true, desc = "clear bookmarks from current file" })
-
-  map("n", "<leader>smr", function()
-    callVSCodeFunction("call VSCodeNotify('bookmarks.clearFromAllFiles')")
-  end, { noremap = true, desc = "clear bookmarks from all file" })
-
+  -- Code Action
   map("n", "<leader>cr", function()
     callVSCodeFunction("call VSCodeNotify('editor.action.rename')")
   end, { noremap = true, desc = "rename symbol" })
@@ -134,10 +113,17 @@ local function vscodeMappings()
     callVSCodeFunction("call VSCodeNotify('editor.action.organizeImports')")
   end, { noremap = true, desc = "organize import" })
 
+  map("n", "<leader>cs", function()
+    print("go to symbols in editor")
+    callVSCodeFunction("call VSCodeCall('workbench.action.gotoSymbol')")
+  end, { noremap = true, silent = true, desc = "go to symbols in editor" })
+
+  -- Multi-cursor mappings
   map({ "n", "x", "i" }, "<C-d>", function()
     require("vscode-multi-cursor").addSelectionToNextFindMatch()
   end)
 
+  -- Go to
   map({ "n", "v" }, "[e", function()
     callVSCodeFunction("call VSCodeNotify('editor.action.marker.prev')")
   end, { noremap = true, desc = "Go to Previous Problem (error, warning, info)" })
@@ -161,6 +147,72 @@ local function vscodeMappings()
   map("n", "]h", function()
     callVSCodeFunction("call VSCodeNotify('workbench.action.editor.nextChange')")
   end, { noremap = true, desc = "Go to Next Change" })
+
+  -- Harpoon Extension
+  map("n", "<leader>1", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor1')")
+  end, { noremap = true, desc = "Harpoon 1" })
+
+  map("n", "<leader>2", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor2')")
+  end, { noremap = true, desc = "Harpoon 2" })
+
+  map("n", "<leader>3", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor3')")
+  end, { noremap = true, desc = "Harpoon 3" })
+
+  map("n", "<leader>4", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor4')")
+  end, { noremap = true, desc = "Harpoon 4" })
+
+  map("n", "<leader>h", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.editorQuickPick')")
+  end, { noremap = true, desc = "Harpoon Quick menu" })
+
+  map("n", "<leader>H", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.addEditor')")
+  end, { noremap = true, desc = "Harpoon Add editor" })
+
+  -- Bookmark Extension
+  map("n", "<leader>sml", function()
+    callVSCodeFunction("call VSCodeNotify('bookmarks.list')")
+  end, { noremap = true, desc = "open bookmarks list for current files" })
+
+  map("n", "<leader>smL", function()
+    callVSCodeFunction("call VSCodeNotify('bookmarks.listFromAllFiles')")
+  end, { noremap = true, desc = "open bookmarks list for all files" })
+
+  map("n", "<leader>smm", function()
+    callVSCodeFunction("call VSCodeNotify('bookmarks.toggle')")
+  end, { noremap = true, desc = "toggle bookmarks" })
+
+  map("n", "<leader>smd", function()
+    callVSCodeFunction("call VSCodeNotify('bookmarks.clear')")
+  end, { noremap = true, desc = "clear bookmarks from current file" })
+
+  map("n", "<leader>smr", function()
+    callVSCodeFunction("call VSCodeNotify('bookmarks.clearFromAllFiles')")
+  end, { noremap = true, desc = "clear bookmarks from all file" })
+
+  -- Jupyter Extension
+  map("n", "<localleader>rr", function()
+    callVSCodeFunction("call VSCodeNotify('jupyter.runcurrentcell')")
+  end, { noremap = true, desc = "Run Jupyter - current cell" })
+
+  map("n", "<localleader>ru", function()
+    callVSCodeFunction("call VSCodeNotify('jupyter.runallcellsabove.palette')")
+  end, { noremap = true, desc = "Run Jupyter - until cursor" })
+
+  map("n", "<localleader>re", function()
+    callVSCodeFunction("call VSCodeNotify('jupyter.runByLine')")
+  end, { noremap = true, desc = "Run Jupyter - Send line" })
+
+  map("n", "<localleader>r<localleader>", function()
+    callVSCodeFunction("call VSCodeNotify('jupyter.interruptkernel')")
+  end, { noremap = true, desc = "Run Jupyter - interrupt kernel" })
+
+  -- Delete keymap
+  vim.keymap.del("n", "<leader>qq")
 end
 
 if vim.g.vscode then
