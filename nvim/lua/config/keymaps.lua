@@ -153,6 +153,14 @@ local function vscodeMappings()
   map("n", "]n", function()
     callVSCodeFunction("call VSCodeNotify('editor.action.wordHighlight.next')")
   end, { noremap = true, desc = "Go to Next Highlight" })
+
+  map("n", "[h", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.editor.previousChange')")
+  end, { noremap = true, desc = "Go to Prev Change" })
+
+  map("n", "]h", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.editor.nextChange')")
+  end, { noremap = true, desc = "Go to Next Change" })
 end
 
 if vim.g.vscode then
