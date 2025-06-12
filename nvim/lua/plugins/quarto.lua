@@ -6,6 +6,7 @@ return {
     event = "VeryLazy",
     ft = { "quarto" },
     dev = false,
+    vscode = false,
     opts = {
       debug = false,
       closePreviewOnExit = true,
@@ -42,6 +43,7 @@ return {
     -- and convert back behind the scenes
     "GCBallesteros/jupytext.nvim",
     event = "VeryLazy",
+    vscode = false,
     opts = {
       custom_language_formatting = {
         python = {

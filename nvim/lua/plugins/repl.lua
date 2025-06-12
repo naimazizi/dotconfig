@@ -1,6 +1,7 @@
 return {
   {
     "jpalardy/vim-slime",
+    vscode = false,
     keys = {
       { "<localleader>sC", "<cmd>SlimeConfig<cr>", desc = "Slime Config" },
       { "<localleader>ss", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", desc = "Slime Send Cell" },
@@ -17,6 +18,7 @@ return {
     event = "VeryLazy",
     version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
     build = ":UpdateRemotePlugins",
+    vscode = false,
     init = function()
       vim.g.molten_image_provider = "image.nvim"
       vim.g.molten_output_win_max_height = 500
@@ -95,6 +97,7 @@ return {
   {
     "Vigemus/iron.nvim",
     event = "VeryLazy",
+    vscode = false,
     cmd = {
       "IronRepl",
       "IronReplHere",

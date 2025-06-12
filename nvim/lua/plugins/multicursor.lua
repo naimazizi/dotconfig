@@ -3,6 +3,7 @@ return {
     "jake-stewart/multicursor.nvim",
     branch = "1.0",
     event = "BufEnter",
+    vscode = false,
     config = function()
       local mc = require("multicursor-nvim")
       mc.setup()

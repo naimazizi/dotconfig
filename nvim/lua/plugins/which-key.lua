@@ -2,6 +2,7 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    vscode = false,
     opts = {
       spec = {
         { "<localleader>r", group = "+REPL" },

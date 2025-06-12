@@ -9,5 +9,6 @@ return {
     },
     -- Optional dependencies
     dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    vscode = false,
   },
 }

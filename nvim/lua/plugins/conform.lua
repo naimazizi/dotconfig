@@ -1,6 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
+    vscode = false,
     opts = function(_, opts)
       opts.formatters.sqruff = {
         args = { "fix", "--force", "$FILENAME" },

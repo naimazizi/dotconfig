@@ -3,6 +3,7 @@ return {
   {
     "mikavilpas/yazi.nvim",
     event = "VeryLazy",
+    vscode = false,
     dependencies = {
       "folke/snacks.nvim",
     },

@@ -2,6 +2,7 @@ return {
   "3rd/image.nvim",
   -- cond = false,
   event = "VeryLazy",
+  vscode = false,
   opts = {
     backend = "kitty",
     processor = "magick_cli", -- "magick_cli" or "magick_rock"

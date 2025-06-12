@@ -3,6 +3,7 @@ return {
     "thesimonho/kanagawa-paper.nvim",
     lazy = false,
     priority = 1000,
+    vscode = false,
     opts = {
 
       -- enable undercurls for underlined text
@@ -73,6 +74,7 @@ return {
     "webhooked/kanso.nvim",
     lazy = false,
     priority = 1000,
+    vscode = false,
     config = function()
       require("kanso").setup({
         compile = true, -- enable compiling the colorscheme

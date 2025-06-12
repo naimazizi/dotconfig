@@ -25,6 +25,7 @@ return {
   {
     "igorlfs/nvim-dap-view",
     event = "VeryLazy",
+    vscode = false,
     config = function(_, opts)
       local dap, dv = require("dap"), require("dap-view")
 

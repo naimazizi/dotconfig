@@ -3,6 +3,7 @@ return {
     "pwntester/octo.nvim",
     cmd = "Octo",
     event = { { event = "BufReadCmd", pattern = "octo://*" } },
+    vscode = false,
     opts = {
       enable_builtin = true,
       default_to_projects_v2 = true,

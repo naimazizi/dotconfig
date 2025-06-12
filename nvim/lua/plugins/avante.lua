@@ -2,6 +2,7 @@ return {
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
+    vscode = false,
     dependencies = {
       "stevearc/dressing.nvim",
       "zbirenbaum/copilot.lua", -- for providers='copilot'

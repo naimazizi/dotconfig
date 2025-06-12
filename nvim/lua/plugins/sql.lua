@@ -2,6 +2,7 @@ return {
   {
     "kndndrj/nvim-dbee",
     event = "VeryLazy",
+    vscode = false,
     dependencies = {
       "MunifTanjim/nui.nvim",
     },

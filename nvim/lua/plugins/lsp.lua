@@ -5,6 +5,7 @@ return {
     version = "*",
     -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
     lazy = true,
+    vscode = false,
     -- make sure to set opts so that lazy.nvim calls blink.compat's setup
     opts = {},
   },
@@ -42,6 +43,7 @@ return {
       },
     },
     event = "InsertEnter",
+    vscode = false,
     opts = {
       snippets = {
         expand = function(snippet, _)
@@ -180,6 +182,7 @@ return {
   {
     "xzbdmw/colorful-menu.nvim",
     event = "LspAttach",
+    vscode = false,
     config = function()
       -- You don't need to set these options.
       require("colorful-menu").setup({
@@ -295,6 +298,7 @@ return {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "LspAttach",
     priority = 1000, -- needs to be loaded in first
+    vscode= false,
     config = function()
       require("tiny-inline-diagnostic").setup({
         preset = "modern",

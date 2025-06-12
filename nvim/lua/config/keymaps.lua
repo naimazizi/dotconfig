@@ -211,6 +211,51 @@ local function vscodeMappings()
     callVSCodeFunction("call VSCodeNotify('jupyter.interruptkernel')")
   end, { noremap = true, desc = "Run Jupyter - interrupt kernel" })
 
+  -- Folding
+  map("n", "zm", function()
+    callVSCodeFunction("call VSCodeNotify('editor.foldAll')")
+  end, { noremap = true, desc = "Fold all" })
+
+  map("n", "zR", function()
+    callVSCodeFunction("call VSCodeNotify('editor.unfoldAll')")
+  end, { noremap = true, desc = "Unfold all" })
+
+  map("n", "zr", function()
+    callVSCodeFunction("call VSCodeNotify('editor.unfold')")
+  end, { noremap = true, desc = "Unfold" })
+
+  map("n", "z1", function()
+    callVSCodeFunction("call VSCodeNotify('editor.foldLevel1')")
+  end, { noremap = true, desc = "Fold level 1" })
+
+  map("n", "z2", function()
+    callVSCodeFunction("call VSCodeNotify('editor.foldLevel2')")
+  end, { noremap = true, desc = "Fold level 2" })
+
+  map("n", "z3", function()
+    callVSCodeFunction("call VSCodeNotify('editor.foldLevel3')")
+  end, { noremap = true, desc = "Fold level 3" })
+
+  map("n", "z4", function()
+    callVSCodeFunction("call VSCodeNotify('editor.foldLevel4')")
+  end, { noremap = true, desc = "Fold level 4" })
+
+  map("n", "z`", function()
+    callVSCodeFunction("call VSCodeNotify('editor.foldAllExcept')")
+  end, { noremap = true, desc = "Fold Except under cursor" })
+
+  map("n", "zc", function()
+    callVSCodeFunction("call VSCodeNotify('editor.foldAllBlockComments')")
+  end, { noremap = true, desc = "Fold All Block Comments" })
+
+  map("n", "za", function()
+    callVSCodeFunction("call VSCodeNotify('editor.foldRecursively')")
+  end, { noremap = true, desc = "Fold Recursively" })
+
+  map("n", "zA", function()
+    callVSCodeFunction("call VSCodeNotify('editor.unfoldRecursively')")
+  end, { noremap = true, desc = "Unfold Recursively" })
+
   -- Delete keymap
   vim.keymap.del("n", "<leader>qq")
 end

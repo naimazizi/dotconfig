@@ -3,6 +3,7 @@ return {
     "chrisgrieser/nvim-origami",
     event = "VeryLazy",
     opts = true,
+    vscode = true,
     config = function()
       require("origami").setup({
         -- requires with `nvim-ufo`

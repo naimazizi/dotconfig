@@ -1,6 +1,7 @@
 return {
   {
     "t3ntxcl3s/ecolog.nvim",
+    vscode = false,
     keys = {
       { "<leader>fv", "<cmd>EcologGoto<cr>", desc = "Go to .env file" },
       { "<localleader>ep", "<cmd>EcologPeek<cr>", desc = "Peek .env variable" },
