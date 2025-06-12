@@ -46,7 +46,7 @@ return {
     enabled = true,
     branch = "regexp", -- Use this branch for the new version
     cmd = "VenvSelect",
-    vscode=false,
+    vscode = false,
     opts = {
       settings = {
         options = {

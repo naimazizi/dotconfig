@@ -16,9 +16,9 @@ return {
     },
     keys = {
       -- movement
-      { "<localleader>{", "<cmd>Treewalker Up<cr>", mode = { "n", "v" }, desc = "Treewalker Up" },
-      { "<localleader>}", "<cmd>Treewalker Down<cr>", mode = { "n", "v" }, desc = "Treewalker Down" },
-      { "<localleader>[", "<cmd>Treewalker Left<cr>", mode = { "n", "v" }, desc = "Treewalker Left" },
+      { "<localleader>{", "<cmd>Treewalker Up<cr>",    mode = { "n", "v" }, desc = "Treewalker Up" },
+      { "<localleader>}", "<cmd>Treewalker Down<cr>",  mode = { "n", "v" }, desc = "Treewalker Down" },
+      { "<localleader>[", "<cmd>Treewalker Left<cr>",  mode = { "n", "v" }, desc = "Treewalker Left" },
       { "<localleader>]", "<cmd>Treewalker Right<cr>", mode = { "n", "v" }, desc = "Treewalker Right" },
     },
   },
