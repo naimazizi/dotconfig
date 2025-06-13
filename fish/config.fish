@@ -14,7 +14,6 @@ set -gx MANPATH "$HOMEBREW_PREFIX/share/man" $MANPATH
 set -gx INFOPATH "$HOMEBREW_PREFIX/share/info" $INFOPATH
 
 fish_add_path ~/.cargo/bin
-fish_add_path ~/.local/share/bob/nvim-bin
 
 set -gx EDITOR nvim
 set -gx VISUAL nvim

@@ -30,7 +30,7 @@ brew install \
   pyenv \
   pyenv-virtualenv \
   node \
-  neovim \
+  neovim@nightly \
   gitui \
   fzf \
   bat \
