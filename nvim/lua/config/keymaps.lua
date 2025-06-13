@@ -29,13 +29,6 @@ local function vscodeMappings()
   -- Vim Illuminate
   map_illuminate("]]", "next")
   map_illuminate("[[", "prev")
-  vim.api.nvim_create_autocmd("FileType", {
-    callback = function()
-      local buffer = vim.api.nvim_get_current_buf()
-      map_illuminate("]]", "next", buffer)
-      map_illuminate("[[", "prev", buffer)
-    end,
-  })
 
   -- Tab Navigation
   map("n", "<S-l>", function()
