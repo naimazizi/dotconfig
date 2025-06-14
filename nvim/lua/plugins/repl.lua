@@ -3,11 +3,21 @@ return {
     "jpalardy/vim-slime",
     vscode = false,
     keys = {
-      { "<localleader>sC", "<cmd>SlimeConfig<cr>",               desc = "Slime Config" },
+      { "<localleader>sC", "<cmd>SlimeConfig<cr>", desc = "Slime Config" },
       { "<localleader>ss", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", desc = "Slime Send Cell" },
-      { "<localleader>ss", ":<C-u>'<,'>SlimeSend<CR>",           mode = "v",              desc = "Slime Send Selection" },
+      {
+        "<localleader>ss",
+        ":<C-u>'<,'>SlimeSend<CR>",
+        mode = "v",
+        desc = "Slime Send Selection",
+      },
     },
     config = function()
+      local wk = require("which-key")
+      wk.add({
+        { "<localleader>s", group = "+Slime Repl" },
+      })
+
       vim.g.slime_target = "zellij"
       vim.g.slime_cell_delimiter = "# %%"
       vim.g.slime_bracketed_paste = 1
@@ -20,6 +30,11 @@ return {
     build = ":UpdateRemotePlugins",
     vscode = false,
     init = function()
+      local wk = require("which-key")
+      wk.add({
+        { "<localleader>m", group = "+Molten (Inline REPL)" },
+      })
+
       vim.g.molten_image_provider = "image.nvim"
       vim.g.molten_output_win_max_height = 500
       vim.g.molten_auto_open_output = true
@@ -109,28 +124,42 @@ return {
       "IronAttach",
     },
     keys = {
-      { "<localleader>rt",             desc = "Iron - Toggle Repl" },
-      { "<localleader>rs",             mode = { "n" },                                  desc = "Iron - Send Motion to Repl" },
-      { "<localleader>rs",             mode = { "v" },                                  desc = "Iron - Send Visual to Repl" },
-      { "<localleader>rf",             desc = "Iron - Send File to Repl" },
-      { "<localleader>re",             desc = "Iron - Send Current Line to Repl" },
-      { "<localleader>ru",             desc = "Iron - Send start until cursor to Repl" },
-      { "<localleader>rm",             desc = "Iron - Send mark to Repl" },
-      { "<localleader>rr",             desc = "Iron - Send code block to Repl" },
-      { "<localleader>rb",             desc = "Iron - Send code block and move to Repl" },
-      { "<localleader>rq",             desc = "Iron - Mark Motion" },
-      { "<localleader>rq",             desc = "Iron - Mark Visual" },
-      { "<localleader>rd",             desc = "Iron - Delete Mark" },
-      { "<localleader>r<cr>",          desc = "Iron - Send new line" },
+      { "<localleader>rt", desc = "Iron - Toggle Repl" },
+      { "<localleader>re", desc = "Iron - Send Current Line to Repl" },
+      { "<localleader>ru", desc = "Iron - Send start until cursor to Repl" },
+      { "<localleader>rm", desc = "Iron - Send mark to Repl" },
+      { "<localleader>rr", desc = "Iron - Send code block to Repl" },
+      { "<localleader>rb", desc = "Iron - Send code block and move to Repl" },
+      { "<localleader>rq", desc = "Iron - Mark Motion" },
+      { "<localleader>rq", desc = "Iron - Mark Visual" },
+      { "<localleader>rd", desc = "Iron - Delete Mark" },
+      { "<localleader>r<cr>", desc = "Iron - Send new line" },
       { "<localleader>r<localleader>", desc = "Iron - Interrupt Iron Repl" },
-      { "<localleader>rq",             desc = "Iron - Exit Iron Repl" },
-      { "<localleader>rz",             desc = "Iron - Clear Iron Repl" },
-      { "<localleader>ri",             "<cmd>IronRepl<cr>",                             desc = "Iron - Start Iron Repl" },
-      { "<localleader>rf",             "<cmd>IronFocus<cr>",                            desc = "Iron - Focus to Iron Repl" },
-      { "<localleader>rh",             "<cmd>IronHide<cr>",                             desc = "Iron - Hide Iron Repl" },
+      { "<localleader>rq", desc = "Iron - Exit Iron Repl" },
+      { "<localleader>rz", desc = "Iron - Clear Iron Repl" },
+      {
+        "<localleader>ri",
+        "<cmd>IronRepl<cr>",
+        desc = "Iron - Start Iron Repl",
+      },
+      {
+        "<localleader>rf",
+        "<cmd>IronFocus<cr>",
+        desc = "Iron - Focus to Iron Repl",
+      },
+      {
+        "<localleader>rh",
+        "<cmd>IronHide<cr>",
+        desc = "Iron - Hide Iron Repl",
+      },
     },
     main = "iron.core", -- <== This informs lazy.nvim to use the entrypoint of `iron.core` to load the configuration.
     config = function(_, opts)
+      local wk = require("which-key")
+      wk.add({
+        { "<localleader>r", group = "+REPL" },
+      })
+
       local iron = require("iron")
       local common = require("iron.fts.common")
       iron.setup({
