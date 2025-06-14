@@ -249,6 +249,41 @@ local function vscodeMappings()
     callVSCodeFunction("call VSCodeNotify('editor.unfoldRecursively')")
   end, { noremap = true, desc = "Unfold Recursively" })
 
+  -- Tests
+  map("n", "<leader>td", function()
+    callVSCodeFunction("call VSCodeNotify('testing.debugAtCursor')")
+  end, { noremap = true, desc = "Debug Nearest Test" })
+
+  map("n", "<leader>tr", function()
+    callVSCodeFunction("call VSCodeNotify('testing.runAtCursor')")
+  end, { noremap = true, desc = "Run Nearest Test" })
+
+  map("n", "<leader>tt", function()
+    callVSCodeFunction("call VSCodeNotify('testing.runCurrentFile')")
+  end, { noremap = true, desc = "Run Test from current file" })
+
+  map("n", "<leader>tT", function()
+    callVSCodeFunction("call VSCodeNotify('testing.runAll')")
+  end, { noremap = true, desc = "Run All Test" })
+
+  map("n", "<leader>ts", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.view.testing.focus')")
+  end, { noremap = true, desc = "Show Test Results" })
+
+  -- Source Control
+  map("n", "<leader>gg", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.view.scm')")
+  end, { noremap = true, desc = "Show Test Results" })
+
+  -- Debugging
+  map("n", "<leader>dd", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.view.debug')")
+  end, { noremap = true, desc = "Start Debugging" })
+
+  map("n", "<leader>db", function()
+    callVSCodeFunction("call VSCodeNotify('editor.debug.action.toggleBreakpoint')")
+  end, { noremap = true, desc = "Toggle Breakpoint" })
+
   -- Delete keymap
   vim.keymap.del("n", "<leader>qq")
 end
