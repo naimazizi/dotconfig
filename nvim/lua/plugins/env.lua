@@ -66,11 +66,13 @@ return {
       -- Controls how environment variables are extracted from code and how cmp works
       provider_patterns = true, -- true by default, when false will not check provider patterns
     },
-    config = function(_, opts)
-      local wk = require("which-key")
-      wk.add({
+  },
+  {
+    "folke/which-key.nvim",
+    opts = {
+      spec = {
         { "<localleader>e", group = "+Ecolog (.env)" },
-      })
-    end,
+      },
+    },
   },
 }

@@ -15,8 +15,4 @@ if not vim.g.vscode then
   vim.o.smoothscroll = true
   vim.o.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
   vim.o.foldmethod = "expr"
-  vim.o.foldtext = ""
-
-  vim.g.lazyvim_python_lsp = "pyrefly" -- Use pyright for the time being, basedpyright is slow
-  -- vim.g.lazyvim_python_ruff = "ruff"
 end
