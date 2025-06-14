@@ -1,3 +1,6 @@
+local lsp = "pyrefly"
+vim.lsp.enable({ lsp, "ruff" })
+
 return {
   recommended = function()
     return LazyVim.extras.wants({
