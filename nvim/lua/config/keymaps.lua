@@ -30,6 +30,11 @@ local function vscodeMappings()
   map_illuminate("]]", "next")
   map_illuminate("[[", "prev")
 
+  -- Search text
+  map("n", "<leader>/", function()
+    callVSCodeFunction("call VSCodeNotify('find-it-faster.findFiles')")
+  end, { noremap = true, desc = "search text under cursor" })
+
   -- Tab Navigation
   map("n", "<S-l>", function()
     callVSCodeFunction("call VSCodeNotify('workbench.action.nextEditor')")
@@ -74,7 +79,7 @@ local function vscodeMappings()
   end, { noremap = true, desc = "focus to file explorer" })
 
   map("n", "<leader>ff", function()
-    callVSCodeFunction("call VSCodeNotify('workbench.action.quickOpen')")
+    callVSCodeFunction("call VSCodeNotify('find-it-faster.findFiles')")
   end, { noremap = true, desc = "open files" })
 
   map("n", "<leader>gg", function()
@@ -283,6 +288,42 @@ local function vscodeMappings()
   map("n", "<leader>db", function()
     callVSCodeFunction("call VSCodeNotify('editor.debug.action.toggleBreakpoint')")
   end, { noremap = true, desc = "Toggle Breakpoint" })
+
+  -- Copilot
+  map("n", "<leader>aa", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.chat.open')")
+  end, { noremap = true, desc = "Ask Copilot" })
+
+  map("n", "<leader>as", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.toggleAuxiliaryBar')")
+  end, { noremap = true, desc = "Toggle Copilot chat" })
+
+  -- Completion
+
+  -- Harppon
+  map("n", "<leader>h", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.editorQuickPick')")
+  end, { noremap = true, desc = "Harpoon Quick menu" })
+
+  map("n", "<leader>H", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.addEditor')")
+  end, { noremap = true, desc = "Harpoon Add Editor" })
+
+  map("n", "<leader>1", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor1')")
+  end, { noremap = true, desc = "Harpoon Go to Editor 1" })
+
+  map("n", "<leader>2", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor2')")
+  end, { noremap = true, desc = "Harpoon Go to Editor 2" })
+
+  map("n", "<leader>3", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor3')")
+  end, { noremap = true, desc = "Harpoon Go to Editor 3" })
+
+  map("n", "<leader>4", function()
+    callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor4')")
+  end, { noremap = true, desc = "Harpoon Go to Editor 4" })
 
   -- Delete keymap
   vim.keymap.del("n", "<leader>qq")
