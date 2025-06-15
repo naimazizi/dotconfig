@@ -114,8 +114,8 @@ local function vscodeMappings()
 
   map("n", "<leader>cs", function()
     print("go to symbols in editor")
-    callVSCodeFunction("call VSCodeCall('workbench.action.gotoSymbol')")
-  end, { noremap = true, silent = true, desc = "go to symbols in editor" })
+    callVSCodeFunction("call VSCodeCall('outline.focus')")
+  end, { noremap = true, silent = true, desc = "Focus outline" })
 
   -- Multi-cursor mappings
   map({ "n", "x", "i" }, "<C-d>", function()
@@ -295,9 +295,31 @@ local function vscodeMappings()
     callVSCodeFunction("call VSCodeNotify('workbench.action.chat.open')")
   end, { noremap = true, desc = "Ask Copilot" })
 
-  map("n", "<leader>as", function()
+  map("n", "<leader>at", function()
     callVSCodeFunction("call VSCodeNotify('workbench.action.toggleAuxiliaryBar')")
   end, { noremap = true, desc = "Toggle Copilot chat" })
+
+  -- Terminal
+  map("n", "<leader>ft", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.terminal.toggleTerminal')")
+  end, { noremap = true, desc = "Toggle Terminal" })
+
+  -- Http Client
+  map("n", "<leader>Rs", function()
+    callVSCodeFunction("call VSCodeNotify('httpyac.send')")
+  end, { noremap = true, desc = "Send HTTP request" })
+
+  map("n", "<leader>Ra", function()
+    callVSCodeFunction("call VSCodeNotify('httpyac.sendAll')")
+  end, { noremap = true, desc = "Send HTTP all requests" })
+
+  map("n", "<leader>Rr", function()
+    callVSCodeFunction("call VSCodeNotify('httpyac.resend')")
+  end, { noremap = true, desc = "Replay HTTP requests" })
+
+  map("n", "<leader>Rc", function()
+    callVSCodeFunction("call VSCodeNotify('httpyac.generateCode')")
+  end, { noremap = true, desc = "Generate Curl" })
 
   -- Harpoon
   map("n", "<leader>h", function()
@@ -329,7 +351,18 @@ local function vscodeMappings()
 end
 
 if vim.g.vscode then
-  print("⚡connected to NEOVIM")
+  print(
+    "⚡ NEOVIM "
+      .. vim.version().major
+      .. "."
+      .. vim.version().minor
+      .. "."
+      .. vim.version().patch
+      .. " - "
+      .. vim.version().prerelease
+      .. " - "
+      .. vim.version().build
+  )
   vscodeMappings()
 else
   -- Clear search and stop snippet on escape
