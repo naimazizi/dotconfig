@@ -1,6 +1,6 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+-- Add any     additional keymaps here
 local function map(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys
   ---@cast keys LazyKeysHandler
@@ -30,10 +30,15 @@ local function vscodeMappings()
   map_illuminate("]]", "next")
   map_illuminate("[[", "prev")
 
-  -- Search text
+  -- Search text in files
   map("n", "<leader>/", function()
-    callVSCodeFunction("call VSCodeNotify('find-it-faster.findFiles')")
-  end, { noremap = true, desc = "search text under cursor" })
+    callVSCodeFunction("call VSCodeNotify('find-it-faster.findWithinFiles')")
+  end, { noremap = true, desc = "search text in files" })
+
+  -- editor
+  map("n", "<leader>cf", function()
+    callVSCodeFunction("call VSCodeNotify('editor.action.formatDocument')")
+  end, { noremap = true, desc = "Format Text" })
 
   -- Tab Navigation
   map("n", "<S-l>", function()
@@ -81,10 +86,6 @@ local function vscodeMappings()
   map("n", "<leader>ff", function()
     callVSCodeFunction("call VSCodeNotify('find-it-faster.findFiles')")
   end, { noremap = true, desc = "open files" })
-
-  map("n", "<leader>gg", function()
-    callVSCodeFunction("call VSCodeNotify('workbench.view.scm')")
-  end, { noremap = true, desc = "open git source control" })
 
   -- Code Action
   map("n", "<leader>cr", function()
@@ -277,7 +278,7 @@ local function vscodeMappings()
 
   -- Source Control
   map("n", "<leader>gg", function()
-    callVSCodeFunction("call VSCodeNotify('workbench.view.scm')")
+    callVSCodeFunction("call VSCodeNotify('lazygit-vscode.toggle')")
   end, { noremap = true, desc = "Show Test Results" })
 
   -- Debugging
@@ -298,9 +299,7 @@ local function vscodeMappings()
     callVSCodeFunction("call VSCodeNotify('workbench.action.toggleAuxiliaryBar')")
   end, { noremap = true, desc = "Toggle Copilot chat" })
 
-  -- Completion
-
-  -- Harppon
+  -- Harpoon
   map("n", "<leader>h", function()
     callVSCodeFunction("call VSCodeNotify('vscode-harpoon.editorQuickPick')")
   end, { noremap = true, desc = "Harpoon Quick menu" })
