@@ -90,3 +90,5 @@ set -g fish_pager_color_description $comment
 
 # Created by `pipx` on 2024-12-03 14:54:48
 set PATH $PATH ~/.local/bin
+
+direnv hook fish | source
