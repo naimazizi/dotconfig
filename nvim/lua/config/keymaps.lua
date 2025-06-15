@@ -26,6 +26,9 @@ local function map_illuminate(key, dir, buffer)
 end
 
 local function vscodeMappings()
+  -- Delete keymap
+  vim.keymap.del("n", "<leader>qq")
+
   -- Vim Illuminate
   map_illuminate("]]", "next")
   map_illuminate("[[", "prev")
@@ -39,6 +42,10 @@ local function vscodeMappings()
   map("n", "<leader>cf", function()
     callVSCodeFunction("call VSCodeNotify('editor.action.formatDocument')")
   end, { noremap = true, desc = "Format Text" })
+
+  map("v", "gc", function()
+    callVSCodeFunction("call VSCodeNotify('editor.action.commentLine')")
+  end, { noremap = true, desc = "Toggle Comment Line (Visual) -- it mimics ctrl+/" })
 
   -- Tab Navigation
   map("n", "<S-l>", function()
@@ -345,9 +352,6 @@ local function vscodeMappings()
   map("n", "<leader>4", function()
     callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor4')")
   end, { noremap = true, desc = "Harpoon Go to Editor 4" })
-
-  -- Delete keymap
-  vim.keymap.del("n", "<leader>qq")
 end
 
 if vim.g.vscode then
