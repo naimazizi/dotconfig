@@ -32,6 +32,8 @@ brew install \
   node \
   neovim@nightly \
   gitui \
+  lazygit \
+  direv \
   fzf \
   bat \
   ripgrep \
