@@ -18,6 +18,7 @@
 !/zed/settings.json
 !/zed/keymap.json
 !/yazi/
+!/lazygit/
 
 fish/fish_variables
 fish/fishd.*
