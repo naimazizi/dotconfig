@@ -9,6 +9,8 @@ local Config = require("lazy.core.config")
 Config.options.checker.enabled = false
 Config.options.change_detection.enabled = false
 
+vim.api.nvim_create_augroup("wrap_spell", { clear = true })
+
 return {
   {
     "LazyVim/LazyVim",
