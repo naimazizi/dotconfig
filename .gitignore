@@ -19,6 +19,7 @@
 !/zed/keymap.json
 !/yazi/
 !/lazygit/
+!/neovide/
 
 fish/fish_variables
 fish/fishd.*
