@@ -35,7 +35,7 @@ local function vscodeMappings()
 
   -- Search text in files
   map("n", "<leader>/", function()
-    callVSCodeFunction("call VSCodeNotify('find-it-faster.findWithinFiles')")
+    callVSCodeFunction("call VSCodeNotify('leaderkey.ripgrep')")
   end, { noremap = true, desc = "search text in files" })
 
   -- editor
@@ -91,7 +91,7 @@ local function vscodeMappings()
   end, { noremap = true, desc = "focus to file explorer" })
 
   map("n", "<leader>ff", function()
-    callVSCodeFunction("call VSCodeNotify('find-it-faster.findFiles')")
+    callVSCodeFunction("call VSCodeNotify('leaderkey.findFile')")
   end, { noremap = true, desc = "open files" })
 
   -- Code Action
