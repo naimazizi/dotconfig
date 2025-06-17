@@ -10,6 +10,7 @@ Config.options.checker.enabled = false
 Config.options.change_detection.enabled = false
 
 vim.api.nvim_create_augroup("wrap_spell", { clear = true })
+vim.opt_local.spell = false
 
 return {
   {
@@ -51,7 +52,5 @@ return {
   {
     "danymat/neogen",
     vscode = true,
-    -- Uncomment next line if you want to follow only stable versions
-    -- version = "*"
   },
 }
