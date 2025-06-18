@@ -352,6 +352,11 @@ local function vscodeMappings()
   map("n", "<leader>4", function()
     callVSCodeFunction("call VSCodeNotify('vscode-harpoon.gotoEditor4')")
   end, { noremap = true, desc = "Harpoon Go to Editor 4" })
+
+  -- Yazi
+  map("n", "<leader>-", function()
+    callVSCodeFunction("call VSCodeNotify('yazi-vscode.toggle')")
+  end, { noremap = true, desc = "Toggle Yazi" })
 end
 
 if vim.g.vscode then
