@@ -45,6 +45,7 @@ alias ls='lsd'
 alias ll="lsd -ltr"
 alias find='fd'
 alias ai='gh copilot'
+alias dev="limactl shell lima-box fish"
 
 set RG_PREFIX "rg --column --line-number --no-heading --color=always --smart-case "
 set FZF_DEFAULT_OPTS "--color=bg:-1,bg+:#363646,fg:-1,fg+:#DCD7BA,hl:#938AA9,hl+:#c4746e
