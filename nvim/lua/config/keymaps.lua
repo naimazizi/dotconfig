@@ -290,12 +290,32 @@ local function vscodeMappings()
 
   -- Debugging
   map("n", "<leader>dd", function()
-    callVSCodeFunction("call VSCodeNotify('workbench.view.debug')")
+    callVSCodeFunction("call VSCodeNotify('workbench.action.debug.start')")
   end, { noremap = true, desc = "Start Debugging" })
+
+  map("n", "<leader>dt", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.debug.stop')")
+  end, { noremap = true, desc = "Stop Debugging" })
+
+  map("n", "<leader>dr", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.debug.restart')")
+  end, { noremap = true, desc = "Restart Debugging" })
 
   map("n", "<leader>db", function()
     callVSCodeFunction("call VSCodeNotify('editor.debug.action.toggleBreakpoint')")
   end, { noremap = true, desc = "Toggle Breakpoint" })
+
+  map("n", "<leader>di", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.debug.stepInto')")
+  end, { noremap = true, desc = "Debug - step in" })
+
+  map("n", "<leader>do", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.debug.stepOut')")
+  end, { noremap = true, desc = "Debug - step out" })
+
+  map("n", "<leader>dO", function()
+    callVSCodeFunction("call VSCodeNotify('workbench.action.debug.stepOver')")
+  end, { noremap = true, desc = "Debug - step over" })
 
   -- Copilot
   map("n", "<leader>aa", function()
