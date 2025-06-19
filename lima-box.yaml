@@ -17,8 +17,6 @@ arch: null
 
 base:
   - template://_images/ubuntu-25.04
-  # Remove this line to disable the mounts
-  - template://_default/mounts
 
 # containerd should be installed via Homebrew when Homebrew supports it
 containerd:
@@ -81,8 +79,11 @@ mounts:
     mountPoint: "/home/lima.linux/.config"
     writable: true
 
-#   - location: "/tmp/lima"
-#     writable: true
+  - location: "~"
+    writable: true
+
+  - location: "/tmp/lima"
+    writable: true
 
 # ===================================================================== #
 # ADVANCED CONFIGURATION
