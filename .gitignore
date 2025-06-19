@@ -4,6 +4,7 @@
 # Files to not ignore
 !/.gitignore
 !/README.md
+!/lima-box.yaml
 
 # Folder to not ignore
 !/fish/
