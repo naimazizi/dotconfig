@@ -1,5 +1,6 @@
 shell-integration= fish
 macos-option-as-alt = true
+clipboard-paste-protection = false
 
 window-theme = dark
 window-padding-color = background

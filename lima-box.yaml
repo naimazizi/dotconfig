@@ -9,23 +9,55 @@
 # The vmType can be specified only on creating the instance.
 # The vmType of existing instances cannot be changed.
 # 🟢 Builtin default: "vz" (on macOS 13.5 and later), "qemu" (on others)
-vmType: null
+# vmType: qemu
 
 # Arch: "default", "x86_64", "aarch64".
 # 🟢 Builtin default: "default" (corresponds to the host architecture)
 arch: null
 
+base:
+  - template://_images/ubuntu-25.04
+  # Remove this line to disable the mounts
+  - template://_default/mounts
+
+# containerd should be installed via Homebrew when Homebrew supports it
+containerd:
+  system: false
+  user: false
+
+provision:
+  - mode: data
+    path: /etc/profile.d/99-linuxbrew.sh
+    # nofile is increased due to https://github.com/Homebrew/brew/issues/9120
+    content: |
+      ulimit -n 65536
+      [ -e /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  - mode: system
+    script: |
+      #!/bin/bash
+      set -eux -o pipefail
+      command -v gcc >/dev/null 2>&1 && exit 0
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update
+      apt-get install -y build-essential
+  - mode: user
+    script: |
+      #!/bin/bash
+      set -eux -o pipefail
+      [ -e /home/linuxbrew ] && exit 0
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
 # OpenStack-compatible disk image.
 # Each image has a `location` URL for the disk image, an `arch` setting, and an optional `digest`.
 # 🟢 Builtin default: none (must be specified)
 # 🔵 This file: Ubuntu images (inherited via the `base` mechanism later in this file)
-images:
-  - location: "~/Downloads/Arch-Linux-aarch64-cloudimg-20220323.0.qcow2"
-    arch: aarch64
-  - location: https://github.com/mcginty/arch-boxes-arm/releases/download/v20220323/Arch-Linux-aarch64-cloudimg-20220323.0.qcow2
-    arch: aarch64
-    digest: sha512:27524910bf41cb9b3223c8749c6e67fd2f2fdb8b70d40648708e64d6b03c0b4a01b3c5e72d51fefd3e0c3f58487dbb400a79ca378cde2da341a3a19873612be8
-
+# images:
+#   - location: "~/Downloads/Arch-Linux-aarch64-cloudimg-20220323.0.qcow2"
+#     arch: aarch64
+#   - location: https://github.com/mcginty/arch-boxes-arm/releases/download/v20220323/Arch-Linux-aarch64-cloudimg-20220323.0.qcow2
+#     arch: aarch64
+#     digest: sha512:27524910bf41cb9b3223c8749c6e67fd2f2fdb8b70d40648708e64d6b03c0b4a01b3c5e72d51fefd3e0c3f58487dbb400a79ca378cde2da341a3a19873612be8
+#
 # CPUs
 # 🟢 Builtin default: min(4, host CPU cores)
 cpus: 6
@@ -46,13 +78,11 @@ disk: 100GiB
 # 🔵 This file: Mount the home as read-only, /tmp/lima as writable  (inherited via the `base` mechanism later in this file)
 mounts:
   - location: "~/.config"
+    mountPoint: "/home/lima.linux/.config"
     writable: true
 
-  - location: "~/PROJECTS"
-    writable: true
-
-  - location: "/tmp/lima"
-    writable: true
+#   - location: "/tmp/lima"
+#     writable: true
 
 # ===================================================================== #
 # ADVANCED CONFIGURATION
@@ -89,4 +119,3 @@ ssh:
   # The socket is accessible by the non-root user inside the Lima instance.
   # 🟢 Builtin default: false
   forwardAgent: true
-
