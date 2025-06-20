@@ -1,6 +1,8 @@
 shell-integration= fish
 macos-option-as-alt = true
-clipboard-paste-protection = false
+copy-on-select = clipboard
+clipboard-read = allow 
+clipboard-write = allow
 
 window-theme = dark
 window-padding-color = background
