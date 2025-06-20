@@ -1,9 +1,8 @@
 return {
   {
     "jake-stewart/multicursor.nvim",
-    branch = "1.0",
     event = "BufEnter",
-    vscode = false,
+    vscode = true,
     config = function()
       local mc = require("multicursor-nvim")
       mc.setup()
@@ -38,7 +37,7 @@ return {
       set("n", "<c-leftrelease>", mc.handleMouseRelease)
 
       -- Disable and enable cursors.
-      set({ "n", "x" }, "<shift-q>", mc.toggleCursor, { desc = "MultiCursor: Toggle cursor" })
+      set({ "n", "x" }, "<localleader>q", mc.toggleCursor, { desc = "MultiCursor: Toggle cursor" })
 
       -- Mappings defined in a keymap layer only apply when there are
       -- multiple cursors. This lets you have overlapping mappings.
@@ -74,6 +73,7 @@ return {
   {
     "zaucy/mcos.nvim",
     event = "BufEnter",
+    vscode = true,
     dependencies = {
       "jake-stewart/multicursor.nvim",
     },
