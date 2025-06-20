@@ -94,3 +94,4 @@ set -g fish_pager_color_description $comment
 set PATH $PATH ~/.local/bin
 
 direnv hook fish | source
+fish_ssh_agent
