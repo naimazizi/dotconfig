@@ -5,6 +5,7 @@
 !/.gitignore
 !/README.md
 !/lima-box.yaml
+!/nvim-remote.sh
 
 # Folder to not ignore
 !/fish/

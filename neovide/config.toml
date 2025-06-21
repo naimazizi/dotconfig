@@ -2,7 +2,6 @@ fork = false
 idle = true
 maximized = false
 no-multigrid = false
-neovim-bin = '/opt/homebrew/bin/nvim'
 theme = "auto"
 srgb = false
 tabs = false

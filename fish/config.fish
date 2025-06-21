@@ -47,13 +47,26 @@ alias find='fd'
 alias ai='gh copilot'
 alias dev="limactl shell lima-box fish"
 alias nvim_remote="limactl shell lima-box nvim"
+alias neovide_remote="neovide --neovim-bin ~/.config/nvim-remote.sh"
 
 set RG_PREFIX "rg --column --line-number --no-heading --color=always --smart-case "
 set FZF_DEFAULT_OPTS "--color=bg:-1,bg+:#363646,fg:-1,fg+:#DCD7BA,hl:#938AA9,hl+:#c4746e
 --color=header:#b6927b,info:#658594,pointer:#7AA89F
 --color=marker:#7AA89F,prompt:#c4746e,spinner:#8ea49e"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+
+if type -q pyenv
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+end
+
+if type -q direnv
+    direnv hook fish | source
+end
+
+if type -q bun
+    alias npm="bun"
+    alias node="bun"
+end
 
 # Kanagawa Theme
 ## Kanagawa Paper Fish shell theme
@@ -93,5 +106,4 @@ set -g fish_pager_color_description $comment
 # Created by `pipx` on 2024-12-03 14:54:48
 set PATH $PATH ~/.local/bin
 
-direnv hook fish | source
 fish_ssh_agent
