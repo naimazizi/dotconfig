@@ -19,7 +19,6 @@ return {
       "sources.default",
     },
     dependencies = {
-      "rafamadriz/friendly-snippets",
       -- add blink.compat to dependencies
       {
         "saghen/blink.compat",
@@ -41,13 +40,15 @@ return {
           { "kndndrj/nvim-dbee" },
         },
       },
+      { "L3MON4D3/LuaSnip" },
     },
     event = "InsertEnter",
     vscode = false,
     opts = {
       snippets = {
+        preset = "luasnip",
         expand = function(snippet, _)
-          return LazyVim.cmp.expand(snippet)
+          return require("luasnip").lsp_expand(snippet)
         end,
       },
       appearance = {
