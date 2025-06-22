@@ -37,8 +37,8 @@ selection-foreground = #c5c9c7
 keybind = super+\=new_split:down
 keybind = super+shift+\=new_split:right
 keybind = super+shift+l=goto_split:right
-keybind = super+shift+k=goto_split:left
-keybind = super+shift+h=goto_split:up
+keybind = super+shift+h=goto_split:left
+keybind = super+shift+k=goto_split:up
 keybind = super+shift+j=goto_split:down
 keybind = super+left_bracket=previous_tab
 keybind = super+right_bracket=next_tab
