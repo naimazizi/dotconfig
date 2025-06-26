@@ -29,7 +29,7 @@ return {
     version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
     build = ":UpdateRemotePlugins",
     vscode = false,
-    enabled = false,
+    enabled = true,
     init = function()
       local wk = require("which-key")
       wk.add({

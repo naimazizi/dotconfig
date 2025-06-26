@@ -188,7 +188,7 @@ local function vscodeMappings()
   end, { noremap = true, desc = "Run Jupyter - until cursor" })
 
   vim.keymap.set("n", "<localleader>re", function()
-    vscode.call("jupyter.runByLine")
+    vscode.call("jupyter.execSelectionInteractive")
   end, { noremap = true, desc = "Run Jupyter - Send line" })
 
   vim.keymap.set("n", "<localleader>r<localleader>", function()
