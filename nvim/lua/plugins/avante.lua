@@ -8,11 +8,12 @@ return {
       "zbirenbaum/copilot.lua", -- for providers='copilot'
     },
     opts = {
+      mode = "legacy",
       -- Default configuration
       hints = { enabled = true },
 
       ---@alias AvanteProvider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
-      provider = "copilot",                  -- Recommend using Claude
+      provider = "copilot", -- Recommend using Claude
       auto_suggestions_provider = "copilot", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
 
       -- File selector configuration
