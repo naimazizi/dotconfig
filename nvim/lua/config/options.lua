@@ -10,6 +10,20 @@ local function paste()
   }
 end
 
+vim.o.clipboard = "unnamedplus"
+
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = {
+    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+  },
+  paste = {
+    ["+"] = paste,
+    ["*"] = paste,
+  },
+}
+
 if not vim.g.vscode then
   -- ordinary Neovim
   if vim.fn.executable("fish") == 1 then
@@ -23,17 +37,4 @@ if not vim.g.vscode then
   vim.o.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
   vim.o.foldmethod = "expr"
   vim.o.guifont = "JetBrains Maple Mono:h11:#e-subpixelantialias"
-  vim.o.clipboard = "unnamedplus"
-
-  vim.g.clipboard = {
-    name = "OSC 52",
-    copy = {
-      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-    },
-    paste = {
-      ["+"] = paste,
-      ["*"] = paste,
-    },
-  }
 end

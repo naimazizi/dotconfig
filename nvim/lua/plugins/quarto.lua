@@ -24,10 +24,10 @@ return {
       },
       codeRunner = {
         enabled = true,
-        default_method = "slime", -- "molten", "slime", "iron" or <function>
-        ft_runners = {},          -- filetype to runner, ie. `{ python = "molten" }`.
+        default_method = "iron", -- "molten", "slime", "iron" or <function>
+        ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
         -- Takes precedence over `default_method`
-        never_run = { "yaml" },   -- filetypes which are never sent to a code runner
+        never_run = { "yaml" }, -- filetypes which are never sent to a code runner
       },
     },
     dependencies = {
