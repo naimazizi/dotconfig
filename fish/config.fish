@@ -1,3 +1,5 @@
+zoxide init fish | source
+
 if test -d /home/linuxbrew/.linuxbrew # Linux
     set -gx HOMEBREW_PREFIX "/home/linuxbrew/.linuxbrew"
     set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar"

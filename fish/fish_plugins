@@ -1,11 +1,10 @@
-pure-fish/pure
 meaningful-ooo/sponge
-jethrokuan/z
 jorgebucaran/autopair.fish
 gazorby/fish-abbreviation-tips
 gazorby/fifc
-kidonng/zoxide.fish
 patrickf1/fzf.fish
 nickeb96/puffer-fish
 halostatue/fish-direnv@v1
 ivakyb/fish_ssh_agent
+pure-fish/pure
+acomagu/fish-async-prompt

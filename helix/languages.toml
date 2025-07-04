@@ -35,30 +35,30 @@ file-types = ["py", "pyi", "py3", "pyw", "ptl", "rpy", "cpy", "ipy", "pyt", { gl
 shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", "poetry.lock", "pyrightconfig.json"]
 comment-token = "#"
-language-servers = [ "pyright", "ruff" ]
+language-servers = [ "pyrefly", "ruff" ]
 # TODO: pyls needs utf-8 offsets
 indent = { tab-width = 4, unit = "    " }
+formatter = { command = "ruff", args = ["format", "-" ] }
 
-[language-server.pyright.config.python.analysis]
-typeCheckingMode = "basic"
+[language-server.pyrefly]
+command = "pyrefly"
+args = ["lsp"]
 
 [language-server.ruff]
-command = "ruff-lsp"
+command = "ruff"
 
 [language-server.ruff.config.settings]
 args = ["--ignore", "E501"]
 
-[language.formatter]
-command = "black"
-args = ["--line-length", "88", "--quiet", "-"]
-
-
 [[grammar]]
 name = "rust"
-source = { git = "https://github.com/tree-sitter/tree-sitter-rust", rev = "473634230435c18033384bebaa6d6a17c2523281" }
+source = { git = "https://github.com/tree-sitter/tree-sitter-rust" }
 
 [[grammar]]
 name = "python"
-source = { git = "https://github.com/tree-sitter/tree-sitter-python", rev = "4bfdd9033a2225cc95032ce77066b7aeca9e2efc" }
+source = { git = "https://github.com/tree-sitter/tree-sitter-python" }
 
 
+[[grammar]]
+name = "sql"
+source = { git = "https://github.com/DerekStride/tree-sitter-sql" }

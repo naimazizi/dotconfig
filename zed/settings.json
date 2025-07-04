@@ -28,7 +28,7 @@
   },
   "languages": {
     "Python": {
-      "language_servers": ["pyright", "ruff"],
+      "language_servers": ["pyrefly", "ruff"],
       "format_on_save": "on",
       "formatter": [
         {
