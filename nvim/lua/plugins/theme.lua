@@ -99,7 +99,7 @@ return {
         statementStyle = {},
         typeStyle = { italic = true },
         disableItalics = false,
-        transparent = false, -- do not set background color
+        transparent = true, -- do not set background color
         dimInactive = true, -- dim inactive window `:h hl-NormalNC`
         terminalColors = true, -- define vim.g.terminal_color_{0,17}
         colors = { -- add/modify theme and palette colors

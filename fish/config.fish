@@ -1,5 +1,3 @@
-zoxide init fish | source
-
 if test -d /home/linuxbrew/.linuxbrew # Linux
     set -gx HOMEBREW_PREFIX "/home/linuxbrew/.linuxbrew"
     set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar"
@@ -43,6 +41,11 @@ if type -q micromamba
     eval "$(micromamba shell hook --shell fish)"
 end
 
+if type -q pyenv
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+end
+
 alias ls='lsd'
 alias ll="lsd -ltr"
 alias find='fd'
@@ -56,9 +59,8 @@ set FZF_DEFAULT_OPTS "--color=bg:-1,bg+:#363646,fg:-1,fg+:#DCD7BA,hl:#938AA9,hl+
 --color=header:#b6927b,info:#658594,pointer:#7AA89F
 --color=marker:#7AA89F,prompt:#c4746e,spinner:#8ea49e"
 
-if type -q pyenv
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+if type -q zoxide
+    zoxide init fish | source
 end
 
 if type -q direnv

@@ -3,26 +3,26 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 
-local function paste()
-  return {
-    vim.fn.split(vim.fn.getreg(""), "\n"),
-    vim.fn.getregtype(""),
-  }
-end
-
-vim.o.clipboard = "unnamedplus"
-
-vim.g.clipboard = {
-  name = "OSC 52",
-  copy = {
-    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-  },
-  paste = {
-    ["+"] = paste,
-    ["*"] = paste,
-  },
-}
+-- local function paste()
+--   return {
+--     vim.fn.split(vim.fn.getreg(""), "\n"),
+--     vim.fn.getregtype(""),
+--   }
+-- end
+--
+-- vim.o.clipboard = "unnamedplus"
+--
+-- vim.g.clipboard = {
+--   name = "OSC 52",
+--   copy = {
+--     ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+--     ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+--   },
+--   paste = {
+--     ["+"] = paste,
+--     ["*"] = paste,
+--   },
+-- }
 
 if not vim.g.vscode then
   -- ordinary Neovim
