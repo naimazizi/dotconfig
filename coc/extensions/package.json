@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "coc-json": ">=1.9.3",
+    "@yaegassy/coc-ruff": ">=0.8.1",
+    "coc-nav": ">=0.0.9",
+    "coc-pydocstring": ">=0.10.0",
+    "@hexuhua/coc-copilot": ">=0.0.22"
+  }
+}

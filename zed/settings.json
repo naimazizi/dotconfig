@@ -12,11 +12,18 @@
     "light": "One Light",
     "dark": "Kanso Zen"
   },
-  "shell": {
-    "program": "/opt/homebrew/bin/fish"
-    // "program": "fish"
-  },
+
   "lsp": {
+    "pyrefly": {
+      "settings": {
+        "pyrefly": {
+          "project_includes": ["src/**/*.py", "tests/**/*.py"],
+          "project_excludes": ["**/.[!/.]*", "**/*venv/**"],
+          "search_path": ["src"],
+          "ignore_errors_in_generated_code": true
+        }
+      }
+    },
     "pyright": {
       "settings": {
         "python.analysis": {
@@ -51,15 +58,13 @@
   "buffer_font_size": 14,
   // Finder model width
   "file_finder": {
-    "modal_width": "medium"
+    "modal_max_width": "medium"
   },
   // NOTE: Change the font family to your preference
   "buffer_font_family": "JetBrains Maple Mono",
   // Vim mode settings
   "vim_mode": true,
-  "vim": {
-    "enable_vim_sneak": true
-  },
+  "vim": {},
   // use relative line numbers
   "relative_line_numbers": true,
   "tab_bar": {
@@ -87,8 +92,7 @@
     "default_model": {
       "provider": "copilot_chat",
       "model": "claude-3-7-sonnet"
-    },
-    "version": "2"
+    }
   },
 
   // Inlay hints preconfigured by Zed: Go, Rust, Typescript and Svelte
@@ -100,6 +104,9 @@
     "font_family": "JetBrains Maple Mono",
     "env": {
       "EDITOR": "zed --wait"
+    },
+    "shell": {
+      "program": "fish"
     }
   },
   // File syntax highlighting

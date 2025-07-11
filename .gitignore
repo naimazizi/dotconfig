@@ -22,7 +22,10 @@
 !/yazi/
 !/lazygit/
 !/neovide/
+!/vim/
+!/coc/
 
 fish/fish_variables
 fish/fishd.*
 nvim/lazy-lock.json
+**/node_models/
