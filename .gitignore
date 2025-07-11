@@ -1,5 +1,6 @@
 # Ignore everything in repository root
 /*
+**/node_modules/
 
 # Files to not ignore
 !/.gitignore
@@ -28,4 +29,3 @@
 fish/fish_variables
 fish/fishd.*
 nvim/lazy-lock.json
-**/node_models/
