@@ -636,9 +636,9 @@ nnoremap <silent><nowait> <leader>cl :<C-u>CocList extensions<cr>
 " Show commands
 nnoremap <silent><nowait> <leader>cc  :<C-u>CocList commands<cr>
 " Find symbol of current document
-nnoremap <silent><nowait> <leader>co  :<C-u>CocList outline<cr>
+nnoremap <silent><nowait> <leader>co  :<C-u>CocOutline<cr>
 " Search workspace symbols
-nnoremap <silent><nowait> <leader>cs  :<C-u>CocList -I symbols<cr>
+nnoremap <silent><nowait> <leader>cs  :<C-u>CocList symbols<cr>
 " Do default action for next item
 nnoremap <silent><nowait> <leader>cj  :<C-u>CocNext<CR>
 " Do default action for previous item
