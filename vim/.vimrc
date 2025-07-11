@@ -312,6 +312,7 @@ set autoread
 "" Mappings
 "*****************************************************************************
 noremap <Leader>f. :e <C-R>=expand("%:p:h") . "/" <CR>
+noremap <Leader>cf :Format<CR>
 
 "" Split
 noremap <Leader>- :<C-u>split<CR>
@@ -574,8 +575,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>cr <Plug>(coc-rename)
 
 " Formatting selected code
-xmap <leader>cf  <Plug>(coc-format-selected)
-nmap <leader>cf  <Plug>(coc-format-selected)
+xmap <leader>cF  <Plug>(coc-format-selected)
+nmap <leader>cF  <Plug>(coc-format-selected)
 
 " Applying code actions to the selected code block
 " Example: `<leader>aap` for current paragraph
