@@ -35,6 +35,7 @@ call plug#begin(expand('~/.vim/plugged'))
 "" Plug install packages
 "*****************************************************************************
 Plug 'scrooloose/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -60,6 +61,12 @@ Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 Plug 'sheerun/vim-polyglot'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'brooth/far.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'inkarkat/vim-AdvancedSorters' " advanced sorting of text.
+Plug 'inkarkat/vim-ingo-library' 
+Plug 'jdhao/better-escape.vim'
+Plug 'kshenoy/vim-signature'
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -117,8 +124,6 @@ set expandtab
 "" Map leader to ,
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
-nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 "" Enable hidden buffers
 set hidden
@@ -349,6 +354,7 @@ nnoremap <leader>qq :CloseSession<CR>
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
 nnoremap <silent> <S-t> :tabnew<CR>
+nnoremap <silent> <leader>bn :tabnew<CR>
 
 "" Set working directory
 nnoremap <leader>. :lcd %:p:h<CR>
@@ -374,6 +380,7 @@ endif
 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>, :Clap buffers<CR>
+nnoremap <silent> <leader>bb :Clap buffers<CR>
 nnoremap <silent> <leader><leader> :Clap files<CR>
 nnoremap <silent> <leader>/ :Clap live_grep<CR>
 
@@ -427,10 +434,70 @@ vmap > >gv
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
+"*****************************************************************************
+"" WhichKey
+"*****************************************************************************
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+let g:which_key_map = {}
+let g:which_key_map['b'] = {
+      \ 'name' : '+Buffers',
+        \ 'd' : [':bd', 'Delete current buffer'],
+        \ 'b' : [':Clap buffers', 'List Buffers'],
+        \ 'n' : [":tabnew", 'New Buffer'],
+    \ }
+let g:which_key_map['c'] = {
+      \ 'name' : '+Code',
+        \ 'a' : ['<Plug>(coc-codeaction-selected)', 'Code Actions'],
+        \ 'f' : [':Format', 'Format Code'],
+        \ 'F' : ['<Plug>(coc-format-selected)', 'Format Selected Code'],
+        \ 'r' : ['<Plug>(coc-rename)', 'Rename Symbol'],
+    \ }
+let g:which_key_map['f'] = {
+      \ 'name' : '+Files',
+    \ }
+let g:which_key_map['g'] = {
+      \ 'name' : '+Git',
+        \ 'a' : [':Gwrite', 'Stage current file'],
+        \ 'c' : [':Git commit --verbose', 'Commit changes'],
+        \ 'd' : [':Gvdiffsplit', 'Diff current file'],
+        \ 'll' : [':Git pull', 'Pull changes'],
+        \ 's' : [':Clap bcommits', 'Show commits for current buffer'],
+        \ 'r' : [':GRemove', 'Remove current file from git'],
+        \ 'b' : [':Git blame', 'Blame current file'],
+    \ }
+let g:which_key_map['h'] = {
+      \ 'name' : '+Hunk',
+        \ 's' : ['<Plug>(GitGutterStageHunk)', 'Stage Hunk'],
+        \ 'u' : ['<Plug>(GitGutterUndoHunk)', 'Undo Hunk'],
+        \ 'p' : ['<Plug>(GitGutterPreviewHunk)', 'Preview Hunk'],
+    \ }
+let g:which_key_map['s'] = {
+      \ 'name' : '+Search',
+        \ 'm' : [':Clap marks', 'Marks'],
+        \ 'c' : [':Clap command_history', 'Command History'],
+        \ 'h' : [':Clap history', 'History'],
+        \ 'k' : [':Clap maps', 'Maps'],
+        \ '"': [':Clap registers', 'Registers'],
+        \ "d": [':CoCList Diagnostics', 'Diagnostics'],
+    \ }
+let g:which_key_map['q'] = {
+      \ 'name' : '+Session',
+        \ 's' : [':OpenSession ', 'Open Session'],
+        \ 'S' : [':SaveSession ', 'Save Session'],
+        \ 'd' : [':DeleteSession', 'Delete Session'],
+        \ 'q' : [':CloseSession', 'Close Session'],
+    \ }
+
+
+call which_key#register('<Space>', "g:which_key_map")
+
 
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
+"" better-escape
+let g:better_escape_shortcut = ['jk', 'jj', 'kj', 'лл']
 
 "" Sneak
 let g:sneak#label = 1
