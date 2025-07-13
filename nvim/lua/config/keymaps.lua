@@ -365,10 +365,6 @@ if vim.g.vscode then
       .. vim.version().minor
       .. "."
       .. vim.version().patch
-      .. " - "
-      .. vim.version().prerelease
-      .. " - "
-      .. vim.version().build
   )
   vscodeMappings()
 elseif vim.g.neovide then

@@ -70,6 +70,8 @@ end
 if type -q bun
     alias npm="bun"
     alias node="bun"
+
+    fish_add_path "$HOME/.bun/bin"
 end
 
 # Kanagawa Theme

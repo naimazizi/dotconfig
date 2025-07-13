@@ -10,10 +10,7 @@ else
   let curl_exists=expand('curl')
 endif
 
-let g:vim_bootstrap_langs = ""
-let g:vim_bootstrap_editor = "vim"				" nvim or vim
 let g:vim_bootstrap_theme = "kanagawa"
-let g:vim_bootstrap_frams = ""
 
 if !filereadable(vimplug_exists)
   if !executable(curl_exists)
@@ -46,7 +43,6 @@ Plug 'vim-scripts/CSApprox'
 Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
 Plug 'Yggdroot/indentLine'
-Plug 'editor-bootstrap/vim-bootstrap-updater'
 Plug 'tpope/vim-rhubarb' " required by fugitive to :GBrowse
 Plug 'menisadi/kanagawa.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -558,17 +554,17 @@ endif
 "*****************************************************************************
 "" multicursor
 "****************************************************************************
-@REM let g:multi_cursor_use_default_mapping=0
+let g:multi_cursor_use_default_mapping=0
 
-@REM " Default mapping
-@REM let g:multi_cursor_start_word_key      = '<C-n>'
-@REM let g:multi_cursor_select_all_word_key = '<A-n>'
-@REM let g:multi_cursor_start_key           = 'g<C-n>'
-@REM let g:multi_cursor_select_all_key      = 'g<A-n>'
-@REM let g:multi_cursor_next_key            = '<C-n>'
-@REM let g:multi_cursor_prev_key            = '<C-p>'
-@REM let g:multi_cursor_skip_key            = '<C-x>'
-@REM let g:multi_cursor_quit_key            = '<Esc>'
+" Default mapping
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<A-n>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
 
 
 "*****************************************************************************
