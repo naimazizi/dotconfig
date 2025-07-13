@@ -5,7 +5,6 @@ return {
     vscode = false,
     dependencies = {
       "stevearc/dressing.nvim",
-      "zbirenbaum/copilot.lua", -- for providers='copilot'
     },
     opts = {
       mode = "legacy",
