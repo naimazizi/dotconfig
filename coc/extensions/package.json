@@ -4,6 +4,7 @@
     "@yaegassy/coc-ruff": ">=0.8.1",
     "coc-nav": ">=0.0.9",
     "coc-pydocstring": ">=0.10.0",
-    "@hexuhua/coc-copilot": ">=0.0.22"
+    "@hexuhua/coc-copilot": ">=0.0.22",
+    "coc-sumneko-lua": ">=0.0.42"
   }
 }

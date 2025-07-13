@@ -29,7 +29,6 @@ return {
       "jmbuhr/cmp-pandoc-references",
       "xzbdmw/colorful-menu.nvim",
       "fang2hou/blink-copilot",
-      "copilotlsp-nvim/copilot-lsp",
       "yetone/avante.nvim",
       "Kaiser-Yang/blink-cmp-avante",
       "t3ntxcl3s/ecolog.nvim",
@@ -84,7 +83,7 @@ return {
           auto_show_delay_ms = 200,
         },
         ghost_text = {
-          enabled = vim.g.ai_cmp,
+          enabled = true,
         },
         trigger = {
           show_on_trigger_character = true,
@@ -161,12 +160,14 @@ return {
         preset = "super-tab",
         ["<Tab>"] = {
           function(cmp)
-            if vim.b[vim.api.nvim_get_current_buf()].nes_state then
-              cmp.hide()
-              return (
-                require("copilot-lsp.nes").apply_pending_nes()
-                and require("copilot-lsp.nes").walk_cursor_end_edit()
-              )
+            if vim.g.copilot_nes_enabled == true then
+              if vim.b[vim.api.nvim_get_current_buf()].nes_state then
+                cmp.hide()
+                return (
+                  require("copilot-lsp.nes").apply_pending_nes()
+                  and require("copilot-lsp.nes").walk_cursor_end_edit()
+                )
+              end
             end
             if cmp.snippet_active() then
               return cmp.accept()
