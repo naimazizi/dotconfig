@@ -153,7 +153,7 @@ return {
       },
 
       cmdline = {
-        enabled = false,
+        enabled = true,
       },
 
       keymap = {
