@@ -62,7 +62,7 @@ return {
                 hint = icons.diagnostics.Hint,
               },
             },
-            { "filetype",                   icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
             { LazyVim.lualine.pretty_path() },
           },
           lualine_x = {
@@ -111,8 +111,8 @@ return {
             },
           },
           lualine_y = {
-            { "progress",                      separator = " ",                  padding = { left = 1, right = 0 } },
-            { "location",                      padding = { left = 0, right = 1 } },
+            { "progress", separator = " ", padding = { left = 1, right = 0 } },
+            { "location", padding = { left = 0, right = 1 } },
             { require("recorder").displaySlots },
             { "harpoon2" },
           },
@@ -127,14 +127,6 @@ return {
 
       if vim.g.trouble_lualine then
         table.insert(opts.sections.lualine_c, { "navic", color_correction = "dynamic" })
-      end
-
-      if LazyVim.has("git-blame.nvim") then
-        local git_blame = require("gitblame")
-        table.insert(
-          opts.sections.lualine_c,
-          { git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available }
-        )
       end
 
       return opts
