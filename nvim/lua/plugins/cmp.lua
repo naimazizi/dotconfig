@@ -27,7 +27,6 @@ return {
         version = not vim.g.lazyvim_blink_main and "*",
       },
       "jmbuhr/cmp-pandoc-references",
-      "xzbdmw/colorful-menu.nvim",
       "fang2hou/blink-copilot",
       "yetone/avante.nvim",
       "Kaiser-Yang/blink-cmp-avante",
@@ -51,6 +50,7 @@ return {
         end,
       },
       appearance = {
+        use_nvim_cmp_as_default = false,
         -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- adjusts spacing to ensure icons are aligned
         nerd_font_variant = "mono",
@@ -65,17 +65,6 @@ return {
         menu = {
           draw = {
             treesitter = { "lsp" },
-            columns = { { "kind_icon" }, { "label", gap = 1 } },
-            components = {
-              label = {
-                text = function(ctx)
-                  return require("colorful-menu").blink_components_text(ctx)
-                end,
-                highlight = function(ctx)
-                  return require("colorful-menu").blink_components_highlight(ctx)
-                end,
-              },
-            },
           },
         },
         documentation = {
@@ -83,12 +72,7 @@ return {
           auto_show_delay_ms = 200,
         },
         ghost_text = {
-          enabled = true,
-        },
-        trigger = {
-          show_on_trigger_character = true,
-          show_on_blocked_trigger_characters = { " ", "\n", "\t" },
-          show_in_snippet = true,
+          enabled = vim.g.ai_cmp,
         },
       },
 
@@ -179,6 +163,41 @@ return {
           "fallback",
         },
       },
+      config = function(_, opts)
+        -- Unset custom prop to pass blink.cmp validation
+        opts.sources.compat = nil
+
+        -- check if we need to override symbol kinds
+        for _, provider in pairs(opts.sources.providers or {}) do
+          ---@cast provider blink.cmp.SourceProviderConfig|{kind?:string}
+          if provider.kind then
+            local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
+            local kind_idx = #CompletionItemKind + 1
+
+            CompletionItemKind[kind_idx] = provider.kind
+            ---@diagnostic disable-next-line: no-unknown
+            CompletionItemKind[provider.kind] = kind_idx
+
+            ---@type fun(ctx: blink.cmp.Context, items: blink.cmp.CompletionItem[]): blink.cmp.CompletionItem[]
+            local transform_items = provider.transform_items
+            ---@param ctx blink.cmp.Context
+            ---@param items blink.cmp.CompletionItem[]
+            provider.transform_items = function(ctx, items)
+              items = transform_items and transform_items(ctx, items) or items
+              for _, item in ipairs(items) do
+                item.kind = kind_idx or item.kind
+                item.kind_icon = LazyVim.config.icons.kinds[item.kind_name] or item.kind_icon or nil
+              end
+              return items
+            end
+
+            -- Unset custom prop to pass blink.cmp validation
+            provider.kind = nil
+          end
+        end
+
+        require("blink.cmp").setup(opts)
+      end,
     },
   },
 }
