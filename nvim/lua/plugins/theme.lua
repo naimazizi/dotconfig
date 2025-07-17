@@ -71,50 +71,6 @@ return {
         overseer = true,
         mini = true,
       },
-
-      -- enable integrations with other applications
-      integrations = {
-        -- automatically set wezterm theme to match the current neovim theme
-        wezterm = {
-          enabled = true,
-          -- neovim will write the theme name to this file
-          -- wezterm will read from this file to know which theme to use
-          path = (os.getenv("TEMP") or "/tmp") .. "/nvim-theme",
-        },
-      },
     },
-  },
-  {
-    "webhooked/kanso.nvim",
-    lazy = false,
-    priority = 1000,
-    vscode = false,
-    config = function()
-      require("kanso").setup({
-        compile = true, -- enable compiling the colorscheme
-        undercurl = true, -- enable undercurls
-        commentStyle = { italic = true },
-        functionStyle = {},
-        keywordStyle = { italic = true },
-        statementStyle = {},
-        typeStyle = { italic = true },
-        disableItalics = false,
-        transparent = true, -- do not set background color
-        dimInactive = true, -- dim inactive window `:h hl-NormalNC`
-        terminalColors = true, -- define vim.g.terminal_color_{0,17}
-        colors = { -- add/modify theme and palette colors
-          palette = {},
-          theme = { zen = {}, pearl = {}, ink = {}, all = {} },
-        },
-        overrides = function(colors) -- add/modify highlights
-          return {}
-        end,
-        theme = "zen", -- Load "zen" theme
-        background = { -- map the value of 'background' option to a theme
-          dark = "zen", -- try "ink" !
-          light = "pearl",
-        },
-      })
-    end,
   },
 }
