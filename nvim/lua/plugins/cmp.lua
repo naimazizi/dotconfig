@@ -86,7 +86,7 @@ return {
         },
       },
       -- experimental signature help support
-      signature = { enabled = false, trigger = { show_on_accept = true } },
+      signature = { enabled = true, trigger = { show_on_accept = true } },
 
       sources = {
         -- adding any nvim-cmp sources here will enable them
