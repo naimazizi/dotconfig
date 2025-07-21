@@ -10,18 +10,6 @@ local function paste()
   }
 end
 
-vim.g.clipboard = {
-  name = "OSC 52",
-  copy = {
-    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-  },
-  paste = {
-    ["+"] = paste,
-    ["*"] = paste,
-  },
-}
-
 vim.o.spell = false
 
 if not vim.g.vscode then
@@ -39,6 +27,18 @@ if not vim.g.vscode then
   vim.o.smoothscroll = false
 
   vim.g.copilot_nes_enabled = true
+
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+      ["+"] = paste,
+      ["*"] = paste,
+    },
+  }
 elseif vim.g.vscode then
   -- Fix ghost font
   local redraw_fix = vim.api.nvim_create_augroup("VSCodeRedrawFix", { clear = true })
