@@ -1,5 +1,10 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+local function map_illuminate(key, dir, buffer)
+  vim.keymap.set("n", key, function()
+    require("illuminate")["goto_" .. dir .. "_reference"](false)
+  end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+end
 
 local function vscodeMappings()
   local vscode = require("vscode")
@@ -7,14 +12,9 @@ local function vscodeMappings()
   -- Delete keymap
   vim.keymap.del("n", "<leader>qq")
 
-  -- Vim illuminate like
-  vim.keymap.set("n", "]]", function()
-    vscode.call("editor.action.wordHighlight.next")
-  end, { noremap = true, desc = "Next Highlight" })
-
-  vim.keymap.set("n", "[[", function()
-    vscode.call("editor.action.wordHighlight.prev")
-  end, { noremap = true, desc = "Previous Highlight" })
+  -- Vim Illuminate
+  map_illuminate("]]", "next")
+  map_illuminate("[[", "prev")
 
   -- Search text in files
   vim.keymap.set("n", "<leader>/", function()
