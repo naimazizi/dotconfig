@@ -1,19 +1,5 @@
 return {
   {
-    "ilof2/posterpole.nvim",
-    lazy = false,
-    vscode = false,
-    priority = 1000,
-    config = function()
-      local posterpole = require("posterpole")
-
-      posterpole.setup({})
-      -- This function create scheduled task, which will reload theme every hour
-      -- Without "setup_adaptive" adaptive brightness will be set only after every restart
-      posterpole.setup_adaptive()
-    end,
-  },
-  {
     "thesimonho/kanagawa-paper.nvim",
     lazy = false,
     priority = 1000,

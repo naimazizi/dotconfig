@@ -26,7 +26,7 @@ if not vim.g.vscode then
   vim.o.guifont = "JetBrains Maple Mono:h11:#e-subpixelantialias"
   vim.o.smoothscroll = false
 
-  vim.g.copilot_nes_enabled = true
+  vim.g.copilot_nes_enabled = false
 
   vim.g.clipboard = {
     name = "OSC 52",

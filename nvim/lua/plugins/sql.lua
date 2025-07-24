@@ -26,11 +26,24 @@ return {
     opts = function(_, opts)
       opts.formatters.sqlfluff = {
         args = { "format", "--dialect=ansi", "-" },
+        cwd = function()
+          return vim.fn.getcwd()
+        end,
       }
+
+      opts.formatters.dawet_lint = {
+        command = "dawet",
+        args = function()
+          return { "lint", "-m", vim.fn.expand("%:t:r") }
+        end,
+        cwd = require("conform.util").root_file({ "dawet_project.yml" }),
+        require_cwd = true,
+      }
+
       for _, ft in ipairs(sql_ft) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
+        -- table.insert(opts.formatters_by_ft[ft], "dawet_lint") -- slow as hell
         table.insert(opts.formatters_by_ft[ft], "sqlfmt")
-        table.insert(opts.formatters_by_ft[ft], "sqlfluff")
       end
     end,
   },
