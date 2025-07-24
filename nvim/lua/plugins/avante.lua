@@ -7,7 +7,7 @@ return {
       "stevearc/dressing.nvim",
     },
     opts = {
-      mode = "legacy",
+      mode = "agentic",
       -- Default configuration
       hints = { enabled = true },
 

@@ -140,6 +140,11 @@ return {
         enabled = true,
       },
 
+      term = {
+        enabled = false,
+        keymap = { preset = "inherit" },
+      },
+
       keymap = {
         preset = "super-tab",
         ["<Tab>"] = {
