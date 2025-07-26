@@ -52,6 +52,7 @@ alias find='fd'
 alias ai='gh copilot'
 alias dev="limactl shell lima-box fish"
 alias nvim_remote="limactl shell lima-box nvim"
+alias nvim_update='nvim --headless "+Lazy! sync" +qa'
 alias neovide_remote="neovide --neovim-bin ~/.config/nvim-remote.sh"
 
 set RG_PREFIX "rg --column --line-number --no-heading --color=always --smart-case "
@@ -112,3 +113,7 @@ set -g fish_pager_color_description $comment
 # Created by `pipx` on 2024-12-03 14:54:48
 set PATH $PATH ~/.local/bin
 
+# Created by rancher desktop
+if test -d "~./rd/bin"
+    set --export --prepend PATH "~/.rd/bin"
+end
