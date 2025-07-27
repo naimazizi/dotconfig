@@ -3,9 +3,6 @@ return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     vscode = false,
-    dependencies = {
-      "stevearc/dressing.nvim",
-    },
     opts = {
       mode = "agentic",
       -- Default configuration
@@ -22,6 +19,12 @@ return {
         provider_opts = {},
       },
     },
+    config = function(_, opts)
+      wk = require("which-key")
+      wk.add({ "<leader>a", group = "Avante (ai)" })
+
+      require("avante").setup(opts)
+    end,
     build = LazyVim.is_win() and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" or "make",
   },
   {
@@ -39,7 +42,7 @@ return {
     optional = true,
     opts = {
       spec = {
-        { "<leader>a", group = "ai" },
+        { "<leader>a", group = "Avante (ai)" },
       },
     },
   },

@@ -141,7 +141,7 @@ return {
       },
 
       term = {
-        enabled = false,
+        enabled = true,
         keymap = { preset = "inherit" },
       },
 
