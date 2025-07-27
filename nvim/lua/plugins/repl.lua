@@ -26,10 +26,11 @@ return {
   {
     "benlubas/molten-nvim",
     event = "VeryLazy",
-    version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+    cond = function()
+      return vim.fn.exists("g:neovide") ~= 1
+    end,
     build = ":UpdateRemotePlugins",
     vscode = false,
-    enabled = true,
     init = function()
       local wk = require("which-key")
       wk.add({

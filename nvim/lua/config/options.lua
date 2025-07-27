@@ -3,12 +3,16 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 
--- local function paste()
---   return {
---     vim.fn.split(vim.fn.getreg(""), "\n"),
---     vim.fn.getregtype(""),
---   }
--- end
+local function paste()
+  return {
+    vim.fn.split(vim.fn.getreg(""), "\n"),
+    vim.fn.getregtype(""),
+  }
+end
+
+local function is_ssh_session()
+  return vim.env.SSH_CONNECTION ~= nil or vim.env.SSH_CLIENT ~= nil or vim.env.SSH_TTY ~= nil
+end
 
 vim.o.spell = false
 
@@ -28,17 +32,19 @@ if not vim.g.vscode then
 
   vim.g.copilot_nes_enabled = false
 
-  -- vim.g.clipboard = {
-  --   name = "OSC 52",
-  --   copy = {
-  --     ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-  --     ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-  --   },
-  --   paste = {
-  --     ["+"] = paste,
-  --     ["*"] = paste,
-  --   },
-  -- }
+  if is_ssh_session() then
+    vim.g.clipboard = {
+      name = "OSC 52",
+      copy = {
+        ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+        ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+      },
+      paste = {
+        ["+"] = paste,
+        ["*"] = paste,
+      },
+    }
+  end
 elseif vim.g.vscode then
   -- Fix ghost font
   local redraw_fix = vim.api.nvim_create_augroup("VSCodeRedrawFix", { clear = true })

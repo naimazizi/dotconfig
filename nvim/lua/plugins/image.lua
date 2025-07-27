@@ -1,8 +1,10 @@
 return {
   "3rd/image.nvim",
-  enabled = true,
   event = "VeryLazy",
   vscode = false,
+  cond = function()
+    return vim.fn.exists("g:neovide") ~= 1
+  end,
   opts = {
     backend = "kitty",
     processor = "magick_cli", -- "magick_cli" or "magick_rock"
