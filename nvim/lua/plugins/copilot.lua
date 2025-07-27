@@ -45,9 +45,6 @@ return {
     event = "BufRead",
     build = "npm install --frozen-lockfile",
     vscode = false,
-    cond = function()
-      return vim.g.copilot_nes_enabled ~= true
-    end,
     config = function()
       require("magenta").setup({
         profiles = {
@@ -101,6 +98,10 @@ return {
           -- Add instructions to the default system prompt (optional)
           systemPromptAppend = "Focus on completing function calls and variable declarations.",
         },
+      })
+
+      require("which-key").add({
+        { "<leader>m", hidden = true },
       })
 
       -- Edit prediction

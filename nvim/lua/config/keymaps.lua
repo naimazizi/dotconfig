@@ -367,13 +367,22 @@ elseif vim.g.neovide then
   vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
   vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
   vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
-elseif vim.g.copilot_nes_enabled then
-  -- Clear search and stop snippet on escape
-  vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
-    if not require("copilot-lsp.nes").clear() then
-      vim.cmd("noh")
-      LazyVim.cmp.actions.snippet_stop()
+else
+  if vim.g.copilot_nes_enabled then
+    -- Clear search and stop snippet on escape
+    vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
+      if not require("copilot-lsp.nes").clear() then
+        vim.cmd("noh")
+        LazyVim.cmp.actions.snippet_stop()
+      end
+      return "<esc>"
+    end, { expr = true, desc = "Escape and Clear hlsearch" })
+  end
+
+  vim.keymap.set("n", "dm", function()
+    local mark = vim.fn.input("Enter mark to delete: ")
+    if mark ~= "" then
+      vim.cmd("delmark " .. mark)
     end
-    return "<esc>"
-  end, { expr = true, desc = "Escape and Clear hlsearch" })
+  end, { noremap = true, desc = "Delete specific mark" })
 end
