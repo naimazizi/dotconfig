@@ -387,4 +387,6 @@ else
       vim.cmd("delmark " .. mark)
     end
   end, { noremap = true, desc = "Delete specific mark" })
+
+  vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, desc = "Exit terminal mode" })
 end
