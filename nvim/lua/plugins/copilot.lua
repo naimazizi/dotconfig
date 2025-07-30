@@ -7,7 +7,7 @@ return {
     end,
     vscode = false,
     init = function()
-      vim.g.copilot_nes_debounce = 500
+      vim.g.copilot_nes_debounce = 250
       vim.lsp.enable("copilot_ls")
 
       vim.keymap.set("n", "<tab>", function()
@@ -16,6 +16,25 @@ return {
         local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
           or (require("copilot-lsp.nes").apply_pending_nes() and require("copilot-lsp.nes").walk_cursor_end_edit())
       end)
+
+      -- Clear search and stop snippet on escape
+      vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
+        if not require("copilot-lsp.nes").clear() then
+          vim.cmd("noh")
+          LazyVim.cmp.actions.snippet_stop()
+        end
+        return "<esc>"
+      end, { expr = true, desc = "Escape and Clear hlsearch" })
+
+      require("copilot-lsp").setup({
+        nes = {
+          move_count_threshold = 2,
+          distance_threshold = 10,
+          clear_on_large_distance = true,
+          count_horizontal_moves = true,
+          reset_on_approaching = true,
+        },
+      })
     end,
   },
   {
@@ -61,7 +80,7 @@ return {
         -- enable default keymaps shown below
         defaultKeymaps = false,
         -- maximum number of sub-agents that can run concurrently (default: 3)
-        maxConcurrentSubagents = 3,
+        maxConcurrentSubagents = 1,
         -- glob patterns for files that should be auto-approved for getFile tool
         -- (bypasses user approval for hidden/gitignored files matching these patterns)
         getFileAutoAllowGlobs = { "node_modules/*" }, -- default includes node_modules
@@ -107,16 +126,16 @@ return {
       -- Edit prediction
       vim.keymap.set(
         "i",
-        "<S-C-l>",
+        "<localleader><localleader>",
         "<Cmd>Magenta predict-edit<CR>",
-        { silent = true, noremap = true, desc = "Predict/accept edit" }
+        { silent = true, noremap = true, desc = "Next Edit Prediction (NES) - Magenta" }
       )
 
       vim.keymap.set(
         "n",
-        "<S-C-l>",
+        "<localleader><localleader>",
         "<Cmd>Magenta predict-edit<CR>",
-        { silent = true, noremap = true, desc = "Predict/accept edit" }
+        { silent = true, noremap = true, desc = "Next Edit Prediction (NES) - Magenta" }
       )
     end,
   },
