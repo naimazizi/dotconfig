@@ -370,6 +370,24 @@ else
     vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
   end
 
+  if vim.g.copilot_nes_enabled then
+    -- Clear search and stop snippet on escape
+    vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
+      if not require("copilot-lsp.nes").clear() then
+        vim.cmd("noh")
+        LazyVim.cmp.actions.snippet_stop()
+      end
+      return "<esc>"
+    end, { expr = true, desc = "Escape and Clear hlsearch" })
+
+    vim.keymap.set("n", "<tab>", function()
+      -- Try to jump to the start of the suggestion edit.
+      -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
+      local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
+        or (require("copilot-lsp.nes").apply_pending_nes() and require("copilot-lsp.nes").walk_cursor_end_edit())
+    end)
+  end
+
   vim.keymap.set("n", "dm", function()
     local mark = vim.fn.input("Enter mark to delete: ")
     if mark ~= "" then

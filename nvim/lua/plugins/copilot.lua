@@ -6,26 +6,7 @@ return {
       return vim.g.copilot_nes_enabled ~= false
     end,
     vscode = false,
-    init = function()
-      vim.g.copilot_nes_debounce = 250
-      vim.lsp.enable("copilot_ls")
-
-      vim.keymap.set("n", "<tab>", function()
-        -- Try to jump to the start of the suggestion edit.
-        -- If already at the start, then apply the pending suggestion and jump to the end of the edit.
-        local _ = require("copilot-lsp.nes").walk_cursor_start_edit()
-          or (require("copilot-lsp.nes").apply_pending_nes() and require("copilot-lsp.nes").walk_cursor_end_edit())
-      end)
-
-      -- Clear search and stop snippet on escape
-      vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
-        if not require("copilot-lsp.nes").clear() then
-          vim.cmd("noh")
-          LazyVim.cmp.actions.snippet_stop()
-        end
-        return "<esc>"
-      end, { expr = true, desc = "Escape and Clear hlsearch" })
-
+    config = function()
       require("copilot-lsp").setup({
         nes = {
           move_count_threshold = 2,
@@ -35,6 +16,8 @@ return {
           reset_on_approaching = true,
         },
       })
+      vim.g.copilot_nes_debounce = 250
+      vim.lsp.enable("copilot_ls")
     end,
   },
   {
@@ -52,8 +35,6 @@ return {
         hide_during_completion = vim.g.ai_cmp,
         keymap = {
           accept = false, -- handled by nvim-cmp / blink.cmp
-          next = "<M-]>",
-          prev = "<M-[>",
         },
       },
       panel = { enabled = false },
@@ -68,7 +49,7 @@ return {
       require("magenta").setup({
         profiles = {
           {
-            name = "copilot-claude",
+            name = "copilot-gpt",
             provider = "copilot",
             model = "gpt-4.1",
           },
