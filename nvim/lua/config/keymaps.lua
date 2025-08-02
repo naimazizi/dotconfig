@@ -355,6 +355,15 @@ local function vscodeMappings()
   vim.keymap.set("n", "<leader>-", function()
     vscode.call("yazi-vscode.toggle")
   end, { noremap = true, desc = "Toggle Yazi" })
+
+  -- Quarto
+  vim.keymap.set("n", "]4", function()
+    vscode.call("quarto.goToNextCell")
+  end, { noremap = true, desc = "Quarto Next code block" })
+
+  vim.keymap.set("n", "[4", function()
+    vscode.call("quarto.goToPreviousCell")
+  end, { noremap = true, desc = "Quarto Prev code block" })
 end
 
 if vim.g.vscode then
