@@ -37,4 +37,19 @@ return {
       opts.file_types = vim.list_extend(opts.file_types or {}, { "Avante" })
     end,
   },
+  {
+    "folke/edgy.nvim",
+    optional = true,
+    vscode = false,
+    opts = function(_, opts)
+      opts.right = opts.right or {}
+      table.insert(opts.right, {
+        title = "Avante",
+        ft = "avante",
+        pinned = true,
+        width = 0.3,
+        open = "AvanteToggle",
+      })
+    end,
+  },
 }
