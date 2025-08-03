@@ -23,6 +23,7 @@ return {
   {
     "stevearc/conform.nvim",
     optional = true,
+    vscode = false,
     opts = function(_, opts)
       opts.formatters.sqlfluff = {
         args = { "format", "--dialect=ansi", "-" },
