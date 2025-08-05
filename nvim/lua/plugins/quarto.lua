@@ -84,10 +84,7 @@ return {
 
       for _, ft in ipairs({ "python" }) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
-        table.insert(opts.formatters_by_ft[ft], "ruff")
-        -- black and isort for code block in quarto or markdown documents
-        table.insert(opts.formatters_by_ft[ft], "black")
-        table.insert(opts.formatters_by_ft[ft], "isort")
+        table.insert(opts.formatters_by_ft[ft], "ruff_format")
       end
 
       -- Customize the "injected" formatter

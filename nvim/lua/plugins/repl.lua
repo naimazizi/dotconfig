@@ -120,19 +120,4 @@ return {
       })
     end,
   },
-  {
-    "folke/edgy.nvim",
-    optional = true,
-    vscode = false,
-    opts = function(_, opts)
-      opts.right = opts.right or {}
-      table.insert(opts.right, {
-        title = "Iron",
-        ft = "iron",
-        pinned = false,
-        width = 0.3,
-        open = "IronFocus",
-      })
-    end,
-  },
 }
