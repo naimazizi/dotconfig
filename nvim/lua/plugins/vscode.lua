@@ -9,6 +9,9 @@ local enabled = {
   "LazyVim",
   "dial.nvim",
   "lazy.nvim",
+  "mini.ai",
+  "mini.comment",
+  "mini.pairs",
   "mini.surround",
   "nvim-treesitter",
   "nvim-treesitter-textobjects",
@@ -26,6 +29,10 @@ end
 vim.g.snacks_animate = false
 vim.api.nvim_create_augroup("wrap_spell", { clear = true })
 vim.opt_local.spell = false
+
+function LazyVim.terminal()
+  require("vscode").action("workbench.action.terminal.toggleTerminal")
+end
 
 return {
   {

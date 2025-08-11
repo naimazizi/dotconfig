@@ -25,8 +25,8 @@ if not vim.g.vscode then
   vim.g.lazyvim_picker = "snacks"
   vim.g.root_spec = { "cwd" }
 
-  vim.o.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
-  vim.o.foldmethod = "expr"
+  -- vim.o.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
+  -- vim.o.foldmethod = "expr"
   vim.o.guifont = "JetBrains Maple Mono:h11:#e-subpixelantialias"
   vim.o.smoothscroll = false
 

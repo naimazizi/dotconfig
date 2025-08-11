@@ -3,6 +3,10 @@ return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     vscode = false,
+    dependencies = {
+      "folke/which-key.nvim",
+      "folke/snacks.nvim",
+    },
     opts = {
       mode = "agentic",
       -- Default configuration
@@ -16,7 +20,11 @@ return {
       --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string
       file_selector = {
         provider = "snacks", -- Avoid native provider issues
-        provider_opts = {},
+        provider_opts = {
+          -- Additional snacks.input options
+          title = "Avante Input",
+          icon = " ",
+        },
       },
     },
     config = function(_, opts)
