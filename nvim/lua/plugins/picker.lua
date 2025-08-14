@@ -2,6 +2,7 @@ return {
   {
     "dmtrKovalenko/fff.nvim",
     build = "cargo build --release",
+    vscode = false,
     config = function()
       vim.keymap.set("n", "<leader><space>", function()
         require("fff").find_files()
