@@ -1,10 +1,10 @@
 return {
   {
     "GCBallesteros/NotebookNavigator.nvim",
+    cond = not vim.g.vscode,
     dependencies = {
       "echasnovski/mini.comment",
     },
-    vscode = true,
     event = "VeryLazy",
     config = function()
       local nn = require("notebook-navigator")
@@ -18,8 +18,8 @@ return {
   },
   {
     "Vigemus/iron.nvim",
+    cond = not vim.g.vscode,
     event = "VeryLazy",
-    vscode = false,
     cmd = {
       "IronRepl",
       "IronReplHere",

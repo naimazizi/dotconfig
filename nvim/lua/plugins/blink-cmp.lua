@@ -1,54 +1,46 @@
 return {
-  {
-    "saghen/blink.compat",
-    -- use the latest release, via version = '*', if you also use the latest release for blink.cmp
-    version = "*",
-    -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
-    lazy = true,
-    vscode = false,
-    -- make sure to set opts so that lazy.nvim calls blink.compat's setup
-    opts = {},
-  },
-  {
+  { -- Autocompletion
     "saghen/blink.cmp",
-    version = not vim.g.lazyvim_blink_main and "*",
-    build = vim.g.lazyvim_blink_main and "cargo build --release",
-    opts_extend = {
-      "sources.completion.enabled_providers",
-      "sources.compat",
-      "sources.default",
-    },
+    cond = not vim.g.vscode,
+    event = "VimEnter",
+    version = "1.*",
     dependencies = {
-      -- add blink.compat to dependencies
+      -- Snippet Engine
       {
-        "saghen/blink.compat",
-        optional = true, -- make optional so it's only enabled if any extras need it
+        "L3MON4D3/LuaSnip",
+        version = "2.*",
+        build = (function()
+          -- Build Step is needed for regex support in snippets.
+          -- This step is not supported in many windows environments.
+          -- Remove the below condition to re-enable on windows.
+          if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+            return
+          end
+          return "make install_jsregexp"
+        end)(),
+        dependencies = {
+          {
+            "rafamadriz/friendly-snippets",
+            config = function()
+              require("luasnip.loaders.from_vscode").lazy_load()
+            end,
+          },
+        },
         opts = {},
-        version = not vim.g.lazyvim_blink_main and "*",
       },
+      "folke/lazydev.nvim",
       "jmbuhr/cmp-pandoc-references",
       "fang2hou/blink-copilot",
       "yetone/avante.nvim",
       "Kaiser-Yang/blink-cmp-avante",
       "t3ntxcl3s/ecolog.nvim",
-      {
-        "MattiasMTS/cmp-dbee",
-        ft = "sql",
-        dependencies = {
-          { "kndndrj/nvim-dbee" },
-        },
-      },
-      { "L3MON4D3/LuaSnip" },
     },
-    event = "InsertEnter",
-    vscode = false,
+    --- @module 'blink.cmp'
+    --- @type blink.cmp.Config
     opts = {
-      snippets = {
-        preset = "luasnip",
-        expand = function(snippet, _)
-          return require("luasnip").lsp_expand(snippet)
-        end,
-      },
+
+      snippets = { preset = "luasnip" },
+
       appearance = {
         use_nvim_cmp_as_default = false,
         -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
@@ -91,7 +83,6 @@ return {
       sources = {
         -- adding any nvim-cmp sources here will enable them
         -- with blink.compat
-        compat = {},
 
         default = {
           "lsp",
@@ -102,7 +93,6 @@ return {
           "path",
           "copilot",
           "avante",
-          "dbee",
           "ecolog",
         },
         providers = {
@@ -131,7 +121,6 @@ return {
             name = "Avante",
             opts = {},
           },
-          dbee = { name = "cmp-dbee", module = "blink.compat.source" },
           ecolog = { name = "ecolog", module = "ecolog.integrations.cmp.blink_cmp" },
         },
       },
@@ -168,41 +157,6 @@ return {
           "fallback",
         },
       },
-      config = function(_, opts)
-        -- Unset custom prop to pass blink.cmp validation
-        opts.sources.compat = nil
-
-        -- check if we need to override symbol kinds
-        for _, provider in pairs(opts.sources.providers or {}) do
-          ---@cast provider blink.cmp.SourceProviderConfig|{kind?:string}
-          if provider.kind then
-            local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-            local kind_idx = #CompletionItemKind + 1
-
-            CompletionItemKind[kind_idx] = provider.kind
-            ---@diagnostic disable-next-line: no-unknown
-            CompletionItemKind[provider.kind] = kind_idx
-
-            ---@type fun(ctx: blink.cmp.Context, items: blink.cmp.CompletionItem[]): blink.cmp.CompletionItem[]
-            local transform_items = provider.transform_items
-            ---@param ctx blink.cmp.Context
-            ---@param items blink.cmp.CompletionItem[]
-            provider.transform_items = function(ctx, items)
-              items = transform_items and transform_items(ctx, items) or items
-              for _, item in ipairs(items) do
-                item.kind = kind_idx or item.kind
-                item.kind_icon = LazyVim.config.icons.kinds[item.kind_name] or item.kind_icon or nil
-              end
-              return items
-            end
-
-            -- Unset custom prop to pass blink.cmp validation
-            provider.kind = nil
-          end
-        end
-
-        require("blink.cmp").setup(opts)
-      end,
     },
   },
 }

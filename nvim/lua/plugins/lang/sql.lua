@@ -1,29 +1,24 @@
 local sql_ft = { "sql", "mysql", "plsql" }
 
 return {
-  {
-    "kndndrj/nvim-dbee",
-    event = "VeryLazy",
-    vscode = false,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-    },
-    build = function()
-      require("dbee").install()
-    end,
-    config = function()
-      require("dbee").setup( --[[optional config]])
-    end,
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    optional = true,
-    opts = { ensure_installed = { "sql" } },
-  },
+  -- {
+  --   "kndndrj/nvim-dbee",
+  --   event = "VeryLazy",
+  --   cond = not vim.g.vscode,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --   },
+  --   build = function()
+  --     require("dbee").install()
+  --   end,
+  --   config = function()
+  --     require("dbee").setup( --[[optional config]])
+  --   end,
+  -- },
   {
     "stevearc/conform.nvim",
     optional = true,
-    vscode = false,
+    cond = not vim.g.vscode,
     opts = function(_, opts)
       opts.formatters.sqlfluff = {
         args = { "format", "--dialect=ansi", "-" },
@@ -50,6 +45,7 @@ return {
   },
   {
     "mfussenegger/nvim-lint",
+    cond = not vim.g.vscode,
     optional = true,
     opts = function(_, opts)
       for _, ft in ipairs(sql_ft) do

@@ -2,7 +2,7 @@ return {
   {
     "chrisgrieser/nvim-recorder",
     event = "VeryLazy",
-    vscode = true,
+    cond = not vim.g.vscode,
     keys = {
       -- these must match the keys in the mapping config below
       { "q", desc = " Start Recording" },

@@ -1,80 +1,24 @@
-local lsp = "pyrefly"
-vim.lsp.enable({ lsp, "ruff" })
+vim.lsp.enable({ "pyrefly", "ruff" })
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client == nil then
+      return
+    end
+    if client.name == "ruff" then
+      -- Disable hover in favor of other LSP
+      client.server_capabilities.hoverProvider = false
+    end
+  end,
+  desc = "LSP: Disable hover capability from Ruff",
+})
 
 return {
-  recommended = function()
-    return LazyVim.extras.wants({
-      ft = "python",
-      root = {
-        "pyproject.toml",
-        "setup.py",
-        "setup.cfg",
-        "requirements.txt",
-        "Pipfile",
-        "pyrightconfig.json",
-      },
-    })
-  end,
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "ninja", "rst" } },
-  },
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        ruff = {
-          cmd_env = { RUFF_TRACE = "messages" },
-          init_options = {
-            settings = {
-              logLevel = "error",
-            },
-          },
-          keys = {
-            {
-              "<leader>co",
-              LazyVim.lsp.action["source.organizeImports"],
-              desc = "Organize Imports",
-            },
-          },
-        },
-        pyright = {
-          analysis = {
-            typeCheckingMode = "strict",
-            single_file_support = true,
-            analysis = {
-              autoSearchPaths = true,
-              diagnosticMode = "openFilesOnly",
-              useLibraryCodeForTypes = true,
-            },
-          },
-          disableOrganizeImports = true,
-        },
-        basedpyright = {
-          analysis = {
-            typeCheckingMode = "standard",
-            single_file_support = true,
-            analysis = {
-              autoSearchPaths = true,
-              diagnosticMode = "openFilesOnly",
-              useLibraryCodeForTypes = true,
-            },
-          },
-          disableOrganizeImports = true,
-        },
-      },
-      setup = {
-        ["ruff"] = function()
-          LazyVim.lsp.on_attach(function(client, _)
-            -- Disable hover in favor of other lsp
-            client.server_capabilities.hoverProvider = false
-          end, "ruff")
-        end,
-      },
-    },
-  },
   {
     "nvim-neotest/neotest",
+    cond = not vim.g.vscode,
     optional = true,
     dependencies = {
       "nvim-neotest/neotest-python",
@@ -91,14 +35,15 @@ return {
   },
   {
     "mfussenegger/nvim-dap",
+    cond = not vim.g.vscode,
     optional = true,
     dependencies = {
       "mfussenegger/nvim-dap-python",
-      -- stylua: ignore
-      keys = {
-        { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method", ft = "python" },
-        { "<leader>dPc", function() require('dap-python').test_class() end, desc = "Debug Class", ft = "python" },
-      },
+            -- stylua: ignore
+            keys = {
+                { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method", ft = "python" },
+                { "<leader>dPc", function() require('dap-python').test_class() end,  desc = "Debug Class",  ft = "python" },
+            },
       config = function()
         require("dap-python").setup("debugpy-adapter")
       end,
@@ -106,6 +51,7 @@ return {
   },
   {
     "linux-cultist/venv-selector.nvim",
+    cond = not vim.g.vscode,
     branch = "regexp", -- Use this branch for the new version
     cmd = "VenvSelect",
     opts = {
@@ -122,24 +68,12 @@ return {
   -- Don't mess up DAP adapters provided by nvim-dap-python
   {
     "jay-babu/mason-nvim-dap.nvim",
+    cond = not vim.g.vscode,
     optional = true,
     opts = {
       handlers = {
         python = function() end,
       },
-    },
-  },
-  {
-    "mason-org/mason-lspconfig.nvim",
-    config = function(_, _)
-      require("mason-lspconfig").setup({
-        ensure_installed = { "ruff" },
-        automatic_installation = { enable = true, exclude = { "pyright", "basedpyright" } },
-      })
-    end,
-    dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-      "neovim/nvim-lspconfig",
     },
   },
 }

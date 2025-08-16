@@ -1,11 +1,14 @@
 return {
   {
     "yetone/avante.nvim",
+    cond = not vim.g.vscode,
     event = "VeryLazy",
-    vscode = false,
     dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
       "folke/which-key.nvim",
       "folke/snacks.nvim",
+      "zbirenbaum/copilot.lua",
     },
     opts = {
       mode = "agentic",
@@ -33,31 +36,34 @@ return {
 
       require("avante").setup(opts)
     end,
-    build = LazyVim.is_win() and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" or "make",
+    build = "make",
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    cond = not vim.g.vscode,
+    cmd = "Copilot",
+    event = "InsertEnter",
+    opts = {
+      suggestion = {
+        enabled = not vim.g.ai_cmp,
+        auto_trigger = true,
+        hide_during_completion = vim.g.ai_cmp,
+        keymap = {
+          accept = false, -- handled by nvim-cmp / blink.cmp
+        },
+      },
+      panel = { enabled = false },
+    },
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
+    cond = not vim.g.vscode,
     optional = true,
     ft = function(_, ft)
       vim.list_extend(ft, { "Avante" })
     end,
     opts = function(_, opts)
       opts.file_types = vim.list_extend(opts.file_types or {}, { "Avante" })
-    end,
-  },
-  {
-    "folke/edgy.nvim",
-    optional = true,
-    vscode = false,
-    opts = function(_, opts)
-      opts.right = opts.right or {}
-      table.insert(opts.right, {
-        title = "Avante",
-        ft = "avante",
-        pinned = true,
-        width = 0.3,
-        open = "AvanteToggle",
-      })
     end,
   },
 }

@@ -1,7 +1,7 @@
 return {
   {
     "t3ntxcl3s/ecolog.nvim",
-    vscode = false,
+    cond = not vim.g.vscode,
     keys = {
       { "<leader>fv", "<cmd>EcologGoto<cr>", desc = "Go to .env file" },
       { "<localleader>ep", "<cmd>EcologPeek<cr>", desc = "Peek .env variable" },
@@ -66,13 +66,11 @@ return {
       -- Controls how environment variables are extracted from code and how cmp works
       provider_patterns = true, -- true by default, when false will not check provider patterns
     },
-  },
-  {
-    "folke/which-key.nvim",
-    opts = {
-      spec = {
-        { "<localleader>e", group = "+Ecolog (.env)" },
-      },
-    },
+    config = function(_, opts)
+      require("which-key").add({
+        { "<localleader>e", desc = "+Ecolog (.env)" },
+      })
+      require("ecolog").setup(opts)
+    end,
   },
 }

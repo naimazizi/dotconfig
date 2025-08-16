@@ -1,6 +1,7 @@
 return {
   {
     "zk-org/zk-nvim",
+    cond = not vim.g.vscode,
     -- event = "BufRead */notes/*.md",
     config = function()
       require("zk").setup({
@@ -88,14 +89,7 @@ return {
         "<Cmd>ZkLinks<CR>",
         { noremap = true, silent = false, desc = "Open Link" }
       )
+      require("which-key").add({ "<localleader>z", desc = "+Zk Notes" })
     end,
-  },
-  {
-    "folke/which-key.nvim",
-    opts = {
-      spec = {
-        { "<localleader>z", group = "+Zk Notes" },
-      },
-    },
   },
 }

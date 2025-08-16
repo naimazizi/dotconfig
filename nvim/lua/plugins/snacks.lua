@@ -1,12 +1,678 @@
 return {
+  desc = "Fast and modern file picker",
   {
     "folke/snacks.nvim",
-    priority = 1000,
-    lazy = false,
-    vscode = false,
-    ---@type snacks.Config
+    cond = not vim.g.vscode,
     opts = {
-      scroll = { enabled = false },
+      picker = {
+        win = {
+          input = {
+            keys = {
+              ["<a-c>"] = {
+                "toggle_cwd",
+                mode = { "n", "i" },
+              },
+            },
+          },
+        },
+        actions = {
+          ---@param p snacks.Picker
+          toggle_cwd = function(p)
+            local cwd = vim.fs.normalize((vim.uv or vim.loop).cwd() or ".")
+            local current = p:cwd()
+            p:set_cwd(current == cwd)
+            p:find()
+          end,
+        },
+      },
+      explorer = {
+        replace_netrw = true, -- Replace netrw with the snacks explorer
+      },
+
+      words = { enabled = false },
+
+      indent = {
+        priority = 1,
+        enabled = true, -- enable indent guides
+        char = "│",
+        only_scope = false, -- only show indent guides of the scope
+        only_current = false, -- only show indent guides in the current window
+        hl = "SnacksIndent", ---@type string|string[] hl groups for indent guides
+        -- can be a list of hl groups to cycle through
+        -- hl = {
+        --     "SnacksIndent1",
+        --     "SnacksIndent2",
+        --     "SnacksIndent3",
+        --     "SnacksIndent4",
+        --     "SnacksIndent5",
+        --     "SnacksIndent6",
+        --     "SnacksIndent7",
+        --     "SnacksIndent8",
+        -- },
+      },
+      -- animate scopes. Enabled by default for Neovim >= 0.10
+      -- Works on older versions but has to trigger redraws during animation.
+      ---@class snacks.indent.animate: snacks.animate.Config
+      ---@field enabled? boolean
+      --- * out: animate outwards from the cursor
+      --- * up: animate upwards from the cursor
+      --- * down: animate downwards from the cursor
+      --- * up_down: animate up or down based on the cursor position
+      ---@field style? "out"|"up_down"|"down"|"up"
+      animate = {
+        style = "out",
+        easing = "linear",
+        duration = {
+          step = 20, -- ms per step
+          total = 500, -- maximum duration
+        },
+      },
+      ---@class snacks.indent.Scope.Config: snacks.scope.Config
+      scope = {
+        enabled = true, -- enable highlighting the current scope
+        priority = 200,
+        char = "│",
+        underline = false, -- underline the start of the scope
+        only_current = false, -- only show scope in the current window
+        hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
+      },
+      chunk = {
+        -- when enabled, scopes will be rendered as chunks, except for the
+        -- top-level scope which will be rendered as a scope.
+        enabled = false,
+        -- only show chunk scopes in the current window
+        only_current = false,
+        priority = 200,
+        hl = "SnacksIndentChunk", ---@type string|string[] hl group for chunk scopes
+        char = {
+          corner_top = "┌",
+          corner_bottom = "└",
+          -- corner_top = "╭",
+          -- corner_bottom = "╰",
+          horizontal = "─",
+          vertical = "│",
+          arrow = ">",
+        },
+      },
+
+      zen = {
+        toggles = {
+          dim = false,
+          git_signs = true,
+          -- diagnostics = false,
+          -- inlay_hints = false,
+        },
+        show = {
+          statusline = true, -- can only be shown when using the global statusline
+          tabline = false,
+        },
+      },
+    },
+    keys = {
+      {
+        "<leader>,",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "Buffers",
+      },
+      {
+        "<leader>/",
+        function()
+          Snacks.picker.grep()
+        end,
+        desc = "Grep (Root Dir)",
+      },
+      {
+        "<leader>:",
+        function()
+          Snacks.picker.command_history()
+        end,
+        desc = "Command History",
+      },
+      {
+        "<leader><space>",
+        function()
+          require("fff").find_files()
+        end,
+        desc = "Find Files (Root Dir)",
+      },
+      {
+        "<leader>n",
+        function()
+          Snacks.picker.notifications()
+        end,
+        desc = "Notification History",
+      },
+      -- find
+      {
+        "<leader>fb",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "Buffers",
+      },
+      {
+        "<leader>fB",
+        function()
+          Snacks.picker.buffers({ hidden = true, nofile = true })
+        end,
+        desc = "Buffers (all)",
+      },
+      {
+        "<leader>ff",
+        function()
+          require("fff").find_files()
+        end,
+        desc = "Find Files",
+      },
+      {
+        "<leader>fg",
+        function()
+          Snacks.picker.git_files()
+        end,
+        desc = "Find Files (git-files)",
+      },
+      {
+        "<leader>fr",
+        function()
+          Snacks.picker.recent()
+        end,
+        desc = "Recent",
+      },
+      {
+        "<leader>fR",
+        function()
+          Snacks.picker.recent({ filter = { cwd = true } })
+        end,
+        desc = "Recent (cwd)",
+      },
+      {
+        "<leader>fp",
+        function()
+          Snacks.picker.projects()
+        end,
+        desc = "Projects",
+      },
+      -- git
+      {
+        "<leader>gd",
+        function()
+          Snacks.picker.git_diff()
+        end,
+        desc = "Git Diff (hunks)",
+      },
+      {
+        "<leader>gs",
+        function()
+          Snacks.picker.git_status()
+        end,
+        desc = "Git Status",
+      },
+      {
+        "<leader>gS",
+        function()
+          Snacks.picker.git_stash()
+        end,
+        desc = "Git Stash",
+      },
+      -- Grep
+      {
+        "<leader>sb",
+        function()
+          Snacks.picker.lines()
+        end,
+        desc = "Buffer Lines",
+      },
+      {
+        "<leader>sB",
+        function()
+          Snacks.picker.grep_buffers()
+        end,
+        desc = "Grep Open Buffers",
+      },
+      {
+        "<leader>sg",
+        function()
+          Snacks.picker.grep({ root = true })
+        end,
+        desc = "Grep (Root Dir)",
+      },
+      {
+        "<leader>sG",
+        function()
+          Snacks.picker.grep({ root = true })
+        end,
+        desc = "Grep (cwd)",
+      },
+      {
+        "<leader>sp",
+        function()
+          Snacks.picker.lazy()
+        end,
+        desc = "Search for Plugin Spec",
+      },
+      {
+        "<leader>sw",
+        function()
+          Snacks.picker.grep_word()
+        end,
+        desc = "Visual selection or word (Root Dir)",
+        mode = { "n", "x" },
+      },
+      {
+        "<leader>sW",
+        function()
+          Snacks.picker.grep_word({ root = false })
+        end,
+        desc = "Visual selection or word (cwd)",
+        mode = { "n", "x" },
+      },
+      -- search
+      {
+        '<leader>s"',
+        function()
+          Snacks.picker.registers()
+        end,
+        desc = "Registers",
+      },
+      {
+        "<leader>s/",
+        function()
+          Snacks.picker.search_history()
+        end,
+        desc = "Search History",
+      },
+      {
+        "<leader>sa",
+        function()
+          Snacks.picker.autocmds()
+        end,
+        desc = "Autocmds",
+      },
+      {
+        "<leader>sc",
+        function()
+          Snacks.picker.command_history()
+        end,
+        desc = "Command History",
+      },
+      {
+        "<leader>sC",
+        function()
+          Snacks.picker.commands()
+        end,
+        desc = "Commands",
+      },
+      {
+        "<leader>sd",
+        function()
+          Snacks.picker.diagnostics()
+        end,
+        desc = "Diagnostics",
+      },
+      {
+        "<leader>sD",
+        function()
+          Snacks.picker.diagnostics_buffer()
+        end,
+        desc = "Buffer Diagnostics",
+      },
+      {
+        "<leader>sh",
+        function()
+          Snacks.picker.help()
+        end,
+        desc = "Help Pages",
+      },
+      {
+        "<leader>sH",
+        function()
+          Snacks.picker.highlights()
+        end,
+        desc = "Highlights",
+      },
+      {
+        "<leader>si",
+        function()
+          Snacks.picker.icons()
+        end,
+        desc = "Icons",
+      },
+      {
+        "<leader>sj",
+        function()
+          Snacks.picker.jumps()
+        end,
+        desc = "Jumps",
+      },
+      {
+        "<leader>sk",
+        function()
+          Snacks.picker.keymaps()
+        end,
+        desc = "Keymaps",
+      },
+      {
+        "<leader>sl",
+        function()
+          Snacks.picker.loclist()
+        end,
+        desc = "Location List",
+      },
+      {
+        "<leader>sM",
+        function()
+          Snacks.picker.man()
+        end,
+        desc = "Man Pages",
+      },
+      {
+        "<leader>sm",
+        function()
+          Snacks.picker.marks()
+        end,
+        desc = "Marks",
+      },
+      {
+        "<leader>sR",
+        function()
+          Snacks.picker.resume()
+        end,
+        desc = "Resume",
+      },
+      {
+        "<leader>sq",
+        function()
+          Snacks.picker.qflist()
+        end,
+        desc = "Quickfix List",
+      },
+      {
+        "<leader>su",
+        function()
+          Snacks.picker.undo()
+        end,
+        desc = "Undotree",
+      },
+      -- ui
+      {
+        "<leader>uC",
+        function()
+          Snacks.picker.colorschemes()
+        end,
+        desc = "Colorschemes",
+      },
+      -- Explorer
+      {
+        "<leader>fe",
+        function()
+          Snacks.explorer()
+        end,
+        desc = "Explorer Snacks",
+      },
+      { "<leader>e", "<leader>fe", desc = "Explorer Snacks", remap = true },
+      -- Other
+      {
+        "<leader>z",
+        function()
+          Snacks.zen()
+        end,
+        desc = "Toggle Zen Mode",
+      },
+      {
+        "<leader>Z",
+        function()
+          Snacks.zen.zoom()
+        end,
+        desc = "Toggle Zoom",
+      },
+      {
+        "<leader>.",
+        function()
+          Snacks.scratch()
+        end,
+        desc = "Toggle Scratch Buffer",
+      },
+      {
+        "<leader>S",
+        function()
+          Snacks.scratch.select()
+        end,
+        desc = "Select Scratch Buffer",
+      },
+      {
+        "<leader>n",
+        function()
+          Snacks.notifier.show_history()
+        end,
+        desc = "Notification History",
+      },
+      {
+        "<leader>bd",
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = "Delete Buffer",
+      },
+      {
+        "<leader>cR",
+        function()
+          Snacks.rename.rename_file()
+        end,
+        desc = "Rename File",
+      },
+      {
+        "<leader>gB",
+        function()
+          Snacks.gitbrowse()
+        end,
+        desc = "Git Browse",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>gg",
+        function()
+          Snacks.lazygit()
+        end,
+        desc = "Lazygit",
+      },
+      {
+        "<leader>un",
+        function()
+          Snacks.notifier.hide()
+        end,
+        desc = "Dismiss All Notifications",
+      },
+      {
+        "<c-/>",
+        function()
+          Snacks.terminal()
+        end,
+        desc = "Toggle Terminal",
+      },
+      {
+        "<c-_>",
+        function()
+          Snacks.terminal()
+        end,
+        desc = "which_key_ignore",
+      },
+      {
+        "]]",
+        function()
+          Snacks.words.jump(vim.v.count1)
+        end,
+        desc = "Next Reference",
+        mode = { "n", "t" },
+      },
+      {
+        "[[",
+        function()
+          Snacks.words.jump(-vim.v.count1)
+        end,
+        desc = "Prev Reference",
+        mode = { "n", "t" },
+      },
+    },
+  },
+  {
+    "folke/todo-comments.nvim",
+    cond = not vim.g.vscode,
+  -- stylua: ignore
+  keys = {
+      { "<leader>st", function() Snacks.picker.todo_comments() end,       desc = "Todo" },
+      { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end,  desc = "Todo/Fix/Fixme" },
+  },
+  },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    ---@type Flash.Config
+    opts = {},
+    specs = {
+      {
+        "folke/snacks.nvim",
+        opts = {
+          picker = {
+            win = {
+              input = {
+                keys = {
+                  ["<a-f>"] = { "flash", mode = { "n", "i" } },
+                  ["f"] = { "flash" },
+                },
+              },
+            },
+            actions = {
+              flash = function(picker)
+                require("flash").jump({
+                  pattern = "^",
+                  label = { after = { 0, 0 } },
+                  search = {
+                    mode = "search",
+                    exclude = {
+                      function(win)
+                        return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "snacks_picker_list"
+                      end,
+                    },
+                  },
+                  action = function(match)
+                    local idx = picker.list:row2idx(match.pos[1])
+                    picker.list:_move(idx, true, true)
+                  end,
+                })
+              end,
+            },
+          },
+        },
+      },
+    },
+    keys = {
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote Flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter Search",
+      },
+      {
+        "<c-f>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
+    },
+  },
+  -- better diagnostics list and others
+  {
+    "folke/trouble.nvim",
+    cond = not vim.g.vscode,
+    cmd = { "Trouble" },
+    opts = {
+      modes = {
+        lsp = {
+          win = { position = "right" },
+        },
+      },
+    },
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols (Trouble)" },
+      { "<leader>cS", "<cmd>Trouble lsp toggle<cr>", desc = "LSP references/definitions/... (Trouble)" },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+      {
+        "[q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").prev({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cprev)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Previous Trouble/Quickfix Item",
+      },
+      {
+        "]q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").next({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cnext)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Next Trouble/Quickfix Item",
+      },
+    },
+  },
+  -- Finds and lists all of the TODO, HACK, BUG, etc comment
+  -- in your project and loads them into a browsable list.
+  {
+    "folke/todo-comments.nvim",
+    cond = not vim.g.vscode,
+    cmd = { "TodoTrouble" },
+    event = "VeryLazy",
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "]t", function() require("todo-comments").jump_next() end, desc = "Next Todo Comment" },
+      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous Todo Comment" },
+      { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "Todo (Trouble)" },
+      { "<leader>xT", "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
     },
   },
 }

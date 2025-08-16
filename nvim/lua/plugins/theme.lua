@@ -1,9 +1,9 @@
 return {
   {
     "thesimonho/kanagawa-paper.nvim",
+    cond = not vim.g.vscode,
     lazy = false,
     priority = 1000,
-    vscode = false,
     opts = {
 
       -- enable undercurls for underlined text
@@ -58,11 +58,14 @@ return {
         mini = true,
       },
     },
+    config = function()
+      vim.cmd([[colorscheme kanagawa-paper]])
+    end,
   },
   {
     "webhooked/kanso.nvim",
+    cond = not vim.g.vscode,
     lazy = false,
-    vscode = false,
     priority = 1000,
     config = function()
       -- Default options:
@@ -97,7 +100,7 @@ return {
 
   {
     "vague2k/vague.nvim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    lazy = true, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000, -- make sure to load this before all the other plugins
     config = function()
       require("vague").setup({

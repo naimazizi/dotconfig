@@ -1,25 +1,11 @@
 return {
   {
     "dmtrKovalenko/fff.nvim",
+    cond = not vim.g.vscode,
     build = "cargo build --release",
-    vscode = false,
+    -- or if you are using nixos
+    -- build = "nix run .#release",
     config = function()
-      vim.keymap.set("n", "<leader><space>", function()
-        require("fff").find_files()
-      end, { noremap = true, desc = "Find Files (cwd)" })
-
-      vim.keymap.set("n", "<leader>ff", function()
-        require("fff").find_files()
-      end, { noremap = true, desc = "Find Files (Root Dir)" })
-
-      vim.keymap.set("n", "<leader>fF", function()
-        require("fff").find_files()
-      end, { noremap = true, desc = "Find Files (cwd)" })
-
-      vim.keymap.set("n", "<leader>fg", function()
-        require("fff").find_in_git_root()
-      end, { noremap = true, desc = "Find Files (git-files)" })
-
       require("fff").setup({
         -- Core settings
         base_path = vim.fn.getcwd(), -- Base directory for file indexing
