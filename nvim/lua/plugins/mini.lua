@@ -39,6 +39,8 @@ return {
         },
       })
 
+      require("mini.pairs").setup()
+
       require("mini.comment").setup( -- No need to copy this inside `setup()`. Will be used automatically.
         {
           -- Options which control module behavior
