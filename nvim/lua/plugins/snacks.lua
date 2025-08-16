@@ -1,5 +1,4 @@
 return {
-  desc = "Fast and modern file picker",
   {
     "folke/snacks.nvim",
     cond = not vim.g.vscode,
@@ -37,28 +36,17 @@ return {
         char = "│",
         only_scope = false, -- only show indent guides of the scope
         only_current = false, -- only show indent guides in the current window
-        hl = "SnacksIndent", ---@type string|string[] hl groups for indent guides
-        -- can be a list of hl groups to cycle through
-        -- hl = {
-        --     "SnacksIndent1",
-        --     "SnacksIndent2",
-        --     "SnacksIndent3",
-        --     "SnacksIndent4",
-        --     "SnacksIndent5",
-        --     "SnacksIndent6",
-        --     "SnacksIndent7",
-        --     "SnacksIndent8",
-        -- },
+        hl = {
+          "SnacksIndent1",
+          "SnacksIndent2",
+          "SnacksIndent3",
+          "SnacksIndent4",
+          "SnacksIndent5",
+          "SnacksIndent6",
+          "SnacksIndent7",
+          "SnacksIndent8",
+        },
       },
-      -- animate scopes. Enabled by default for Neovim >= 0.10
-      -- Works on older versions but has to trigger redraws during animation.
-      ---@class snacks.indent.animate: snacks.animate.Config
-      ---@field enabled? boolean
-      --- * out: animate outwards from the cursor
-      --- * up: animate upwards from the cursor
-      --- * down: animate downwards from the cursor
-      --- * up_down: animate up or down based on the cursor position
-      ---@field style? "out"|"up_down"|"down"|"up"
       animate = {
         style = "out",
         easing = "linear",
@@ -67,7 +55,6 @@ return {
           total = 500, -- maximum duration
         },
       },
-      ---@class snacks.indent.Scope.Config: snacks.scope.Config
       scope = {
         enabled = true, -- enable highlighting the current scope
         priority = 200,
@@ -107,7 +94,63 @@ return {
           tabline = false,
         },
       },
+      toggle = {
+        map = vim.keymap.set, -- keymap.set function to use
+        which_key = true, -- integrate with which-key to show enabled/disabled icons and colors
+        notify = true, -- show a notification when toggling
+        -- icons for enabled/disabled states
+        icon = {
+          enabled = " ",
+          disabled = " ",
+        },
+        -- colors for enabled/disabled states
+        color = {
+          enabled = "green",
+          disabled = "yellow",
+        },
+        wk_desc = {
+          enabled = "Disable ",
+          disabled = "Enable ",
+        },
+      },
     },
+    config = function(_, opts)
+      require("snacks").setup(opts)
+
+      vim.g.autoformat = true
+
+      Snacks.toggle
+        .new({
+          id = "Format on Save",
+          name = "Format on Save",
+          get = function()
+            return vim.g.autoformat
+          end,
+          set = function(_)
+            vim.g.autoformat = not vim.g.autoformat
+          end,
+        })
+        :map("<leader>uf")
+      Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
+      Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
+      Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
+      Snacks.toggle.diagnostics():map("<leader>ud")
+      Snacks.toggle.line_number():map("<leader>ul")
+      Snacks.toggle
+        .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "Conceal Level" })
+        :map("<leader>uc")
+      Snacks.toggle
+        .option("showtabline", { off = 0, on = vim.o.showtabline > 0 and vim.o.showtabline or 2, name = "Tabline" })
+        :map("<leader>uA")
+      Snacks.toggle.treesitter():map("<leader>uT")
+      Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
+      Snacks.toggle.dim():map("<leader>uD")
+      Snacks.toggle.animate():map("<leader>ua")
+      Snacks.toggle.indent():map("<leader>ug")
+      Snacks.toggle.scroll():map("<leader>uS")
+      Snacks.toggle.profiler():map("<leader>dpp")
+      Snacks.toggle.profiler_highlights():map("<leader>dph")
+    end,
     keys = {
       {
         "<leader>,",
@@ -517,19 +560,8 @@ return {
     },
   },
   {
-    "folke/todo-comments.nvim",
-    cond = not vim.g.vscode,
-  -- stylua: ignore
-  keys = {
-      { "<leader>st", function() Snacks.picker.todo_comments() end,       desc = "Todo" },
-      { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end,  desc = "Todo/Fix/Fixme" },
-  },
-  },
-  {
     "folke/flash.nvim",
     event = "VeryLazy",
-    ---@type Flash.Config
-    opts = {},
     specs = {
       {
         "folke/snacks.nvim",
@@ -673,6 +705,8 @@ return {
       { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous Todo Comment" },
       { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "Todo (Trouble)" },
       { "<leader>xT", "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
+      { "<leader>st", function() Snacks.picker.todo_comments() end,       desc = "Todo" },
+      { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end,  desc = "Todo/Fix/Fixme" },
     },
   },
 }
