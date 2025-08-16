@@ -418,7 +418,7 @@ return {
         desc = "Marks",
       },
       {
-        "<leader>sR",
+        "<leader>se",
         function()
           Snacks.picker.resume()
         end,

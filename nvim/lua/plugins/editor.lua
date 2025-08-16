@@ -73,7 +73,7 @@ return {
     cmd = "GrugFar",
     keys = {
       {
-        "<leader>sr",
+        "<leader>sR",
         function()
           local grug = require("grug-far")
           local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
@@ -83,6 +83,14 @@ return {
               filesFilter = ext and ext ~= "" and "*." .. ext or nil,
             },
           })
+        end,
+        mode = { "n", "v" },
+        desc = "Search and Replace All File",
+      },
+      {
+        "<leader>sr",
+        function()
+          require("grug-far").with_visual_selection({ prefills = { paths = vim.fn.expand("%") } })
         end,
         mode = { "n", "v" },
         desc = "Search and Replace",
