@@ -88,31 +88,136 @@ return {
   },
 
   -- fancy UI for the debugger
+  -- {
+  --   "rcarriga/nvim-dap-ui",
+  --   cond = not vim.g.vscode,
+  --   dependencies = { "nvim-neotest/nvim-nio" },
+  --   -- stylua: ignore
+  --   keys = {
+  --     { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
+  --     { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
+  --   },
+  --   opts = {},
+  --   config = function(_, opts)
+  --     local dap = require("dap")
+  --     local dapui = require("dapui")
+  --     dapui.setup(opts)
+  --     dap.listeners.after.event_initialized["dapui_config"] = function()
+  --       dapui.open({})
+  --     end
+  --     dap.listeners.before.event_terminated["dapui_config"] = function()
+  --       dapui.close({})
+  --     end
+  --     dap.listeners.before.event_exited["dapui_config"] = function()
+  --       dapui.close({})
+  --     end
+  --   end,
+  -- },
   {
-    "rcarriga/nvim-dap-ui",
-    dependencies = { "nvim-neotest/nvim-nio" },
-    -- stylua: ignore
-    keys = {
-      { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
-      { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
-    },
+    "igorlfs/nvim-dap-view",
+    ---@module 'dap-view'
+    ---@type dapview.Config
+    cond = not vim.g.vscode,
     opts = {},
-    config = function(_, opts)
-      local dap = require("dap")
-      local dapui = require("dapui")
-      dapui.setup(opts)
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open({})
+    config = function()
+      require("dap-view").setup({
+        winbar = {
+          sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl", "console" },
+          default_section = "breakpoints",
+          base_sections = {
+            breakpoints = {
+              keymap = "B",
+              label = " [B]",
+              short_label = "[B]",
+              action = function()
+                require("dap-view.views").switch_to_view("breakpoints")
+              end,
+            },
+            scopes = {
+              keymap = "S",
+              label = "󰂥 [S]",
+              short_label = "[S]",
+              action = function()
+                require("dap-view.views").switch_to_view("scopes")
+              end,
+            },
+            exceptions = {
+              keymap = "E",
+              label = "󰢃 [E]",
+              short_label = "[E]",
+              action = function()
+                require("dap-view.views").switch_to_view("exceptions")
+              end,
+            },
+            watches = {
+              keymap = "W",
+              label = "󰛐 [W]",
+              short_label = "[W]",
+              action = function()
+                require("dap-view.views").switch_to_view("watches")
+              end,
+            },
+            threads = {
+              keymap = "T",
+              label = "󱉯 [T]",
+              short_label = "[T]",
+              action = function()
+                require("dap-view.views").switch_to_view("threads")
+              end,
+            },
+            repl = {
+              keymap = "R",
+              label = "󰯃 [R]",
+              short_label = "[R]",
+              action = function()
+                require("dap-view.repl").show()
+              end,
+            },
+            console = {
+              keymap = "C",
+              label = "󰆍 [C]",
+              short_label = "[C]",
+              action = function()
+                require("dap-view.term").show()
+              end,
+            },
+          },
+          controls = {
+            enabled = true,
+          },
+        },
+        windows = {
+          terminal = {
+            -- hide = { "go", "delve" },
+          },
+        },
+      })
+      local dap, dv = require("dap"), require("dap-view")
+      -- dap.defaults.fallback.force_external_terminal = true
+      -- dap.defaults.fallback.terminal_win_cmd = "belowright new | resize 15"
+      dap.listeners.before.attach["dap-view-config"] = function()
+        dv.open()
       end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close({})
+      dap.listeners.before.launch["dap-view-config"] = function()
+        dv.open()
       end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close({})
+      dap.listeners.before.event_terminated["dap-view-config"] = function()
+        dv.close()
+      end
+      dap.listeners.before.event_exited["dap-view-config"] = function()
+        dv.close()
       end
     end,
+    keys = {
+      {
+        "<leader>du",
+        function()
+          require("dap-view").toggle({})
+        end,
+        desc = "Dap UI",
+      },
+    },
   },
-
   -- mason.nvim integration
   {
     "jay-babu/mason-nvim-dap.nvim",

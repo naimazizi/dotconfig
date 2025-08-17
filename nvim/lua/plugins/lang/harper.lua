@@ -34,3 +34,5 @@ vim.lsp.config("harper_ls", {
   },
 })
 vim.lsp.enable("harper_ls")
+
+return {}

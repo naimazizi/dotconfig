@@ -47,10 +47,10 @@ return {
     "mfussenegger/nvim-lint",
     cond = not vim.g.vscode,
     optional = true,
-    opts = function(_, opts)
+    opts = function()
+      lint = require("lint")
       for _, ft in ipairs(sql_ft) do
-        opts.linters_by_ft[ft] = opts.linters_by_ft[ft] or {}
-        table.insert(opts.linters_by_ft[ft], "sqlfluff")
+        lint.linters_by_ft[ft] = "sqlfluff"
       end
     end,
   },
