@@ -10,21 +10,16 @@ return {
         -- Core settings
         base_path = vim.fn.getcwd(), -- Base directory for file indexing
         max_results = 100, -- Maximum search results to display
-        max_threads = 4, -- Maximum threads for fuzzy search
+        max_threads = 8, -- Maximum threads for fuzzy search
         prompt = "🪿 ", -- Input prompt symbol
         title = "FFF Files", -- Window title
         ui_enabled = true, -- Enable UI (default: true)
 
-        -- Window dimensions
-        width = 0.8, -- Window width as fraction of screen
-        height = 0.8, -- Window height as fraction of screen
-
         -- Preview configuration
         preview = {
           enabled = true, -- Enable preview pane
-          width = 0.5, -- Preview width as fraction of window
-          max_lines = 5000, -- Maximum lines to load
-          max_size = 10 * 1024 * 1024, -- Maximum file size (10MB)
+          max_lines = 1000, -- Maximum lines to load
+          max_size = 1 * 1024 * 1024, -- Maximum file size (1MB)
           imagemagick_info_format_str = "%m: %wx%h, %[colorspace], %q-bit", -- ImageMagick info format
           line_numbers = false, -- Show line numbers in preview
           wrap_lines = false, -- Wrap long lines
@@ -38,14 +33,6 @@ return {
           },
         },
 
-        -- Layout configuration (alternative to width/height)
-        layout = {
-          prompt_position = "top", -- Position of prompt ('top' or 'bottom')
-          preview_position = "right", -- Position of preview ('right' or 'left')
-          preview_width = 0.4, -- Width of preview pane
-          height = 0.8, -- Window height
-          width = 0.8, -- Window width
-        },
 
         -- Keymaps
         keymaps = {

@@ -1,6 +1,7 @@
 ---@param config {type?:string, args?:string[]|fun():string[]?}
 local function get_args(config)
-  local args = type(config.args) == "function" and (config.args() or {}) or config.args or {} --[[@as string[] | string ]]
+  local args = type(config.args) == "function" and (config.args() or {}) or config.args or
+      {} --[[@as string[] | string ]]
   local args_str = type(args) == "table" and table.concat(args, " ") or args --[[@as string]]
 
   config = vim.deepcopy(config)
@@ -24,7 +25,7 @@ return {
     desc = "Debugging support. Requires language specific adapters to be configured. (see lang extras)",
 
     dependencies = {
-      "rcarriga/nvim-dap-ui",
+      -- "rcarriga/nvim-dap-ui",
       -- virtual text for the debugger
       {
         "theHamsta/nvim-dap-virtual-text",
@@ -32,25 +33,24 @@ return {
       },
     },
 
-    -- stylua: ignore
     keys = {
       { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
-      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
-      { "<leader>dc", function() require("dap").continue() end, desc = "Run/Continue" },
-      { "<leader>da", function() require("dap").continue({ before = get_args }) end, desc = "Run with Args" },
-      { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
-      { "<leader>dg", function() require("dap").goto_() end, desc = "Go to Line (No Execute)" },
-      { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
-      { "<leader>dj", function() require("dap").down() end, desc = "Down" },
-      { "<leader>dk", function() require("dap").up() end, desc = "Up" },
-      { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
-      { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
-      { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
-      { "<leader>dP", function() require("dap").pause() end, desc = "Pause" },
-      { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
-      { "<leader>ds", function() require("dap").session() end, desc = "Session" },
-      { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
-      { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+      { "<leader>db", function() require("dap").toggle_breakpoint() end,                                    desc = "Toggle Breakpoint" },
+      { "<leader>dc", function() require("dap").continue() end,                                             desc = "Run/Continue" },
+      { "<leader>da", function() require("dap").continue({ before = get_args }) end,                        desc = "Run with Args" },
+      { "<leader>dC", function() require("dap").run_to_cursor() end,                                        desc = "Run to Cursor" },
+      { "<leader>dg", function() require("dap").goto_() end,                                                desc = "Go to Line (No Execute)" },
+      { "<leader>di", function() require("dap").step_into() end,                                            desc = "Step Into" },
+      { "<leader>dj", function() require("dap").down() end,                                                 desc = "Down" },
+      { "<leader>dk", function() require("dap").up() end,                                                   desc = "Up" },
+      { "<leader>dl", function() require("dap").run_last() end,                                             desc = "Run Last" },
+      { "<leader>do", function() require("dap").step_out() end,                                             desc = "Step Out" },
+      { "<leader>dO", function() require("dap").step_over() end,                                            desc = "Step Over" },
+      { "<leader>dP", function() require("dap").pause() end,                                                desc = "Pause" },
+      -- { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+      { "<leader>ds", function() require("dap").session() end,                                              desc = "Session" },
+      { "<leader>dt", function() require("dap").terminate() end,                                            desc = "Terminate" },
+      -- { "<leader>dw", function() require("dap.ui.widgets").hover() end,                                     desc = "Widgets" },
     },
 
     config = function()
@@ -127,7 +127,7 @@ return {
           base_sections = {
             breakpoints = {
               keymap = "B",
-              label = " [B]",
+              label = " [B]reakpoint",
               short_label = "[B]",
               action = function()
                 require("dap-view.views").switch_to_view("breakpoints")
@@ -135,7 +135,7 @@ return {
             },
             scopes = {
               keymap = "S",
-              label = "󰂥 [S]",
+              label = "󰂥 [S]cope",
               short_label = "[S]",
               action = function()
                 require("dap-view.views").switch_to_view("scopes")
@@ -143,7 +143,7 @@ return {
             },
             exceptions = {
               keymap = "E",
-              label = "󰢃 [E]",
+              label = "󰢃 [E]xception",
               short_label = "[E]",
               action = function()
                 require("dap-view.views").switch_to_view("exceptions")
@@ -151,7 +151,7 @@ return {
             },
             watches = {
               keymap = "W",
-              label = "󰛐 [W]",
+              label = "󰛐 [W]atch",
               short_label = "[W]",
               action = function()
                 require("dap-view.views").switch_to_view("watches")
@@ -159,7 +159,7 @@ return {
             },
             threads = {
               keymap = "T",
-              label = "󱉯 [T]",
+              label = "󱉯 [T]hread",
               short_label = "[T]",
               action = function()
                 require("dap-view.views").switch_to_view("threads")
@@ -167,7 +167,7 @@ return {
             },
             repl = {
               keymap = "R",
-              label = "󰯃 [R]",
+              label = "󰯃 [R]epl",
               short_label = "[R]",
               action = function()
                 require("dap-view.repl").show()
@@ -175,7 +175,7 @@ return {
             },
             console = {
               keymap = "C",
-              label = "󰆍 [C]",
+              label = "󰆍 [C]onsole",
               short_label = "[C]",
               action = function()
                 require("dap-view.term").show()
@@ -188,8 +188,20 @@ return {
         },
         windows = {
           terminal = {
-            -- hide = { "go", "delve" },
+            hide = { "delve" },
           },
+          anchor = function()
+            -- Anchor to the first terminal window found in the current tab
+            -- Tweak according to your needs
+            local windows = vim.api.nvim_tabpage_list_wins(0)
+
+            for _, win in ipairs(windows) do
+              local bufnr = vim.api.nvim_win_get_buf(win)
+              if vim.bo[bufnr].buftype == "terminal" then
+                return win
+              end
+            end
+          end,
         },
       })
       local dap, dv = require("dap"), require("dap-view")

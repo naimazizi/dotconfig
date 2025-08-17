@@ -486,9 +486,7 @@ return {
       },
       {
         "<leader>n",
-        function()
-          Snacks.notifier.show_history()
-        end,
+        "<cmd>Fidget history<cr>",
         desc = "Notification History",
       },
       {
