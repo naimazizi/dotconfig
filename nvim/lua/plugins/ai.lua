@@ -32,7 +32,7 @@ return {
     },
     config = function(_, opts)
       wk = require("which-key")
-      wk.add({ "<leader>a", group = "Avante (ai)" })
+      wk.add({ "<leader>a", group = "avante (ai)" })
 
       require("avante").setup(opts)
     end,
