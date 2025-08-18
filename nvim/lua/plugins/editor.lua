@@ -117,7 +117,6 @@ return {
   },
   {
     "RRethy/vim-illuminate",
-    cond = not vim.g.vscode,
     event = "BufRead",
     opts = {
       delay = 200,
@@ -129,20 +128,22 @@ return {
     config = function(_, opts)
       require("illuminate").configure(opts)
 
-      Snacks.toggle({
-        name = "Illuminate",
-        get = function()
-          return not require("illuminate.engine").is_paused()
-        end,
-        set = function(enabled)
-          local m = require("illuminate")
-          if enabled then
-            m.resume()
-          else
-            m.pause()
-          end
-        end,
-      }):map("<leader>ux")
+      if not vim.g.vscode then
+        Snacks.toggle({
+          name = "Illuminate",
+          get = function()
+            return not require("illuminate.engine").is_paused()
+          end,
+          set = function(enabled)
+            local m = require("illuminate")
+            if enabled then
+              m.resume()
+            else
+              m.pause()
+            end
+          end,
+        }):map("<leader>ux")
+      end
 
       local function map(key, dir, buffer)
         vim.keymap.set("n", key, function()
@@ -226,8 +227,7 @@ return {
         mode = { "n", "x" },
         desc = "Open Yank History",
       },
-        -- stylua: ignore
-    { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank Text" },
+      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank Text" },
       { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put Text After Cursor" },
       { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put Text Before Cursor" },
       { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put Text After Selection" },
