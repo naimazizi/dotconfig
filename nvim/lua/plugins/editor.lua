@@ -58,6 +58,14 @@ return {
     },
     init = function()
       vim.g.barbar_auto_setup = false
+      require("persistence").setup({
+        options = {--[[<other options>,]]
+          "globals",
+        },
+        pre_save = function()
+          vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
+        end,
+      })
     end,
     opts = {
       -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:

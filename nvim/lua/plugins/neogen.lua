@@ -1,6 +1,7 @@
 return {
   "danymat/neogen",
   cmd = "Neogen",
+  event = { "BufWritePre" },
   keys = {
     {
       "<leader>cn",

@@ -2,6 +2,7 @@ return {
   {
     "nvim-neotest/neotest",
     cond = not vim.g.vscode,
+    event = { "BufReadPre" },
     dependencies = { "nvim-neotest/nvim-nio" },
     opts = {
       -- Can be a list of adapters like what neotest expects,

@@ -3,6 +3,7 @@ return {
     "saghen/blink.cmp",
     cond = not vim.g.vscode,
     event = "VimEnter",
+    version = "1.*",
     dependencies = {
       -- Snippet Engine
       {
@@ -63,6 +64,13 @@ return {
         },
         ghost_text = {
           enabled = vim.g.ai_cmp,
+        },
+        list = {
+          selection = {
+            preselect = function()
+              return not require("blink.cmp").snippet_active({ direction = 1 })
+            end,
+          },
         },
       },
 
@@ -154,6 +162,7 @@ return {
           "snippet_forward",
           "fallback",
         },
+        ["<S-Tab>"] = { "snippet_backward", "fallback" },
       },
     },
   },
