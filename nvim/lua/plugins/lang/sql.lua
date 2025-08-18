@@ -19,15 +19,10 @@ return {
     "stevearc/conform.nvim",
     optional = true,
     cond = not vim.g.vscode,
-    opts = function(_, opts)
-      opts.formatters.sqlfluff = {
-        args = { "format", "--dialect=ansi", "-" },
-        cwd = function()
-          return vim.fn.getcwd()
-        end,
-      }
-
-      opts.formatters.dawet_lint = {
+    event = { "BufWritePre" },
+    opts = function()
+      conform = require("conform")
+      conform.formatters.dawet_lint = {
         command = "dawet",
         args = function()
           return { "lint", "-m", vim.fn.expand("%:t:r") }
@@ -37,15 +32,15 @@ return {
       }
 
       for _, ft in ipairs(sql_ft) do
-        opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
-        -- table.insert(opts.formatters_by_ft[ft], "dawet_lint") -- slow as hell
-        table.insert(opts.formatters_by_ft[ft], "sqlfmt")
+        conform.formatters_by_ft[ft] = "sqlfmt"
+        -- conform.formatters_by_ft[ft] = "dawet_lint" -- slow
       end
     end,
   },
   {
     "mfussenegger/nvim-lint",
     cond = not vim.g.vscode,
+    event = { "BufReadPre", "BufNewFile" },
     optional = true,
     opts = function()
       lint = require("lint")

@@ -76,4 +76,18 @@ return {
       },
     },
   },
+  {
+    "stevearc/conform.nvim",
+    optional = true,
+    cond = not vim.g.vscode,
+    event = { "BufWritePre" },
+    opts = function()
+      conform = require("conform")
+      conform.formatters_by_ft["python"] = {
+        "ruff_fix",
+        "ruff_format",
+        "ruff_organize_imports",
+      }
+    end,
+  },
 }

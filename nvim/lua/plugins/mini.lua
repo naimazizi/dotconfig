@@ -115,7 +115,7 @@ return {
           silent = false,
 
           content_hooks = {
-            starter.gen_hook.adding_bullet("                           "),
+            starter.gen_hook.adding_bullet("                        "),
             starter.gen_hook.aligning("center", "center"),
           },
           evaluate_single = true,
