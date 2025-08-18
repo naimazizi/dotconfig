@@ -33,7 +33,6 @@ return {
           },
         },
 
-
         -- Keymaps
         keymaps = {
           close = "<Esc>",

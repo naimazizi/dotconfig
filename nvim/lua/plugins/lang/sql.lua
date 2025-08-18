@@ -32,8 +32,8 @@ return {
       }
 
       for _, ft in ipairs(sql_ft) do
-        conform.formatters_by_ft[ft] = "sqlfmt"
-        -- conform.formatters_by_ft[ft] = "dawet_lint" -- slow
+        conform.formatters_by_ft[ft] = { "sqlfmt" }
+        -- conform.formatters_by_ft[ft] = { "dawet_lint" } -- slow
       end
     end,
   },
@@ -44,8 +44,9 @@ return {
     optional = true,
     opts = function()
       lint = require("lint")
+      lint.linters_by_ft = lint.linters_by_ft or {}
       for _, ft in ipairs(sql_ft) do
-        lint.linters_by_ft[ft] = "sqlfluff"
+        lint.linters_by_ft[ft] = { "sqlfluff" }
       end
     end,
   },
