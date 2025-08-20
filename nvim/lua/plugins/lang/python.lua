@@ -1,3 +1,11 @@
+vim.lsp.config("ruff", {
+  init_options = {
+    settings = {
+      logLevel = "error",
+    },
+  },
+})
+
 vim.lsp.enable({ "pyrefly", "ruff" })
 
 vim.api.nvim_create_autocmd("LspAttach", {

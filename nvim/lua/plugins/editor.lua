@@ -246,4 +246,8 @@ return {
       { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put Before Applying a Filter" },
     },
   },
+  {
+    "lewis6991/spaceless.nvim",
+    event = "BufWritePre",
+  },
 }

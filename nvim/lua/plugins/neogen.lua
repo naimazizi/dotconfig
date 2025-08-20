@@ -12,6 +12,23 @@ return {
     },
   },
   opts = function(_, opts)
-    opts.snippet_engine = "luasnip"
+    if not vim.g.vscode then
+      opts.snippet_engine = "luasnip"
+    end
+    require("neogen").setup({
+      enabled = true,
+      languages = {
+        lua = {
+          template = {
+            annotation_convention = "emmylua", -- for a full list of annotation_conventions, see supported-languages below,
+          },
+        },
+        python = {
+          template = {
+            annotation_conventions = "google_docstrings",
+          },
+        },
+      },
+    })
   end,
 }

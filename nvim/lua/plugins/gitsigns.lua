@@ -22,6 +22,14 @@ return {
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
+        require("gitsigns").setup({
+          current_line_blame = true,
+          current_line_blame_opts = {
+            virt_text_pos = "right_align",
+            delay = 500,
+          },
+        })
+
         local function map(mode, l, r, desc)
           vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
         end
