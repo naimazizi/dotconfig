@@ -29,12 +29,12 @@ return {
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require("mini.surround").setup({
         mappings = {
-          add = "gsa",            -- Add surrounding in Normal and Visual modes
-          delete = "gsd",         -- Delete surrounding
-          find = "gsf",           -- Find surrounding (to the right)
-          find_left = "gsF",      -- Find surrounding (to the left)
-          highlight = "gsh",      -- Highlight surrounding
-          replace = "gsr",        -- Replace surrounding
+          add = "gsa", -- Add surrounding in Normal and Visual modes
+          delete = "gsd", -- Delete surrounding
+          find = "gsf", -- Find surrounding (to the right)
+          find_left = "gsF", -- Find surrounding (to the left)
+          highlight = "gsh", -- Highlight surrounding
+          replace = "gsr", -- Replace surrounding
           update_n_lines = "gsn", -- Update `n_lines`
         },
       })
@@ -123,19 +123,47 @@ return {
           header = logo,
           query_updaters = [[abcdefghilmoqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMOQRSTUVWXYZ]],
           items = {
-            { action = "lua require('fff').find_files()",   name = "F: Find Files",           section = "Builtin actions" },
-            { action = "lua Snacks.picker.grep()",          name = "R: Grep (Find text)",     section = "Builtin actions" },
-            { action = "lua Snacks.picker.todo_comments()", name = "T: Todos",                section = "Builtin actions" },
-            { action = "lua require('persistence').load()", name = "S: Restore Last Session", section = "Builtin actions" },
-            { action = "enew",                              name = "E: New Buffer",           section = "Builtin actions" },
-            { action = "lua Snacks.picker.projects()",      name = "P: Projects",             section = "Builtin actions" },
-            { action = "qall!",                             name = "Q: Quit Neovim",          section = "Builtin actions" },
+            {
+              action = "lua require('fff').find_files()",
+              name = "F: Find Files",
+              section = "Builtin actions",
+            },
+            {
+              action = "lua Snacks.picker.grep()",
+              name = "R: Grep (Find text)",
+              section = "Builtin actions",
+            },
+            {
+              action = "lua Snacks.picker.todo_comments()",
+              name = "T: Todos",
+              section = "Builtin actions",
+            },
+            {
+              action = "lua require('persistence').load()",
+              name = "S: Restore Last Session",
+              section = "Builtin actions",
+            },
+            {
+              action = "enew",
+              name = "E: New Buffer",
+              section = "Builtin actions",
+            },
+            {
+              action = "lua Snacks.picker.projects()",
+              name = "P: Projects",
+              section = "Builtin actions",
+            },
+            {
+              action = "qall!",
+              name = "Q: Quit Neovim",
+              section = "Builtin actions",
+            },
             {
               action = "lua Snacks.lazygit()",
               name = "G: Lazgit",
-              section = "Git"
+              section = "Git",
             },
-            { action = "Lazy",  name = "L: Lazy",  section = "Plugins" },
+            { action = "Lazy", name = "L: Lazy", section = "Plugins" },
             { action = "Mason", name = "M: Mason", section = "Plugins" },
           },
         })
@@ -154,8 +182,6 @@ return {
               local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
               local git = MiniStatusline.section_git({ trunc_width = 40 })
               local diff = MiniStatusline.section_diff({ trunc_width = 75 })
-              local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
-              local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
               ---@diagnostic disable-next-line: unused-local
               local filename = MiniStatusline.section_filename({ trunc_width = 140 })
               local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
@@ -163,16 +189,16 @@ return {
               local search = MiniStatusline.section_searchcount({ trunc_width = 75 })
 
               return MiniStatusline.combine_groups({
-                { hl = mode_hl,                 strings = { string.upper(mode) } },
-                { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp } },
+                { hl = mode_hl, strings = { string.upper(mode) } },
+                { hl = "MiniStatuslineDevinfo", strings = { git, diff } },
                 "%<", -- Mark general truncate point
                 { hl = "MiniStatuslineFilename", strings = { get_relative_filename() } },
                 "%=", -- End left alignment
-                { hl = "MacroSlots",             strings = { require("recorder").displaySlots() } },
-                { hl = "MacroStatus",            strings = { require("recorder").recordingStatus() } },
+                { hl = "MacroSlots", strings = { require("recorder").displaySlots() } },
+                { hl = "MacroStatus", strings = { require("recorder").recordingStatus() } },
                 { hl = "MiniStatuslineFilename", strings = { get_cwd() } },
                 { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
-                { hl = mode_hl,                  strings = { search, location } },
+                { hl = mode_hl, strings = { search, location } },
               })
             end,
           },
