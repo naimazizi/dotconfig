@@ -81,16 +81,6 @@ return {
     },
   },
   {
-    "Bekaboo/dropbar.nvim",
-    cond = not vim.g.vscode,
-    config = function()
-      local dropbar_api = require("dropbar.api")
-      vim.keymap.set("n", "<leader>cb", dropbar_api.pick, { desc = "Breadcrumb: Pick symbols" })
-      vim.keymap.set("n", "<leader>c[", dropbar_api.goto_context_start, { desc = "Breadcrumb: Go to start" })
-      vim.keymap.set("n", "<leader>c]", dropbar_api.select_next_context, { desc = "Breadcrumb: Select next" })
-    end,
-  },
-  {
     "RRethy/vim-illuminate",
     event = "BufRead",
     opts = {
@@ -224,5 +214,20 @@ return {
   {
     "lewis6991/spaceless.nvim",
     event = "BufWritePre",
+  },
+  {
+    "oskarrrrrrr/symbols.nvim",
+    cond = not vim.g.vscode,
+    event = "BufRead",
+    config = function()
+      local r = require("symbols.recipes")
+      require("symbols").setup(r.DefaultFilters, r.AsciiSymbols, {
+        sidebar = {
+          -- custom settings here
+          -- e.g. hide_cursor = false
+        },
+      })
+      vim.keymap.set("n", "<leader>cs", "<cmd>SymbolsToggle<CR>")
+    end,
   },
 }

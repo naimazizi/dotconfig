@@ -2,7 +2,7 @@ return {
   {
     "thesimonho/kanagawa-paper.nvim",
     cond = not vim.g.vscode,
-    lazy = true,
+    lazy = false,
     priority = 1000,
     opts = {
 
@@ -58,20 +58,7 @@ return {
       },
     },
     config = function()
-      -- vim.cmd.colorscheme("kanagawa-paper")
-    end,
-  },
-  {
-    "vague2k/vague.nvim",
-    cond = not vim.g.vscode,
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other plugins
-    config = function()
-      -- NOTE: you do not need to call setup if you don't want to.
-      require("vague").setup({
-        -- optional configuration here
-      })
-      vim.cmd("colorscheme vague")
+      vim.cmd.colorscheme("kanagawa-paper")
     end,
   },
 }

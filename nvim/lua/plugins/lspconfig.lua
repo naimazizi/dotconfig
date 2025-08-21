@@ -36,13 +36,13 @@ return {
 
           -- Find references for the word under your cursor.
           map("gr", function()
-            Snacks.picker.lsp_references()
+            Snacks.picker.lsp_references({ layout = { preset = "vscode", preview = "main" } })
           end, "[G]oto [R]eferences")
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
           map("gI", function()
-            Snacks.picker.lsp_implementations()
+            Snacks.picker.lsp_implementations({ layout = { preset = "vscode", preview = "main" } })
           end, "[G]oto [I]mplementation")
 
           -- Jump to the definition of the word under your cursor.
@@ -59,20 +59,20 @@ return {
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
           map("<leader>ss", function()
-            Snacks.picker.lsp_symbols()
+            Snacks.picker.lsp_symbols({ layout = { preset = "vscode", preview = "main" } })
           end, "Open Document Symbols")
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
           map("<leader>sS", function()
-            Snacks.picker.lsp_workspace_symbols()
+            Snacks.picker.lsp_workspace_symbols({ layout = { preset = "vscode", preview = "main" } })
           end, "Open Workspace Symbols")
 
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
           map("gy", function()
-            Snacks.picker.lsp_type_definitions()
+            Snacks.picker.lsp_type_definitions({ layout = { preset = "vscode", preview = "main" } })
           end, "[G]oto T[y]pe Definition")
 
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
