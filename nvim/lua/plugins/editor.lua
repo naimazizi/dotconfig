@@ -50,31 +50,6 @@ return {
     },
   },
   {
-    "romgrk/barbar.nvim",
-    cond = not vim.g.vscode,
-    dependencies = {
-      "lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
-      "nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
-    },
-    init = function()
-      vim.g.barbar_auto_setup = false
-      require("persistence").setup({
-        options = {--[[<other options>,]]
-          "globals",
-        },
-        pre_save = function()
-          vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
-        end,
-      })
-    end,
-    opts = {
-      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
-      -- animation = true,
-      -- insert_at_start = true,
-      -- …etc.
-    },
-  },
-  {
     "MagicDuck/grug-far.nvim",
     cond = not vim.g.vscode,
     opts = { headerMaxWidth = 80 },

@@ -1,15 +1,3 @@
-local function substitute_with_ssd(input_str)
-  return input_str:gsub("^/Volumes/ADATA%-LEGEND%-960%-MAX/", "~/ssd/")
-end
-
-local function get_relative_filename()
-  return substitute_with_ssd(vim.fn.expand("%:."))
-end
-
-local function get_cwd()
-  return substitute_with_ssd(vim.fn.fnamemodify(vim.fn.getcwd(), ":~"))
-end
-
 return {
   { -- Collection of various small independent plugins/modules
     "echasnovski/mini.nvim",
@@ -40,6 +28,44 @@ return {
       })
 
       require("mini.pairs").setup()
+
+      require("mini.align").setup()
+
+      require("mini.operators").setup({
+        evaluate = {
+          prefix = "", -- disable default mapping
+          -- Function which does the evaluation
+          func = nil,
+        },
+
+        -- Exchange text regions
+        exchange = {
+          prefix = "", -- disable default mapping
+          -- Whether to reindent new text to match previous indent
+          reindent_linewise = true,
+        },
+
+        -- Multiply (duplicate) text
+        multiply = {
+          prefix = "gm",
+          -- Function which can modify text before multiplying
+          func = nil,
+        },
+
+        -- Replace text with register
+        replace = {
+          prefix = "gv",
+          -- Whether to reindent new text to match previous indent
+          reindent_linewise = true,
+        },
+
+        -- Sort text
+        sort = {
+          prefix = "gS",
+          -- Function which does the sort
+          func = nil,
+        },
+      })
 
       require("mini.comment").setup( -- No need to copy this inside `setup()`. Will be used automatically.
         {
@@ -192,17 +218,26 @@ return {
                 { hl = mode_hl, strings = { string.upper(mode) } },
                 { hl = "MiniStatuslineDevinfo", strings = { git, diff } },
                 "%<", -- Mark general truncate point
-                { hl = "MiniStatuslineFilename", strings = { get_relative_filename() } },
+                { hl = "MiniStatuslineFilename", strings = { vim.fn.expand("%:.") } },
                 "%=", -- End left alignment
                 { hl = "MacroSlots", strings = { require("recorder").displaySlots() } },
                 { hl = "MacroStatus", strings = { require("recorder").recordingStatus() } },
-                { hl = "MiniStatuslineFilename", strings = { get_cwd() } },
+                { hl = "MiniStatuslineFilename", strings = { vim.fn.fnamemodify(vim.fn.getcwd(), ":~") } },
                 { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
                 { hl = mode_hl, strings = { search, location } },
               })
             end,
           },
         })
+
+        require("mini.tabline").setup({
+          show_icons = true,
+          tabpage_section = "left",
+        })
+
+        require("mini.icons").setup()
+
+        require("mini.move").setup()
       end
     end,
   },
