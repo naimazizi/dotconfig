@@ -227,7 +227,7 @@ return {
           -- e.g. hide_cursor = false
         },
       })
-      vim.keymap.set("n", "<leader>cs", "<cmd>SymbolsToggle<CR>")
+      vim.keymap.set("n", "<leader>cs", "<cmd>SymbolsToggle<CR>", { desc = "Symbols" })
     end,
   },
 }

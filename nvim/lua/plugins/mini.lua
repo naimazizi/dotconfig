@@ -31,6 +31,8 @@ return {
 
       require("mini.align").setup()
 
+      require("mini.move").setup()
+
       require("mini.operators").setup({
         evaluate = {
           prefix = "", -- disable default mapping
@@ -236,8 +238,6 @@ return {
         })
 
         require("mini.icons").setup()
-
-        require("mini.move").setup()
       end
     end,
   },
