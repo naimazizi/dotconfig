@@ -27,7 +27,6 @@ return {
   {
     "nvim-neotest/neotest",
     cond = not vim.g.vscode,
-    optional = true,
     dependencies = {
       "nvim-neotest/neotest-python",
     },
@@ -44,7 +43,6 @@ return {
   {
     "mfussenegger/nvim-dap",
     cond = not vim.g.vscode,
-    optional = true,
     dependencies = {
       "mfussenegger/nvim-dap-python",
             -- stylua: ignore
@@ -77,7 +75,6 @@ return {
   {
     "jay-babu/mason-nvim-dap.nvim",
     cond = not vim.g.vscode,
-    optional = true,
     opts = {
       handlers = {
         python = function() end,
@@ -86,7 +83,6 @@ return {
   },
   {
     "stevearc/conform.nvim",
-    optional = true,
     cond = not vim.g.vscode,
     event = { "BufWritePre" },
     opts = function()

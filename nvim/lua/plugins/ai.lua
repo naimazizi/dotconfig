@@ -58,7 +58,6 @@ return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     cond = not vim.g.vscode,
-    optional = true,
     ft = function(_, ft)
       vim.list_extend(ft, { "Avante" })
     end,

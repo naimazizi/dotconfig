@@ -3,7 +3,6 @@ vim.lsp.enable({ "emmylua_ls" })
 return {
   {
     "stevearc/conform.nvim",
-    optional = true,
     cond = not vim.g.vscode,
     event = { "BufWritePre" },
     opts = function()

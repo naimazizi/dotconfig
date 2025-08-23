@@ -73,7 +73,6 @@ return {
   { -- Autoformat
     "stevearc/conform.nvim",
     cond = not vim.g.vscode,
-    optional = true,
     opts = function(_, opts)
       local md_ft = { "quarto", "markdown" }
       for _, ft in ipairs(md_ft) do

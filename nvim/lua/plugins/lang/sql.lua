@@ -17,7 +17,6 @@ return {
   -- },
   {
     "stevearc/conform.nvim",
-    optional = true,
     cond = not vim.g.vscode,
     event = { "BufWritePre" },
     opts = function()
@@ -41,7 +40,6 @@ return {
     "mfussenegger/nvim-lint",
     cond = not vim.g.vscode,
     event = { "BufReadPre", "BufNewFile" },
-    optional = true,
     opts = function()
       lint = require("lint")
       lint.linters_by_ft = lint.linters_by_ft or {}
