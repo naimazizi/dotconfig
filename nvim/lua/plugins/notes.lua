@@ -89,7 +89,7 @@ return {
         "<Cmd>ZkLinks<CR>",
         { noremap = true, silent = false, desc = "Open Link" }
       )
-      require("which-key").add({ "<localleader>z", desc = "+Zk Notes" })
+      require("which-key").add({ "<localleader>z", desc = "+Zk Notes", icon = "" })
     end,
   },
 }

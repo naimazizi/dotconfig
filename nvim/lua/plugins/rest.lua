@@ -48,7 +48,7 @@ return {
     },
     config = function(_, opts)
       require("hurl").setup(opts)
-      require("which-key").add({ "<localleader>c", group = "Curl (HTTP client))" })
+      require("which-key").add({ "<localleader>c", group = "Curl (HTTP client))", icon = "󱂛" })
     end,
   },
 }

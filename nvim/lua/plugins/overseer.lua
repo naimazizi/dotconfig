@@ -55,7 +55,7 @@ return {
     },
     config = function(_, opts)
       require("overseer").setup(opts)
-      require("which-key").add({ "<leader>o", group = "overseer" })
+      require("which-key").add({ "<leader>o", group = "overseer", icon = " " })
 
       require("neotest").setup({
         consumers = {

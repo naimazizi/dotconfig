@@ -68,7 +68,7 @@ return {
     },
     config = function(_, opts)
       require("which-key").add({
-        { "<localleader>e", desc = "+Ecolog (.env)" },
+        { "<localleader>e", desc = "+Ecolog (.env)", icon = "" },
       })
       require("ecolog").setup(opts)
     end,

@@ -9,6 +9,7 @@ return {
       "folke/which-key.nvim",
       "folke/snacks.nvim",
       "zbirenbaum/copilot.lua",
+      "MeanderingProgrammer/render-markdown.nvim",
     },
     opts = {
       mode = "agentic",
@@ -31,10 +32,8 @@ return {
       },
     },
     config = function(_, opts)
-      wk = require("which-key")
-      wk.add({ "<leader>a", group = "avante (ai)" })
-
       require("avante").setup(opts)
+      require("which-key").add({ "<leader>a", group = "avante (ai)" })
     end,
     build = "make",
   },

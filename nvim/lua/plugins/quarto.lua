@@ -38,7 +38,7 @@ return {
       end, { desc = "run all cells of all languages", silent = true })
 
       require("which-key").add({
-        { "<localleader>s", desc = "Quarto (REPL)" },
+        { "<localleader>s", desc = "Quarto (REPL)", icon = "" },
       })
     end,
 
