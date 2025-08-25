@@ -23,6 +23,20 @@ return {
             p:find()
           end,
         },
+        ---@class snacks.picker.matcher.Config
+        matcher = {
+          fuzzy = true, -- use fuzzy matching
+          smartcase = true, -- use smartcase
+          ignorecase = true, -- use ignorecase
+          sort_empty = false, -- sort results when the search string is empty
+          filename_bonus = true, -- give bonus for matching file names (last part of the path)
+          file_pos = true, -- support patterns like `file:line:col` and `file:line`
+          -- the bonusses below, possibly require string concatenation and path normalization,
+          -- so this can have a performance impact for large lists and increase memory usage
+          cwd_bonus = true, -- give bonus for matching files in the cwd
+          frecency = true, -- frecency bonus
+          history_bonus = false, -- give more weight to chronological order
+        },
       },
 
       explorer = {
@@ -641,6 +655,26 @@ return {
         },
       },
     },
+    specs = {
+      "folke/snacks.nvim",
+      opts = function(_, opts)
+        return vim.tbl_deep_extend("force", opts or {}, {
+          picker = {
+            actions = require("trouble.sources.snacks").actions,
+            win = {
+              input = {
+                keys = {
+                  ["<c-t>"] = {
+                    "trouble_open",
+                    mode = { "n", "i" },
+                  },
+                },
+              },
+            },
+          },
+        })
+      end,
+    },
     keys = {
       { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
@@ -686,14 +720,41 @@ return {
     cmd = { "TodoTrouble" },
     event = "VeryLazy",
     opts = {},
-    -- stylua: ignore
     keys = {
-      { "]t", function() require("todo-comments").jump_next() end, desc = "Next Todo Comment" },
-      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous Todo Comment" },
+      {
+        "]t",
+        function()
+          require("todo-comments").jump_next()
+        end,
+        desc = "Next Todo Comment",
+      },
+      {
+        "[t",
+        function()
+          require("todo-comments").jump_prev()
+        end,
+        desc = "Previous Todo Comment",
+      },
       { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "Todo (Trouble)" },
-      { "<leader>xT", "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
-      { "<leader>st", function() Snacks.picker.todo_comments() end,       desc = "Todo" },
-      { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end,  desc = "Todo/Fix/Fixme" },
+      {
+        "<leader>xT",
+        "<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>",
+        desc = "Todo/Fix/Fixme (Trouble)",
+      },
+      {
+        "<leader>st",
+        function()
+          Snacks.picker.todo_comments()
+        end,
+        desc = "Todo",
+      },
+      {
+        "<leader>sT",
+        function()
+          Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
+        end,
+        desc = "Todo/Fix/Fixme",
+      },
     },
   },
 }

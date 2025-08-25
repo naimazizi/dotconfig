@@ -178,7 +178,7 @@ return {
             },
             {
               action = "lua Snacks.picker.projects()",
-              name = "P: Projects",
+              name = "W: Workspaces",
               section = "Builtin actions",
             },
             {
@@ -194,47 +194,6 @@ return {
             { action = "Lazy", name = "L: Lazy", section = "Plugins" },
             { action = "Mason", name = "M: Mason", section = "Plugins" },
           },
-        })
-
-        local statusline = require("mini.statusline")
-
-        statusline.section_location = function()
-          return "%2l:%-2v"
-        end
-
-        statusline.setup({
-          use_icons = vim.g.have_nerd_font,
-          content = {
-            -- Content for active window
-            active = function()
-              local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
-              local git = MiniStatusline.section_git({ trunc_width = 40 })
-              local diff = MiniStatusline.section_diff({ trunc_width = 75 })
-              ---@diagnostic disable-next-line: unused-local
-              local filename = MiniStatusline.section_filename({ trunc_width = 140 })
-              local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
-              local location = MiniStatusline.section_location({ trunc_width = 75 })
-              local search = MiniStatusline.section_searchcount({ trunc_width = 75 })
-
-              return MiniStatusline.combine_groups({
-                { hl = mode_hl, strings = { string.upper(mode) } },
-                { hl = "MiniStatuslineDevinfo", strings = { git, diff } },
-                "%<", -- Mark general truncate point
-                { hl = "MiniStatuslineFilename", strings = { vim.fn.expand("%:.") } },
-                "%=", -- End left alignment
-                { hl = "MacroSlots", strings = { require("recorder").displaySlots() } },
-                { hl = "MacroStatus", strings = { require("recorder").recordingStatus() } },
-                { hl = "MiniStatuslineFilename", strings = { vim.fn.fnamemodify(vim.fn.getcwd(), ":~") } },
-                { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
-                { hl = mode_hl, strings = { search, location } },
-              })
-            end,
-          },
-        })
-
-        require("mini.tabline").setup({
-          show_icons = true,
-          tabpage_section = "left",
         })
 
         require("mini.icons").setup()
