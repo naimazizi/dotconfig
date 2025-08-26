@@ -57,8 +57,14 @@ return {
         mini = true,
       },
     },
+  },
+  {
+    "dgox16/oldworld.nvim",
+    cond = not vim.g.vscode,
+    lazy = false,
+    priority = 1000,
     config = function()
-      vim.cmd.colorscheme("kanagawa-paper")
+      vim.cmd.colorscheme("oldworld")
     end,
   },
 }

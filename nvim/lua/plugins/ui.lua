@@ -47,7 +47,7 @@ return {
         sections = {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diagnostics" },
-          lualine_c = { "filename" },
+          lualine_c = { { "filename", path = 1, file_status = true } },
           lualine_x = {
             "encoding",
             "fileformat",
@@ -81,6 +81,7 @@ return {
                 end
               end,
             },
+            "overseer",
           },
           lualine_y = {
             { "progress", separator = " ", padding = { left = 1, right = 0 } },
