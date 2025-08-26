@@ -131,6 +131,9 @@ return {
     },
     opts = {
       options = {
+        separator_style = "slope",
+        show_close_icon = false,
+        themable = true,
         -- stylua: ignore
         close_command = function(n) Snacks.bufdelete(n) end,
         -- stylua: ignore
@@ -146,12 +149,11 @@ return {
           },
         },
         buffer_close_icon = "",
-        close_icon = "",
         left_trunc_marker = "",
         right_trunc_marker = "",
         indicator = {
           icon = "▎", -- this should be omitted if indicator style is not 'icon'
-          style = "icon",
+          style = "underline",
         },
         diagnostics_indicator = function(count, level, _diagnostics_dict, _context)
           local icon = level:match("error") and " " or " "

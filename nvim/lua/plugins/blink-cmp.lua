@@ -139,7 +139,7 @@ return {
             score_offset = 100,
             async = true,
             opts = {
-              max_completions = 3, -- Override global max_completions
+              max_completions = 2, -- Override global max_completions
             },
           },
           avante = {
@@ -164,14 +164,12 @@ return {
         preset = "super-tab",
         ["<Tab>"] = {
           function(cmp)
-            if vim.g.copilot_nes_enabled == true then
-              if vim.b[vim.api.nvim_get_current_buf()].nes_state then
-                cmp.hide()
-                return (
-                  require("copilot-lsp.nes").apply_pending_nes()
-                  and require("copilot-lsp.nes").walk_cursor_end_edit()
-                )
-              end
+            if vim.b[vim.api.nvim_get_current_buf()].nes_state then
+              cmp.hide()
+              return (
+                require("copilot-lsp.nes").apply_pending_nes()
+                and require("copilot-lsp.nes").walk_cursor_end_edit()
+              )
             end
             if cmp.snippet_active() then
               return cmp.accept()

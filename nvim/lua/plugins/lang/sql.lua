@@ -1,20 +1,20 @@
 local sql_ft = { "sql", "mysql", "plsql" }
 
 return {
-  -- {
-  --   "kndndrj/nvim-dbee",
-  --   event = "VeryLazy",
-  --   cond = not vim.g.vscode,
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --   },
-  --   build = function()
-  --     require("dbee").install()
-  --   end,
-  --   config = function()
-  --     require("dbee").setup( --[[optional config]])
-  --   end,
-  -- },
+  {
+    "kndndrj/nvim-dbee",
+    event = "VeryLazy",
+    cond = not vim.g.vscode,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+    build = function()
+      require("dbee").install()
+    end,
+    config = function()
+      require("dbee").setup( --[[optional config]])
+    end,
+  },
   {
     "stevearc/conform.nvim",
     cond = not vim.g.vscode,
