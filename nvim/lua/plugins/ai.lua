@@ -27,7 +27,7 @@ return {
         provider_opts = {
           -- Additional snacks.input options
           title = "Avante Input",
-          icon = " ",
+          icon = " ",
         },
       },
     },

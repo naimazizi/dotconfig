@@ -46,23 +46,9 @@ return {
         },
         sections = {
           lualine_a = { "mode" },
-          lualine_b = { "branch", "diagnostics" },
-          lualine_c = { { "filename", path = 1, file_status = true } },
-          lualine_x = {
-            "encoding",
-            "fileformat",
-            "filetype",
-            {
-              function()
-                return "  " .. require("dap").status()
-              end,
-              cond = function()
-                return package.loaded["dap"] and require("dap").status() ~= ""
-              end,
-              color = function()
-                return { fg = Snacks.util.color("Debug") }
-              end,
-            },
+          lualine_b = {
+            "branch",
+            "diagnostics",
             {
               "diff",
               symbols = {
@@ -81,15 +67,34 @@ return {
                 end
               end,
             },
+          },
+          lualine_c = { { "filename", path = 1, file_status = true } },
+          lualine_x = {
+            "encoding",
+            "fileformat",
+            "filetype",
+            {
+              function()
+                return "  " .. require("dap").status()
+              end,
+              cond = function()
+                return package.loaded["dap"] and require("dap").status() ~= ""
+              end,
+              color = function()
+                return { fg = Snacks.util.color("Debug") }
+              end,
+            },
+
             "overseer",
           },
           lualine_y = {
-            { "progress", separator = " ", padding = { left = 1, right = 0 } },
-            { "location", padding = { left = 0, right = 1 } },
             { require("recorder").displaySlots },
             { "harpoon2" },
           },
-          lualine_z = { "location" },
+          lualine_z = {
+            { "progress", separator = " ", padding = { left = 1, right = 0 } },
+            { "location", padding = { left = 0, right = 1 } },
+          },
         },
         inactive_sections = {
           lualine_a = {},
@@ -175,5 +180,81 @@ return {
         end,
       })
     end,
+  },
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    cond = not vim.g.vscode,
+    init = function()
+      vim.opt.laststatus = 3
+      vim.opt.splitkeep = "screen"
+    end,
+    opts = {
+      bottom = {
+        {
+          title = "Snacks Terminal",
+          ft = "snacks_terminal",
+          pinned = true,
+          size = { height = 0.2 },
+          filter = function(buf, win)
+            return vim.api.nvim_win_get_config(win).relative == ""
+          end,
+        },
+        { ft = "trouble", title = "Diagnostics", size = { height = 0.2 } },
+      },
+      left = {
+        {
+          title = "Snacks Explorer",
+          ft = "snacks_layout_box",
+          pinned = true,
+          size = { height = 0.7 },
+          filter = function(buf, win)
+            return vim.api.nvim_win_get_config(win).relative == ""
+          end,
+        },
+        {
+          title = "Symbols",
+          ft = "SymbolsSidebar",
+          open = "SymbolsToggle",
+          pinned = true,
+        },
+      },
+      right = {
+        { title = "Avante", ft = "Avante", size = { width = 0.3, height = 0.55 } },
+        { ft = "AvanteSelectedFiles", size = { width = 0.3, height = 0.05 } },
+        { ft = "AvanteInput", size = { width = 0.3, height = 0.1 } },
+        { title = "Grug Far", ft = "grug-far", size = { width = 0.3, height = 0.30 } },
+      },
+    },
+    keys = {
+      -- increase width
+      ["<c-Right>"] = function(win)
+        win:resize("width", 2)
+      end,
+      -- decrease width
+      ["<c-Left>"] = function(win)
+        win:resize("width", -2)
+      end,
+      -- increase height
+      ["<c-Up>"] = function(win)
+        win:resize("height", 2)
+      end,
+      -- decrease height
+      ["<c-Down>"] = function(win)
+        win:resize("height", -2)
+      end,
+      -- close window
+      ["q"] = function(win)
+        win:close()
+      end,
+      -- hide window
+      ["<c-q>"] = function(win)
+        win:hide()
+      end,
+      -- close sidebar
+      ["Q"] = function(win)
+        win.view.edgebar:close()
+      end,
+    },
   },
 }

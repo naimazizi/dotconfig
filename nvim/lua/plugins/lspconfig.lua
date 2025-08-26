@@ -10,14 +10,13 @@ return {
       { "mason-org/mason.nvim", opts = {} },
       "mason-org/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
-
       -- Useful status updates for LSP.
       { "j-hui/fidget.nvim", opts = {} },
-
       -- Allows extra capabilities provided by blink.cmp
       "saghen/blink.cmp",
     },
     config = function()
+      vim.lsp.inlay_hint.enable()
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
         callback = function(event)
@@ -220,7 +219,6 @@ return {
     "Wansmer/symbol-usage.nvim",
     cond = not vim.g.vscode,
     event = "LspAttach", -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
-
     config = function()
       local function h(name)
         return vim.api.nvim_get_hl(0, { name = name })
