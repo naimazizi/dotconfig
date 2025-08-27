@@ -259,4 +259,15 @@ return {
     },
   },
   { "adlrwbr/keep-split-ratio.nvim", cond = not vim.g.vscode, opts = {} },
+  {
+    "Bekaboo/dropbar.nvim",
+    cond = not vim.g.vscode,
+    event = "BufReadPre",
+    config = function()
+      local dropbar_api = require("dropbar.api")
+      vim.keymap.set("n", "<leader>cb", dropbar_api.pick, { desc = "Breadcrumb: Pick symbols" })
+      vim.keymap.set("n", "<leader>c[", dropbar_api.goto_context_start, { desc = "Breadcrumb: Go to start" })
+      vim.keymap.set("n", "<leader>c]", dropbar_api.select_next_context, { desc = "Breadcrumb: Select next" })
+    end,
+  },
 }
