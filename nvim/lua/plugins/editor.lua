@@ -225,10 +225,6 @@ return {
     },
   },
   {
-    "lewis6991/spaceless.nvim",
-    event = "BufWritePre",
-  },
-  {
     "oskarrrrrrr/symbols.nvim",
     cond = not vim.g.vscode,
     event = "BufRead",

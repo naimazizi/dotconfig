@@ -220,8 +220,9 @@ return {
         },
       },
       right = {
-        { title = "Avante", ft = "Avante", size = { width = 0.3, height = 0.55 } },
+        { title = "Avante", ft = "Avante", size = { width = 0.3, height = 0.45 } },
         { ft = "AvanteSelectedFiles", size = { width = 0.3, height = 0.05 } },
+        { ft = "AvanteTodos", size = { width = 0.3, height = 0.1 } },
         { ft = "AvanteInput", size = { width = 0.3, height = 0.1 } },
         { title = "Grug Far", ft = "grug-far", size = { width = 0.3, height = 0.30 } },
       },
@@ -257,4 +258,5 @@ return {
       end,
     },
   },
+  { "adlrwbr/keep-split-ratio.nvim", cond = not vim.g.vscode, opts = {} },
 }
