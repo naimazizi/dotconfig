@@ -18,32 +18,6 @@ return {
       "OverseerTaskAction",
       "OverseerClearCache",
     },
-    opts = {
-      dap = false,
-      task_list = {
-        bindings = {
-          ["<C-h>"] = false,
-          ["<C-j>"] = false,
-          ["<C-k>"] = false,
-          ["<C-l>"] = false,
-        },
-      },
-      form = {
-        win_opts = {
-          winblend = 0,
-        },
-      },
-      confirm = {
-        win_opts = {
-          winblend = 0,
-        },
-      },
-      task_win = {
-        win_opts = {
-          winblend = 0,
-        },
-      },
-    },
     keys = {
       { "<leader>ow", "<cmd>OverseerToggle<cr>", desc = "Task list" },
       { "<leader>oo", "<cmd>OverseerRun<cr>", desc = "Run task" },
@@ -53,8 +27,33 @@ return {
       { "<leader>ot", "<cmd>OverseerTaskAction<cr>", desc = "Task action" },
       { "<leader>oc", "<cmd>OverseerClearCache<cr>", desc = "Clear cache" },
     },
-    config = function(_, opts)
-      require("overseer").setup(opts)
+    config = function()
+      require("overseer").setup({
+        dap = false,
+        task_list = {
+          bindings = {
+            ["<C-h>"] = false,
+            ["<C-j>"] = false,
+            ["<C-k>"] = false,
+            ["<C-l>"] = false,
+          },
+        },
+        form = {
+          win_opts = {
+            winblend = 0,
+          },
+        },
+        confirm = {
+          win_opts = {
+            winblend = 0,
+          },
+        },
+        task_win = {
+          win_opts = {
+            winblend = 0,
+          },
+        },
+      })
       require("which-key").add({ "<leader>o", group = "overseer", icon = " " })
 
       require("neotest").setup({

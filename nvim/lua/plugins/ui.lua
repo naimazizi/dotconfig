@@ -190,17 +190,24 @@ return {
       vim.opt.splitkeep = "screen"
     end,
     opts = {
+      animate = {
+        enabled = false,
+      },
+      options = {
+        left = { size = 0.15 },
+        bottom = { size = 0.2 },
+        right = { size = 0.15 },
+      },
       bottom = {
+        { title = "Neotest Output", ft = "neotest-output-panel" },
+        { ft = "trouble", title = "Diagnostics" },
         {
           title = "Snacks Terminal",
           ft = "snacks_terminal",
-          pinned = true,
-          size = { height = 0.2 },
           filter = function(buf, win)
             return vim.api.nvim_win_get_config(win).relative == ""
           end,
         },
-        { ft = "trouble", title = "Diagnostics", size = { height = 0.2 } },
       },
       left = {
         {
@@ -208,23 +215,25 @@ return {
           ft = "snacks_layout_box",
           pinned = true,
           size = { height = 0.7 },
+          open = function()
+            Snacks.explorer()
+          end,
           filter = function(buf, win)
             return vim.api.nvim_win_get_config(win).relative == ""
           end,
         },
-        {
-          title = "Symbols",
-          ft = "SymbolsSidebar",
-          open = "SymbolsToggle",
-          pinned = true,
-        },
       },
       right = {
-        { title = "Avante", ft = "Avante", size = { width = 0.3, height = 0.45 } },
-        { ft = "AvanteSelectedFiles", size = { width = 0.3, height = 0.05 } },
-        { ft = "AvanteTodos", size = { width = 0.3, height = 0.1 } },
-        { ft = "AvanteInput", size = { width = 0.3, height = 0.1 } },
-        { title = "Grug Far", ft = "grug-far", size = { width = 0.3, height = 0.30 } },
+        { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
+        {
+          title = "Overseer",
+          ft = "OverseerList",
+          open = function()
+            require("overseer").open()
+          end,
+          size = { height = 0.4 },
+        },
+        { title = "Neotest Summary", ft = "neotest-summary" },
       },
     },
     keys = {

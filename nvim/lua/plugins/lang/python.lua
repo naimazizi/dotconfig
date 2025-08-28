@@ -57,8 +57,8 @@ return {
   },
   {
     "linux-cultist/venv-selector.nvim",
+    branch = "main",
     cond = not vim.g.vscode,
-    branch = "regexp", -- Use this branch for the new version
     cmd = "VenvSelect",
     opts = {
       settings = {
