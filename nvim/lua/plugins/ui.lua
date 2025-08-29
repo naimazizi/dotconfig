@@ -4,7 +4,7 @@ return {
     cond = not vim.g.vscode,
     event = "VeryLazy",
     dependencies = {
-      "echasnovski/mini.icons",
+      "nvim-mini/mini.icons",
       {
         "letieu/harpoon-lualine",
         event = "VeryLazy",
@@ -70,6 +70,8 @@ return {
           },
           lualine_c = { { "filename", path = 1, file_status = true } },
           lualine_x = {
+            "overseer",
+            "venv-selector",
             "encoding",
             "fileformat",
             "filetype",
@@ -84,8 +86,6 @@ return {
                 return { fg = Snacks.util.color("Debug") }
               end,
             },
-
-            "overseer",
           },
           lualine_y = {
             { require("recorder").displaySlots },
@@ -121,7 +121,7 @@ return {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
     cond = not vim.g.vscode,
-    dependencies = { "echasnovski/mini.icons" },
+    dependencies = { "nvim-mini/mini.icons" },
     keys = {
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },

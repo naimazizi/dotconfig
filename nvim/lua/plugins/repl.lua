@@ -3,7 +3,7 @@ return {
     "GCBallesteros/NotebookNavigator.nvim",
     cond = not vim.g.vscode,
     dependencies = {
-      "echasnovski/mini.comment",
+      "nvim-mini/mini.comment",
     },
     event = "VeryLazy",
     config = function()
