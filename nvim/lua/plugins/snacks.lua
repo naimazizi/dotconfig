@@ -183,13 +183,13 @@ return {
         end,
         desc = "Command History",
       },
-      {
-        "<leader><space>",
-        function()
-          Snacks.picker.files()
-        end,
-        desc = "Find Files (Root Dir)",
-      },
+      -- {
+      --   "<leader><space>",
+      --   function()
+      --     Snacks.picker.files()
+      --   end,
+      --   desc = "Find Files (Root Dir)",
+      -- },
       -- find
       {
         "<leader>fb",
@@ -205,13 +205,13 @@ return {
         end,
         desc = "Buffers (all)",
       },
-      {
-        "<leader>ff",
-        function()
-          Snacks.picker.files()
-        end,
-        desc = "Find Files",
-      },
+      -- {
+      --   "<leader>ff",
+      --   function()
+      --     Snacks.picker.files()
+      --   end,
+      --   desc = "Find Files",
+      -- },
       {
         "<leader>fg",
         function()

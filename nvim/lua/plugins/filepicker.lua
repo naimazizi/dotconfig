@@ -2,7 +2,7 @@ return {
   {
     "dmtrKovalenko/fff.nvim",
     build = "cargo build --release",
-    enabled = false,
+    enabled = true,
     cond = not vim.g.vscode,
     config = function()
       vim.keymap.set("n", "<leader><space>", function()

@@ -137,7 +137,8 @@ return {
           query_updaters = [[abcdefghilmoqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMOQRSTUVWXYZ]],
           items = {
             {
-              action = "lua Snacks.picker.files()",
+              -- action = "lua Snacks.picker.files()",
+              action = "lua require('fff').find_files()",
               name = "F: Find Files",
               section = "Builtin actions",
             },

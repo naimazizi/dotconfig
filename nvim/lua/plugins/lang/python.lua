@@ -6,7 +6,7 @@ vim.lsp.config("ruff", {
   },
 })
 
-vim.lsp.enable({ "pyrefly", "ruff" })
+vim.lsp.enable({ "ty", "ruff" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
