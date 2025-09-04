@@ -54,6 +54,7 @@ alias dev="limactl shell lima-box fish"
 alias nvim_remote="limactl shell lima-box nvim"
 alias nvim_update='nvim --headless "+Lazy! sync" +qa'
 alias neovide_remote="neovide --neovim-bin ~/.config/nvim-remote.sh"
+alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 
 set RG_PREFIX "rg --column --line-number --no-heading --color=always --smart-case "
 set FZF_DEFAULT_OPTS "--color=bg:-1,bg+:#363646,fg:-1,fg+:#DCD7BA,hl:#938AA9,hl+:#c4746e

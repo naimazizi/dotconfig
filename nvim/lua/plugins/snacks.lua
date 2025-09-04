@@ -92,6 +92,8 @@ return {
         },
       },
 
+      scope = {},
+
       zen = {
         toggles = {
           dim = false,
