@@ -480,7 +480,7 @@ return {
             enabled = true, -- enabled by default with caching optimization
             cache_max_files = 50, -- maximum number of files to cache blame data for (default: 50)
           },
-          -- built-in providers that are diabled by default:
+          -- built-in providers that are disabled by default:
           {
             name = "diagnostics",
             enabled = true, -- disabled by default - enable explicitly to use
@@ -509,6 +509,38 @@ return {
         debounce_ms = 500, -- unified debounce delay for all providers
         debug_mode = false, -- enable debug output for development, see CONTRIBUTE.md
       })
+    end,
+  },
+  {
+    "rachartier/tiny-code-action.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "folke/snacks.nvim",
+    },
+    event = "LspAttach",
+    cond = not vim.g.vscode,
+    opts = {
+      backend = "vim",
+      picker = "snacks",
+      signs = {
+        quickfix = { "", { link = "DiagnosticWarning" } },
+        others = { "", { link = "DiagnosticWarning" } },
+        refactor = { "", { link = "DiagnosticInfo" } },
+        ["refactor.move"] = { "󰪹", { link = "DiagnosticInfo" } },
+        ["refactor.extract"] = { "", { link = "DiagnosticError" } },
+        ["source.organizeImports"] = { "", { link = "DiagnosticWarning" } },
+        ["source.fixAll"] = { "󰃢", { link = "DiagnosticError" } },
+        ["source"] = { "", { link = "DiagnosticError" } },
+        ["rename"] = { "󰑕", { link = "DiagnosticWarning" } },
+        ["codeAction"] = { "", { link = "DiagnosticWarning" } },
+      },
+    },
+    config = function(_, opts)
+      require("tiny-code-action").setup(opts)
+
+      vim.keymap.set({ "n", "x" }, "<leader>ca", function()
+        require("tiny-code-action").code_action()
+      end, { desc = "[G]oto Code [A]ction", noremap = true, silent = true })
     end,
   },
 }

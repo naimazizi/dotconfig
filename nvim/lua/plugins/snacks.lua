@@ -23,7 +23,6 @@ return {
             p:find()
           end,
         },
-        ---@class snacks.picker.matcher.Config
         matcher = {
           fuzzy = true, -- use fuzzy matching
           smartcase = true, -- use smartcase
@@ -48,6 +47,8 @@ return {
       quickfile = {},
 
       bigfile = {},
+
+      terminal = {},
 
       indent = {
         indent = {

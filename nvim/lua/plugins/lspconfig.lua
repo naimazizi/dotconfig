@@ -28,9 +28,10 @@ return {
           --  Most Language Servers support renaming across files, etc.
           map("<leader>cr", vim.lsp.buf.rename, "[R]e[n]ame")
 
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
-          map("<leader>ca", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+          -- Disabled default code action in favor using tiny-code-action
+          -- -- Execute a code action, usually your cursor needs to be on top of an error
+          -- -- or a suggestion from your LSP for this to activate.
+          -- map("<leader>ca", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
 
           -- Find references for the word under your cursor.
           map("gr", function()
@@ -219,17 +220,9 @@ return {
     config = function()
       require("hover").setup({
         init = function()
-          -- Require providers
           require("hover.providers.lsp")
-          -- require('hover.providers.gh')
-          -- require('hover.providers.gh_user')
-          -- require('hover.providers.jira')
           require("hover.providers.dap")
-          require("hover.providers.fold_preview")
           require("hover.providers.diagnostic")
-          require("hover.providers.man")
-          -- require('hover.providers.dictionary')
-          require("hover.providers.highlight")
         end,
         preview_opts = {
           border = "single",
