@@ -17,7 +17,7 @@ return {
         actions = {
           ---@param p snacks.Picker
           toggle_cwd = function(p)
-            local cwd = vim.fs.normalize((vim.uv or vim.loop).cwd() or ".")
+            local cwd = vim.fs.normalize(vim.uv.cwd() or ".")
             local current = p:cwd()
             p:set_cwd(current == cwd)
             p:find()
@@ -465,6 +465,7 @@ return {
       {
         "<leader>z",
         function()
+          ---@diagnostic disable-next-line: missing-parameter
           Snacks.zen()
         end,
         desc = "Toggle Zen Mode",
@@ -647,8 +648,10 @@ return {
     },
   },
   -- better diagnostics list and others
+  -- TODO: change back to folke once it has been fixed
   {
-    "folke/trouble.nvim",
+    "h-michael/trouble.nvim",
+    branch = "fix/decoration-provider-api",
     cond = not vim.g.vscode,
     cmd = { "Trouble" },
     opts = {
@@ -693,7 +696,7 @@ return {
           else
             local ok, err = pcall(vim.cmd.cprev)
             if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
+              vim.notify(tostring(err), vim.log.levels.ERROR)
             end
           end
         end,
@@ -707,7 +710,7 @@ return {
           else
             local ok, err = pcall(vim.cmd.cnext)
             if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
+              vim.notify(tostring(err), vim.log.levels.ERROR)
             end
           end
         end,

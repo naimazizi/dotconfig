@@ -72,7 +72,7 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("n", "<leader>xl", function()
   local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
   if not success and err then
-    vim.notify(err, vim.log.levels.ERROR)
+    vim.notify(tostring(err), vim.log.levels.ERROR)
   end
 end, { desc = "Location List" })
 
@@ -80,7 +80,7 @@ end, { desc = "Location List" })
 vim.keymap.set("n", "<leader>xq", function()
   local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
   if not success and err then
-    vim.notify(err, vim.log.levels.ERROR)
+    vim.notify(tostring(err), vim.log.levels.ERROR)
   end
 end, { desc = "Quickfix List" })
 

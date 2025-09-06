@@ -132,6 +132,7 @@ return {
             starter.gen_hook.aligning("center", "center"),
           },
           evaluate_single = true,
+          ---@diagnostic disable-next-line: missing-parameter
           footer = os.date(),
           header = logo,
           query_updaters = [[abcdefghilmoqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMOQRSTUVWXYZ]],

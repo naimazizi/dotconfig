@@ -7,6 +7,7 @@ return {
     config = function()
       local lint = require("lint")
 
+      ---@diagnostic disable-next-line: inject-field
       lint.linters_by_ft = {
         markdown = { "markdownlint" },
       }

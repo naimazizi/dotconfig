@@ -49,6 +49,7 @@ return {
 
           local failed = 0
           for pos_id, result in pairs(results) do
+            ---@diagnostic disable-next-line: unnecessary-if
             if result.status == "failed" and tree:get_key(pos_id) then
               failed = failed + 1
             end

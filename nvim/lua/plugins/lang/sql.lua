@@ -42,6 +42,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
       lint = require("lint")
+      ---@diagnostic disable-next-line: inject-field
       lint.linters_by_ft = lint.linters_by_ft or {}
       for _, ft in ipairs(sql_ft) do
         lint.linters_by_ft[ft] = { "sqlfluff" }

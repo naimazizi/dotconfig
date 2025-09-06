@@ -59,6 +59,7 @@ return {
     event = "InsertEnter",
     cond = not vim.g.vscode,
     config = function()
+      ---@diagnostic disable-next-line: param-type-not-match, missing-parameter
       require("copilot-lsp").setup({
         nes = {
           move_count_threshold = 2,

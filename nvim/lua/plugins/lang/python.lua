@@ -1,10 +1,11 @@
-vim.lsp.config("ruff", {
+---@diagnostic disable-next-line: inject-field
+vim.lsp.config["ruff"] = {
   init_options = {
     settings = {
       logLevel = "error",
     },
   },
-})
+}
 
 vim.lsp.enable({ "ty", "ruff" })
 
@@ -15,7 +16,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if client == nil then
       return
     end
-    if client.name == "ruff" then
+    if client.name == "ruff" and client.server_capabilities then
       -- Disable hover in favor of other LSP
       client.server_capabilities.hoverProvider = false
     end

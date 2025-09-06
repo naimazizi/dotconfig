@@ -20,7 +20,7 @@ return {
         changedelete = { text = "▎" },
       },
       on_attach = function(buffer)
-        local gs = package.loaded.gitsigns
+        local gs = assert(package.loaded.gitsigns)
 
         require("gitsigns").setup({
           current_line_blame = true,

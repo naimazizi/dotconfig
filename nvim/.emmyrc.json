@@ -1,19 +1,27 @@
 {
-	"runtime": {
-		"version": "LuaJIT",
-		"requirePattern": [
-			"lua/?.lua",
-			"lua/?/init.lua",
-			"?/lua/?.lua",
-			"?/lua/?/init.lua"
-		]
-	},
-	"workspace": {
-		"library": [
-			"$VIMRUNTIME",
-			"$LLS_Addons/luvit",
-			"$HOME/.local/share/nvim/lazy"
-		],
-		"ignoreGlobs": ["**/*_spec.lua"]
-	}
+  "diagnostics": {
+    "disable": [
+      "missing-fields",
+      "undefined-field"
+    ]
+  },
+  "runtime": {
+    "requirePattern": [
+      "lua/?.lua",
+      "lua/?/init.lua",
+      "?/lua/?.lua",
+      "?/lua/?/init.lua"
+    ],
+    "version": "LuaJIT"
+  },
+  "workspace": {
+    "ignoreGlobs": [
+      "**/*_spec.lua"
+    ],
+    "library": [
+      "$VIMRUNTIME",
+      "$LLS_Addons/luvit",
+      "$HOME/.local/share/nvim/lazy"
+    ]
+  }
 }

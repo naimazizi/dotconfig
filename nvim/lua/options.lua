@@ -1,7 +1,5 @@
 -- [[ Setting options ]]
 -- See `:help vim.o`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -89,7 +87,7 @@ opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
 
 local function system(command)
-  local file = assert(io.popen(command, "r"))
+  local file = io.popen(command, "r")
   local output = file:read("*all"):gsub("%s+", "")
   file:close()
   return output

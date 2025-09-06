@@ -204,7 +204,7 @@ return {
         {
           title = "Snacks Terminal",
           ft = "snacks_terminal",
-          filter = function(buf, win)
+          filter = function(_buf, win)
             return vim.api.nvim_win_get_config(win).relative == ""
           end,
         },
@@ -218,7 +218,7 @@ return {
           open = function()
             Snacks.explorer()
           end,
-          filter = function(buf, win)
+          filter = function(_buf, win)
             return vim.api.nvim_win_get_config(win).relative == ""
           end,
         },

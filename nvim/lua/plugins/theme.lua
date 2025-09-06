@@ -2,8 +2,8 @@ return {
   {
     "thesimonho/kanagawa-paper.nvim",
     cond = not vim.g.vscode,
-    lazy = true,
-    -- priority = 1000,
+    lazy = false,
+    priority = 1000,
     opts = {
 
       -- enable undercurls for underlined text
@@ -57,14 +57,9 @@ return {
         mini = true,
       },
     },
-  },
-  {
-    "vague2k/vague.nvim",
-    cond = not vim.g.vscode,
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme("vague")
+    config = function(opts)
+      require("kanagawa-paper").setup(opts)
+      vim.cmd.colorscheme("kanagawa-paper")
     end,
   },
 }
