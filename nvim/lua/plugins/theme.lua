@@ -2,8 +2,8 @@ return {
   {
     "thesimonho/kanagawa-paper.nvim",
     cond = not vim.g.vscode,
-    lazy = false,
-    priority = 1000,
+    lazy = true,
+    -- priority = 1000,
     opts = {
 
       -- enable undercurls for underlined text
