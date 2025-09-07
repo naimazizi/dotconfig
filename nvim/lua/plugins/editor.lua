@@ -247,14 +247,6 @@ return {
     end,
   },
   {
-    "m-demare/hlargs.nvim",
-    cond = not vim.g.vscode,
-    event = "BufRead",
-    config = function()
-      require("hlargs").setup()
-    end,
-  },
-  {
     "monaqa/dial.nvim",
     event = "BufRead",
     keys = {

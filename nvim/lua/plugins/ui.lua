@@ -105,14 +105,7 @@ return {
           lualine_z = {},
         },
         tabline = {},
-        winbar = {
-          lualine_c = {
-            {
-              "navic",
-              color_correction = "dynamic",
-            },
-          },
-        },
+        winbar = {},
         inactive_winbar = {},
         extensions = {
           "avante",
@@ -276,26 +269,14 @@ return {
   },
   { "adlrwbr/keep-split-ratio.nvim", cond = not vim.g.vscode, opts = {} },
   {
-    "SmiteshP/nvim-navic",
-    dependencies = { "neovim/nvim-lspconfig" },
-    event = "VeryLazy",
+    "Bekaboo/dropbar.nvim",
     cond = not vim.g.vscode,
+    event = "BufReadPre",
     config = function()
-      require("nvim-navic").setup({ lsp = {
-        auto_attach = true,
-      } })
+      local dropbar_api = require("dropbar.api")
+      vim.keymap.set("n", "<leader>cb", dropbar_api.pick, { desc = "Breadcrumb: Pick symbols" })
+      vim.keymap.set("n", "<leader>c[", dropbar_api.goto_context_start, { desc = "Breadcrumb: Go to start" })
+      vim.keymap.set("n", "<leader>c]", dropbar_api.select_next_context, { desc = "Breadcrumb: Select next" })
     end,
   },
-  -- Disabled dropbar for now, kanagawa-paper does not support it well
-  -- {
-  --   "Bekaboo/dropbar.nvim",
-  --   cond = not vim.g.vscode,
-  --   event = "BufReadPre",
-  --   config = function()
-  --     local dropbar_api = require("dropbar.api")
-  --     vim.keymap.set("n", "<leader>cb", dropbar_api.pick, { desc = "Breadcrumb: Pick symbols" })
-  --     vim.keymap.set("n", "<leader>c[", dropbar_api.goto_context_start, { desc = "Breadcrumb: Go to start" })
-  --     vim.keymap.set("n", "<leader>c]", dropbar_api.select_next_context, { desc = "Breadcrumb: Select next" })
-  --   end,
-  -- },
 }
