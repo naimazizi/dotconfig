@@ -655,9 +655,37 @@ return {
     cond = not vim.g.vscode,
     cmd = { "Trouble" },
     opts = {
-      modes = {
-        lsp = {
-          win = { position = "right" },
+      auto_preview = false,
+      follow = true,
+      focus = true,
+      symbols = {
+        desc = "document symbols",
+        mode = "lsp_document_symbols",
+        focus = true,
+        win = { position = "bottom" },
+        filter = {
+          -- remove Package since luals uses it for control flow structures
+          ["not"] = { ft = "lua", kind = "Package" },
+          any = {
+            -- all symbol kinds for help / markdown files
+            ft = { "help", "markdown" },
+            -- default set of symbol kinds
+            kind = {
+              "Class",
+              "Constructor",
+              "Enum",
+              "Field",
+              "Function",
+              "Interface",
+              "Method",
+              "Module",
+              "Namespace",
+              "Package",
+              "Property",
+              "Struct",
+              "Trait",
+            },
+          },
         },
       },
     },
