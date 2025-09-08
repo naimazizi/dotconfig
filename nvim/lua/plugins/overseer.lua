@@ -56,6 +56,7 @@ return {
       })
       require("which-key").add({ "<leader>o", group = "overseer", icon = " " })
 
+      ---@diagnostic disable-next-line: param-type-not-match
       require("neotest").setup({
         consumers = {
           overseer = require("neotest.consumers.overseer"),

@@ -171,6 +171,7 @@ return {
       {
         "<leader>td",
         function()
+          ---@diagnostic disable-next-line: param-type-not-match
           require("neotest").run.run({ strategy = "dap" })
         end,
         desc = "Debug Nearest",

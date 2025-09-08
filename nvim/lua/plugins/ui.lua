@@ -271,7 +271,7 @@ return {
   {
     "Bekaboo/dropbar.nvim",
     cond = not vim.g.vscode,
-    event = "BufReadPre",
+    event = "BufEnter",
     config = function()
       local dropbar_api = require("dropbar.api")
       vim.keymap.set("n", "<leader>cb", dropbar_api.pick, { desc = "Breadcrumb: Pick symbols" })

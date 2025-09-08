@@ -183,7 +183,11 @@ return {
           },
         })
 
-        require("mini.icons").setup()
+        require("mini.icons").setup({
+          lsp = {
+            Copilot = { glyph = " ", hl = "Copilot" },
+          },
+        })
       end
     end,
   },
