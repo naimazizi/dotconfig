@@ -29,7 +29,6 @@ vim.o.inccommand = "split"
 vim.o.cursorline = true
 
 vim.g.ai_cmp = true
-vim.o.shell = "fish"
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0

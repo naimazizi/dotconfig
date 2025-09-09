@@ -1,4 +1,3 @@
-shell-integration= fish
 macos-option-as-alt = true
 copy-on-select = clipboard
 clipboard-read = allow 

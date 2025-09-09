@@ -25,7 +25,12 @@
 !/neovide/
 !/vim/
 !/coc/
+!/zsh/
 
 fish/fish_variables
 fish/fishd.*
 nvim/lazy-lock.json
+zsh/.zcomp*
+zsh/.zsh_sessions/
+zsh/.zsh_history
+zsh/.zim/
