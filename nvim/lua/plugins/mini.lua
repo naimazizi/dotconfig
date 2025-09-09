@@ -98,97 +98,11 @@ return {
         },
       })
 
-      if not vim.g.vscode then
-        starter = require("mini.starter")
-
-        local logo = [[
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣴⡿⠟⠛⠋⠉⠉⢩⣍⠛⠛⠿⣷⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠿⠋⠁⠀⠀⠀⠀⠀⠀⣿⣿⠀⣰⡄⠈⠻⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡿⠟⠁⢀⣠⣤⣀⣀⣀⣴⣿⣿⣿⣿⣿⣿⣿⡆⠀⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⡿⠋⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠞⠛⠛⢿⣿⣶⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⠿⠿⠿⠿⠟⠋⠁⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢀⣠⣾⠟⠋⠀⠀⠀⠀⠈⢿⣿⣿⠿⣿⠏⣸⡿⠁⣿⠟⠉⣿⣿⣠⣴⣤⣀⣀⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⢀⣀⣠⣤⣾⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣤⡞⠀⡿⠁⣴⠃⣠⡾⢿⣿⣿⣿⣿⣿⡿⠋⣠⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠻⠛⠋⠉⠀⠀⣠⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣴⣧⣼⡏⢰⡏⠀⣼⣿⠿⠿⢿⣿⣇⢰⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢿⣿⡛⠻⣷⡄⠀⠀⣼⣿⡿⠃⣠⣿⣿⣿⣿⣷⣿⠀⣼⡟⠁⠀⠀⢀⠘⢿⣿⣿⣿⠿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾
-⠀⢀⣴⣶⣶⣦⣄⡀⣹⣿⣾⠟⠿⡆⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⠀⣿⡇⠀⠀⠀⢿⡿⢸⣿⣿⣥⣤⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠟⠁
-⢠⣿⣿⣿⣿⣿⣿⣿⡿⢿⣿⣷⣶⣿⣦⣈⠙⣻⣿⣿⣿⣿⣿⣿⡀⢿⡆⣿⡇⠀⠀⠀⠀⠀⠘⠿⠿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠟⠁⠀⠀
-⠸⣿⣿⣿⣿⣿⣿⣿⣇⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡘⢿⣿⣿⡄⠀⠀⠀⢠⣴⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠟⠁⠀⠀⢠⡿
-⠀⢿⣿⣿⡿⠻⣿⣿⣿⣿⣌⠻⣯⠻⣿⣿⣿⣿⡿⠟⠉⠀⠀⠀⠉⠻⣿⣿⣿⣿⣦⡀⠀⠘⢿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⠟⠁⠀⠀⠀⣰⠿⣷
-⠀⠈⠻⣿⣷⣤⣿⣿⣿⣿⣿⣷⣼⣿⣾⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣶⡿⠋⠀⠀⢀⣠⣴⣿⢿⣦⣤
-⠀⠀⠀⠘⠻⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢿⣿⣿⣶⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⣾⡿⠛⠁⠀⠀⢀⣴⣿⣿⣿⣿⣾⠟⠉
-⠀⠀⠀⠀⠀⠀⠉⠛⠛⠛⠛⠋⠁⢀⡀⠀⠀⠀⠀⠀⢀⣤⣶⠀⠀⣀⣀⣀⡀⠀⠀⢠⡈⠛⠻⠿⣿⣿⣿⣿⣷⣶⣶⣾⣿⣿⡿⠿⠛⠋⠁⠀⣴⣶⡾⠟⠋⢁⣀⣽⣿⠟⣡⣶⣿
-    ]]
-        logo = string.rep("\n", 8) .. logo .. "\n\n"
-        starter.setup({
-          -- Whether to open starter buffer on VimEnter. Not opened if Neovim was
-          -- started with intent to show something else.
-          autoopen = true,
-
-          -- Whether to disable showing non-error feedback
-          silent = false,
-
-          content_hooks = {
-            starter.gen_hook.adding_bullet("                        "),
-            starter.gen_hook.aligning("center", "center"),
-          },
-          evaluate_single = true,
-          ---@diagnostic disable-next-line: missing-parameter
-          footer = os.date(),
-          header = logo,
-          query_updaters = [[abcdefghilmoqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMOQRSTUVWXYZ]],
-          items = {
-            {
-              -- action = "lua Snacks.picker.files()",
-              action = "lua require('fff').find_files()",
-              name = "F: Find Files",
-              section = "Builtin actions",
-            },
-            {
-              action = "lua Snacks.picker.grep()",
-              name = "R: Grep (Find text)",
-              section = "Builtin actions",
-            },
-            {
-              action = "lua Snacks.picker.todo_comments()",
-              name = "T: Todos",
-              section = "Builtin actions",
-            },
-            {
-              action = "lua require('persistence').load()",
-              name = "S: Restore Last Session",
-              section = "Builtin actions",
-            },
-            {
-              action = "enew",
-              name = "E: New Buffer",
-              section = "Builtin actions",
-            },
-            {
-              action = "lua Snacks.picker.projects()",
-              name = "W: Workspaces",
-              section = "Builtin actions",
-            },
-            {
-              action = "qall!",
-              name = "Q: Quit Neovim",
-              section = "Builtin actions",
-            },
-            {
-              action = "lua Snacks.lazygit()",
-              name = "G: Lazgit",
-              section = "Git",
-            },
-            { action = "Lazy", name = "L: Lazy", section = "Plugins" },
-            { action = "Mason", name = "M: Mason", section = "Plugins" },
-          },
-        })
-
-        require("mini.icons").setup({
-          lsp = {
-            Copilot = { glyph = " ", hl = "Copilot" },
-          },
-        })
-      end
+      require("mini.icons").setup({
+        lsp = {
+          Copilot = { glyph = " ", hl = "Copilot" },
+        },
+      })
     end,
   },
 }
