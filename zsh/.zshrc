@@ -5,6 +5,8 @@ ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 # Environment variables
 export ALIEN_USE_NERD_FONT=1
 export ALIEN_THEME="gruvbox"
+export EDITOR='nvim'
+export VISUAL='nvim'
 
 # Download zimfw plugin manager if missing.
 if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
@@ -22,8 +24,8 @@ fpath+=${ZDOTDIR}/.zfunc
 
 # Load funtion from fpath or any zsh function
 autoload -Uz fzg
-
-source ${ZIM_HOME}/init.zsh
+autoload -Uz edit-command-line
+zle -N edit-command-linej
 
 # Aliases
 alias ls='lsd'
@@ -46,3 +48,29 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Bob (Nvim)
 export PATH=$PATH:$HOME/.local/share/bob/nvim-bin
+
+# Cargo (rust)
+export PATH=$PATH:$HOME/.cargo/bin
+
+# Exclude failed history
+zshaddhistory() {
+   local j=1
+   while ([[ ${${(z)1}[$j]} == *=* ]]) {
+     ((j++))
+   }
+   whence ${${(z)1}[$j]} >| /dev/null || return 1
+ }
+
+
+# Plugin
+
+# Vi mode
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+function zvm_after_lazy_keybindings() {
+  bindkey -M vicmd 'vv' edit-command-line
+}
+
+
+# Load zim
+source ${ZIM_HOME}/init.zsh
+

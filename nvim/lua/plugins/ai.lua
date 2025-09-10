@@ -52,6 +52,9 @@ return {
         },
       },
       panel = { enabled = false },
+      server = {
+        type = "binary", -- "nodejs" | "binary"
+      },
     },
   },
   {
