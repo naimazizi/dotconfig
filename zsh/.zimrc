@@ -15,13 +15,14 @@ zmodule chrissicool/zsh-256color
 #
 
 # Theme
-zmodule eendroroy/alien
+zmodule spaceship-prompt/spaceship-prompt --name spaceship --no-submodules
 
 zmodule kiesman99/zim-zoxide
 zmodule shanwker1223/zim-alias-finder
 zmodule ssh
 zmodule direnv
 zmodule fzf
+zmodule magic-enter
 
 #
 # Completion

@@ -3,8 +3,6 @@ ZIM_CONFIG_FILE=~/.config/zsh/.zimrc
 ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 
 # Environment variables
-export ALIEN_USE_NERD_FONT=1
-export ALIEN_THEME="gruvbox"
 export EDITOR='nvim'
 export VISUAL='nvim'
 
