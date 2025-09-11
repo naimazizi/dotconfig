@@ -1,3 +1,42 @@
+local function augroup(name)
+  return vim.api.nvim_create_augroup("custom_augroup_" .. name, { clear = true })
+end
+
+-- close some filetypes with <q>
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("close_with_q"),
+  pattern = {
+    "PlenaryTestPopup",
+    "checkhealth",
+    "dbout",
+    "gitsigns-blame",
+    "grug-far",
+    "help",
+    "lspinfo",
+    "neotest-output",
+    "neotest-output-panel",
+    "neotest-summary",
+    "notify",
+    "qf",
+    "spectre_panel",
+    "startuptime",
+    "tsplayground",
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.schedule(function()
+      vim.keymap.set("n", "q", function()
+        vim.cmd("close")
+        pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
+      end, {
+        buffer = event.buf,
+        silent = true,
+        desc = "Quit buffer",
+      })
+    end)
+  end,
+})
+
 return {
   {
     "nvim-lualine/lualine.nvim",
@@ -277,6 +316,19 @@ return {
       vim.keymap.set("n", "<leader>cb", dropbar_api.pick, { desc = "Breadcrumb: Pick symbols" })
       vim.keymap.set("n", "<leader>c[", dropbar_api.goto_context_start, { desc = "Breadcrumb: Go to start" })
       vim.keymap.set("n", "<leader>c]", dropbar_api.select_next_context, { desc = "Breadcrumb: Select next" })
+    end,
+  },
+  {
+    "Fildo7525/pretty_hover",
+    cond = not vim.g.vscode,
+    event = "LspAttach",
+    opts = {},
+    config = function(opts)
+      require("pretty_hover").setup(opts)
+
+      vim.keymap.set("n", "K", function()
+        require("pretty_hover").hover()
+      end, { desc = "Hover (LSP)" })
     end,
   },
 }

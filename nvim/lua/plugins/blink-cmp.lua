@@ -38,6 +38,7 @@ return {
       "yetone/avante.nvim",
       "Kaiser-Yang/blink-cmp-avante",
       "t3ntxcl3s/ecolog.nvim",
+      "Fildo7525/pretty_hover",
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -113,7 +114,16 @@ return {
         },
         documentation = {
           auto_show = true,
-          auto_show_delay_ms = 200,
+          draw = function(opts)
+            if not opts.item or not opts.item.documentation or not opts.item.documentation.value then
+              return
+            end
+
+            local out = require("pretty_hover.parser").parse(opts.item.documentation.value)
+            opts.item.documentation.value = out:string()
+            opts.default_implementation(opts)
+          end,
+          window = { border = "single" },
         },
         ghost_text = {
           enabled = vim.g.ai_cmp,
@@ -203,7 +213,20 @@ return {
           "snippet_forward",
           "fallback",
         },
+        ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<C-e>"] = { "hide", "fallback" },
+
         ["<S-Tab>"] = { "snippet_backward", "fallback" },
+
+        ["<Up>"] = { "select_prev", "fallback" },
+        ["<Down>"] = { "select_next", "fallback" },
+        ["<C-p>"] = { "select_prev", "fallback_to_mappings" },
+        ["<C-n>"] = { "select_next", "fallback_to_mappings" },
+
+        ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+        ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+
+        ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
       },
     },
   },

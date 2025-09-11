@@ -86,7 +86,10 @@ return {
       {
         "<leader>sr",
         function()
-          require("grug-far").with_visual_selection({ prefills = { paths = vim.fn.expand("%") } })
+          require("grug-far").with_visual_selection({
+            transient = true,
+            prefills = { paths = vim.fn.expand("%") },
+          })
         end,
         mode = { "n", "v" },
         desc = "Search and Replace",
@@ -532,7 +535,7 @@ return {
 
       vim.keymap.set({ "n", "x" }, "<leader>ca", function()
         require("tiny-code-action").code_action()
-      end, { desc = "[G]oto Code [A]ction", noremap = true, silent = true })
+      end, { desc = "Code Action", noremap = true, silent = true })
     end,
   },
 }

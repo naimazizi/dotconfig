@@ -26,32 +26,32 @@ return {
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map("<leader>cr", vim.lsp.buf.rename, "[R]e[n]ame")
+          map("<leader>cr", vim.lsp.buf.rename, "Rename")
 
           -- Disabled default code action in favor using tiny-code-action
           -- -- Execute a code action, usually your cursor needs to be on top of an error
           -- -- or a suggestion from your LSP for this to activate.
-          -- map("<leader>ca", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+          -- map("<leader>ca", vim.lsp.buf.code_action, "Code Action", { "n", "x" })
 
           -- Find references for the word under your cursor.
           map("gr", function()
             Snacks.picker.lsp_references({ layout = { preset = "vscode", preview = "main" } })
-          end, "[G]oto [R]eferences")
+          end, "References")
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
           map("gI", function()
             Snacks.picker.lsp_implementations({ layout = { preset = "vscode", preview = "main" } })
-          end, "[G]oto [I]mplementation")
+          end, "Goto Implementation")
 
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
           map("gd", function()
             Snacks.picker.lsp_definitions()
-          end, "[G]oto [D]efinition")
+          end, "Goto Definition")
 
-          map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+          map("gD", vim.lsp.buf.declaration, "Goto Declaration")
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
@@ -70,7 +70,7 @@ return {
           --  the definition of its *type*, not where it was *defined*.
           map("gy", function()
             Snacks.picker.lsp_type_definitions({ layout = { preset = "vscode", preview = "main" } })
-          end, "[G]oto T[y]pe Definition")
+          end, "Goto Type Definition")
 
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
           ---@param client vim.lsp.Client
@@ -121,7 +121,7 @@ return {
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
             map("<leader>uh", function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-            end, "Toggle Inlay [H]ints")
+            end, "Toggle Inlay Hints")
           end
         end,
       })
@@ -208,45 +208,6 @@ return {
           end,
         },
       })
-    end,
-  },
-  {
-    "lewis6991/hover.nvim",
-    cond = not vim.g.vscode,
-    event = "LspAttach",
-    config = function()
-      require("hover").setup({
-        init = function()
-          require("hover.providers.lsp")
-          require("hover.providers.dap")
-          require("hover.providers.diagnostic")
-        end,
-        preview_opts = {
-          border = "single",
-        },
-        -- Whether the contents of a currently open hover window should be moved
-        -- to a :h preview-window when pressing the hover keymap.
-        preview_window = false,
-        title = true,
-        mouse_providers = {
-          "LSP",
-        },
-        mouse_delay = 1000,
-      })
-
-      -- Setup keymaps
-      vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
-      vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" })
-      vim.keymap.set("n", "<C-p>", function()
-        require("hover").hover_switch("previous")
-      end, { desc = "hover.nvim (previous source)" })
-      vim.keymap.set("n", "<C-n>", function()
-        require("hover").hover_switch("next")
-      end, { desc = "hover.nvim (next source)" })
-
-      -- Mouse support
-      vim.keymap.set("n", "<MouseMove>", require("hover").hover_mouse, { desc = "hover.nvim (mouse)" })
-      vim.o.mousemoveevent = true
     end,
   },
 }
