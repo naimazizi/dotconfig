@@ -331,4 +331,143 @@ return {
       end, { desc = "Hover (LSP)" })
     end,
   },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "LspAttach",
+    cond = not vim.g.vscode,
+    config = function()
+      require("tiny-inline-diagnostic").setup({
+        preset = "modern",
+        transparent_bg = false,
+        transparent_cursorline = true,
+        options = {
+          show_source = {
+            enabled = false,
+            if_many = true,
+          },
+          set_arrow_to_diag_color = true,
+          throttle = 20,
+          softwrap = 30,
+          multilines = {
+            enabled = true,
+            trim_whitespaces = true,
+            tabstop = 4,
+          },
+          -- Display all diagnostic messages on the cursor line, not just those under cursor
+          show_all_diags_on_cursorline = false,
+          -- Enable diagnostics in Insert mode
+          -- If enabled, consider setting throttle to 0 to avoid visual artifacts
+          enable_on_insert = false,
+          -- Enable diagnostics in Select mode (e.g., when auto-completing with Blink)
+          enable_on_select = false,
+          -- Configuration for breaking long messages into separate lines
+          break_line = {
+            enabled = true,
+            after = 30,
+          },
+          format = nil,
+          virt_texts = {
+            priority = 2048,
+          },
+        },
+        -- List of filetypes to disable the plugin for
+        disabled_ft = {},
+      })
+      vim.diagnostic.config({ virtual_text = false }) -- Disable default virtual text
+    end,
+  },
+  {
+    "oribarilan/lensline.nvim",
+    event = "LspAttach",
+    cond = not vim.g.vscode,
+    config = function()
+      require("lensline").setup({
+        providers = { -- Array format: order determines display sequence
+          {
+            name = "references",
+            enabled = true, -- enable references provider
+            quiet_lsp = true, -- suppress noisy LSP log messages (e.g., Pyright reference spam)
+          },
+          {
+            name = "last_author",
+            enabled = true, -- enabled by default with caching optimization
+            cache_max_files = 50, -- maximum number of files to cache blame data for (default: 50)
+          },
+          -- built-in providers that are disabled by default:
+          {
+            name = "diagnostics",
+            enabled = true, -- disabled by default - enable explicitly to use
+            min_level = "WARN", -- only show WARN and ERROR by default (HINT, INFO, WARN, ERROR)
+          },
+          {
+            name = "complexity",
+            enabled = false, -- disabled by default - enable explicitly to use
+            min_level = "L", -- only show L (Large) and XL (Extra Large) complexity by default
+          },
+        },
+        style = {
+          separator = " • ", -- separator between all lens attributes
+          highlight = "Comment", -- highlight group for lens text
+          prefix = "┃ ", -- prefix before lens content
+          use_nerdfont = true, -- enable nerd font icons in built-in providers
+        },
+        limits = {
+          exclude = {
+            -- see config.lua for extensive list of default patterns
+          },
+          exclude_gitignored = true, -- respect .gitignore by not processing ignored files
+          max_lines = 1000, -- process only first N lines of large files
+          max_lenses = 70, -- skip rendering if too many lenses generated
+        },
+        debounce_ms = 500, -- unified debounce delay for all providers
+        debug_mode = false, -- enable debug output for development, see CONTRIBUTE.md
+      })
+    end,
+  },
+  {
+    "nacro90/numb.nvim",
+    cond = not vim.g.vscode,
+    event = "BufRead",
+    config = function()
+      require("numb").setup()
+    end,
+  },
+  {
+    "chentoast/marks.nvim",
+    event = "BufRead",
+    cond = not vim.g.vscode,
+    opts = {},
+  },
+  {
+    "rachartier/tiny-code-action.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "folke/snacks.nvim",
+    },
+    event = "LspAttach",
+    cond = not vim.g.vscode,
+    opts = {
+      backend = "vim",
+      picker = "snacks",
+      signs = {
+        quickfix = { "", { link = "DiagnosticWarning" } },
+        others = { "", { link = "DiagnosticWarning" } },
+        refactor = { "", { link = "DiagnosticInfo" } },
+        ["refactor.move"] = { "󰪹", { link = "DiagnosticInfo" } },
+        ["refactor.extract"] = { "", { link = "DiagnosticError" } },
+        ["source.organizeImports"] = { "", { link = "DiagnosticWarning" } },
+        ["source.fixAll"] = { "󰃢", { link = "DiagnosticError" } },
+        ["source"] = { "", { link = "DiagnosticError" } },
+        ["rename"] = { "󰑕", { link = "DiagnosticWarning" } },
+        ["codeAction"] = { "", { link = "DiagnosticWarning" } },
+      },
+    },
+    config = function(_, opts)
+      require("tiny-code-action").setup(opts)
+
+      vim.keymap.set({ "n", "x" }, "<leader>ca", function()
+        require("tiny-code-action").code_action()
+      end, { desc = "Code Action", noremap = true, silent = true })
+    end,
+  },
 }

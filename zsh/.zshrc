@@ -20,7 +20,7 @@ fi
 # fpath config
 fpath+=${ZDOTDIR}/.zfunc
 
-# Load funtion from fpath or any zsh function
+# Load function from fpath or any zsh function
 autoload -Uz fzg
 autoload -Uz edit-command-line
 zle -N edit-command-linej
@@ -38,17 +38,33 @@ alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mo
 
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - zsh)"
+if [[ -d $PYENV_ROOT/bin ]]; then
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init - zsh)"
+fi 
 
 # Homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 # Bob (Nvim)
-export PATH=$PATH:$HOME/.local/share/bob/nvim-bin
+BOB_PATH="$HOME/.local/share/bob/nvim-bin"
+if [[ -d "${BOB_PATH}" ]]; then
+  export PATH=$PATH:$BOB_PATH
+fi
 
 # Cargo (rust)
-export PATH=$PATH:$HOME/.cargo/bin
+CARGO_PATH="$HOME/.cargo/bin"
+if [[ -d "${CARGO_PATH}" ]]; then
+  export PATH=$PATH:$CARGO_PATH
+fi
+
+# Rancher Desktop
+RANCHER_PATH="$HOME/.rd/bin"
+if [[ -d "${RANCHER_PATH}" ]]; then
+  export PATH=$PATH:$RANCHER_PATH
+fi
 
 # Exclude failed history
 zshaddhistory() {
