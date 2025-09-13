@@ -53,6 +53,8 @@ return {
 
       input = {},
 
+      image = {},
+
       quickfile = { enabled = true },
 
       bigfile = { enabled = true },

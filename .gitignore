@@ -26,6 +26,7 @@
 !/vim/
 !/coc/
 !/zsh/
+!/tmux/
 
 fish/fish_variables
 fish/fishd.*
@@ -34,3 +35,4 @@ zsh/.zcomp*
 zsh/.zsh_sessions/
 zsh/.zsh_history
 zsh/.zim/
+zsh/.zhistory
