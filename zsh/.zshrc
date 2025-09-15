@@ -35,9 +35,12 @@ alias ls_arch_packages="pacman -Qi | grep -E '^(Name|Installed)' | cut -f2 -d':'
 
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
-if [[ -d $PYENV_ROOT/bin ]]; then
+if [[ -d "$PYENV_ROOT/bin" ]]; then
 	export PATH="$PYENV_ROOT/bin:$PATH"
-	eval "$(pyenv init - zsh)"
+fi
+if command -v pyenv &>/dev/null; then
+  eval "$(pyenv init - zsh)"
+  eval "$(pyenv virtualenv-init -)"
 fi
 
 # Homebrew

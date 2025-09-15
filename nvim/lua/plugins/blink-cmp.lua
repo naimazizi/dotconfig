@@ -27,7 +27,6 @@ return {
         },
         opts = {},
       },
-      "folke/lazydev.nvim",
       "jmbuhr/cmp-pandoc-references",
       {
         "fang2hou/blink-copilot",
