@@ -33,6 +33,8 @@ return {
         "fang2hou/blink-copilot",
         opts = {
           max_completions = 2,
+          kind_name = "Copilot", ---@type string | false
+          kind_icon = " ", ---@type string | false
         },
       },
       "yetone/avante.nvim",
@@ -133,6 +135,7 @@ return {
 
             local out = require("pretty_hover.parser").parse(opts.item.documentation.value)
             opts.item.documentation.value = out:string()
+            ---@diagnostic disable-next-line: param-type-not-match
             opts.default_implementation(opts)
           end,
           window = { border = "single" },
@@ -191,6 +194,7 @@ return {
           copilot = {
             name = "copilot",
             module = "blink-copilot",
+            kind = "Copilot",
             score_offset = 100,
             async = true,
           },
