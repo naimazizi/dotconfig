@@ -1,7 +1,10 @@
 return {
   {
-    "lewis6991/satellite.nvim",
+    "petertriho/nvim-scrollbar",
     event = "VeryLazy",
     cond = not vim.g.vscode,
+    config = function()
+      require("scrollbar").setup()
+    end,
   },
 }

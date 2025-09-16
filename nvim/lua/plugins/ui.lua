@@ -43,7 +43,7 @@ return {
     cond = not vim.g.vscode,
     event = "VeryLazy",
     dependencies = {
-      "nvim-mini/mini.icons",
+      "nvim-tree/nvim-web-devicons",
       {
         "letieu/harpoon-lualine",
         event = "VeryLazy",
@@ -160,7 +160,7 @@ return {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
     cond = not vim.g.vscode,
-    dependencies = { "nvim-mini/mini.icons" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = {
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
@@ -191,6 +191,9 @@ return {
           {
             filetype = "SymbolsSidebar",
           },
+          {
+            filetype = "Avante",
+          },
         },
         buffer_close_icon = "",
         left_trunc_marker = "",
@@ -202,9 +205,6 @@ return {
         diagnostics_indicator = function(count, level, _diagnostics_dict, _context)
           local icon = level:match("error") and " " or " "
           return " " .. icon .. count
-        end,
-        get_element_icon = function(opts)
-          return require("mini.icons").get("filetype", opts.filetype)
         end,
       },
     },
@@ -476,4 +476,5 @@ return {
       end, { desc = "Code Action", noremap = true, silent = true })
     end,
   },
+  { "nvim-tree/nvim-web-devicons", cond = not vim.g.vscode, opts = {} },
 }

@@ -30,6 +30,9 @@ return {
           icon = " ",
         },
       },
+      windows = {
+        position = "left",
+      },
     },
     config = function(_, opts)
       require("avante").setup(opts)

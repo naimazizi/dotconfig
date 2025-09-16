@@ -668,10 +668,8 @@ return {
     },
   },
   -- better diagnostics list and others
-  -- TODO: change back to folke once it has been fixed
   {
-    "h-michael/trouble.nvim",
-    branch = "fix/decoration-provider-api",
+    "folke/trouble.nvim",
     cond = not vim.g.vscode,
     cmd = { "Trouble" },
     opts = {

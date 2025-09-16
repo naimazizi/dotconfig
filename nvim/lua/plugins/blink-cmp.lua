@@ -5,6 +5,7 @@ return {
     event = "VimEnter",
     version = "1.*",
     dependencies = {
+      "onsails/lspkind.nvim",
       -- Snippet Engine
       {
         "L3MON4D3/LuaSnip",
@@ -38,6 +39,7 @@ return {
       "Kaiser-Yang/blink-cmp-avante",
       "t3ntxcl3s/ecolog.nvim",
       "Fildo7525/pretty_hover",
+      "xzbdmw/colorful-menu.nvim",
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -78,25 +80,36 @@ return {
             end
             return { "s", "n" }
           end,
+          border = "single",
           draw = {
             padding = { 0, 1 },
             columns = { { "kind_icon" }, { "label", gap = 1 } },
             components = {
               kind_icon = {
                 text = function(ctx)
-                  local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-                  return " " .. kind_icon .. ctx.icon_gap .. " "
+                  local icon = ctx.kind_icon
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                    local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                    if dev_icon then
+                      icon = dev_icon
+                    end
+                  else
+                    icon = require("lspkind").symbolic(ctx.kind, {
+                      mode = "symbol",
+                    })
+                  end
+
+                  return icon .. ctx.icon_gap
                 end,
-                -- (optional) use highlights from mini.icons
+
                 highlight = function(ctx)
-                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-                  return hl
-                end,
-              },
-              kind = {
-                -- (optional) use highlights from mini.icons
-                highlight = function(ctx)
-                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                  local hl = ctx.kind_hl
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                    local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                    if dev_icon then
+                      hl = dev_hl
+                    end
+                  end
                   return hl
                 end,
               },
@@ -146,7 +159,7 @@ return {
         },
       },
       -- experimental signature help support
-      signature = { enabled = true, trigger = { show_on_accept = true } },
+      signature = { enabled = true, trigger = { show_on_accept = true }, window = { border = "single" } },
 
       sources = {
         -- adding any nvim-cmp sources here will enable them
@@ -310,7 +323,7 @@ return {
           },
           -- If true, try to highlight "not supported" languages.
           fallback = true,
-          -- this will be applied to label description for unsupport languages
+          -- this will be applied to label description for unsupported languages
           fallback_extra_info_hl = "@comment",
         },
         -- If the built-in logic fails to find a suitable highlight group for a label,
@@ -325,5 +338,10 @@ return {
         max_width = 60,
       })
     end,
+  },
+  {
+    "onsails/lspkind.nvim",
+    cond = not vim.g.vscode,
+    event = "VimEnter",
   },
 }

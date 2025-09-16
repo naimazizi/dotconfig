@@ -97,12 +97,6 @@ return {
           post = function() end,
         },
       })
-
-      require("mini.icons").setup({
-        lsp = {
-          Copilot = { glyph = " ", hl = "Copilot" },
-        },
-      })
     end,
   },
 }
