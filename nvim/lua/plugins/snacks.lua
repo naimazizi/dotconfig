@@ -55,6 +55,10 @@ return {
 
       image = {},
 
+      lazygit = {},
+
+      notifier = {},
+
       quickfile = { enabled = true },
 
       bigfile = { enabled = true },

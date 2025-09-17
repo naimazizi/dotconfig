@@ -3,8 +3,8 @@ return {
     "everviolet/nvim",
     name = "evergarden",
     cond = not vim.g.vscode,
-    lazy = false,
-    priority = 1000,
+    lazy = true,
+    -- priority = 1000,
     config = function()
       require("evergarden").setup({
         theme = {
@@ -48,7 +48,45 @@ return {
           which_key = true,
         },
       })
-      vim.cmd.colorscheme("evergarden")
+      -- vim.cmd.colorscheme("evergarden")
+    end,
+  },
+  {
+    "dgox16/oldworld.nvim",
+    cond = not vim.g.vscode,
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("oldworld").setup({
+        terminal_colors = true, -- enable terminal colors
+        variant = "default", -- default, oled, cooler
+        styles = { -- You can pass the style using the format: style = true
+          comments = { italic = true }, -- style for comments
+          keywords = { bold = true }, -- style for keywords
+          identifiers = {}, -- style for identifiers
+          functions = { italic = true }, -- style for functions
+          variables = {}, -- style for variables
+          booleans = { bold = true }, -- style for booleans
+        },
+        integrations = { -- You can disable/enable integrations
+          alpha = true,
+          cmp = true,
+          flash = true,
+          gitsigns = true,
+          indent_blankline = true,
+          lazy = true,
+          lsp = true,
+          markdown = true,
+          mason = true,
+          noice = true,
+          notify = true,
+          rainbow_delimiters = true,
+          telescope = true,
+          treesitter = true,
+        },
+      })
+
+      vim.cmd.colorscheme("oldworld")
     end,
   },
 }

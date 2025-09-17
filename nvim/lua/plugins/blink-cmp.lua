@@ -82,9 +82,8 @@ return {
             end
             return { "s", "n" }
           end,
-          border = "single",
+          border = "rounded",
           draw = {
-            padding = { 0, 1 },
             columns = { { "kind_icon" }, { "label", gap = 1 } },
             components = {
               kind_icon = {
@@ -138,7 +137,7 @@ return {
             ---@diagnostic disable-next-line: param-type-not-match
             opts.default_implementation(opts)
           end,
-          window = { border = "single" },
+          window = { border = "rounded" },
         },
         ghost_text = {
           enabled = vim.g.ai_cmp,
@@ -194,7 +193,6 @@ return {
           copilot = {
             name = "copilot",
             module = "blink-copilot",
-            kind = "Copilot",
             score_offset = 100,
             async = true,
           },

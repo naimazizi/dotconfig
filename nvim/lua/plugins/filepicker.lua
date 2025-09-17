@@ -1,8 +1,10 @@
 return {
   {
     "dmtrKovalenko/fff.nvim",
-    build = "cargo build --release",
-    enabled = true,
+    build = function()
+      require("fff.download").download_or_build_binary()
+    end,
+    lazy = false,
     cond = not vim.g.vscode,
     config = function()
       vim.keymap.set("n", "<leader><space>", function()
