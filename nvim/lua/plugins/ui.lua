@@ -49,6 +49,7 @@ return {
         event = "VeryLazy",
         cond = not vim.g.vscode,
       },
+      { "AndreM222/copilot-lualine", event = "VeryLazy", cond = not vim.g.vscode },
     },
     config = function()
       require("lualine").setup({
@@ -127,6 +128,7 @@ return {
             },
           },
           lualine_y = {
+            { "copilot" },
             { require("recorder").displaySlots },
             { "harpoon2" },
           },
@@ -439,7 +441,7 @@ return {
     end,
   },
   {
-    "chentoast/marks.nvim",
+    "dimtion/guttermarks.nvim",
     event = "BufRead",
     cond = not vim.g.vscode,
     opts = {},

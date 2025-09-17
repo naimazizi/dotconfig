@@ -18,6 +18,7 @@ vim.keymap.set("n", "dm", function()
   local mark = vim.fn.input("Enter mark to delete: ")
   if mark ~= "" then
     vim.cmd("delmark " .. mark)
+    vim.cmd("GutterMarks refresh")
   end
 end, { noremap = true, desc = "Delete specific mark" })
 

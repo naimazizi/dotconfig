@@ -78,7 +78,6 @@ return {
           lsp = true,
           markdown = true,
           mason = true,
-          noice = true,
           notify = true,
           rainbow_delimiters = true,
           telescope = true,
