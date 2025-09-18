@@ -3,7 +3,7 @@ return {
     "everviolet/nvim",
     name = "evergarden",
     cond = not vim.g.vscode,
-    lazy = true,
+    lazy = false,
     -- priority = 1000,
     config = function()
       require("evergarden").setup({
@@ -48,13 +48,13 @@ return {
           which_key = true,
         },
       })
-      -- vim.cmd.colorscheme("evergarden")
+      vim.cmd.colorscheme("evergarden")
     end,
   },
   {
     "dgox16/oldworld.nvim",
     cond = not vim.g.vscode,
-    lazy = false,
+    lazy = true,
     priority = 1000,
     config = function()
       require("oldworld").setup({
@@ -85,7 +85,7 @@ return {
         },
       })
 
-      vim.cmd.colorscheme("oldworld")
+      -- vim.cmd.colorscheme("oldworld")
     end,
   },
 }
