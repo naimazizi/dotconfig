@@ -13,6 +13,9 @@ if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} 
 	source ${ZIM_HOME}/zimfw.zsh init
 fi
 
+# Load zim
+source ${ZIM_HOME}/init.zsh
+
 # fpath config
 fpath+=${ZDOTDIR}/.zfunc
 
@@ -100,5 +103,10 @@ function zvm_after_lazy_keybindings() {
 	bindkey -M vicmd 'vv' edit-command-line
 }
 
-# Load zim
-source ${ZIM_HOME}/init.zsh
+zmodload -F zsh/terminfo +p:terminfo
+# Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
+for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
+for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
+for key ('k') bindkey -M vicmd ${key} history-substring-search-up
+for key ('j') bindkey -M vicmd ${key} history-substring-search-down
+unset key

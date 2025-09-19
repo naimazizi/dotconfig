@@ -14,6 +14,8 @@ zmodule chrissicool/zsh-256color
 # Prompt
 #
 
+zmodule jeffreytse/zsh-vi-mode
+
 # Theme
 zmodule spaceship-prompt/spaceship-prompt --name spaceship --no-submodules
 
@@ -42,7 +44,6 @@ zmodule run-help
 # Fish-like syntax highlighting for Zsh.
 # zsh-users/zsh-syntax-highlighting must be sourced after completion
 zmodule zsh-users/zsh-syntax-highlighting
+zmodule zsh-users/zsh-history-substring-search
 # Fish-like autosuggestions for Zsh.
 zmodule zsh-users/zsh-autosuggestions
-zmodule zsh-users/zsh-history-substring-search
-zmodule jeffreytse/zsh-vi-mode
