@@ -3,8 +3,8 @@ return {
     "everviolet/nvim",
     name = "evergarden",
     cond = not vim.g.vscode,
-    lazy = false,
-    -- priority = 1000,
+    lazy = true,
+    priority = 1000,
     config = function()
       require("evergarden").setup({
         theme = {
@@ -48,7 +48,7 @@ return {
           which_key = true,
         },
       })
-      vim.cmd.colorscheme("evergarden")
+      -- vim.cmd.colorscheme("evergarden")
     end,
   },
   {
@@ -86,6 +86,35 @@ return {
       })
 
       -- vim.cmd.colorscheme("oldworld")
+    end,
+  },
+  {
+    "webhooked/kanso.nvim",
+    cond = not vim.g.vscode,
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("kanso").setup({
+        bold = true, -- enable bold fonts
+        italics = true, -- enable italics
+        compile = true, -- enable compiling the colorscheme
+        undercurl = true, -- enable undercurls
+        commentStyle = { italic = true },
+        functionStyle = { italic = true },
+        keywordStyle = { italic = true },
+        statementStyle = {},
+        typeStyle = {},
+        transparent = false, -- do not set background color
+        dimInactive = true, -- dim inactive window `:h hl-NormalNC`
+        terminalColors = true, -- define vim.g.terminal_color_{0,17}
+        background = { -- map the value of 'background' option to a theme
+          dark = "ink", -- try "zen", "mist" or "pearl" !
+          light = "ink", -- try "zen", "mist" or "pearl" !
+        },
+        foreground = "saturated", -- "default" or "saturated" (can also be a table like background)
+      })
+
+      vim.cmd.colorscheme("kanso")
     end,
   },
 }
