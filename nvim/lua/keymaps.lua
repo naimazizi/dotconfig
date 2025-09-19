@@ -333,6 +333,14 @@ if vim.g.vscode then
     vscode.call("jupyter.interruptkernel")
   end, { noremap = true, desc = "Run Jupyter - interrupt kernel" })
 
+  vim.keymap.set("n", "[3", function()
+    vscode.call("jupyter.gotoPrevCellInFile")
+  end, { noremap = true, desc = "Jupyter - Prev Cell" })
+
+  vim.keymap.set("n", "]3", function()
+    vscode.call("jupyter.gotoNextCellInFile")
+  end, { noremap = true, desc = "Jupyter - Prev Cell" })
+
   -- Folding
   vim.keymap.set("n", "zm", function()
     vscode.call("editor.foldAll")

@@ -154,7 +154,7 @@ return {
     config = function(_, opts)
       require("snacks").setup(opts)
 
-      vim.g.autoformat = true
+      vim.g.autoformat = false
 
       Snacks.toggle
         .new({
@@ -517,7 +517,9 @@ return {
       },
       {
         "<leader>n",
-        "<cmd>Fidget history<cr>",
+        function()
+          Snacks.picker.notifications()
+        end,
         desc = "Notification History",
       },
       {
