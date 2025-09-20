@@ -41,7 +41,19 @@ return {
     build = "make",
   },
   {
+    "copilotlsp-nvim/copilot-lsp",
+    cond = not vim.g.vscode,
+    event = "InsertEnter",
+  },
+  {
     "zbirenbaum/copilot.lua",
+    requires = {
+      "copilotlsp-nvim/copilot-lsp",
+      cond = not vim.g.vscode,
+      init = function()
+        vim.g.copilot_nes_debounce = 500
+      end,
+    },
     cond = not vim.g.vscode,
     cmd = "Copilot",
     event = "InsertEnter",
@@ -59,6 +71,14 @@ return {
       panel = { enabled = false },
       server = {
         type = "binary", -- "nodejs" | "binary"
+      },
+      nes = {
+        enabled = true,
+        keymap = {
+          accept_and_goto = "<Tab>",
+          accept = false,
+          dismiss = "<Esc>",
+        },
       },
     },
   },
