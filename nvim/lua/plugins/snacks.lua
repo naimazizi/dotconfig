@@ -552,6 +552,20 @@ return {
         desc = "Lazygit",
       },
       {
+        "<leader>gf",
+        function()
+          Snacks.picker.git_log_file()
+        end,
+        desc = "Git Current File History",
+      },
+      {
+        "<leader>gl",
+        function()
+          Snacks.picker.git_log()
+        end,
+        desc = "Git Log (cwd)",
+      },
+      {
         "<leader>un",
         function()
           Snacks.notifier.hide()
