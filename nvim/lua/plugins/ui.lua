@@ -389,9 +389,11 @@ return {
             name = "default",
             providers = { -- Array format: order determines display sequence
               {
-                name = "references",
-                enabled = true, -- enable references provider
-                quiet_lsp = true, -- suppress noisy LSP log messages (e.g., Pyright reference spam)
+                name = "usages",
+                enabled = true,
+                include = { "refs", "defs", "impls" }, 
+                breakdown = true, 
+                show_zero = true,
               },
               {
                 name = "last_author",
