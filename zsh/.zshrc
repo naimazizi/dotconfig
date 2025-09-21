@@ -52,7 +52,7 @@ if [[ -f "/opt/homebrew/bin/brew" ]]; then # MacOS
 	export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
 	export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/homebrew"
 	eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -f "/home/linuxbrew/.linuxbrew" ]]; then # Linux
+elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then # Linux
 	export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
 	export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
 	export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
@@ -61,7 +61,7 @@ fi
 
 # Bob (Nvim)
 BOB_PATH="$HOME/.local/share/bob/nvim-bin"
-if [[ -d "${BOB_PATH}" ]]; then
+if [[ -f "${BOB_PATH}/nvim" ]]; then
 	export PATH=$PATH:$BOB_PATH
 fi
 

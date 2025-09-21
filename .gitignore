@@ -27,6 +27,7 @@
 !/coc/
 !/zsh/
 !/tmux/
+!/hypr/
 
 fish/fish_variables
 fish/fishd.*
