@@ -2,7 +2,7 @@ return {
   {
     "aserowy/tmux.nvim",
     event = "VeryLazy",
-    cond = not vim.g.vscode,
+    vscode = false,
     config = function()
       return require("tmux").setup()
     end,

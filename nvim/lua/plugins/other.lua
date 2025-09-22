@@ -2,7 +2,7 @@ return {
   {
     "rgroli/other.nvim",
     event = "BufRead",
-    cond = not vim.g.vscode,
+    vscode = false,
     config = function()
       require("other-nvim").setup({
         mappings = {

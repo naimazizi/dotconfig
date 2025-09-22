@@ -1,7 +1,7 @@
 return {
   {
     "max397574/better-escape.nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     event = "VeryLazy",
     config = function()
       require("better_escape").setup({

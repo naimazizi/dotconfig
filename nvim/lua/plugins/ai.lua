@@ -1,7 +1,7 @@
 return {
   {
     "yetone/avante.nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -42,19 +42,18 @@ return {
   },
   {
     "copilotlsp-nvim/copilot-lsp",
-    cond = not vim.g.vscode,
+    vscode = false,
     event = "InsertEnter",
   },
   {
     "zbirenbaum/copilot.lua",
     requires = {
       "copilotlsp-nvim/copilot-lsp",
-      cond = not vim.g.vscode,
       init = function()
         vim.g.copilot_nes_debounce = 500
       end,
     },
-    cond = not vim.g.vscode,
+    vscode = false,
     cmd = "Copilot",
     event = "InsertEnter",
     opts = {
@@ -84,7 +83,7 @@ return {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     ft = function(_, ft)
       vim.list_extend(ft, { "Avante" })
     end,

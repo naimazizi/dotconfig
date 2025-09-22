@@ -4,7 +4,7 @@ return {
   {
     "kndndrj/nvim-dbee",
     event = "VeryLazy",
-    cond = not vim.g.vscode,
+    vscode = false,
     dependencies = {
       "MunifTanjim/nui.nvim",
     },
@@ -17,7 +17,7 @@ return {
   },
   {
     "stevearc/conform.nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     event = { "BufWritePre" },
     opts = function()
       conform = require("conform")
@@ -38,7 +38,7 @@ return {
   },
   {
     "mfussenegger/nvim-lint",
-    cond = not vim.g.vscode,
+    vscode = false,
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
       lint = require("lint")

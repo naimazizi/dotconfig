@@ -2,9 +2,9 @@ return {
   {
     "everviolet/nvim",
     name = "evergarden",
-    cond = not vim.g.vscode,
+    vscode = false,
     lazy = true,
-    priority = 1000,
+    -- priority = 1000,
     config = function()
       require("evergarden").setup({
         theme = {
@@ -53,9 +53,9 @@ return {
   },
   {
     "dgox16/oldworld.nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     lazy = true,
-    priority = 1000,
+    -- priority = 1000,
     config = function()
       require("oldworld").setup({
         terminal_colors = true, -- enable terminal colors
@@ -90,7 +90,7 @@ return {
   },
   {
     "webhooked/kanso.nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     lazy = false,
     priority = 1000,
     config = function()

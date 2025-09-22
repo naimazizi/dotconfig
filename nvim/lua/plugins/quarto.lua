@@ -2,7 +2,7 @@ return {
   { -- requires plugins in lua/plugins/treesitter.lua and lua/plugins/lsp.lua
     -- for complete functionality (language features)
     "quarto-dev/quarto-nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     event = "VeryLazy",
     ft = { "quarto" },
     dev = false,
@@ -38,7 +38,7 @@ return {
       end, { desc = "run all cells of all languages", silent = true })
 
       require("which-key").add({
-        { "<localleader>s", desc = "Quarto (REPL)", icon = "" },
+        { "<localleader>s", desc = "Quarto (REPL)", icon = " " },
       })
     end,
 
@@ -53,7 +53,7 @@ return {
   { -- directly open ipynb files as quarto documents
     -- and convert back behind the scenes
     "GCBallesteros/jupytext.nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     event = "VeryLazy",
     opts = {
       custom_language_formatting = {
@@ -72,7 +72,7 @@ return {
   },
   { -- Autoformat
     "stevearc/conform.nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     opts = function(_, opts)
       local md_ft = { "quarto", "markdown" }
       for _, ft in ipairs(md_ft) do

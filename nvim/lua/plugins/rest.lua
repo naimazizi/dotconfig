@@ -2,7 +2,7 @@ return {
   {
     "jellydn/hurl.nvim",
     event = "VeryLazy",
-    cond = not vim.g.vscode,
+    vscode = false,
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",

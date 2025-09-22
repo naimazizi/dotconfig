@@ -1,7 +1,7 @@
 return {
   { -- Autocompletion
     "saghen/blink.cmp",
-    cond = not vim.g.vscode,
+    vscode = false,
     event = "VimEnter",
     version = "1.*",
     dependencies = {
@@ -9,6 +9,7 @@ return {
       -- Snippet Engine
       {
         "L3MON4D3/LuaSnip",
+        lazy = true,
         build = (function()
           -- Build Step is needed for regex support in snippets.
           -- This step is not supported in many windows environments.
@@ -23,10 +24,14 @@ return {
             "rafamadriz/friendly-snippets",
             config = function()
               require("luasnip.loaders.from_vscode").lazy_load()
+              require("luasnip.loaders.from_vscode").lazy_load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
             end,
           },
         },
-        opts = {},
+        opts = {
+          history = true,
+          delete_check_events = "TextChanged",
+        },
       },
       "jmbuhr/cmp-pandoc-references",
       {
@@ -40,8 +45,9 @@ return {
       "yetone/avante.nvim",
       "Kaiser-Yang/blink-cmp-avante",
       "t3ntxcl3s/ecolog.nvim",
-      "Fildo7525/pretty_hover",
       "xzbdmw/colorful-menu.nvim",
+      "Fildo7525/pretty_hover",
+      { "nvim-tree/nvim-web-devicons", opts = {} },
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -247,7 +253,7 @@ return {
   {
     "xzbdmw/colorful-menu.nvim",
     event = "VimEnter",
-    cond = not vim.g.vscode,
+    vscode = false,
     config = function()
       require("colorful-menu").setup({
         ls = {
@@ -343,7 +349,7 @@ return {
   },
   {
     "onsails/lspkind.nvim",
-    cond = not vim.g.vscode,
+    vscode = false,
     event = "VimEnter",
   },
 }

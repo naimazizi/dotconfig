@@ -1,8 +1,8 @@
 return {
   {
     "zk-org/zk-nvim",
-    cond = not vim.g.vscode,
-    -- event = "BufRead */notes/*.md",
+    vscode = false,
+    event = "BufRead *.md",
     config = function()
       require("zk").setup({
         picker = "snacks_picker",

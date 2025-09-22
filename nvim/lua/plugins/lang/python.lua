@@ -1,33 +1,79 @@
----@diagnostic disable-next-line: inject-field
-vim.lsp.config["ruff"] = {
-  init_options = {
-    settings = {
-      logLevel = "error",
-    },
-  },
-}
-
-vim.lsp.enable({ "ty", "pyrefly", "ruff" })
-
-vim.api.nvim_create_autocmd("LspAttach", {
-  group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client == nil then
-      return
-    end
-    if client.name == "ruff" and client.server_capabilities then
-      -- Disable hover in favor of other LSP
-      client.server_capabilities.hoverProvider = false
-    end
-  end,
-  desc = "LSP: Disable hover capability from Ruff",
-})
+local lsp = "ty"
 
 return {
   {
+    "mason-org/mason.nvim",
+    opts = { ensure_installed = { "ty" } },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        ty = {
+          diagnosticMode = "workspace",
+          experimental = {
+            rename = true,
+            autoImport = true,
+          },
+        },
+      },
+    },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = { ensure_installed = { "ninja", "rst" } },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        ruff = {
+          cmd_env = { RUFF_TRACE = "messages" },
+          init_options = {
+            settings = {
+              logLevel = "error",
+            },
+          },
+          keys = {
+            {
+              "<leader>co",
+              LazyVim.lsp.action["source.organizeImports"],
+              desc = "Organize Imports",
+            },
+          },
+        },
+        ruff_lsp = {
+          keys = {
+            {
+              "<leader>co",
+              LazyVim.lsp.action["source.organizeImports"],
+              desc = "Organize Imports",
+            },
+          },
+        },
+      },
+      setup = {
+        ["ruff"] = function()
+          LazyVim.lsp.on_attach(function(client, _)
+            client.server_capabilities.hoverProvider = false
+          end, "ruff")
+        end,
+      },
+    },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = function(_, opts)
+      local servers = { lsp, "ruff" }
+      for _, server in ipairs(servers) do
+        opts.servers[server] = opts.servers[server] or {}
+        opts.servers[server].enabled = server == lsp or server == "ruff"
+      end
+    end,
+  },
+  {
     "nvim-neotest/neotest",
-    cond = not vim.g.vscode,
+    optional = true,
     dependencies = {
       "nvim-neotest/neotest-python",
     },
@@ -35,7 +81,7 @@ return {
       adapters = {
         ["neotest-python"] = {
           -- Here you can specify the settings for the adapter, i.e.
-          runner = "pytest",
+          -- runner = "pytest",
           -- python = ".venv/bin/python",
         },
       },
@@ -43,56 +89,43 @@ return {
   },
   {
     "mfussenegger/nvim-dap",
-    cond = not vim.g.vscode,
+    optional = true,
     dependencies = {
       "mfussenegger/nvim-dap-python",
-            -- stylua: ignore
-            keys = {
-                { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method", ft = "python" },
-                { "<leader>dPc", function() require('dap-python').test_class() end,  desc = "Debug Class",  ft = "python" },
-            },
+      -- stylua: ignore
+      keys = {
+        { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method", ft = "python" },
+        { "<leader>dPc", function() require('dap-python').test_class() end, desc = "Debug Class", ft = "python" },
+      },
       config = function()
-        require("dap-python").setup("debugpy-adapter")
+        if vim.fn.has("win32") == 1 then
+          require("dap-python").setup(LazyVim.get_pkg_path("debugpy", "/venv/Scripts/pythonw.exe"))
+        else
+          require("dap-python").setup(LazyVim.get_pkg_path("debugpy", "/venv/bin/python"))
+        end
       end,
     },
   },
   {
     "linux-cultist/venv-selector.nvim",
-    branch = "main",
-    cond = not vim.g.vscode,
     cmd = "VenvSelect",
     opts = {
-      settings = {
-        options = {
-          notify_user_on_venv_activation = true,
-        },
+      options = {
+        notify_user_on_venv_activation = true,
       },
     },
-    --  Call config for python files and load the cached venv automatically
+    --  Call config for Python files and load the cached venv automatically
     ft = "python",
     keys = { { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv", ft = "python" } },
   },
   -- Don't mess up DAP adapters provided by nvim-dap-python
   {
     "jay-babu/mason-nvim-dap.nvim",
-    cond = not vim.g.vscode,
+    optional = true,
     opts = {
       handlers = {
         python = function() end,
       },
     },
-  },
-  {
-    "stevearc/conform.nvim",
-    cond = not vim.g.vscode,
-    event = { "BufWritePre" },
-    opts = function()
-      conform = require("conform")
-      conform.formatters_by_ft["python"] = {
-        "ruff_fix",
-        "ruff_format",
-        "ruff_organize_imports",
-      }
-    end,
   },
 }
