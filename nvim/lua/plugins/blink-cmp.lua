@@ -352,4 +352,65 @@ return {
     vscode = false,
     event = "VimEnter",
   },
+  {
+    "lewis6991/gitsigns.nvim",
+    vscode = false,
+    event = "VeryLazy",
+    opts = {
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text_pos = "right_align",
+        delay = 500,
+      },
+    },
+  },
+  {
+    "folke/snacks.nvim",
+    opts = {
+      indent = {
+        indent = {
+          priority = 1,
+          enabled = true, -- enable indent guides
+          char = "│",
+          only_scope = false, -- only show indent guides of the scope
+          only_current = false, -- only show indent guides in the current window
+          hl = "SnacksIndent",
+        },
+        animate = {
+          style = "out",
+          easing = "linear",
+          duration = {
+            step = 20, -- ms per step
+            total = 500, -- maximum duration
+          },
+        },
+        scope = {
+          enabled = true, -- enable highlighting the current scope
+          priority = 200,
+          char = "│",
+          underline = false, -- underline the start of the scope
+          only_current = true, -- only show scope in the current window
+          hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
+        },
+        chunk = {
+          -- when enabled, scopes will be rendered as chunks, except for the
+          -- top-level scope which will be rendered as a scope.
+          enabled = true,
+          -- only show chunk scopes in the current window
+          only_current = true,
+          priority = 200,
+          hl = "SnacksIndentChunk", ---@type string|string[] hl group for chunk scopes
+          char = {
+            corner_top = "╭",
+            corner_bottom = "╰",
+            horizontal = "─",
+            vertical = "│",
+            arrow = ">",
+          },
+        },
+      },
+
+      scope = {},
+    },
+  },
 }
