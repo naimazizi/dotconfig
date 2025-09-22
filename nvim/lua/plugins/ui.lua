@@ -162,6 +162,12 @@ return {
           size = { height = 0.4 },
         },
         { title = "Neotest Summary", ft = "neotest-summary" },
+        {
+          title = "Outline",
+          ft = "Outline",
+          pinned = true,
+          open = "Outline",
+        },
       },
     },
     keys = {
@@ -255,5 +261,20 @@ return {
         require("pretty_hover").hover()
       end, { desc = "Hover (Pretty)" })
     end,
+  },
+  {
+    "hedyhli/outline.nvim",
+    vscode = false,
+    config = function()
+      require("outline").setup({
+        providers = {
+          priority = { "lsp", "markdown", "norg", "treesitter" },
+        },
+      })
+    end,
+    event = "VeryLazy",
+    dependencies = {
+      "epheien/outline-treesitter-provider.nvim",
+    },
   },
 }

@@ -10,7 +10,7 @@ return {
     opts = {},
     ---@module 'dap-view'
     ---@type dapview.Config
-    config = function(opts)
+    config = function()
       local dap, dv = require("dap"), require("dap-view")
       -- dap.defaults.fallback.force_external_terminal = true
       -- dap.defaults.fallback.terminal_win_cmd = "belowright new | resize 15"

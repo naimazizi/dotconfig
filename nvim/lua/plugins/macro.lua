@@ -14,7 +14,7 @@ return {
       { "##", desc = " Add Breakpoint" },
     },
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
+      ---@diagnostic disable-next-line: missing-fields, param-type-not-match
       require("recorder").setup({
         -- Named registers where macros are saved (single lowercase letters only).
         -- The first register is the default register used as macro-slot after
