@@ -28,6 +28,7 @@
 !/zsh/
 !/tmux/
 !/hypr/
+!/opencode/
 
 fish/fish_variables
 fish/fishd.*
