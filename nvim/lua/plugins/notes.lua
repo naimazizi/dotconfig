@@ -92,4 +92,8 @@ return {
       require("which-key").add({ "<localleader>z", desc = "+Zk Notes", icon = "" })
     end,
   },
+  {
+    "mason-org/mason.nvim",
+    opts = { ensure_installed = { "zk" } },
+  },
 }

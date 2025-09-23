@@ -21,6 +21,7 @@ if not vim.g.vscode then
 
   vim.g.lazyvim_picker = "snacks"
   vim.g.root_spec = { "cwd" }
+  vim.g.lazyvim_blink_main = true
 
   vim.o.guifont = "JetBrains Maple Mono:h11:#e-subpixelantialias"
   vim.o.smoothscroll = false

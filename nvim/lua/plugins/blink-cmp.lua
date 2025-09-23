@@ -47,13 +47,16 @@ return {
       "t3ntxcl3s/ecolog.nvim",
       "xzbdmw/colorful-menu.nvim",
       "Fildo7525/pretty_hover",
-      { "nvim-tree/nvim-web-devicons", opts = {} },
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
     opts = {
-
-      snippets = { preset = "luasnip" },
+      snippets = {
+        preset = "luasnip",
+        expand = function(snippet)
+          return require("luasnip").lsp_expand(snippet)
+        end,
+      },
 
       appearance = {
         use_nvim_cmp_as_default = false,
@@ -90,36 +93,8 @@ return {
           end,
           border = "rounded",
           draw = {
-            columns = { { "kind_icon" }, { "label", gap = 1 } },
+            treesitter = { "lsp" },
             components = {
-              kind_icon = {
-                text = function(ctx)
-                  local icon = ctx.kind_icon
-                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                    local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-                    if dev_icon then
-                      icon = dev_icon
-                    end
-                  else
-                    icon = require("lspkind").symbolic(ctx.kind, {
-                      mode = "symbol",
-                    })
-                  end
-
-                  return icon .. ctx.icon_gap
-                end,
-
-                highlight = function(ctx)
-                  local hl = ctx.kind_hl
-                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                    local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-                    if dev_icon then
-                      hl = dev_hl
-                    end
-                  end
-                  return hl
-                end,
-              },
               label = {
                 text = function(ctx)
                   return require("colorful-menu").blink_components_text(ctx)
@@ -362,55 +337,6 @@ return {
         virt_text_pos = "right_align",
         delay = 500,
       },
-    },
-  },
-  {
-    "folke/snacks.nvim",
-    opts = {
-      indent = {
-        indent = {
-          priority = 1,
-          enabled = true, -- enable indent guides
-          char = "│",
-          only_scope = false, -- only show indent guides of the scope
-          only_current = false, -- only show indent guides in the current window
-          hl = "SnacksIndent",
-        },
-        animate = {
-          style = "out",
-          easing = "linear",
-          duration = {
-            step = 20, -- ms per step
-            total = 500, -- maximum duration
-          },
-        },
-        scope = {
-          enabled = true, -- enable highlighting the current scope
-          priority = 200,
-          char = "│",
-          underline = false, -- underline the start of the scope
-          only_current = true, -- only show scope in the current window
-          hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
-        },
-        chunk = {
-          -- when enabled, scopes will be rendered as chunks, except for the
-          -- top-level scope which will be rendered as a scope.
-          enabled = true,
-          -- only show chunk scopes in the current window
-          only_current = true,
-          priority = 200,
-          hl = "SnacksIndentChunk", ---@type string|string[] hl group for chunk scopes
-          char = {
-            corner_top = "╭",
-            corner_bottom = "╰",
-            horizontal = "─",
-            vertical = "│",
-            arrow = ">",
-          },
-        },
-      },
-
-      scope = {},
     },
   },
 }

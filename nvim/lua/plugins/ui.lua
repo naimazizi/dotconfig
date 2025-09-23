@@ -117,60 +117,14 @@ return {
       vim.opt.laststatus = 3
       vim.opt.splitkeep = "screen"
     end,
-    opts = {
-      animate = {
-        enabled = false,
-      },
-      options = {
-        left = { size = 0.15 },
-        bottom = { size = 0.2 },
-        right = { size = 0.15 },
-      },
-      bottom = {
-        { title = "Neotest Output", ft = "neotest-output-panel" },
-        { ft = "trouble", title = "Diagnostics" },
-        {
-          title = "Snacks Terminal",
-          ft = "snacks_terminal",
-          filter = function(_buf, win)
-            return vim.api.nvim_win_get_config(win).relative == ""
-          end,
-        },
-      },
-      left = {
-        {
-          title = "Snacks Explorer",
-          ft = "snacks_layout_box",
-          pinned = true,
-          size = { height = 0.7 },
-          open = function()
-            Snacks.explorer()
-          end,
-          filter = function(_buf, win)
-            return vim.api.nvim_win_get_config(win).relative == ""
-          end,
-        },
-      },
-      right = {
-        { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
-        {
-          title = "Overseer",
-          ft = "OverseerList",
-          open = function()
-            require("overseer").open()
-          end,
-          size = { height = 0.4 },
-        },
-        { title = "Neotest Summary", ft = "neotest-summary" },
-        {
-          title = "Outline",
-          ft = "Outline",
-          pinned = true,
-          open = "Outline",
-        },
-      },
-    },
     keys = {
+      {
+        "<leader>ue",
+        function()
+          require("edgy").toggle()
+        end,
+        desc = "Edgy Toggle",
+      },
       -- increase width
       ["<c-Right>"] = function(win)
         win:resize("width", 2)
@@ -200,6 +154,105 @@ return {
         win.view.edgebar:close()
       end,
     },
+    config = function()
+      opts = {
+        animate = {
+          enabled = false,
+        },
+        options = {
+          left = { size = 0.15 },
+          bottom = { size = 0.2 },
+          right = { size = 0.30 },
+        },
+        bottom = {
+          { title = "Neotest Output", ft = "neotest-output-panel" },
+          { ft = "trouble", title = "Diagnostics" },
+          {
+            ft = "noice",
+            filter = function(_buf, win)
+              return vim.api.nvim_win_get_config(win).relative == ""
+            end,
+          },
+          { ft = "qf", title = "QuickFix" },
+          {
+            ft = "help",
+            -- don't open help files in edgy that we're editing
+            filter = function(buf)
+              return vim.bo[buf].buftype == "help"
+            end,
+          },
+          {
+            title = "Snacks Terminal",
+            ft = "snacks_terminal",
+            filter = function(_buf, win)
+              return vim.api.nvim_win_get_config(win).relative == ""
+            end,
+          },
+        },
+        left = {
+          {
+            title = "Explorer",
+            ft = "NvimTree",
+            open = function()
+              require("nvim-tree.api").tree.toggle()
+            end,
+            pinned = true,
+          },
+          {
+            title = "Outline",
+            ft = "Outline",
+            pinned = true,
+            open = "Outline",
+          },
+        },
+        right = {
+          { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
+          { title = "AI", ft = "opencode_terminal", size = { height = 0.30 } },
+          {
+            title = "Overseer",
+            ft = "OverseerList",
+            open = function()
+              require("overseer").open()
+            end,
+            size = { height = 0.4 },
+          },
+          { title = "Neotest Summary", ft = "neotest-summary" },
+        },
+      }
+      require("edgy").setup(opts)
+
+      -- trouble
+      for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
+        opts[pos] = opts[pos] or {}
+        table.insert(opts[pos], {
+          ft = "trouble",
+          filter = function(_buf, win)
+            return vim.w[win].trouble
+              and vim.w[win].trouble.position == pos
+              and vim.w[win].trouble.type == "split"
+              and vim.w[win].trouble.relative == "editor"
+              and not vim.w[win].trouble_preview
+          end,
+        })
+      end
+
+      -- snacks terminal
+      for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
+        opts[pos] = opts[pos] or {}
+        table.insert(opts[pos], {
+          ft = "snacks_terminal",
+          size = { height = 0.4 },
+          title = "%{b:snacks_terminal.id}: %{b:term_title}",
+          filter = function(_buf, win)
+            return vim.w[win].snacks_win
+              and vim.w[win].snacks_win.position == pos
+              and vim.w[win].snacks_win.relative == "editor"
+              and not vim.w[win].trouble_preview
+          end,
+        })
+      end
+      return opts
+    end,
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -265,16 +318,226 @@ return {
   {
     "hedyhli/outline.nvim",
     vscode = false,
-    config = function()
-      require("outline").setup({
+    keys = { { "<leader>cs", "<cmd>Outline<cr>", desc = "Toggle Outline" } },
+    cmd = "Outline",
+    event = "LspAttach",
+    opts = function()
+      local defaults = require("outline.config").defaults
+      local opts = {
+        symbols = {
+          icons = {},
+          filter = vim.deepcopy(LazyVim.config.kind_filter),
+        },
+        keymaps = {
+          up_and_jump = "<up>",
+          down_and_jump = "<down>",
+        },
         providers = {
           priority = { "lsp", "markdown", "norg", "treesitter" },
         },
-      })
+      }
+
+      for kind, symbol in pairs(defaults.symbols.icons) do
+        opts.symbols.icons[kind] = {
+          icon = LazyVim.config.icons.kinds[kind] or symbol.icon,
+          hl = symbol.hl,
+        }
+      end
+      return opts
     end,
-    event = "VeryLazy",
     dependencies = {
       "epheien/outline-treesitter-provider.nvim",
     },
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    version = "*",
+    lazy = false,
+    keys = {
+      {
+        "<leader>fe",
+        function()
+          require("nvim-tree.api").tree.toggle()
+        end,
+        desc = "Explorer",
+      },
+      {
+        "<leader>fE",
+        function()
+          require("nvim-tree.api").tree.toggle()
+        end,
+        desc = "Explorer",
+      },
+      { "<leader>e", "<leader>fe", desc = "Explorer", remap = true },
+      { "<leader>E", "<leader>fE", desc = "Explorer", remap = true },
+    },
+    config = function()
+      require("nvim-tree").setup({
+        sync_root_with_cwd = true,
+        view = {
+          adaptive_size = false,
+        },
+        renderer = {
+          full_name = true,
+          group_empty = true,
+          special_files = {},
+          symlink_destination = false,
+          indent_markers = {
+            enable = true,
+          },
+          icons = {
+            git_placement = "after",
+            show = {
+              file = true,
+              folder = false,
+              folder_arrow = true,
+              git = true,
+            },
+            glyphs = {
+              git = {
+                unstaged = "",
+                staged = "✓",
+                unmerged = "",
+                renamed = "➜",
+                untracked = "★",
+                deleted = "",
+                ignored = "◌",
+              },
+            },
+          },
+        },
+        update_focused_file = {
+          enable = true,
+          update_root = true,
+          ignore_list = { "help" },
+        },
+        diagnostics = {
+          enable = true,
+          show_on_dirs = true,
+        },
+        filters = {
+          custom = {
+            "^.git$",
+          },
+        },
+        actions = {
+          change_dir = {
+            enable = false,
+            restrict_above_cwd = true,
+          },
+          open_file = {
+            resize_window = true,
+            window_picker = {
+              chars = "aoeui",
+            },
+          },
+          remove_file = {
+            close_window = false,
+          },
+        },
+      })
+    end,
+  },
+  {
+    "folke/trouble.nvim",
+    optional = true,
+    keys = {
+      { "<leader>cs", false },
+    },
+  },
+  {
+    "folke/snacks.nvim",
+    keys = {
+      {
+        "<leader>fe",
+        false,
+      },
+      {
+        "<leader>fE",
+        false,
+      },
+      { "<leader>e", "<leader>fe", false },
+      { "<leader>E", "<leader>fE", false },
+    },
+    opts = {
+      indent = {
+        indent = {
+          priority = 1,
+          enabled = true, -- enable indent guides
+          char = "│",
+          only_scope = false, -- only show indent guides of the scope
+          only_current = false, -- only show indent guides in the current window
+          hl = "SnacksIndent",
+        },
+        animate = {
+          style = "out",
+          easing = "linear",
+          duration = {
+            step = 20, -- ms per step
+            total = 500, -- maximum duration
+          },
+        },
+        scope = {
+          enabled = true, -- enable highlighting the current scope
+          priority = 200,
+          char = "│",
+          underline = false, -- underline the start of the scope
+          only_current = true, -- only show scope in the current window
+          hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
+        },
+        chunk = {
+          -- when enabled, scopes will be rendered as chunks, except for the
+          -- top-level scope which will be rendered as a scope.
+          enabled = true,
+          -- only show chunk scopes in the current window
+          only_current = true,
+          priority = 200,
+          hl = "SnacksIndentChunk", ---@type string|string[] hl group for chunk scopes
+          char = {
+            corner_top = "╭",
+            corner_bottom = "╰",
+            horizontal = "─",
+            vertical = "│",
+            arrow = ">",
+          },
+        },
+      },
+      scope = {},
+    },
+  },
+  {
+    "akinsho/bufferline.nvim",
+    optional = true,
+    opts = function()
+      local Offset = require("bufferline.offset")
+      if not Offset.edgy then
+        local get = Offset.get
+        Offset.get = function()
+          if package.loaded.edgy then
+            local old_offset = get()
+            local layout = require("edgy.config").layout
+            local ret = { left = "", left_size = 0, right = "", right_size = 0 }
+            for _, pos in ipairs({ "left", "right" }) do
+              local sb = layout[pos]
+              ---@diagnostic disable-next-line: param-type-not-match
+              local title = " Sidebar" .. string.rep(" ", sb.bounds.width - 8)
+              if sb and #sb.wins > 0 then
+                ret[pos] = old_offset[pos .. "_size"] > 0 and old_offset[pos]
+                  or pos == "left" and ("%#Bold#" .. title .. "%*" .. "%#BufferLineOffsetSeparator#│%*")
+                  or pos == "right" and ("%#BufferLineOffsetSeparator#│%*" .. "%#Bold#" .. title .. "%*")
+                ret[pos .. "_size"] = old_offset[pos .. "_size"] > 0 and old_offset[pos .. "_size"] or sb.bounds.width
+              end
+            end
+            ret.total_size = ret.left_size + ret.right_size
+            ---@diagnostic disable-next-line: unnecessary-if
+            if ret.total_size > 0 then
+              return ret
+            end
+          end
+          return get()
+        end
+        Offset.edgy = true
+      end
+    end,
   },
 }
