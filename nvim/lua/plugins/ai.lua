@@ -1,5 +1,5 @@
 return {
-  -- -- Disable avante in favor of copilot.lua + opencode.nvim
+  -- -- Disable avante in favor of copilot.lua + codecompanion.nvim
   -- {
   --   "yetone/avante.nvim",
   --   vscode = false,
@@ -93,58 +93,61 @@ return {
     },
   },
   {
-    "NickvanDyke/opencode.nvim",
+    "olimorris/codecompanion.nvim",
     event = "VeryLazy",
+    vscode = false,
     dependencies = {
-      { "folke/snacks.nvim", opts = { input = { enabled = true } } },
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        ft = { "markdown", "codecompanion" },
+      },
     },
     config = function()
-      vim.g.opencode_opts = {
-        -- Your configuration, if any — see `lua/opencode/config.lua`
-      }
-      -- Required for `opts.auto_reload`
-      vim.opt.autoread = true
-      -- Recommended keymaps
-      vim.keymap.set("n", "<leader>at", function()
-        require("opencode").toggle()
-      end, { desc = "Toggle Window" })
-      vim.keymap.set("n", "<leader>aA", function()
-        require("opencode").ask()
-      end, { desc = "Ask" })
-      vim.keymap.set("n", "<leader>aa", function()
-        require("opencode").ask("@cursor: ")
-      end, { desc = "Ask about this" })
-      vim.keymap.set("v", "<leader>aa", function()
-        require("opencode").ask("@selection: ")
-      end, { desc = "Ask about selection" })
-      vim.keymap.set("n", "<leader>a+", function()
-        require("opencode").append_prompt("@buffer")
-      end, { desc = "Add buffer to prompt" })
-      vim.keymap.set("v", "<leader>a+", function()
-        require("opencode").append_prompt("@selection")
-      end, { desc = "Add selection to prompt" })
-      vim.keymap.set("n", "<leader>an", function()
-        require("opencode").command("session_new")
-      end, { desc = "New session" })
-      vim.keymap.set("n", "<leader>ay", function()
-        require("opencode").command("messages_copy")
-      end, { desc = "Copy last response" })
-      vim.keymap.set("n", "<S-C-u>", function()
-        require("opencode").command("messages_half_page_up")
-      end, { desc = "Messages half page up" })
-      vim.keymap.set("n", "<S-C-d>", function()
-        require("opencode").command("messages_half_page_down")
-      end, { desc = "Messages half page down" })
-      vim.keymap.set({ "n", "v" }, "<leader>as", function()
-        require("opencode").select()
-      end, { desc = "Select prompt" })
+      ---@diagnostic disable-next-line: need-check-nil
+      require("codecompanion").setup({
+        memory = {
+          opts = {
+            chat = {
+              enabled = true,
+            },
+          },
+        },
+        strategies = {
+          chat = {
+            adapter = "copilot",
+          },
+          inline = {
+            adapter = "copilot",
+          },
+          cmd = {
+            adapter = "copilot",
+          },
+        },
+        display = {
+          action_palette = {
+            width = 95,
+            height = 5,
+            prompt = "Prompt ",
+            provider = "snacks",
+            opts = {
+              show_default_actions = true, -- Show the default actions in the action palette?
+              show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+              title = "CodeCompanion actions", -- The title of the action palette
+            },
+          },
+        },
+      })
 
-      -- Example: keymap for custom prompt
-      vim.keymap.set("n", "<leader>ae", function()
-        require("opencode").prompt("Explain @cursor and its context")
-      end, { desc = "Explain this code" })
+      require("which-key").add({
+        { "<leader>a", desc = "+ai", icon = " " },
+      })
 
-      require("which-key").add({ "<leader>a", group = "opencode (AI)", icon = " " })
+      vim.keymap.set({ "n", "v" }, "<leader>at", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+      vim.keymap.set({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+      vim.keymap.set("v", "<leader>ad", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+      vim.cmd([[cab cc CodeCompanion]])
     end,
   },
 }

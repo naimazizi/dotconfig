@@ -207,7 +207,7 @@ return {
         },
         right = {
           { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
-          { title = "AI", ft = "opencode_terminal", size = { height = 0.30 } },
+          { title = "AI", ft = "codecompanion", pinned = true, open = "CodeCompanionChat", size = { height = 0.30 } },
           {
             title = "Overseer",
             ft = "OverseerList",
@@ -540,5 +540,31 @@ return {
         Offset.edgy = true
       end
     end,
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    optional = true,
+    event = "VeryLazy",
+    dependencies = { "franco-ruggeri/codecompanion-lualine.nvim" },
+    opts = function(_, opts)
+      table.insert(opts.sections.lualine_x, 2, {
+        "codecompanion",
+        icon = " cc",
+        spinner_symbols = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+        done_symbol = "✓",
+      })
+    end,
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    vscode = false,
+    event = "VeryLazy",
+    opts = {
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text_pos = "right_align",
+        delay = 500,
+      },
+    },
   },
 }

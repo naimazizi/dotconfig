@@ -211,21 +211,4 @@ return {
       },
     },
   },
-  {
-    "onsails/lspkind.nvim",
-    vscode = false,
-    event = "VimEnter",
-  },
-  {
-    "lewis6991/gitsigns.nvim",
-    vscode = false,
-    event = "VeryLazy",
-    opts = {
-      current_line_blame = true,
-      current_line_blame_opts = {
-        virt_text_pos = "right_align",
-        delay = 500,
-      },
-    },
-  },
 }
