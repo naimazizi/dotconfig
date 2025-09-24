@@ -5,7 +5,7 @@ return {
     dependencies = {
       "nvim-mini/mini.comment",
     },
-    event = "VeryLazy",
+    event = "BufRead *.py",
     config = function()
       local nn = require("notebook-navigator")
       vim.keymap.set({ "n", "v" }, "[3", function()
@@ -19,7 +19,7 @@ return {
   {
     "Vigemus/iron.nvim",
     vscode = false,
-    event = "VeryLazy",
+    event = "BufRead *.py",
     cmd = {
       "IronRepl",
       "IronReplHere",

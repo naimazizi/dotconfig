@@ -10,6 +10,6 @@ vsync = true
 wsl = false
 
 [font]
-size = 11
+size = 14
 hinting = "full"
 normal = ["JetBrains Maple Mono"]

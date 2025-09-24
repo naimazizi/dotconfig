@@ -41,7 +41,7 @@ return {
   },
   {
     "chrisgrieser/nvim-various-textobjs",
-    event = "VeryLazy",
+    event = "BufRead",
     opts = {
       keymaps = {
         useDefaults = true,
@@ -81,7 +81,7 @@ return {
   {
     "jake-stewart/multicursor.nvim",
     vscode = true,
-    event = "BufEnter",
+    event = "BufRead",
     config = function()
       local mc = require("multicursor-nvim")
       mc.setup()
@@ -152,7 +152,7 @@ return {
   {
     "zaucy/mcos.nvim",
     vscode = true,
-    event = "BufEnter",
+    event = "BufRead",
     dependencies = {
       "jake-stewart/multicursor.nvim",
     },

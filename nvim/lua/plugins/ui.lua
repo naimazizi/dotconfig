@@ -194,7 +194,7 @@ return {
             title = "Explorer",
             ft = "NvimTree",
             open = function()
-              require("nvim-tree.api").tree.toggle()
+              require("nvim-tree.api").tree.open()
             end,
             pinned = true,
           },
@@ -202,7 +202,7 @@ return {
             title = "Outline",
             ft = "Outline",
             pinned = true,
-            open = "Outline",
+            open = "OutlineOpen",
           },
         },
         right = {
@@ -217,6 +217,7 @@ return {
             size = { height = 0.4 },
           },
           { title = "Neotest Summary", ft = "neotest-summary" },
+          { title = "REPL", ft = "iron" },
         },
       }
       require("edgy").setup(opts)

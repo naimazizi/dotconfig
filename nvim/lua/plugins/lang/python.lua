@@ -3,7 +3,7 @@ local lsp = "ty"
 return {
   {
     "mason-org/mason.nvim",
-    opts = { ensure_installed = { "ty" } },
+    opts = { ensure_installed = { lsp } },
   },
   {
     "neovim/nvim-lspconfig",

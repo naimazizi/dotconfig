@@ -23,8 +23,8 @@ if not vim.g.vscode then
   vim.g.root_spec = { "cwd" }
   vim.g.lazyvim_blink_main = true
 
-  vim.o.guifont = "JetBrains Maple Mono:h11:#e-subpixelantialias"
   vim.o.smoothscroll = false
+  vim.opt.spell = false
 
   if is_ssh_session() then
     vim.g.clipboard = {

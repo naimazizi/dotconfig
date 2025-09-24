@@ -3,7 +3,7 @@ return {
     -- for complete functionality (language features)
     "quarto-dev/quarto-nvim",
     vscode = false,
-    event = "VeryLazy",
+    event = "BufRead *.py",
     ft = { "quarto" },
     dev = false,
     config = function()
@@ -43,9 +43,6 @@ return {
     end,
 
     dependencies = {
-      -- for language features in code cells
-      -- configured in lua/plugins/lsp.lua and
-      -- added as a nvim-cmp source in lua/plugins/completion.lua
       "jmbuhr/otter.nvim",
       "nvim-treesitter/nvim-treesitter",
     },
@@ -54,7 +51,7 @@ return {
     -- and convert back behind the scenes
     "GCBallesteros/jupytext.nvim",
     vscode = false,
-    event = "VeryLazy",
+    event = "BufRead *.py",
     opts = {
       custom_language_formatting = {
         python = {

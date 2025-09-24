@@ -1,7 +1,7 @@
 return {
   {
     "jellydn/hurl.nvim",
-    event = "VeryLazy",
+    event = "BufRead *.hurl",
     vscode = false,
     dependencies = {
       "MunifTanjim/nui.nvim",
@@ -50,5 +50,9 @@ return {
       require("hurl").setup(opts)
       require("which-key").add({ "<localleader>c", group = "Curl (HTTP client)", icon = "󱂛" })
     end,
+  },
+  {
+    "mason-org/mason.nvim",
+    opts = { ensure_installed = { "jq" } },
   },
 }
