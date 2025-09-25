@@ -5,7 +5,6 @@ return {
     event = "VimEnter",
     version = "1.*",
     dependencies = {
-      "onsails/lspkind.nvim",
       -- Snippet Engine
       {
         "L3MON4D3/LuaSnip",
