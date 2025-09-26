@@ -119,11 +119,18 @@ return {
     end,
     keys = {
       {
-        "<leader>ue",
+        "<leader>uE",
         function()
           require("edgy").toggle()
         end,
         desc = "Edgy Toggle",
+      },
+      {
+        "<leader>ue",
+        function()
+          require("edgy").select()
+        end,
+        desc = "Edgy Select Window",
       },
       -- increase width
       ["<c-Right>"] = function(win)
@@ -295,7 +302,7 @@ return {
   },
   {
     "petertriho/nvim-scrollbar",
-    event = "VeryLazy",
+    event = "BufRead",
     vscode = false,
     config = function()
       require("scrollbar").setup()
@@ -558,7 +565,7 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     vscode = false,
-    event = "VeryLazy",
+    event = "BufRead",
     opts = {
       current_line_blame = true,
       current_line_blame_opts = {

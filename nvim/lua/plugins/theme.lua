@@ -4,6 +4,7 @@ return {
   {
     "everviolet/nvim",
     name = "evergarden",
+    enabled = false,
     vscode = false,
     lazy = true,
     -- priority = 1000,
@@ -55,6 +56,7 @@ return {
   },
   {
     "dgox16/oldworld.nvim",
+    enabled = false,
     vscode = false,
     lazy = true,
     -- priority = 1000,
