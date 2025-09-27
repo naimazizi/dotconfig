@@ -199,11 +199,21 @@ return {
         left = {
           {
             title = "Explorer",
+            ft = "snacks_layout_box",
+            open = function()
+              require("snacks").explorer()
+            end,
+            pinned = true,
+            filter = function(_buf, win)
+              return vim.api.nvim_win_get_config(win).relative == ""
+            end,
+          },
+          {
+            title = "Explorer",
             ft = "NvimTree",
             open = function()
               require("nvim-tree.api").tree.open()
             end,
-            pinned = true,
           },
           {
             title = "Outline",
@@ -359,6 +369,7 @@ return {
   },
   {
     "nvim-tree/nvim-tree.lua",
+    enabled = false,
     version = "*",
     lazy = false,
     keys = {
@@ -455,18 +466,23 @@ return {
   },
   {
     "folke/snacks.nvim",
-    keys = {
-      {
-        "<leader>fe",
-        false,
-      },
-      {
-        "<leader>fE",
-        false,
-      },
-      { "<leader>e", "<leader>fe", false },
-      { "<leader>E", "<leader>fE", false },
-    },
+    keys = function()
+      -- Override <leader>e keymaps if nvim-tree is loaded
+      if package.loaded["nvim-tree.lua"] then
+        return {
+          {
+            "<leader>fe",
+            false,
+          },
+          {
+            "<leader>fE",
+            false,
+          },
+          { "<leader>e", "<leader>fe", false },
+          { "<leader>E", "<leader>fE", false },
+        }
+      end
+    end,
     opts = {
       indent = {
         indent = {

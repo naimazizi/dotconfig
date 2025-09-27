@@ -1,9 +1,39 @@
 [[plugin.deps]]
 use = "wylie102/duckdb"
-rev = "6259e2d"
-hash = "833314e2c2bd0de8d43ef2341cb0853b"
+rev = "3f8c863"
+hash = "87b9233a74325e95011670ed20bbd0d4"
+
+[[plugin.deps]]
+use = "ndtoan96/ouch"
+rev = "0742fff"
+hash = "2bd799b42b8e42b8ef100310be71f8d1"
+
+[[plugin.deps]]
+use = "AnirudhG07/nbpreview"
+rev = "7fb073f"
+hash = "a3e32d62ea3cc703e6bf677bdb18a544"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:chmod"
+rev = "d1c8baa"
+hash = "8ad3e90b079190b4905f24a44f4ca06b"
+
+[[plugin.deps]]
+use = "Lil-Dank/lazygit"
+rev = "8f37dc5"
+hash = "ee71543790f0ce3951161045a3787abd"
+
+[[plugin.deps]]
+use = "AnirudhG07/plugins-yazi:copy-file-contents"
+rev = "71545f4"
+hash = "f8530ee84fee95dbcc26bb1d8d8019c7"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-filter"
+rev = "d1c8baa"
+hash = "bcda8eeb3f4013bae156aecabfc745e8"
 
 [[flavor.deps]]
 use = "dangooddd/kanagawa"
-rev = "31167ed"
-hash = "a04e157148549bacbb2831aab0e6e8cb"
+rev = "a0b1d9d"
+hash = "abfb0b2371259b2c8adfc7b617c3d7e5"
