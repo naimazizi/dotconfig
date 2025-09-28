@@ -1,5 +1,5 @@
 return {
-  -- -- Disable avante in favor of copilot.lua + codecompanion.nvim
+  -- Disable avante in favor of copilot.lua + codecompanion.nvim
   {
     "yetone/avante.nvim",
     enabled = false,
@@ -51,47 +51,6 @@ return {
       require("which-key").add({ "<leader>a", group = "avante (ai)" })
     end,
     build = "make",
-  },
-  {
-    "copilotlsp-nvim/copilot-lsp",
-    vscode = false,
-    event = "InsertEnter",
-  },
-  {
-    "zbirenbaum/copilot.lua",
-    requires = {
-      "copilotlsp-nvim/copilot-lsp",
-      init = function()
-        vim.g.copilot_nes_debounce = 500
-      end,
-    },
-    vscode = false,
-    cmd = "Copilot",
-    event = "InsertEnter",
-    opts = {
-      suggestion = {
-        enabled = not vim.g.ai_cmp,
-        auto_trigger = true,
-        hide_during_completion = vim.g.ai_cmp,
-        keymap = {
-          accept = false, -- handled by nvim-cmp / blink.cmp
-          next = "<M-]>",
-          prev = "<M-[>",
-        },
-      },
-      panel = { enabled = false },
-      server = {
-        type = "binary", -- "nodejs" | "binary"
-      },
-      nes = {
-        enabled = true,
-        keymap = {
-          accept_and_goto = "<Tab>",
-          accept = false,
-          dismiss = "<Esc>",
-        },
-      },
-    },
   },
   {
     "olimorris/codecompanion.nvim",
@@ -254,15 +213,32 @@ return {
         "<cmd>CodeCompanionChat Add<cr>",
         { noremap = true, silent = true, desc = "CodeCompanion Add selection" }
       )
-      vim.keymap.set("v", "<leader>ac", function()
-        require("codecompanion").prompt("Inline comments")
-      end, { noremap = true, silent = true, desc = "CodeCompanion Add inline comments" })
-      vim.keymap.set("v", "<leader>ag", function()
-        require("codecompanion").prompt("Fix language")
-      end, { noremap = true, silent = true, desc = "CodeCompanion Fix language" })
-      vim.keymap.set("v", "<leader>ax", function()
-        require("codecompanion").prompt("Code Expert")
-      end, { noremap = true, silent = true, desc = "CodeCompanion Prompt Code Expert" })
+      vim.keymap.set(
+        "n",
+        "<leader>ah",
+        "<cmd>CodeCompanionHistory<cr>",
+        { noremap = true, silent = true, desc = "CodeCompanion History" }
+      )
+
+      -- Custom Prompts
+      vim.keymap.set(
+        "v",
+        "<leader>ac",
+        "<cmd>CodeCompanion /comment<cr>",
+        { noremap = true, silent = true, desc = "CodeCompanion Add inline comments" }
+      )
+      vim.keymap.set(
+        "v",
+        "<leader>ag",
+        "<cmd>CodeCompanion /fixlang<cr>",
+        { noremap = true, silent = true, desc = "CodeCompanion Fix language" }
+      )
+      vim.keymap.set(
+        "v",
+        "<leader>ax",
+        "<cmd>CodeCompanion /expert<cr>",
+        { noremap = true, silent = true, desc = "CodeCompanion Prompt Code Expert" }
+      )
 
       vim.cmd([[cab cc CodeCompanion]])
     end,

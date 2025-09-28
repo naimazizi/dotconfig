@@ -34,6 +34,28 @@ return {
       },
       "jmbuhr/cmp-pandoc-references",
       {
+        "zbirenbaum/copilot.lua",
+        vscode = false,
+        cmd = "Copilot",
+        event = "InsertEnter",
+        opts = {
+          suggestion = {
+            enabled = not vim.g.ai_cmp,
+            auto_trigger = true,
+            hide_during_completion = vim.g.ai_cmp,
+            keymap = {
+              accept = false, -- handled by nvim-cmp / blink.cmp
+              next = "<M-]>",
+              prev = "<M-[>",
+            },
+          },
+          panel = { enabled = false },
+          server = {
+            type = "binary", -- "nodejs" | "binary"
+          },
+        },
+      },
+      {
         "fang2hou/blink-copilot",
         opts = {
           max_completions = 2,
@@ -178,35 +200,6 @@ return {
       term = {
         enabled = true,
         keymap = { preset = "inherit" },
-      },
-
-      keymap = {
-        preset = "super-tab",
-        ["<Tab>"] = {
-          function(cmp)
-            if cmp.snippet_active() then
-              return cmp.accept()
-            else
-              return cmp.select_and_accept()
-            end
-          end,
-          "snippet_forward",
-          "fallback",
-        },
-        ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<C-e>"] = { "hide", "fallback" },
-
-        ["<S-Tab>"] = { "snippet_backward", "fallback" },
-
-        ["<Up>"] = { "select_prev", "fallback" },
-        ["<Down>"] = { "select_next", "fallback" },
-        ["<C-p>"] = { "select_prev", "fallback_to_mappings" },
-        ["<C-n>"] = { "select_next", "fallback_to_mappings" },
-
-        ["<C-b>"] = { "scroll_documentation_up", "fallback" },
-        ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-
-        ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
       },
     },
   },

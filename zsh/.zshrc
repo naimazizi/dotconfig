@@ -77,6 +77,11 @@ if [[ -d "${RANCHER_PATH}" ]]; then
 	export PATH=$PATH:$RANCHER_PATH
 fi
 
+export BUN_PATH="$HOME/.bun/bin"
+if [[ -d "${BUN_PATH}" ]]; then
+	export PATH=$PATH:$BUN_PATH
+fi
+
 # Exclude failed history
 zshaddhistory() {
    local j=1
