@@ -380,6 +380,12 @@ else
   end
   vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, desc = "Exit terminal mode" })
 
+  -- Fold
+  vim.keymap.set("n", "z1", "zM", { noremap = true, desc = "Fold 1" })
+  vim.keymap.set("n", "z2", "zM1zr", { noremap = true, desc = "Fold 2" })
+  vim.keymap.set("n", "z3", "zM2zr", { noremap = true, desc = "Fold 3" })
+  vim.keymap.set("n", "z4", "zM3zr", { noremap = true, desc = "Fold 4" })
+
   vim.keymap.set("n", "dm", function()
     local mark = vim.fn.input("Enter mark to delete: ")
     if mark ~= "" then

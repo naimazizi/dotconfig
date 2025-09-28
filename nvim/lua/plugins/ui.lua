@@ -118,15 +118,15 @@ return {
       vim.opt.splitkeep = "screen"
     end,
     keys = {
+      -- {
+      --   "<leader>uE",
+      --   function()
+      --     require("edgy").toggle()
+      --   end,
+      --   desc = "Edgy Toggle",
+      -- },
       {
-        "<leader>uE",
-        function()
-          require("edgy").toggle()
-        end,
-        desc = "Edgy Toggle",
-      },
-      {
-        "<leader>ue",
+        "<A-w>",
         function()
           require("edgy").select()
         end,
@@ -209,17 +209,10 @@ return {
             end,
           },
           {
-            title = "Explorer",
-            ft = "NvimTree",
-            open = function()
-              require("nvim-tree.api").tree.open()
-            end,
-          },
-          {
             title = "Outline",
-            ft = "Outline",
+            ft = "SymbolsSidebar",
             pinned = true,
-            open = "OutlineOpen",
+            open = "SymbolsToggle",
           },
         },
         right = {
@@ -333,128 +326,46 @@ return {
     end,
   },
   {
-    "hedyhli/outline.nvim",
+    "oskarrrrrrr/symbols.nvim",
     vscode = false,
-    keys = { { "<leader>cs", "<cmd>Outline<cr>", desc = "Toggle Outline" } },
-    cmd = "Outline",
-    event = "LspAttach",
-    opts = function()
-      local defaults = require("outline.config").defaults
-      local opts = {
-        symbols = {
-          icons = {},
-          filter = vim.deepcopy(LazyVim.config.kind_filter),
-        },
-        keymaps = {
-          up_and_jump = "<up>",
-          down_and_jump = "<down>",
-        },
-        providers = {
-          priority = { "lsp", "markdown", "norg", "treesitter" },
-        },
-      }
-
-      for kind, symbol in pairs(defaults.symbols.icons) do
-        opts.symbols.icons[kind] = {
-          icon = LazyVim.config.icons.kinds[kind] or symbol.icon,
-          hl = symbol.hl,
-        }
-      end
-      return opts
-    end,
-    dependencies = {
-      "epheien/outline-treesitter-provider.nvim",
-    },
-  },
-  {
-    "nvim-tree/nvim-tree.lua",
-    enabled = false,
-    version = "*",
-    lazy = false,
-    keys = {
-      {
-        "<leader>fe",
-        function()
-          require("nvim-tree.api").tree.toggle()
-        end,
-        desc = "Explorer",
-      },
-      {
-        "<leader>fE",
-        function()
-          require("nvim-tree.api").tree.toggle()
-        end,
-        desc = "Explorer",
-      },
-      { "<leader>e", "<leader>fe", desc = "Explorer", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer", remap = true },
-    },
+    cmd = "SymbolsToggle",
+    keys = { { "<leader>cs", "<cmd>SymbolsToggle<cr>", desc = "Toggle Outline" } },
     config = function()
-      require("nvim-tree").setup({
-        sync_root_with_cwd = true,
-        view = {
-          adaptive_size = false,
-        },
-        renderer = {
-          full_name = true,
-          group_empty = true,
-          special_files = {},
-          symlink_destination = false,
-          indent_markers = {
-            enable = true,
-          },
-          icons = {
-            git_placement = "after",
-            show = {
-              file = true,
-              folder = false,
-              folder_arrow = true,
-              git = true,
-            },
-            glyphs = {
-              git = {
-                unstaged = "",
-                staged = "✓",
-                unmerged = "",
-                renamed = "➜",
-                untracked = "★",
-                deleted = "",
-                ignored = "◌",
-              },
-            },
-          },
-        },
-        update_focused_file = {
-          enable = true,
-          update_root = true,
-          ignore_list = { "help" },
-        },
-        diagnostics = {
-          enable = true,
-          show_on_dirs = true,
-        },
-        filters = {
-          custom = {
-            "^.git$",
-          },
-        },
-        actions = {
-          change_dir = {
-            enable = false,
-            restrict_above_cwd = true,
-          },
-          open_file = {
-            resize_window = true,
-            window_picker = {
-              chars = "aoeui",
-            },
-          },
-          remove_file = {
-            close_window = false,
+      local r = require("symbols.recipes")
+      require("symbols").setup(r.DefaultFilters, r.AsciiSymbols, {
+        sidebar = {
+          show_inline_details = true,
+          auto_peek = false,
+          preview = {
+            show_always = false,
           },
         },
       })
     end,
+  },
+  {
+    "A7Lavinraj/fyler.nvim",
+    cmd = "Fyler",
+    vscode = false,
+    keys = {
+      {
+        "<leader>fE",
+        "<cmd>Fyler<cr>",
+        desc = "Explorer Fyler (cwd)",
+      },
+      {
+        "<leader>E",
+        "<leader>fE",
+        desc = "Explorer Fyler (cwd)",
+        remap = true,
+      },
+    },
+    opts = {
+      win = {
+        border = "double",
+        kind = "float",
+      },
+    },
   },
   {
     "folke/trouble.nvim",
@@ -465,23 +376,10 @@ return {
   },
   {
     "folke/snacks.nvim",
-    keys = function()
-      -- Override <leader>e keymaps if nvim-tree is loaded
-      if package.loaded["nvim-tree.lua"] then
-        return {
-          {
-            "<leader>fe",
-            false,
-          },
-          {
-            "<leader>fE",
-            false,
-          },
-          { "<leader>e", "<leader>fe", false },
-          { "<leader>E", "<leader>fE", false },
-        }
-      end
-    end,
+    keys = { {
+      "<leader>fE",
+      false,
+    }, { "<leader>E", "<leader>fE", false } },
     opts = {
       indent = {
         indent = {
