@@ -3,7 +3,7 @@
 local function map_illuminate(key, dir, buffer)
   vim.keymap.set("n", key, function()
     require("illuminate")["goto_" .. dir .. "_reference"](false)
-  end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+  end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer, noremap = true })
 end
 
 local function vscodeMappings()
