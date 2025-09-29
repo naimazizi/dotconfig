@@ -126,18 +126,18 @@ return {
         },
         prompt_library = {
           ["Inline comments"] = {
-            strategy = "chat",
+            strategy = "inline",
             description = "Write comments for me",
             opts = {
               index = 11,
               is_slash_cmd = false,
-              auto_submit = false,
+              auto_submit = true,
               short_name = "comment",
             },
             prompts = {
               {
                 role = "user",
-                content = "Add explanatory inline comments to the following code, clarifying complex logic and variable purposes",
+                content = "Add explanatory inline comments to the following code, clarifying complex logic and variable purposes then use @{insert_edit_into_file} to apply the changes",
               },
             },
           },

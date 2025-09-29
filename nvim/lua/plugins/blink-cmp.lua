@@ -179,6 +179,9 @@ return {
         enabled = true,
         keymap = { preset = "inherit" },
       },
+      keymap = {
+        preset = "super-tab",
+      },
     },
   },
 }

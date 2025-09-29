@@ -53,7 +53,11 @@ return {
       require("lensline").setup({
         profiles = {
           {
-            name = "default",
+            name = "minimal",
+            style = {
+              placement = "inline",
+              prefix = "",
+            },
             providers = { -- Array format: order determines display sequence
               {
                 name = "usages",
@@ -72,6 +76,23 @@ return {
                 name = "diagnostics",
                 enabled = true, -- disabled by default - enable explicitly to use
                 min_level = "WARN", -- only show WARN and ERROR by default (HINT, INFO, WARN, ERROR)
+              },
+              {
+                name = "function_length",
+                enabled = true,
+                event = { "BufWritePost", "TextChanged" },
+                handler = function(bufnr, func_info, provider_config, callback)
+                  local utils = require("lensline.utils")
+                  local function_lines = utils.get_function_lines(bufnr, func_info)
+                  local func_line_count = math.max(0, #function_lines - 1) -- Subtract 1 for signature
+                  local total_lines = vim.api.nvim_buf_line_count(bufnr)
+
+                  -- Show line count for all functions
+                  callback({
+                    line = func_info.line,
+                    text = string.format("(%d/%d lines)", func_line_count, total_lines),
+                  })
+                end,
               },
               {
                 name = "complexity",
@@ -355,9 +376,8 @@ return {
       },
       {
         "<leader>E",
-        "<leader>fE",
+        "<cmd>Fyler<cr>",
         desc = "Explorer Fyler (cwd)",
-        remap = true,
       },
     },
     opts = {

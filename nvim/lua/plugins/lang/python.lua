@@ -1,4 +1,4 @@
-local lsp = "ty"
+local lsp = "pyrefly"
 
 return {
   {
@@ -9,13 +9,14 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        ty = {
-          diagnosticMode = "workspace",
-          experimental = {
-            rename = true,
-            autoImport = true,
-          },
-        },
+        -- ty = {
+        --   diagnosticMode = "workspace",
+        --   experimental = {
+        --     rename = true,
+        --     autoImport = true,
+        --   },
+        -- },
+        pyrefly = {},
       },
     },
   },
