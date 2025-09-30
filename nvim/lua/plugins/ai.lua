@@ -197,7 +197,7 @@ return {
 
       vim.keymap.set(
         { "n", "v" },
-        "<leader>at",
+        "<leader>ac",
         "<cmd>CodeCompanionActions<cr>",
         { noremap = true, silent = true, desc = "CodeCompanion Actions" }
       )
@@ -242,5 +242,26 @@ return {
 
       vim.cmd([[cab cc CodeCompanion]])
     end,
+  },
+  {
+    "folke/sidekick.nvim",
+    opts = {
+      cli = {
+        mux = {
+          backend = "zellij",
+          enabled = true,
+        },
+      },
+    },
+    keys = {
+      {
+        "<leader>at",
+        function()
+          require("sidekick.cli").toggle()
+        end,
+        mode = { "n" },
+        desc = "Sidekick Toggle",
+      },
+    },
   },
 }
