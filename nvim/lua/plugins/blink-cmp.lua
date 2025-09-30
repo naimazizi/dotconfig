@@ -8,7 +8,6 @@ return {
       -- Snippet Engine
       {
         "L3MON4D3/LuaSnip",
-        lazy = true,
         build = (function()
           -- Build Step is needed for regex support in snippets.
           -- This step is not supported in many windows environments.
@@ -45,6 +44,8 @@ return {
       "Kaiser-Yang/blink-cmp-avante",
       "t3ntxcl3s/ecolog.nvim",
       "Fildo7525/pretty_hover",
+      "marcoSven/blink-cmp-yanky",
+      "disrupted/blink-cmp-conventional-commits",
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -127,7 +128,7 @@ return {
         },
       },
       -- experimental signature help support
-      signature = { enabled = true, trigger = { show_on_accept = true }, window = { border = "single" } },
+      signature = { enabled = true, trigger = { show_on_accept = true }, window = { border = "rounded" } },
 
       sources = {
         -- adding any nvim-cmp sources here will enable them
@@ -143,6 +144,8 @@ return {
           "copilot",
           "avante",
           "ecolog",
+          "yank",
+          "conventional_commits",
         },
         providers = {
           references = {
@@ -168,6 +171,24 @@ return {
             opts = {},
           },
           ecolog = { name = "ecolog", module = "ecolog.integrations.cmp.blink_cmp" },
+          yank = {
+            name = "yank",
+            module = "blink-yanky",
+            opts = {
+              minLength = 5,
+              onlyCurrentFiletype = true,
+              trigger_characters = { '"' },
+              kind_icon = "󰅍",
+            },
+          },
+          conventional_commits = {
+            name = "Conventional Commits",
+            module = "blink-cmp-conventional-commits",
+            enabled = function()
+              return vim.bo.filetype == "gitcommit"
+            end,
+            opts = {},
+          },
         },
       },
 
@@ -179,6 +200,7 @@ return {
         enabled = true,
         keymap = { preset = "inherit" },
       },
+
       keymap = {
         preset = "super-tab",
       },
