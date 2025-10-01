@@ -238,7 +238,6 @@ return {
         },
         right = {
           { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
-          { title = "AI", ft = "codecompanion", pinned = true, open = "CodeCompanionChat", size = { height = 0.30 } },
           { title = "AI", ft = "sidekick_terminal", size = { height = 0.30 } },
           {
             title = "Overseer",
@@ -298,7 +297,6 @@ return {
         event = "VeryLazy",
         cond = not vim.g.vscode,
       },
-      { "franco-ruggeri/codecompanion-lualine.nvim" },
     },
     opts = function(_, opts)
       table.insert(opts.sections.lualine_x, { require("recorder").displaySlots })
@@ -315,12 +313,6 @@ return {
         color = function()
           return { fg = Snacks.util.color("Debug") }
         end,
-      })
-      table.insert(opts.sections.lualine_x, 2, {
-        "codecompanion",
-        icon = " cc",
-        spinner_symbols = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
-        done_symbol = "✓",
       })
     end,
   },
