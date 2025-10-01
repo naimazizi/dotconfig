@@ -81,7 +81,7 @@ return {
                 name = "function_length",
                 enabled = true,
                 event = { "BufWritePost", "TextChanged" },
-                handler = function(bufnr, func_info, provider_config, callback)
+                handler = function(bufnr, func_info, _provider_config, callback)
                   local utils = require("lensline.utils")
                   local function_lines = utils.get_function_lines(bufnr, func_info)
                   local func_line_count = math.max(0, #function_lines - 1) -- Subtract 1 for signature
@@ -239,6 +239,7 @@ return {
         right = {
           { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
           { title = "AI", ft = "codecompanion", pinned = true, open = "CodeCompanionChat", size = { height = 0.30 } },
+          { title = "AI", ft = "sidekick_terminal", size = { height = 0.30 } },
           {
             title = "Overseer",
             ft = "OverseerList",

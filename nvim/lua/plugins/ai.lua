@@ -262,6 +262,10 @@ return {
         mode = { "n" },
         desc = "Sidekick Toggle",
       },
+      {
+        "<leader>aa",
+        false,
+      },
     },
   },
 }
