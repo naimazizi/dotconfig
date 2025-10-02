@@ -57,6 +57,10 @@ return {
     vscode = false,
     opts = {
       cli = {
+        mux = {
+          backend = "zellij",
+          enabled = true,
+        },
         prompts = {
           fix_lang = {
             msg = "Make the sentence better and more concise",

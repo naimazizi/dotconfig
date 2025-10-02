@@ -146,7 +146,6 @@ return {
           "ecolog",
           "yank",
           "conventional_commits",
-          "omni",
         },
         providers = {
           references = {

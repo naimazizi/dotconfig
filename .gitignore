@@ -29,6 +29,7 @@
 !/tmux/
 !/hypr/
 !/opencode/
+!/kitty/
 
 fish/fish_variables
 fish/fishd.*
