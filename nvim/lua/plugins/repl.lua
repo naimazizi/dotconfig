@@ -63,7 +63,7 @@ return {
     main = "iron.core", -- <== This informs lazy.nvim to use the entrypoint of `iron.core` to load the configuration.
     config = function()
       require("which-key").add({
-        { "<localleader>r", group = "+REPL", icon = " " },
+        { "<localleader>r", desc = "+REPL", icon = " " },
         { "<localleader>rt", desc = "Iron - Toggle Repl" },
         { "<localleader>re", desc = "Iron - Send Current Line to Repl" },
         { "<localleader>ru", desc = "Iron - Send start until cursor to Repl" },
