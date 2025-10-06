@@ -17,7 +17,27 @@ return {
     end,
   },
   {
+    "jpalardy/vim-slime",
+    vscode = false,
+    event = "BufRead *.py",
+    init = function()
+      vim.g.slime_no_mappings = 1
+    end,
+    keys = {
+      { "<localleader>rC", "<cmd>SlimeConfig<cr>", desc = "Slime Config" },
+      { "<localleader>rr", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", desc = "Slime Send Cell" },
+      { "<localleader>rr", ":<C-u>'<,'>SlimeSend<CR>", mode = "v", desc = "Slime Send Selection" },
+      { "<localleader>r<cr>", "<Plug>SlimeLineSend<CR>", mode = "v", desc = "Slime Send Selection" },
+    },
+    config = function()
+      vim.g.slime_python_ipython = 1
+      vim.g.slime_target = "tmux"
+      vim.g.slime_cell_delimiter = "# %%"
+    end,
+  },
+  {
     "Vigemus/iron.nvim",
+    enabled = false,
     vscode = false,
     event = "BufRead *.py",
     cmd = {
@@ -62,39 +82,6 @@ return {
     },
     main = "iron.core", -- <== This informs lazy.nvim to use the entrypoint of `iron.core` to load the configuration.
     config = function()
-      require("which-key").add({
-        { "<localleader>r", desc = "+REPL", icon = " " },
-        { "<localleader>rt", desc = "Iron - Toggle Repl" },
-        { "<localleader>re", desc = "Iron - Send Current Line to Repl" },
-        { "<localleader>ru", desc = "Iron - Send start until cursor to Repl" },
-        { "<localleader>rm", desc = "Iron - Send mark to Repl" },
-        { "<localleader>rr", desc = "Iron - Send code block to Repl" },
-        { "<localleader>rb", desc = "Iron - Send code block and move to Repl" },
-        { "<localleader>rq", desc = "Iron - Mark Motion" },
-        { "<localleader>rq", desc = "Iron - Mark Visual" },
-        { "<localleader>rd", desc = "Iron - Delete Mark" },
-        { "<localleader>r<cr>", desc = "Iron - Send new line" },
-        { "<localleader>r<localleader>", desc = "Iron - Interrupt Iron Repl" },
-        { "<localleader>rq", desc = "Iron - Exit Iron Repl" },
-        { "<localleader>rz", desc = "Iron - Clear Iron Repl" },
-        {
-          "<localleader>ri",
-          desc = "Iron - Start Iron Repl",
-        },
-        {
-          "<localleader>rf",
-          desc = "Iron - Focus to Iron Repl",
-        },
-        {
-          "<localleader>rh",
-          desc = "Iron - Hide Iron Repl",
-        },
-        {
-          "<localleader>rs",
-          desc = "Iron - Send motion",
-        },
-      })
-
       local iron = require("iron")
       local common = require("iron.fts.common")
       iron.setup({

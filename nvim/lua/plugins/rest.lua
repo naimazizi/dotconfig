@@ -46,10 +46,6 @@ return {
       -- Run Hurl request in visual mode
       { "<localleader>cc", ":HurlRunner<CR>", desc = "Hurl Runner", mode = "v" },
     },
-    config = function(_, opts)
-      require("hurl").setup(opts)
-      require("which-key").add({ "<localleader>c", desc = "Curl (HTTP client)", icon = "󱂛" })
-    end,
   },
   {
     "mason-org/mason.nvim",
