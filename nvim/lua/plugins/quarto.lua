@@ -24,7 +24,7 @@ return {
         },
         codeRunner = {
           enabled = true,
-          default_method = "slime", -- "molten", "slime", "iron" or <function>
+          default_method = "iron", -- "molten", "slime", "iron" or <function>
         },
       })
       local runner = require("quarto.runner")

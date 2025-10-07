@@ -18,6 +18,7 @@ return {
   },
   {
     "jpalardy/vim-slime",
+    enabled = false,
     vscode = false,
     event = "BufRead *.py",
     init = function()
@@ -29,15 +30,10 @@ return {
       { "<localleader>rr", ":<C-u>'<,'>SlimeSend<CR>", mode = "v", desc = "Slime Send Selection" },
       { "<localleader>r<cr>", "<Plug>SlimeLineSend<CR>", mode = "v", desc = "Slime Send Selection" },
     },
-    config = function()
-      vim.g.slime_python_ipython = 1
-      vim.g.slime_target = "tmux"
-      vim.g.slime_cell_delimiter = "# %%"
-    end,
   },
   {
     "Vigemus/iron.nvim",
-    enabled = false,
+    -- enabled = false,
     vscode = false,
     event = "BufRead *.py",
     cmd = {
@@ -93,7 +89,7 @@ return {
             sh = {
               -- Can be a table or a function that
               -- returns a table (see below)
-              command = { "fish" },
+              command = { "zsh" },
             },
             python = {
               command = { "ipython", "--no-autoindent" },

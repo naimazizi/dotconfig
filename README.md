@@ -1,6 +1,7 @@
 # personal .config repo
 
-## List of configs:
+## List of configs
+
 - fish
 - ghostty
 - gitui
@@ -13,7 +14,8 @@
 - zed
 - zellij
 
-## Requirements :
+## Requirements
+
 - homebrew (for macos)
 
 ## Installation
@@ -40,5 +42,5 @@ brew install \
   zoxide \
 
 mkdir -p ~/Applications
-brew install --cask ghostty font-jetbrains-maple-mono-nf --appdir=~/Applications
+brew install --cask ghostty font-maple-mono --appdir=~/Applications
 ```
