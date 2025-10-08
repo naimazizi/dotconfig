@@ -182,4 +182,8 @@ return {
       })
     end,
   },
+  {
+    "mason-org/mason.nvim",
+    opts = { ensure_installed = { "ast-grep" } },
+  },
 }
