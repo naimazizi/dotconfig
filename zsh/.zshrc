@@ -22,19 +22,19 @@ fpath+=${ZDOTDIR}/.zfunc
 # Load function from fpath or any zsh function
 autoload -Uz fzg
 autoload -Uz edit-command-line
-zle -N edit-command-linej
+zle -N edit-command-line
 
 # Aliases
 alias ls='lsd'
 alias ll="lsd -ltr"
 alias find='fd'
-alias ai='gh copilot'
-alias dev="limactl shell lima-box fish"
-alias nvim_remote="limactl shell lima-box nvim"
+alias gg='lazygit'
+alias vv='nvim'
 alias nvim_update='nvim --headless "+Lazy! sync" +qa'
 alias neovide_remote="neovide --neovim-bin ~/.config/nvim-remote.sh"
 alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 alias ls_arch_packages="pacman -Qi | grep -E '^(Name|Installed)' | cut -f2 -d':' | paste - - | column -t | sort -nrk 2 | grep MiB | less"
+alias ss="zsh $HOME/.config/skim_search.sh"
 
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
