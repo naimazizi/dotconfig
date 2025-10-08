@@ -422,6 +422,7 @@ return {
         },
       },
       scope = {},
+      scroll = { enabled = false },
     },
   },
   {
@@ -468,6 +469,14 @@ return {
       current_line_blame_opts = {
         virt_text_pos = "right_align",
         delay = 500,
+      },
+    },
+  },
+  {
+    "folke/noice.nvim",
+    opts = {
+      lsp = {
+        hover = { silent = true },
       },
     },
   },

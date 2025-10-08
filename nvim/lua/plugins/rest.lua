@@ -7,13 +7,7 @@ return {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      {
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = {
-          file_types = { "markdown" },
-        },
-        ft = { "markdown" },
-      },
+      "MeanderingProgrammer/render-markdown.nvim",
     },
     ft = "hurl",
     opts = {

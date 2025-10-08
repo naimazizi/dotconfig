@@ -28,6 +28,7 @@ if not vim.g.vscode then
   vim.g.slime_cell_delimiter = "# %%"
   vim.g.slime_bracketed_paste = 1
 
+  vim.o.conceallevel = 0
   vim.o.smoothscroll = false
   vim.opt.spell = false
 

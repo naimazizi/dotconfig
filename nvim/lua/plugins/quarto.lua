@@ -3,7 +3,7 @@ return {
     -- for complete functionality (language features)
     "quarto-dev/quarto-nvim",
     vscode = false,
-    event = "BufRead *.py",
+    event = "BufRead *.qmd",
     ft = { "quarto" },
     dev = false,
     config = function()
@@ -45,13 +45,14 @@ return {
     dependencies = {
       "jmbuhr/otter.nvim",
       "nvim-treesitter/nvim-treesitter",
+      "MeanderingProgrammer/render-markdown.nvim",
     },
   },
   { -- directly open ipynb files as quarto documents
     -- and convert back behind the scenes
     "GCBallesteros/jupytext.nvim",
     vscode = false,
-    event = "BufRead *.py",
+    event = "BufRead *.ipynb",
     opts = {
       custom_language_formatting = {
         python = {
