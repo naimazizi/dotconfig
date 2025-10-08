@@ -18,7 +18,7 @@ return {
   },
   {
     "jpalardy/vim-slime",
-    enabled = false,
+    enabled = true,
     vscode = false,
     event = "BufRead *.py",
     init = function()
@@ -33,7 +33,7 @@ return {
   },
   {
     "Vigemus/iron.nvim",
-    -- enabled = false,
+    enabled = false,
     vscode = false,
     event = "BufRead *.py",
     cmd = {

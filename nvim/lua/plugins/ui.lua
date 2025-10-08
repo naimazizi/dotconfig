@@ -325,21 +325,6 @@ return {
     end,
   },
   {
-    "Fildo7525/pretty_hover",
-    vscode = false,
-    event = "LspAttach",
-    opts = {},
-    config = function(opts)
-      require("pretty_hover").setup(opts)
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
-      keys[#keys + 1] = { "K", false }
-
-      vim.keymap.set("n", "K", function()
-        require("pretty_hover").hover()
-      end, { desc = "Hover (Pretty)" })
-    end,
-  },
-  {
     "oskarrrrrrr/symbols.nvim",
     vscode = false,
     cmd = "SymbolsToggle",
