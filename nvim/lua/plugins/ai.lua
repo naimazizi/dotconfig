@@ -49,7 +49,7 @@ return {
     opts = {
       cli = {
         mux = {
-          backend = "tmux",
+          backend = "zellij",
           enabled = true,
         },
         prompts = {
