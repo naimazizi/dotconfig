@@ -7,6 +7,11 @@ return {
     opts = {
       render_modes = true, -- enable all modes
       file_types = { "quarto", "markdown", "Avante" },
+      code = {
+        enable = true, -- enable code block rendering
+        style = "full",
+        width = "full",
+      },
     },
   },
 }
