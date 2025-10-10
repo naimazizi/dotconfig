@@ -15,7 +15,6 @@ elseif platform.is_linux then
    mod.SUPER_REV = 'CTRL|SHIFT'
 end
 
--- stylua: ignore
 local keys = {
    -- misc/useful --
    { key = 'F5', mods = 'NONE', action = 'ActivateCopyMode' },
@@ -27,9 +26,9 @@ local keys = {
       mods = 'NONE',
       action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }),
    },
-   { key = 'F11', mods = 'NONE',    action = act.ToggleFullScreen },
+   { key = 'F11', mods = 'NONE', action = act.ToggleFullScreen },
    -- { key = 'F12', mods = 'NONE',    action = act.ShowDebugOverlay },
-   { key = 'f',   mods = mod.SUPER, action = act.Search({ CaseInSensitiveString = '' }) },
+   { key = 'f', mods = mod.SUPER, action = act.Search({ CaseInSensitiveString = '' }) },
    {
       key = 'u',
       mods = mod.SUPER,
@@ -40,7 +39,7 @@ local keys = {
             '\\[(https?://\\S+)\\]',
             '\\{(https?://\\S+)\\}',
             '<(https?://\\S+)>',
-            '\\bhttps?://\\S+[)/a-zA-Z0-9-]+'
+            '\\bhttps?://\\S+[)/a-zA-Z0-9-]+',
          },
          action = wezterm.action_callback(function(window, pane)
             local url = window:get_selection_text_for_pane(pane)
@@ -51,28 +50,28 @@ local keys = {
    },
 
    -- cursor movement --
-   { key = 'LeftArrow',  mods = mod.SUPER,     action = act.SendString '\x1bOH' },
-   { key = 'RightArrow', mods = mod.SUPER,     action = act.SendString '\x1bOF' },
-   { key = 'Backspace',  mods = mod.SUPER,     action = act.SendString '\x15' },
+   { key = 'LeftArrow', mods = mod.SUPER, action = act.SendString('\x1bOH') },
+   { key = 'RightArrow', mods = mod.SUPER, action = act.SendString('\x1bOF') },
+   { key = 'Backspace', mods = mod.SUPER, action = act.SendString('\x15') },
 
    -- copy/paste --
-   { key = 'c',          mods = mod.SUPER,  action = act.CopyTo('Clipboard') },
-   { key = 'v',          mods = mod.SUPER,  action = act.PasteFrom('Clipboard') },
+   { key = 'c', mods = mod.SUPER, action = act.CopyTo('Clipboard') },
+   { key = 'v', mods = mod.SUPER, action = act.PasteFrom('Clipboard') },
 
    -- tabs --
    -- tabs: spawn+close
-   { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('DefaultDomain') },
-   { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
+   { key = 't', mods = mod.SUPER, action = act.SpawnTab('DefaultDomain') },
+   { key = 'w', mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
    -- tabs: navigation
-   { key = '[',          mods = mod.SUPER,     action = act.ActivateTabRelative(-1) },
-   { key = ']',          mods = mod.SUPER,     action = act.ActivateTabRelative(1) },
-   { key = '[',          mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
-   { key = ']',          mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
+   { key = '[', mods = mod.SUPER, action = act.ActivateTabRelative(-1) },
+   { key = ']', mods = mod.SUPER, action = act.ActivateTabRelative(1) },
+   { key = '[', mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
+   { key = ']', mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
 
    -- window --
    -- spawn windows
-   { key = 'n',          mods = mod.SUPER,     action = act.SpawnWindow },
+   { key = 'n', mods = mod.SUPER, action = act.SpawnWindow },
 
    -- panes --
    -- panes: split panes
@@ -88,14 +87,14 @@ local keys = {
    },
 
    -- panes: zoom+close pane
-   { key = 'Enter', mods = mod.SUPER,     action = act.TogglePaneZoomState },
-   { key = 'w',     mods = mod.SUPER,     action = act.CloseCurrentPane({ confirm = false }) },
+   { key = 'Enter', mods = mod.SUPER, action = act.TogglePaneZoomState },
+   { key = 'w', mods = mod.SUPER, action = act.CloseCurrentPane({ confirm = false }) },
 
    -- panes: navigation
-   { key = 'k',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Up') },
-   { key = 'j',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Down') },
-   { key = 'h',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Left') },
-   { key = 'l',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Right') },
+   { key = 'k', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Up') },
+   { key = 'j', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Down') },
+   { key = 'h', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Left') },
+   { key = 'l', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Right') },
    {
       key = 'p',
       mods = mod.SUPER_REV,
@@ -122,6 +121,52 @@ local keys = {
          one_shot = false,
          timeout_milliseconds = 1000,
       }),
+   },
+   -- Tabs
+   {
+      key = '1',
+      mods = mod.SUPER,
+      action = act.ActivateTab(0),
+   },
+   {
+      key = '2',
+      mods = mod.SUPER,
+      action = act.ActivateTab(1),
+   },
+   {
+      key = '3',
+      mods = mod.SUPER,
+      action = act.ActivateTab(2),
+   },
+   {
+      key = '4',
+      mods = mod.SUPER,
+      action = act.ActivateTab(3),
+   },
+   {
+      key = '5',
+      mods = mod.SUPER,
+      action = act.ActivateTab(4),
+   },
+   {
+      key = '6',
+      mods = mod.SUPER,
+      action = act.ActivateTab(5),
+   },
+   {
+      key = '7',
+      mods = mod.SUPER,
+      action = act.ActivateTab(6),
+   },
+   {
+      key = '8',
+      mods = mod.SUPER,
+      action = act.ActivateTab(7),
+   },
+   {
+      key = '9',
+      mods = mod.SUPER,
+      action = act.ActivateTab(8),
    },
 }
 

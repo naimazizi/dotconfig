@@ -4,8 +4,8 @@ return {
    exit_behavior_messaging = 'Verbose',
    status_update_interval = 1000,
 
-   initial_rows=50,
-   initial_cols=200,
+   initial_rows = 50,
+   initial_cols = 200,
 
    scrollback_lines = 5000,
 
