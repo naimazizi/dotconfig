@@ -77,6 +77,7 @@ if [[ -d "${RANCHER_PATH}" ]]; then
 	export PATH=$PATH:$RANCHER_PATH
 fi
 
+# Bun
 export BUN_PATH="$HOME/.bun/bin"
 if [[ -d "${BUN_PATH}" ]]; then
 	export PATH=$PATH:$BUN_PATH
