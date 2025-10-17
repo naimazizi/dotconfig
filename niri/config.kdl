@@ -254,6 +254,7 @@ binds {
     Mod+F { fullscreen-window; }
     Mod+Shift+F { spawn "nemo"; }
     Mod+Shift+B { spawn "firefox"; }
+    Mod+Shift+C { spawn "code"; }
     Mod+C { center-column; }
     Mod+Minus { set-column-width "-10%"; }
     Mod+Equal { set-column-width "+10%"; }
