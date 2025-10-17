@@ -31,6 +31,7 @@
 !/hypr/
 !/opencode/
 !/kitty/
+!/niri/
 
 fish/fish_variables
 fish/fishd.*
