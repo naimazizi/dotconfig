@@ -378,7 +378,7 @@ else
     vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
     vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
   end
-  vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, desc = "Exit terminal mode" })
+  -- vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, desc = "Exit terminal mode" })
 
   -- Fold
   vim.keymap.set("n", "z1", "zM", { noremap = true, desc = "Fold 1" })

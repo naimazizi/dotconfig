@@ -2,18 +2,6 @@
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
-
-local function paste()
-  return {
-    vim.fn.split(vim.fn.getreg(""), "\n"),
-    vim.fn.getregtype(""),
-  }
-end
-
-local function is_ssh_session()
-  return vim.env.SSH_CONNECTION ~= nil or vim.env.SSH_CLIENT ~= nil or vim.env.SSH_TTY ~= nil
-end
-
 vim.o.spell = false
 
 if not vim.g.vscode then
@@ -31,20 +19,6 @@ if not vim.g.vscode then
   vim.o.conceallevel = 0
   vim.o.smoothscroll = false
   vim.opt.spell = false
-
-  if is_ssh_session() then
-    vim.g.clipboard = {
-      name = "OSC 52",
-      copy = {
-        ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-        ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-      },
-      paste = {
-        ["+"] = paste,
-        ["*"] = paste,
-      },
-    }
-  end
 
   local function system(command)
     local file = io.popen(command, "r")

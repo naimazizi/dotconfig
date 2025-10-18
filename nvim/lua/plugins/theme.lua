@@ -6,8 +6,8 @@ return {
     name = "evergarden",
     enabled = false,
     vscode = false,
-    lazy = true,
-    -- priority = 1000,
+    lazy = false,
+    priority = 1000,
     config = function()
       require("evergarden").setup({
         theme = {
@@ -55,45 +55,8 @@ return {
     end,
   },
   {
-    "dgox16/oldworld.nvim",
-    enabled = false,
-    vscode = false,
-    lazy = true,
-    -- priority = 1000,
-    config = function()
-      require("oldworld").setup({
-        terminal_colors = true, -- enable terminal colors
-        variant = "default", -- default, oled, cooler
-        styles = { -- You can pass the style using the format: style = true
-          comments = { italic = true }, -- style for comments
-          keywords = { bold = true }, -- style for keywords
-          identifiers = {}, -- style for identifiers
-          functions = { italic = true }, -- style for functions
-          variables = {}, -- style for variables
-          booleans = { bold = true }, -- style for booleans
-        },
-        integrations = { -- You can disable/enable integrations
-          alpha = true,
-          cmp = true,
-          flash = true,
-          gitsigns = true,
-          indent_blankline = true,
-          lazy = true,
-          lsp = true,
-          markdown = true,
-          mason = true,
-          notify = true,
-          rainbow_delimiters = true,
-          telescope = true,
-          treesitter = true,
-        },
-      })
-
-      -- vim.cmd.colorscheme("oldworld")
-    end,
-  },
-  {
     "webhooked/kanso.nvim",
+    enabled = false,
     vscode = false,
     lazy = false,
     priority = 1000,
@@ -118,7 +81,80 @@ return {
         foreground = "saturated", -- "default" or "saturated" (can also be a table like background)
       })
 
-      vim.cmd.colorscheme("kanso")
+      -- vim.cmd.colorscheme("kanso")
+    end,
+  },
+  {
+    "thesimonho/kanagawa-paper.nvim",
+    enabled = true,
+    vscode = false,
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("kanagawa-paper").setup({
+        -- enable undercurls for underlined text
+        undercurl = true,
+        -- transparent background
+        transparent = false,
+        -- highlight background for the left gutter
+        gutter = false,
+        -- background for diagnostic virtual text
+        diag_background = true,
+        -- dim inactive windows. Disabled when transparent
+        dim_inactive = true,
+        -- set colors for terminal buffers
+        terminal_colors = true,
+        -- cache highlights and colors for faster startup.
+        -- see Cache section for more details.
+        cache = true,
+
+        styles = {
+          -- style for comments
+          comment = { italic = true },
+          -- style for functions
+          functions = { italic = true },
+          -- style for keywords
+          keyword = { italic = false, bold = true },
+          -- style for statements
+          statement = { italic = false, bold = true },
+          -- style for types
+          type = { italic = true },
+        },
+        -- override default palette and theme colors
+        colors = {
+          palette = {},
+          theme = {
+            ink = {},
+            canvas = {},
+          },
+        },
+        -- adjust overall color balance for each theme [-1, 1]
+        color_offset = {
+          ink = { brightness = 0, saturation = 0 },
+          canvas = { brightness = 0, saturation = 0 },
+        },
+        -- override highlight groups
+        overrides = function(colors)
+          return {}
+        end,
+
+        -- uses lazy.nvim, if installed, to automatically enable needed plugins
+        auto_plugins = true,
+      })
+    end,
+  },
+  {
+    "killitar/obscure.nvim",
+    enabled = true,
+    vscode = false,
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("obscure").setup({
+        styles = {
+          booleans = { italic = true, bold = true },
+        },
+      })
     end,
   },
 }

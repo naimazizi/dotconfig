@@ -49,8 +49,13 @@ return {
     opts = {
       cli = {
         mux = {
-          backend = "zellij",
+          backend = "tmux",
           enabled = true,
+          create = "split", ---@type "terminal"|"window"|"split"
+          split = {
+            vertical = true, -- vertical or horizontal split
+            size = 0.3, -- size of the split (0-1 for percentage)
+          },
         },
         prompts = {
           fix_lang = {
