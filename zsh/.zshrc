@@ -61,7 +61,7 @@ fi
 
 # Bob (Nvim)
 BOB_PATH="$HOME/.local/share/bob/nvim-bin"
-if [[ -f "${BOB_PATH}/nvim" ]]; then
+if [[ -d "${BOB_PATH}" ]]; then
 	export PATH=$PATH:$BOB_PATH
 fi
 

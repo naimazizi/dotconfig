@@ -91,6 +91,8 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
+      local colors = require("kanagawa-paper.colors")
+      local palette_colors = colors.palette
       require("kanagawa-paper").setup({
         -- enable undercurls for underlined text
         undercurl = true,
@@ -124,7 +126,11 @@ return {
         colors = {
           palette = {},
           theme = {
-            ink = {},
+            ink = {
+              syn = {
+                member = palette_colors.dragonYellow,
+              },
+            },
             canvas = {},
           },
         },
@@ -133,10 +139,6 @@ return {
           ink = { brightness = 0, saturation = 0 },
           canvas = { brightness = 0, saturation = 0 },
         },
-        -- override highlight groups
-        overrides = function(colors)
-          return {}
-        end,
 
         -- uses lazy.nvim, if installed, to automatically enable needed plugins
         auto_plugins = true,
@@ -145,7 +147,7 @@ return {
   },
   {
     "killitar/obscure.nvim",
-    enabled = true,
+    enabled = false,
     vscode = false,
     lazy = false,
     priority = 1000,
