@@ -49,9 +49,9 @@ return {
     opts = {
       cli = {
         mux = {
-          backend = "tmux",
+          backend = "zellij",
           enabled = true,
-          create = "split", ---@type "terminal"|"window"|"split"
+          create = "terminal", ---@type "terminal"|"window"|"split"
           split = {
             vertical = true, -- vertical or horizontal split
             size = 0.3, -- size of the split (0-1 for percentage)
