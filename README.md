@@ -26,20 +26,24 @@ cd ~/.config
 git clone https://github.com/naimazizi/dotconfig .
 
 brew install \
-  fish \
   lsd \
   fd \
   pyenv \
   pyenv-virtualenv \
   node \
-  neovim@nightly \
+  neovim \
+  neovide \
   gitui \
   lazygit \
-  direv \
+  direnv \
   fzf \
   bat \
   ripgrep \
   zoxide \
+  delta \
+  sk \
+  gh \
+  zellij
 
 mkdir -p ~/Applications
 brew install --cask ghostty font-maple-mono --appdir=~/Applications
