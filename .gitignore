@@ -32,6 +32,7 @@
 !/opencode/
 !/kitty/
 !/niri/
+!/tmuxinator/
 
 fish/fish_variables
 fish/fishd.*

@@ -43,7 +43,8 @@ brew install \
   delta \
   sk \
   gh \
-  zellij
+  zellij \
+  tmuxinator
 
 mkdir -p ~/Applications
 brew install --cask ghostty font-maple-mono --appdir=~/Applications
