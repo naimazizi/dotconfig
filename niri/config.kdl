@@ -112,8 +112,8 @@ hotkey-overlay {
 //    skip-at-startup
 }
 
-//screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
-screenshot-path null
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+// screenshot-path null
 screenshot-notification-disable
 animations {
     // Uncomment to turn off all animations.
