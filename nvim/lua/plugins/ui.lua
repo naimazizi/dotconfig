@@ -371,6 +371,9 @@ return {
     keys = {
       { "<leader>cs", false },
     },
+    opts = {
+      auto_preview = false,
+    },
   },
   {
     "folke/snacks.nvim",
