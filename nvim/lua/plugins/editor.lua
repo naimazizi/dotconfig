@@ -171,7 +171,7 @@ return {
   },
   {
     "andymass/vim-matchup",
-    vscode = true,
+    vscode = false,
     event = "BufRead",
     init = function()
       ---@diagnostic disable-next-line: param-type-not-match

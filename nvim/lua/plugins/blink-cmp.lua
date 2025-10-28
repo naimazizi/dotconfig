@@ -31,6 +31,12 @@ return {
           delete_check_events = "TextChanged",
         },
       },
+      {
+        "saghen/blink.compat",
+        version = "*",
+        lazy = true,
+        opts = {},
+      },
       "jmbuhr/cmp-pandoc-references",
       {
         "fang2hou/blink-copilot",
@@ -45,10 +51,16 @@ return {
       "t3ntxcl3s/ecolog.nvim",
       "marcoSven/blink-cmp-yanky",
       "disrupted/blink-cmp-conventional-commits",
+      "rcarriga/cmp-dap",
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
     opts = {
+      enabled = function()
+        return (vim.bo.buftype ~= "prompt" or (require("cmp_dap").is_dap_buffer() or vim.bo.filetype == "dap-repl"))
+          and vim.b.completion ~= false
+      end,
+
       snippets = {
         preset = "luasnip",
         expand = function(snippet)
@@ -120,9 +132,6 @@ return {
       signature = { enabled = true, trigger = { show_on_accept = true }, window = { border = "rounded" } },
 
       sources = {
-        -- adding any nvim-cmp sources here will enable them
-        -- with blink.compat
-
         default = {
           "lsp",
           "path",
@@ -135,6 +144,8 @@ return {
           "ecolog",
           "yank",
           "conventional_commits",
+          -- "omni",
+          "dap",
         },
         providers = {
           references = {
@@ -177,6 +188,13 @@ return {
               return vim.bo.filetype == "gitcommit"
             end,
             opts = {},
+          },
+          dap = {
+            name = "dap",
+            module = "blink.compat.source",
+            enabled = function()
+              return require("cmp_dap").is_dap_buffer() or vim.bo.filetype == "dap-repl"
+            end,
           },
         },
       },

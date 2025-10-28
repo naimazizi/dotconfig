@@ -311,20 +311,20 @@ local function vscodeMappings()
 
   -- Http Client
   vim.keymap.set("n", "<leader>Rs", function()
-    vscode.call("httpyac.send")
+    vscode.call("vscode-hurl-runner.runHurl")
   end, { noremap = true, desc = "Send HTTP request" })
 
   vim.keymap.set("n", "<leader>Ra", function()
-    vscode.call("httpyac.sendAll")
+    vscode.call("vscode-hurl-runner.runHurlFile")
   end, { noremap = true, desc = "Send HTTP all requests" })
 
   vim.keymap.set("n", "<leader>Rr", function()
-    vscode.call("httpyac.resend")
+    vscode.call("vscode-hurl-runner.rerunLastCommand")
   end, { noremap = true, desc = "Replay HTTP requests" })
 
-  vim.keymap.set("n", "<leader>Rc", function()
-    vscode.call("httpyac.generateCode")
-  end, { noremap = true, desc = "Generate Curl" })
+  vim.keymap.set("n", "<leader>Rs", function()
+    vscode.call("vscode-hurl-runner.viewLastResponse")
+  end, { noremap = true, desc = "View Last Command" })
 
   -- Harpoon
   vim.keymap.set("n", "<leader>h", function()
