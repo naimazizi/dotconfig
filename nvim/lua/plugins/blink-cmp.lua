@@ -57,8 +57,7 @@ return {
     --- @type blink.cmp.Config
     opts = {
       enabled = function()
-        return (vim.bo.buftype ~= "prompt" or (require("cmp_dap").is_dap_buffer() or vim.bo.filetype == "dap-repl"))
-          and vim.b.completion ~= false
+        return (vim.bo.buftype ~= "prompt" or vim.bo.filetype == "dap-repl") and vim.b.completion ~= false
       end,
 
       snippets = {
@@ -193,7 +192,7 @@ return {
             name = "dap",
             module = "blink.compat.source",
             enabled = function()
-              return require("cmp_dap").is_dap_buffer() or vim.bo.filetype == "dap-repl"
+              return vim.bo.filetype == "dap-repl"
             end,
           },
         },
