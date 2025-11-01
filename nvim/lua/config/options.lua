@@ -16,7 +16,7 @@ if not vim.g.vscode then
   vim.g.slime_bracketed_paste = 1
 
   vim.o.conceallevel = 0
-  vim.o.smoothscroll = false
+  vim.o.smoothscroll = true
   vim.opt.spell = false
 
   local function system(command)
