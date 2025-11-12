@@ -1,4 +1,4 @@
-local lsp = "ty"
+local lsp = "pyrefly"
 
 return {
   {
@@ -9,14 +9,14 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        ty = {
-          diagnosticMode = "workspace",
-          experimental = {
-            rename = true,
-            autoImport = true,
-          },
-        },
-        -- pyrefly = {},
+        -- ty = {
+        --   diagnosticMode = "workspace",
+        --   experimental = {
+        --     rename = true,
+        --     autoImport = true,
+        --   },
+        -- },
+        pyrefly = {},
       },
     },
   },
@@ -124,7 +124,7 @@ return {
               return ""
             end
 
-            local output = "🐍 " .. venv_name .. " " -- Changes only the icon but you can change colors or use powerline symbols here.
+            local output = "󱔎 " .. venv_name .. " " -- Changes only the icon but you can change colors or use powerline symbols here.
             return output
           end,
         },
