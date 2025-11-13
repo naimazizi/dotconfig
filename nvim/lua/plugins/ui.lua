@@ -343,29 +343,6 @@ return {
     end,
   },
   {
-    "A7Lavinraj/fyler.nvim",
-    cmd = "Fyler",
-    vscode = false,
-    keys = {
-      {
-        "<leader>fE",
-        "<cmd>Fyler<cr>",
-        desc = "Explorer Fyler (cwd)",
-      },
-      {
-        "<leader>E",
-        "<cmd>Fyler<cr>",
-        desc = "Explorer Fyler (cwd)",
-      },
-    },
-    opts = {
-      win = {
-        border = "double",
-        kind = "float",
-      },
-    },
-  },
-  {
     "folke/trouble.nvim",
     optional = true,
     keys = {
@@ -377,10 +354,6 @@ return {
   },
   {
     "folke/snacks.nvim",
-    keys = { {
-      "<leader>fE",
-      false,
-    }, { "<leader>E", "<leader>fE", false } },
     opts = {
       indent = {
         indent = {
