@@ -9,6 +9,7 @@ return {
       },
     },
     opts = {
+      { "telescope" },
       previewers = {},
     },
     keys = {
