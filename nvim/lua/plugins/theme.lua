@@ -103,7 +103,7 @@ return {
         -- background for diagnostic virtual text
         diag_background = true,
         -- dim inactive windows. Disabled when transparent
-        dim_inactive = true,
+        dim_inactive = false,
         -- set colors for terminal buffers
         terminal_colors = true,
         -- cache highlights and colors for faster startup.
