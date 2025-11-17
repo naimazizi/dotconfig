@@ -140,8 +140,9 @@ return {
           "ecolog",
           "yank",
           "conventional_commits",
-          -- "omni",
-          "dap",
+        },
+        per_filetype = {
+          ["dap-repl"] = { "dap" },
         },
         providers = {
           references = {
