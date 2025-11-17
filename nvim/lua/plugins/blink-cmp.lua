@@ -46,8 +46,6 @@ return {
           kind_icon = " ", ---@type string | false
         },
       },
-      "yetone/avante.nvim",
-      "Kaiser-Yang/blink-cmp-avante",
       "t3ntxcl3s/ecolog.nvim",
       "marcoSven/blink-cmp-yanky",
       "disrupted/blink-cmp-conventional-commits",
@@ -139,7 +137,6 @@ return {
           "references",
           "path",
           "copilot",
-          "avante",
           "ecolog",
           "yank",
           "conventional_commits",
@@ -163,11 +160,6 @@ return {
             module = "blink-copilot",
             score_offset = 100,
             async = true,
-          },
-          avante = {
-            module = "blink-cmp-avante",
-            name = "Avante",
-            opts = {},
           },
           ecolog = { name = "ecolog", module = "ecolog.integrations.cmp.blink_cmp" },
           yank = {

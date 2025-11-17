@@ -63,4 +63,5 @@ windows:
       panes:
         - pwd
         - editor:
+            - cd lns_fsp
             - nvim

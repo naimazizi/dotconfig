@@ -7,7 +7,7 @@ vim.o.spell = false
 if not vim.g.vscode then
   -- ordinary Neovim
 
-  vim.g.lazyvim_picker = "snacks"
+  vim.g.lazyvim_picker = "fzf"
   vim.g.root_spec = { "cwd" }
   vim.g.lazyvim_blink_main = true
 

@@ -5,7 +5,7 @@ return {
     event = "BufRead *.md",
     config = function()
       require("zk").setup({
-        picker = "snacks_picker",
+        picker = "fzf_lua",
         lsp = {
           -- `config` is passed to `vim.lsp.start(config)`
           config = {

@@ -111,7 +111,7 @@ return {
     opts = {
       options = {
         notify_user_on_venv_activation = true,
-        picker = "snacks",
+        picker = "fzf-lua",
         statusline_func = {
           lualine = function()
             local venv_path = require("venv-selector").venv()

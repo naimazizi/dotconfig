@@ -353,55 +353,6 @@ return {
     },
   },
   {
-    "folke/snacks.nvim",
-    opts = {
-      indent = {
-        indent = {
-          priority = 1,
-          enabled = true, -- enable indent guides
-          char = "│",
-          only_scope = false, -- only show indent guides of the scope
-          only_current = false, -- only show indent guides in the current window
-          hl = "SnacksIndent",
-        },
-        animate = {
-          style = "out",
-          easing = "linear",
-          duration = {
-            step = 20, -- ms per step
-            total = 500, -- maximum duration
-          },
-        },
-        scope = {
-          enabled = true, -- enable highlighting the current scope
-          priority = 200,
-          char = "│",
-          underline = false, -- underline the start of the scope
-          only_current = true, -- only show scope in the current window
-          hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
-        },
-        chunk = {
-          -- when enabled, scopes will be rendered as chunks, except for the
-          -- top-level scope which will be rendered as a scope.
-          enabled = true,
-          -- only show chunk scopes in the current window
-          only_current = true,
-          priority = 200,
-          hl = "SnacksIndentChunk", ---@type string|string[] hl group for chunk scopes
-          char = {
-            corner_top = "╭",
-            corner_bottom = "╰",
-            horizontal = "─",
-            vertical = "│",
-            arrow = ">",
-          },
-        },
-      },
-      scope = {},
-      scroll = { enabled = false },
-    },
-  },
-  {
     "akinsho/bufferline.nvim",
     optional = true,
     opts = function()
@@ -453,6 +404,62 @@ return {
     opts = {
       lsp = {
         hover = { silent = true },
+      },
+    },
+  },
+  {
+    "saghen/blink.indent",
+    vscode = false,
+    event = "BufRead",
+    opts = {
+      blocked = {
+        -- default: 'terminal', 'quickfix', 'nofile', 'prompt'
+        buftypes = { include_defaults = true },
+        -- default: 'lspinfo', 'packer', 'checkhealth', 'help', 'man', 'gitcommit', 'dashboard', ''
+        filetypes = { include_defaults = true },
+      },
+      mappings = {
+        -- which lines around the scope are included for 'ai': 'top', 'bottom', 'both', or 'none'
+        border = "both",
+        -- set to '' to disable
+        -- textobjects (e.g. `y2ii` to yank current and outer scope)
+        object_scope = "ii",
+        object_scope_with_border = "ai",
+        -- motions
+        goto_top = "[i",
+        goto_bottom = "]i",
+      },
+      static = {
+        enabled = true,
+        char = "▎",
+        whitespace_char = nil, -- inherits from `vim.opt.listchars:get().space` when `nil` (see `:h listchars`)
+        priority = 1,
+        -- specify multiple highlights here for rainbow-style indent guides
+        highlights = { "BlinkIndent" },
+      },
+      scope = {
+        enabled = true,
+        char = "▎",
+        priority = 1000,
+        highlights = {
+          "BlinkIndentRed",
+          "BlinkIndentOrange",
+          "BlinkIndentYellow",
+          "BlinkIndentGreen",
+          "BlinkIndentViolet",
+          "BlinkIndentCyan",
+        },
+        underline = {
+          enabled = true,
+          highlights = {
+            "BlinkIndentRedUnderline",
+            "BlinkIndentOrangeUnderline",
+            "BlinkIndentYellowUnderline",
+            "BlinkIndentGreenUnderline",
+            "BlinkIndentVioletUnderline",
+            "BlinkIndentCyanUnderline",
+          },
+        },
       },
     },
   },
