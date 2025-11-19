@@ -10,13 +10,13 @@ if not vim.g.vscode then
   vim.g.lazyvim_picker = "fzf"
   vim.g.root_spec = { "cwd" }
   vim.g.lazyvim_blink_main = true
+  vim.g.snacks_animate = false
 
   vim.g.slime_target = "tmux"
   vim.g.slime_cell_delimiter = "# %%"
   vim.g.slime_bracketed_paste = 1
 
   vim.o.conceallevel = 0
-  vim.o.smoothscroll = true
   vim.opt.spell = false
 
   local function system(command)
