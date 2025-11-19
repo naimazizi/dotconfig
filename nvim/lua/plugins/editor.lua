@@ -1,8 +1,41 @@
 return {
   {
-    "hiphish/rainbow-delimiters.nvim",
+    "saghen/blink.pairs",
     vscode = false,
     event = "BufRead",
+    version = "*",
+    dependencies = "saghen/blink.download",
+    --- @module 'blink.pairs'
+    --- @type blink.pairs.Config
+    opts = {
+      mappings = {
+        enabled = true,
+        cmdline = true,
+        disabled_filetypes = {},
+        pairs = {},
+      },
+      highlights = {
+        enabled = true,
+        cmdline = true,
+        groups = {
+          "BlinkPairsOrange",
+          "BlinkPairsPurple",
+          "BlinkPairsBlue",
+        },
+        unmatched_group = "BlinkPairsUnmatched",
+        -- highlights matching pairs under the cursor
+        matchparen = {
+          enabled = true,
+          -- known issue where typing won't update matchparen highlight, disabled by default
+          cmdline = false,
+          -- also include pairs not on top of the cursor, but surrounding the cursor
+          include_surrounding = false,
+          group = "BlinkPairsMatchParen",
+          priority = 250,
+        },
+      },
+      debug = false,
+    },
   },
   {
     "chrisgrieser/nvim-origami",
@@ -174,7 +207,7 @@ return {
     vscode = false,
     event = "BufRead",
     init = function()
-      ---@diagnostic disable-next-line: param-type-not-match
+      ---@diagnostic disable-next-line: param-type-not-match, param-type-mismatch
       require("match-up").setup({
         treesitter = {
           stopline = 500,
@@ -185,5 +218,22 @@ return {
   {
     "mason-org/mason.nvim",
     opts = { ensure_installed = { "ast-grep" } },
+  },
+  {
+    "chrisgrieser/nvim-rip-substitute",
+    vscode = false,
+    event = "BufRead",
+    cmd = "RipSubstitute",
+    opts = {},
+    keys = {
+      {
+        "<leader>fs",
+        function()
+          require("rip-substitute").sub()
+        end,
+        mode = { "n", "x" },
+        desc = " rip substitute",
+      },
+    },
   },
 }
