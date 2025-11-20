@@ -18,36 +18,6 @@ return {
           },
         },
       },
-      -- Enables shelter mode for sensitive values
-      shelter = {
-        configuration = {
-          -- Partial mode configuration:
-          -- false: completely mask values (default)
-          -- true: use default partial masking settings
-          -- table: customize partial masking
-          -- partial_mode = false,
-          -- or with custom settings:
-          partial_mode = {
-            show_start = 3, -- Show first 3 characters
-            show_end = 3, -- Show last 3 characters
-            min_mask = 3, -- Minimum masked characters
-          },
-          mask_char = "*", -- Character used for masking
-          mask_length = nil, -- Optional: fixed length for masked portion (defaults to value length)
-          skip_comments = false, -- Skip masking comment lines in environment files (default: false)
-        },
-        modules = {
-          cmp = true, -- Enabled to mask values in completion
-          peek = false, -- Enable to mask values in peek view
-          files = true, -- Enabled to mask values in file buffers
-          telescope = false, -- Enable to mask values in telescope integration
-          telescope_previewer = false, -- Enable to mask values in telescope preview buffers
-          fzf = false, -- Enable to mask values in fzf picker
-          fzf_previewer = false, -- Enable to mask values in fzf preview buffers
-          snacks_previewer = false, -- Enable to mask values in snacks previewer
-          snacks = false, -- Enable to mask values in snacks picker
-        },
-      },
       -- true by default, enables built-in types (database_url, url, etc.)
       types = true,
       path = vim.fn.getcwd(), -- Path to search for .env files
