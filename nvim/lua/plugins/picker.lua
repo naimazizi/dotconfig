@@ -10,7 +10,7 @@ return {
       { "<leader>dd", "<cmd>:FzfLua dap_breakpoints<CR>", desc = "List Breakpoints" },
       { "<leader>dv", "<cmd>:FzfLua dap_variables<CR>", desc = "List Variables" },
       { "<leader>fp", "<cmd>:FzfLua zoxide<CR>", desc = "Projects" },
-          },
+    },
   },
   {
     "dmtrKovalenko/fff.nvim",

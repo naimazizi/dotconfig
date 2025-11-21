@@ -1,6 +1,18 @@
 return { {
-    'stevearc/conform.nvim',
-    event = "BufRead",
+    "stevearc/conform.nvim",
+    vscode = false,
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+        {
+            "<leader>cf",
+            function()
+                require("conform").format({ async = true, lsp_format = "fallback" })
+            end,
+            mode = "",
+            desc = "Format buffer",
+        },
+    },
     opts = {},
     config = function(_, opts)
         opts.formatters_by_ft = {}
