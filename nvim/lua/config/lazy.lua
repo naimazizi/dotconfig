@@ -1,57 +1,124 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+        vim.api.nvim_echo({
+            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+            { out,                            "WarningMsg" },
+            { "\nPress any key to exit..." },
+        }, true, {})
+        vim.fn.getchar()
+        os.exit(1)
+    end
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- General ====================================================================
+vim.g.mapleader             = " "
+vim.g.maplocalleader        = "\\"
+vim.o.mouse                 = 'a'                              -- Enable mouse
+vim.o.mousescroll           = 'ver:25,hor:6'                   -- Customize mouse scroll
+vim.o.switchbuf             = 'usetab'                         -- Use already opened buffers when switching
+vim.o.undofile              = true                             -- Enable persistent undo
+
+vim.o.shada                 = "'100,<50,s10,:1000,/100,@100,h" -- Limit ShaDa file (for startup)
+
+-- UI =========================================================================
+vim.o.breakindent           = true                -- Indent wrapped lines to match line start
+vim.o.breakindentopt        = 'list:-1'           -- Add padding for lists (if 'wrap' is set)
+vim.o.colorcolumn           = '+1'                -- Draw column on the right of maximum width
+vim.o.cursorline            = true                -- Enable current line highlighting
+vim.o.linebreak             = true                -- Wrap lines at 'breakat' (if 'wrap' is set)
+vim.o.list                  = true                -- Show helpful text indicators
+vim.o.number                = true                -- Show line numbers
+vim.o.pumheight             = 10                  -- Make popup menu smaller
+vim.o.ruler                 = false               -- Don't show cursor coordinates
+vim.o.shortmess             = 'CFOSWaco'          -- Disable some built-in completion messages
+vim.o.showmode              = false               -- Don't show mode in command line
+vim.o.signcolumn            = 'yes'               -- Always show signcolumn (less flicker)
+vim.o.splitbelow            = true                -- Horizontal splits will be below
+vim.o.splitkeep             = 'screen'            -- Reduce scroll during window split
+vim.o.splitright            = true                -- Vertical splits will be to the right
+vim.o.winborder             = 'single'            -- Use border in floating windows
+vim.o.wrap                  = false               -- Don't visually wrap lines (toggle with \w)
+
+vim.o.cursorlineopt         = 'screenline,number' -- Show cursor line per screen line
+
+-- Special UI symbols. More is set via 'mini.basics' later.
+vim.o.fillchars             = 'eob: ,fold:╌'
+vim.o.listchars             = 'extends:…,nbsp:␣,precedes:…,tab:> '
+
+-- Folds (see `:h fold-commands`, `:h zM`, `:h zR`, `:h zA`, `:h zj`)
+vim.o.foldlevel             = 10       -- Fold nothing by default; set to 0 or 1 to fold
+vim.o.foldmethod            = 'indent' -- Fold based on indent level
+vim.o.foldnestmax           = 10       -- Limit number of fold levels
+vim.o.foldtext              = ''       -- Show text under fold with its highlighting
+
+-- Editing ====================================================================
+vim.o.autoindent            = true                  -- Use auto indent
+vim.o.expandtab             = true                  -- Convert tabs to spaces
+vim.o.formatoptions         = 'rqnl1j'              -- Improve comment editing
+vim.o.ignorecase            = true                  -- Ignore case during search
+vim.o.incsearch             = true                  -- Show search matches while typing
+vim.o.infercase             = true                  -- Infer case in built-in completion
+vim.o.shiftwidth            = 2                     -- Use this number of spaces for indentation
+vim.o.smartcase             = true                  -- Respect case if search pattern has upper case
+vim.o.smartindent           = true                  -- Make indenting smart
+vim.o.spelloptions          = 'camel'               -- Treat camelCase word parts as separate words
+vim.o.tabstop               = 2                     -- Show tab as this number of spaces
+vim.o.virtualedit           = 'block'               -- Allow going past end of line in blockwise mode
+
+vim.o.iskeyword             = '@,48-57,_,192-255,-' -- Treat dash as `word` textobject part
+
+-- Pattern for a start of numbered list (used in `gw`). This reads as
+-- "Start of list item is: at least one special character (digit, -, +, *)
+-- possibly followed by punctuation (. or `)`) followed by at least one space".
+vim.o.formatlistpat         = [[^\s*[0-9\-\+\*]\+[\.\)]*\s\+]]
+
+-- Built-in completion
+vim.o.complete              = '.,w,b,kspell'                  -- Use less sources
+vim.o.completeopt           = 'menuone,noselect,fuzzy,nosort' -- Use custom behavior
+
+vim.o.spell                 = false
+
+vim.g.slime_target          = "tmux"
+vim.g.slime_cell_delimiter  = "# %%"
+vim.g.slime_bracketed_paste = 1
+
+vim.o.conceallevel          = 0
+vim.opt.spell               = false
+
 require("lazy").setup({
-  spec = {
-    -- add LazyVim and import its plugins
-    -- { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = {
-    --   colorscheme = "kanagawa-paper",
-    -- } },
-    -- import/override with your plugins
-    { import = "config"},
-    { import = "plugins" },
-    { import = "plugins/lang" },
-  },
-  defaults = {
-    -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
-    -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
-    lazy = false,
-    -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
-    -- have outdated releases, which may break your Neovim install.
-    version = false, -- always use the latest git commit
-    -- version = "*", -- try installing the latest stable version for plugins that support semver
-  },
-  install = { colorscheme = { "thesimonho/kanagawa-paper.nvim" } },
-  checker = {
-    enabled = false, -- check for plugin updates periodically
-    notify = false, -- notify on update
-  }, -- automatically check for plugin updates
-  performance = {
-    rtp = {
-      -- disable some rtp plugins
-      disabled_plugins = {
-        "gzip",
-        "matchit",
-        "matchparen",
-        "netrwPlugin",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "zipPlugin",
-      },
+    spec = {
+        { import = "plugins" },
+        { import = "plugins/lang" },
     },
-  },
+    defaults = {
+        lazy = false,
+        -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
+        -- have outdated releases, which may break your Neovim install.
+        version = false, -- always use the latest git commit
+        -- version = "*", -- try installing the latest stable version for plugins that support semver
+    },
+    install = {},
+    checker = {
+        enabled = false, -- check for plugin updates periodically
+        notify = false,  -- notify on update
+    },                   -- automatically check for plugin updates
+    performance = {
+        rtp = {
+            -- disable some rtp plugins
+            disabled_plugins = {
+                "gzip",
+                "matchit",
+                "matchparen",
+                "netrwPlugin",
+                "tarPlugin",
+                "tohtml",
+                "tutor",
+                "zipPlugin",
+            },
+        },
+    },
 })
