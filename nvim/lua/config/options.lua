@@ -17,6 +17,7 @@ if not vim.g.vscode then
   vim.g.slime_bracketed_paste = 1
 
   vim.o.conceallevel = 0
+  vim.o.mousemoveevent = true
   vim.opt.spell = false
 
   local function system(command)

@@ -1,4 +1,19 @@
 return {
+  {
+    "akinsho/bufferline.nvim",
+    vscode = false,
+    opts = {
+      options = {
+        separator_style = "thick",
+        diagnostic = "nvim_lsp",
+        indicator = {
+          icon = "▎", -- this should be omitted if indicator style is not 'icon'
+          style = "icon",
+        },
+        show_buffer_close_icons = false,
+      },
+    },
+  },
   { "adlrwbr/keep-split-ratio.nvim", vscode = false, opts = {} },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
@@ -182,7 +197,7 @@ return {
         win.view.edgebar:close()
       end,
     },
-    config = function()
+    config = function(_, opts)
       opts = {
         animate = {
           enabled = false,
@@ -366,7 +381,7 @@ return {
             local ret = { left = "", left_size = 0, right = "", right_size = 0 }
             for _, pos in ipairs({ "left", "right" }) do
               local sb = layout[pos]
-              ---@diagnostic disable-next-line: param-type-not-match
+              ---@diagnostic disable-next-line: param-type-not-match, param-type-mismatch
               local title = " Sidebar" .. string.rep(" ", sb.bounds.width - 8)
               if sb and #sb.wins > 0 then
                 ret[pos] = old_offset[pos .. "_size"] > 0 and old_offset[pos]
