@@ -25,6 +25,7 @@ return {
       { "<leader>fp", "<cmd>:FzfLua zoxide<CR>", desc = "Projects" },
       { "<leader>fr", "<cmd>:FzfLua frecency<CR>", desc = "Recent" },
       { "<leader><localleader>", "<cmd>:FzfLua global<CR>", desc = "Global Search" },
+      { "<leader><leader>", "<cmd>:FzfLua frecency<CR>", desc = "Find Files (cwd by frecency)" },
     },
   },
 }
