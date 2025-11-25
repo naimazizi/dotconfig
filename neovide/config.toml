@@ -12,4 +12,4 @@ wsl = false
 [font]
 size = 14
 hinting = "full"
-normal = ["Maple Mono"]
+normal = ["Maple Mono NF"]
