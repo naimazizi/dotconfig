@@ -15,7 +15,13 @@ return {
         },
       })
 
-      require("mini.align").setup()
+      require("mini.align").setup({
+        -- change default mappings due to conflict with LSP incoming/outgoing calls
+        mappings = {
+          start = "gl",
+          start_with_preview = "gL",
+        },
+      })
 
       require("mini.move").setup()
 

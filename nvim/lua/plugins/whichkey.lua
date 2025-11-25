@@ -41,6 +41,8 @@ return {
               return require("which-key.extras").expand.win()
             end,
           },
+          -- LSP call incoming/outgoing
+          { "ga", desc = "Lsp C[a]ll" },
           -- better descriptions
           { "gx", desc = "Open with system app" },
           -- additional plugin

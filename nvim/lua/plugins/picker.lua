@@ -26,6 +26,8 @@ return {
       { "<leader>fr", "<cmd>:FzfLua frecency<CR>", desc = "Recent" },
       { "<leader><localleader>", "<cmd>:FzfLua global<CR>", desc = "Global Search" },
       { "<leader><leader>", "<cmd>:FzfLua frecency<CR>", desc = "Find Files (cwd by frecency)" },
+      { "gai", "<cmd>:FzfLua lsp_incoming_calls<CR>", desc = "C[a]lls Incoming" },
+      { "gao", "<cmd>:FzfLua lsp_outgoing_calls<CR>", desc = "C[a]lls Outgoing" },
     },
   },
 }
