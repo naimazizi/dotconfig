@@ -216,10 +216,6 @@ return {
     end,
   },
   {
-    "mason-org/mason.nvim",
-    opts = { ensure_installed = { "ast-grep" } },
-  },
-  {
     "chrisgrieser/nvim-rip-substitute",
     vscode = false,
     event = "BufRead",
@@ -244,6 +240,17 @@ return {
       show_icons = true,
       leader_key = "'", -- Recommended to be a single key
       buffer_leader_key = "m", -- Per Buffer Mappings
+    },
+  },
+  {
+    "MagicDuck/grug-far.nvim",
+    vscode = false,
+    event = "VeryLazy",
+    dependencies = {
+      {
+        "mason-org/mason.nvim",
+        opts = { ensure_installed = { "ast-grep" } },
+      },
     },
   },
 }
