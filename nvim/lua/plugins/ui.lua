@@ -306,16 +306,8 @@ return {
     vscode = false,
     optional = true,
     event = "VeryLazy",
-    dependencies = {
-      {
-        "letieu/harpoon-lualine",
-        event = "VeryLazy",
-        cond = not vim.g.vscode,
-      },
-    },
     opts = function(_, opts)
       table.insert(opts.sections.lualine_x, { require("recorder").displaySlots })
-      table.insert(opts.sections.lualine_x, { "harpoon2" })
       table.insert(opts.sections.lualine_x, { "overseer" })
       table.insert(opts.sections.lualine_x, { "venv-selector" })
       table.insert(opts.sections.lualine_x, {

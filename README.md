@@ -6,17 +6,27 @@
 - ghostty
 - gitui
 - helix
+- hypr (abandoned)
+- kitty
+- lazygit
+- neovide
 - neovim
+- niri
+- opencode
 - television
+- tmux
+- tmuxinator
+- vim
 - vscode (theme)
 - wezterm
 - yazi
 - zed
 - zellij
+- zsh
 
 ## Requirements
 
-- homebrew (for macos)
+- homebrew (for macos & linux)
 
 ## Installation
 
@@ -26,26 +36,29 @@ cd ~/.config
 git clone https://github.com/naimazizi/dotconfig .
 
 brew install \
-  lsd \
+  bat \
+  delta \
+  direnv \
   fd \
+  fzf \
+  gh \
+  just \
+  lazygit \
+  lsd \
+  neovide \
+  neovim \
+  node \
+  opencode \
   pyenv \
   pyenv-virtualenv \
-  node \
-  neovim \
-  neovide \
-  gitui \
-  lazygit \
-  direnv \
-  fzf \
-  bat \
   ripgrep \
-  zoxide \
-  delta \
   sk \
-  gh \
+  tmuxinator \
+  tree-sitter-cli \
+  z \
   zellij \
-  tmuxinator
+  zoxide
 
 mkdir -p ~/Applications
-brew install --cask ghostty font-maple-mono --appdir=~/Applications
+brew install --cask ghostty font-maple-mono-nf --appdir=~/Applications
 ```
