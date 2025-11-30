@@ -2,6 +2,10 @@
 ZIM_CONFIG_FILE=~/.config/zsh/.zimrc
 ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 
+# Additional Config
+ZVM_MAN_PAGER='less'
+ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+
 # Download zimfw plugin manager if missing.
 if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
 	curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
@@ -96,9 +100,11 @@ zshaddhistory() {
 if command -v nvim &>/dev/null; then
 	export EDITOR='nvim'
 	export VISUAL='nvim'
+  export ZVM_VI_EDITOR='nvim'
 else
 	export EDITOR='vim'
 	export VISUAL='vim'
+  export ZVM_VI_EDITOR='vim'
 fi
 
 # Plugin

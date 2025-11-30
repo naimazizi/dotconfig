@@ -20,6 +20,11 @@ if not vim.g.vscode then
   vim.o.mousemoveevent = true
   vim.opt.spell = false
 
+  -- custom global variables
+  vim.g.md_ft = { "markdown", "quarto", "hurl" }
+  vim.g.md_injected_ft = { "markdown", "quarto" }
+  vim.g.sql_ft = { "sql", "mysql", "plsql" }
+
   local function system(command)
     local file = io.popen(command, "r")
     local output = file:read("*all"):gsub("%s+", "")
