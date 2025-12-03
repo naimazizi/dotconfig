@@ -3,7 +3,6 @@ return {
     "saghen/blink.cmp",
     vscode = false,
     event = "VimEnter",
-    version = "1.*",
     dependencies = {
       -- Snippet Engine
       {
@@ -50,6 +49,7 @@ return {
       "marcoSven/blink-cmp-yanky",
       "disrupted/blink-cmp-conventional-commits",
       "rcarriga/cmp-dap",
+      "kristijanhusak/vim-dadbod-completion",
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -140,6 +140,7 @@ return {
           "ecolog",
           "yank",
           "conventional_commits",
+          "dadbod",
         },
         per_filetype = {
           ["dap-repl"] = { "dap" },
@@ -188,6 +189,7 @@ return {
               return vim.bo.filetype == "dap-repl"
             end,
           },
+          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
       },
 

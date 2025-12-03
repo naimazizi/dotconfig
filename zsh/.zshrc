@@ -87,6 +87,12 @@ if [[ -d "${BUN_PATH}" ]]; then
 	export PATH=$PATH:$BUN_PATH
 fi
 
+# local bin
+export LOCAL_BIN_PATH="$HOME/.local/bin"
+if [[ -d "${LOCAL_BIN_PATH}" ]]; then
+  export PATH=$PATH:$LOCAL_BIN_PATH
+fi
+
 # Exclude failed history
 zshaddhistory() {
    local j=1

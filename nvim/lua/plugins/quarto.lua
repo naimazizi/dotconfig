@@ -3,9 +3,6 @@ return {
     -- for complete functionality (language features)
     "quarto-dev/quarto-nvim",
     vscode = false,
-    event = "BufRead *.qmd",
-    ft = { "quarto" },
-    dev = false,
     config = function()
       require("quarto").setup({
         debug = false,
