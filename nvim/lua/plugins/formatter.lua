@@ -34,6 +34,11 @@ return {
       -- Lua formatter
       opts.formatters_by_ft["lua"] = { "stylua" }
 
+      -- shell formatter
+      for _, ft in ipairs(vim.g.sh_ft) do
+        opts.formatters_by_ft[ft] = { "shfmt" }
+      end
+
       -- Injected formatter for code blocks in markdown-like file
       for _, ft in ipairs(vim.g.md_injected_ft) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}

@@ -24,6 +24,7 @@ if not vim.g.vscode then
   vim.g.md_ft = { "markdown", "quarto", "hurl" }
   vim.g.md_injected_ft = { "markdown", "quarto" }
   vim.g.sql_ft = { "sql", "mysql", "plsql" }
+  vim.g.sh_ft = { "sh", "bash", "zsh", "ksh" }
 
   local function system(command)
     local file = io.popen(command, "r")

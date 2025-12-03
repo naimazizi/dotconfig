@@ -5,16 +5,17 @@ ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 # Additional Config
 ZVM_MAN_PAGER='less'
 ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
 # Download zimfw plugin manager if missing.
 if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
-	curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
-		https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+    https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 fi
 
 # Install missing modules and update ${ZIM_HOME}/init.zsh if missing or outdated.
 if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} ]]; then
-	source ${ZIM_HOME}/zimfw.zsh init
+  source ${ZIM_HOME}/zimfw.zsh init
 fi
 
 # Load zim
@@ -43,7 +44,7 @@ alias ss="zsh $HOME/.config/skim_search.sh"
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 if [[ -d "$PYENV_ROOT/bin" ]]; then
-	export PATH="$PYENV_ROOT/bin:$PATH"
+  export PATH="$PYENV_ROOT/bin:$PATH"
 fi
 if command -v pyenv &>/dev/null; then
   eval "$(pyenv init - zsh)"
@@ -52,39 +53,39 @@ fi
 
 # Homebrew
 if [[ -f "/opt/homebrew/bin/brew" ]]; then # MacOS
-	export HOMEBREW_PREFIX='/opt/homebrew'
-	export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
-	export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/homebrew"
-	eval "$(/opt/homebrew/bin/brew shellenv)"
+  export HOMEBREW_PREFIX='/opt/homebrew'
+  export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+  export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/homebrew"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then # Linux
-	export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
-	export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
-	export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
-	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+  export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+  export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # Bob (Nvim)
 BOB_PATH="$HOME/.local/share/bob/nvim-bin"
 if [[ -d "${BOB_PATH}" ]]; then
-	export PATH=$PATH:$BOB_PATH
+  export PATH=$PATH:$BOB_PATH
 fi
 
 # Cargo (rust)
 CARGO_PATH="$HOME/.cargo/bin"
 if [[ -d "${CARGO_PATH}" ]]; then
-	export PATH=$PATH:$CARGO_PATH
+  export PATH=$PATH:$CARGO_PATH
 fi
 
 # Rancher Desktop
 RANCHER_PATH="$HOME/.rd/bin"
 if [[ -d "${RANCHER_PATH}" ]]; then
-	export PATH=$PATH:$RANCHER_PATH
+  export PATH=$PATH:$RANCHER_PATH
 fi
 
 # Bun
 export BUN_PATH="$HOME/.bun/bin"
 if [[ -d "${BUN_PATH}" ]]; then
-	export PATH=$PATH:$BUN_PATH
+  export PATH=$PATH:$BUN_PATH
 fi
 
 # local bin
@@ -93,23 +94,14 @@ if [[ -d "${LOCAL_BIN_PATH}" ]]; then
   export PATH=$PATH:$LOCAL_BIN_PATH
 fi
 
-# Exclude failed history
-zshaddhistory() {
-   local j=1
-   while ([[ ${${(z)1}[$j]} == *=* ]]) {
-     ((j++))
-   }
-   whence ${${(z)1}[$j]} >| /dev/null || return 1
- }
-
 # Environment variables
 if command -v nvim &>/dev/null; then
-	export EDITOR='nvim'
-	export VISUAL='nvim'
+  export EDITOR='nvim'
+  export VISUAL='nvim'
   export ZVM_VI_EDITOR='nvim'
 else
-	export EDITOR='vim'
-	export VISUAL='vim'
+  export EDITOR='vim'
+  export VISUAL='vim'
   export ZVM_VI_EDITOR='vim'
 fi
 
@@ -118,13 +110,12 @@ fi
 # Vi mode
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 function zvm_after_lazy_keybindings() {
-	bindkey -M vicmd 'vv' edit-command-line
+  bindkey -M vicmd 'vv' edit-command-line
 }
 
 zmodload -F zsh/terminfo +p:terminfo
 # Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
-for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
-for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
-for key ('k') bindkey -M vicmd ${key} history-substring-search-up
-for key ('j') bindkey -M vicmd ${key} history-substring-search-down
-unset key
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
