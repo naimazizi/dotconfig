@@ -42,6 +42,9 @@ return {
       -- json formatter
       opts.formatters_by_ft["json"] = { "jq" }
 
+      -- kdl formatter
+      opts.formatters_by_ft["kdl"] = { "kdlfmt" }
+
       -- Injected formatter for code blocks in markdown-like file
       for _, ft in ipairs(vim.g.md_injected_ft) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
