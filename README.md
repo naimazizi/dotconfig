@@ -42,6 +42,7 @@ brew install \
   fd \
   fzf \
   gh \
+  hurl \
   just \
   lazygit \
   lsd \

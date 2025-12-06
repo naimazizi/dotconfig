@@ -83,6 +83,6 @@ return {
   },
   {
     "mason-org/mason.nvim",
-    opts = { ensure_installed = { "markdownlint-cli2", "ruff", "stylua" } },
+    opts = { ensure_installed = { "markdownlint-cli2", "ruff", "stylua", "kdlfmt" } },
   },
 }
