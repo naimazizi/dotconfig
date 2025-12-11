@@ -25,6 +25,7 @@ zmodule ssh
 zmodule direnv
 zmodule fzf
 zmodule magic-enter
+zmodule Aloxaf/fzf-tab
 
 #
 # Completion

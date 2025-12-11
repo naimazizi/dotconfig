@@ -167,6 +167,7 @@ return {
           yank = {
             name = "yank",
             module = "blink-yanky",
+            score_offset = -5,
             opts = {
               minLength = 5,
               onlyCurrentFiletype = true,
