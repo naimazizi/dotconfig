@@ -2,6 +2,7 @@
 
 ## List of configs
 
+- atuin
 - fish
 - ghostty
 - gitui
@@ -36,6 +37,7 @@ cd ~/.config
 git clone https://github.com/naimazizi/dotconfig .
 
 brew install \
+  atuin \
   bat \
   delta \
   direnv \

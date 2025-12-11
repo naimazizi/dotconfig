@@ -10,6 +10,7 @@
 !/skim_search.sh
 
 # Folder to not ignore
+!/atuin/
 !/fish/
 !/wezterm/
 !/helix/

@@ -26,6 +26,7 @@ zmodule direnv
 zmodule fzf
 zmodule magic-enter
 zmodule Aloxaf/fzf-tab
+zmodule atuinsh/atuin
 
 #
 # Completion
