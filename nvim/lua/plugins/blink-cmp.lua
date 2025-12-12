@@ -48,7 +48,7 @@ return {
       "t3ntxcl3s/ecolog.nvim",
       "marcoSven/blink-cmp-yanky",
       "disrupted/blink-cmp-conventional-commits",
-      "rcarriga/cmp-dap",
+      "mayromr/blink-cmp-dap",
       "kristijanhusak/vim-dadbod-completion",
     },
     --- @module 'blink.cmp'
@@ -185,10 +185,7 @@ return {
           },
           dap = {
             name = "dap",
-            module = "blink.compat.source",
-            enabled = function()
-              return vim.bo.filetype == "dap-repl"
-            end,
+            module = "blink-cmp-dap",
           },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
