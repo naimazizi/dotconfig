@@ -8,10 +8,10 @@ return {
     event = "BufRead *.py",
     config = function()
       local nn = require("notebook-navigator")
-      vim.keymap.set({ "n", "v" }, "[3", function()
+      vim.keymap.set({ "n", "v" }, "[r", function()
         nn.move_cell("u")
       end, { silent = true, desc = "Notebook - Move cell up" })
-      vim.keymap.set({ "n", "v" }, "]3", function()
+      vim.keymap.set({ "n", "v" }, "]r", function()
         nn.move_cell("d")
       end, { silent = true, desc = "Notebook - Move cell down" })
     end,
@@ -130,5 +130,70 @@ return {
         ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
       })
     end,
+  },
+  -- Separator overlay on cell marker & metadata
+  {
+    "nvim-mini/mini.hipatterns",
+    optional = true,
+    opts = function(_, opts)
+      local censor_extmark_opts = function(buf_id, match, data)
+        local mask = string.rep("⎯", vim.api.nvim_win_get_width(0))
+        return {
+          virt_text = { { mask, "SignColumn" } },
+          virt_text_pos = "overlay",
+          virt_text_hide = true,
+          priority = 200,
+          right_gravity = false,
+        }
+      end
+      opts.highlighters["cell_marker"] = {
+        pattern = function(bufid)
+          local cmt_str = vim.api.nvim_get_option_value("commentstring", { buf = bufid })
+          return "^" .. string.gsub(cmt_str, [[%s]], "") .. [[*%%.*]]
+        end,
+        group = "",
+        extmark_opts = censor_extmark_opts,
+      }
+    end,
+  },
+  -- Define code cell object `ir`, `ar`
+  {
+    "nvim-mini/mini.ai",
+    opts = {
+      custom_textobjects = {
+        r = function(ai_mode, _, _)
+          local buf_nlines = vim.api.nvim_buf_line_count(0)
+          local cell_markers = {}
+          for line_no = 1, buf_nlines do
+            local line = vim.fn.getline(line_no)
+            if line:match("^# *%%%%") then
+              table.insert(cell_markers, line_no)
+            end
+          end
+          table.insert(cell_markers, 1, 0) -- Beginning
+          table.insert(cell_markers, #cell_markers + 1, buf_nlines + 1)
+
+          local regions = {}
+          for i = 1, #cell_markers - 1 do
+            local from_line, to_line
+            if ai_mode == "i" then
+              from_line = cell_markers[i] + 1
+              to_line = cell_markers[i + 1] - 1
+            else
+              from_line = math.max(cell_markers[i], 1)
+              to_line = cell_markers[i + 1] - 1
+            end
+            ---@diagnostic disable-next-line: param-type-mismatch
+            -- for `around cell` on empty line select previous cell
+            local to_line_len = vim.fn.getline(to_line):len() + 1
+            table.insert(regions, {
+              from = { line = from_line, col = 1 },
+              to = { line = to_line, col = to_line_len },
+            })
+          end
+          return regions
+        end,
+      },
+    },
   },
 }
