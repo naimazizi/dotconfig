@@ -10,10 +10,7 @@ return {
         },
       },
       lsp = {
-        enabled = true,
-        actions = true,
-        completion = true,
-        hover = true,
+        enabled = false,
       },
     },
   },
@@ -29,7 +26,7 @@ return {
     optional = true,
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "codelldb", "bacon-ls", "rust-analyzer" })
+      vim.list_extend(opts.ensure_installed, { "codelldb", "bacon-ls", "bacon", "rust-analyzer" })
     end,
   },
   {
