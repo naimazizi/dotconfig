@@ -154,13 +154,13 @@ return {
       vim.opt.splitkeep = "screen"
     end,
     keys = {
-      -- {
-      --   "<leader>uE",
-      --   function()
-      --     require("edgy").toggle()
-      --   end,
-      --   desc = "Edgy Toggle",
-      -- },
+      {
+        "<leader>uE",
+        function()
+          require("edgy").toggle()
+        end,
+        desc = "Edgy Toggle",
+      },
       {
         "<A-w>",
         function()
@@ -203,7 +203,7 @@ return {
           enabled = false,
         },
         options = {
-          left = { size = 0.15 },
+          left = { size = 0.2 },
           bottom = { size = 0.2 },
           right = { size = 0.30 },
         },
@@ -239,25 +239,23 @@ return {
         left = {
           {
             title = "Explorer",
-            ft = "snacks_layout_box",
-            open = function()
-              require("snacks").explorer()
+            ft = "neo-tree",
+            filter = function(buf)
+              return vim.b[buf].neo_tree_source == "filesystem"
             end,
             pinned = true,
-            filter = function(_buf, win)
-              return vim.api.nvim_win_get_config(win).relative == ""
-            end,
+            open = "Neotree",
+            size = { height = 0.4 },
           },
           {
             title = "Outline",
-            ft = "SymbolsSidebar",
-            pinned = true,
-            open = "SymbolsToggle",
+            ft = "Outline",
+            open = "Outline",
           },
         },
         right = {
           { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
-          -- { title = "AI", ft = "sidekick_terminal", size = { height = 0.30 } },
+          { title = "AI", ft = "sidekick_terminal", size = { height = 0.5 } },
           {
             title = "Overseer",
             ft = "OverseerList",
@@ -271,7 +269,6 @@ return {
           {
             title = "Database",
             ft = "dbui",
-            pinned = true,
             width = 0.3,
             open = function()
               vim.cmd("DBUI")
@@ -345,22 +342,12 @@ return {
     end,
   },
   {
-    "oskarrrrrrr/symbols.nvim",
+    "hedyhli/outline.nvim",
+    lazy = true,
+    cmd = { "Outline", "OutlineOpen" },
     vscode = false,
-    cmd = "SymbolsToggle",
-    keys = { { "<leader>cs", "<cmd>SymbolsToggle<cr>", desc = "Toggle Outline" } },
-    config = function()
-      local r = require("symbols.recipes")
-      require("symbols").setup(r.DefaultFilters, r.AsciiSymbols, {
-        sidebar = {
-          show_inline_details = true,
-          auto_peek = false,
-          preview = {
-            show_always = false,
-          },
-        },
-      })
-    end,
+    keys = { { "<leader>cs", "<cmd>Outline<cr>", desc = "Toggle Outline" } },
+    opts = { outline_window = { position = "left", auto_jump = true, wrap = false } },
   },
   {
     "folke/trouble.nvim",

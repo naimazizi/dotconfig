@@ -97,13 +97,13 @@ return {
         -- enable undercurls for underlined text
         undercurl = true,
         -- transparent background
-        transparent = false,
+        transparent = true,
         -- highlight background for the left gutter
         gutter = false,
         -- background for diagnostic virtual text
         diag_background = true,
         -- dim inactive windows. Disabled when transparent
-        dim_inactive = false,
+        dim_inactive = true,
         -- set colors for terminal buffers
         terminal_colors = true,
         -- cache highlights and colors for faster startup.
