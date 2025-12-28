@@ -46,31 +46,32 @@ return {
       vim.opt.foldlevel = 99
       vim.opt.foldlevelstart = 99
     end,
-    config = function()
-      require("origami").setup({
-        useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
-        autoFold = {
+    opts = {
+      useLspFoldsWithTreesitterFallback = {
+        enabled = true,
+        foldmethodIfNeitherIsAvailable = "indent", ---@type string|fun(bufnr: number): string
+      },
+      autoFold = {
+        enabled = true,
+        kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
+      },
+      foldtext = {
+        enabled = true,
+        lineCount = {
+          template = "   %d lines", -- `%d` is replaced with the number of folded lines
+          hlgroup = "Comment",
+        },
+        diagnostics = {
           enabled = true,
-          kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
+          -- uses hlgroups and icons from `vim.diagnostic.config().signs`
         },
-        foldtext = {
-          enabled = true,
-          lineCount = {
-            template = "   %d lines", -- `%d` is replaced with the number of folded lines
-            hlgroup = "Comment",
-          },
-          diagnostics = {
-            enabled = true,
-            -- uses hlgroups and icons from `vim.diagnostic.config().signs`
-          },
-        },
-        pauseFoldsOnSearch = true,
-        foldKeymaps = {
-          setup = true, -- modifies `h` and `l`
-          hOnlyOpensOnFirstColumn = false,
-        },
-      })
-    end,
+      },
+      pauseFoldsOnSearch = true,
+      foldKeymaps = {
+        setup = true, -- modifies `h` and `l`
+        hOnlyOpensOnFirstColumn = false,
+      },
+    },
   },
   {
     "chrisgrieser/nvim-various-textobjs",
