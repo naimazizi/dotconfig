@@ -13,6 +13,7 @@ return {
       { "<leader>dd", "<cmd>:FzfLua dap_breakpoints<CR>", desc = "List Breakpoints" },
       { "<leader>dv", "<cmd>:FzfLua dap_variables<CR>", desc = "List Variables" },
       { "<leader>fp", "<cmd>:FzfLua zoxide<CR>", desc = "Projects" },
+      { "<leader>gf", "<cmd>:FzfLua git_bcommits<CR>", desc = "Git Log (Current Buffer)" },
       { "<leader><localleader>", "<cmd>:FzfLua global<CR>", desc = "Global Search" },
       { "gai", "<cmd>:FzfLua lsp_incoming_calls<CR>", desc = "C[a]lls Incoming" },
       { "gao", "<cmd>:FzfLua lsp_outgoing_calls<CR>", desc = "C[a]lls Outgoing" },
