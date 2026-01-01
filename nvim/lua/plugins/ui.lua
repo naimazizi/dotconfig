@@ -232,6 +232,10 @@ return {
             end,
           },
           {
+            title = "Overseer Output",
+            ft = "OverseerOutput",
+          },
+          {
             title = "DB Query Result",
             ft = "dbout",
           },
