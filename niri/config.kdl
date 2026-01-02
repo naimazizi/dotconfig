@@ -101,7 +101,7 @@ hotkey-overlay {
 }
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 // screenshot-path null
-screenshot-notification-disable
+// screenshot-notification-disable
 animations {
  // Uncomment to turn off all animations.
     // off
@@ -447,6 +447,12 @@ binds {
     }
     Mod+Shift+V {
         switch-focus-between-floating-and-tiling
+    }
+    Mod+P {
+        screenshot
+    }
+    Mod+Shift+P {
+        screenshot-screen
     }
     Print {
         screenshot
