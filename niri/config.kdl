@@ -422,7 +422,7 @@ binds {
         spawn "nemo"
     }
     Mod+Shift+B {
-        spawn "firefox"
+        spawn "zen-browser"
     }
     Mod+Shift+C {
         spawn "code"

@@ -19,7 +19,6 @@ return {
         -- },
         pyrefly = {},
         ruff = {
-          cmd = { "ruff", "server" },
           keys = {
             {
               "<leader>co",
