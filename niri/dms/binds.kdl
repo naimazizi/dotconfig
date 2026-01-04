@@ -38,7 +38,7 @@ binds {
         spawn "zen-browser"
     }
     Mod+Shift+C hotkey-overlay-title="Code" {
-        spawn "zeditor"
+        spawn "neovide"
     }
     Mod+Shift+X hotkey-overlay-title="File Explorer" {
         spawn "cosmic-files"

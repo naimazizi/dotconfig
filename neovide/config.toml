@@ -8,7 +8,6 @@ tabs = false
 title-hidden = true
 vsync = true
 wsl = false
-neovim-bin = "~/.local/share/bob/nvim-bin/nvim"
 
 [font]
 size = 14
