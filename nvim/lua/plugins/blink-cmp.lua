@@ -3,6 +3,7 @@ return {
     "saghen/blink.cmp",
     vscode = false,
     event = "VimEnter",
+    version = "1.*",
     dependencies = {
       -- Snippet Engine
       {
@@ -46,8 +47,6 @@ return {
         },
       },
       "t3ntxcl3s/ecolog.nvim",
-      "marcoSven/blink-cmp-yanky",
-      "disrupted/blink-cmp-conventional-commits",
       "mayromr/blink-cmp-dap",
       "kristijanhusak/vim-dadbod-completion",
     },
@@ -138,8 +137,6 @@ return {
           "path",
           "copilot",
           "ecolog",
-          "yank",
-          "conventional_commits",
           "dadbod",
         },
         per_filetype = {
@@ -164,25 +161,6 @@ return {
             async = true,
           },
           ecolog = { name = "ecolog", module = "ecolog.integrations.cmp.blink_cmp" },
-          yank = {
-            name = "yank",
-            module = "blink-yanky",
-            score_offset = -5,
-            opts = {
-              minLength = 5,
-              onlyCurrentFiletype = true,
-              trigger_characters = { '"' },
-              kind_icon = "󰅍",
-            },
-          },
-          conventional_commits = {
-            name = "Conventional Commits",
-            module = "blink-cmp-conventional-commits",
-            enabled = function()
-              return vim.bo.filetype == "gitcommit"
-            end,
-            opts = {},
-          },
           dap = {
             name = "dap",
             module = "blink-cmp-dap",

@@ -41,7 +41,7 @@ binds {
         spawn "neovide"
     }
     Mod+Shift+X hotkey-overlay-title="File Explorer" {
-        spawn "cosmic-files"
+        spawn "nautilus"
     }
     // === Security ===
     Mod+Alt+L hotkey-overlay-title="Lock Screen" {
