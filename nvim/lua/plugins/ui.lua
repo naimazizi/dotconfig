@@ -259,7 +259,7 @@ return {
         },
         right = {
           { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
-          { title = "AI", ft = "sidekick_terminal", size = { height = 0.5 } },
+          -- { title = "AI", ft = "sidekick_terminal", size = { height = 0.5 } },
           {
             title = "Overseer",
             ft = "OverseerList",
