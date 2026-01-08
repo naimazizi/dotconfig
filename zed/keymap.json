@@ -27,7 +27,7 @@
       "space s w": "pane::DeploySearch",
 
       // Chat with AI
-      "space a c": "assistant::ToggleFocus",
+      "space a c": "agent::ToggleFocus",
       // Go to file with `gf`
       "g f": "editor::OpenExcerpts",
     },
@@ -42,6 +42,14 @@
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
+
+      // Windows management
+      "space w s": "pane::SplitDown",
+      "space w v": "pane::SplitRight",
+      "space -": "pane::SplitDown",
+      "space |": "pane::SplitRight",
+      "space w c": "pane::CloseAllItems",
+      "space w d": "pane::CloseAllItems",
 
       // +LSP
       "space c a": "editor::ToggleCodeActions",
@@ -64,7 +72,9 @@
       "s S": "project_symbols::Toggle",
       // Diagnostic
       "space x x": "diagnostics::Deploy",
-
+      // Excerpts
+      "] q": "editor::MoveToStartOfNextExcerpt",
+      "[ q": "editor::MoveToStartOfExcerpt",
       // +Git
       // Git prev/next hunk
       "] h": "editor::GoToHunk",
@@ -80,8 +90,6 @@
       "shift-q": "pane::CloseActiveItem",
       "ctrl-q": "pane::CloseActiveItem",
       "space b d": "pane::CloseActiveItem",
-      // Close other items
-      "space b o": "pane::CloseInactiveItems",
       // Save file
       "ctrl-s": "workspace::Save",
       // File finder
@@ -90,7 +98,45 @@
       "space /": "pane::DeploySearch",
       // TODO: Open other files
       // Show project panel with current file
+      //
       "space e": "pane::RevealInProjectPanel",
+      "space a a": "agent::ToggleFocus",
+      "ctrl-\\": "workspace::ToggleRightDock",
+      "cmd-k": "workspace::ToggleRightDock",
+      "space a e": "assistant::InlineAssist",
+      "cmd-l": "assistant::InlineAssist",
+      "space a t": "workspace::ToggleRightDock",
+
+      // Tab things. Almost as good as harpoon.
+      "space 1": ["pane::ActivateItem", 0],
+      "space 2": ["pane::ActivateItem", 1],
+      "space 3": ["pane::ActivateItem", 2],
+      "space 4": ["pane::ActivateItem", 3],
+      "space 5": ["pane::ActivateItem", 4],
+      "space 6": ["pane::ActivateItem", 5],
+      "space 7": ["pane::ActivateItem", 6],
+      "space 8": ["pane::ActivateItem", 7],
+      "space 9": ["pane::ActivateItem", 8],
+      "space 0": "pane::ActivateLastItem",
+      "] b": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePreviousItem",
+      "space ,": "tab_switcher::Toggle",
+      // Pin buffer
+      "space b p": "pane::TogglePinTab",
+      // Jump to the previous location
+      "space b b": "pane::AlternateFile",
+      // Close inactive buffers
+      "space b q": "pane::CloseOtherItems",
+      // New file
+      "space b n": "workspace::NewFile",
+
+      // Search in the current buffer
+      "space s b": "vim::Search",
+      // Search in all the files
+      "space s g": "workspace::NewSearch",
+      "space f n": "workspace::NewFile",
+      // Git
+      "space g b": "git::Blame",
     },
   },
   // Empty pane, set of keybindings that are available when there is no active editor
