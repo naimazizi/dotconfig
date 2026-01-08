@@ -1,14 +1,15 @@
 return {
   {
-    "esmuellert/vscode-diff.nvim",
+    "esmuellert/codediff.nvim",
     vscode = false,
     event = "VeryLazy",
     dependencies = { "MunifTanjim/nui.nvim" },
+    cmd = "CodeDiff",
     keys = {
       { "<leader>gD", "<cmd>CodeDiff<cr>", desc = "Open VSCode Diff View" },
     },
     config = function()
-      require("vscode-diff").setup({
+      require("codediff").setup({
         -- Highlight configuration
         highlights = {
           line_insert = "DiffAdd", -- Line-level insertions
@@ -39,6 +40,10 @@ return {
             hover = "K", -- Show file diff preview
             refresh = "R", -- Refresh git status
           },
+        },
+
+        explorer = {
+          position = "bottom",
         },
       })
     end,

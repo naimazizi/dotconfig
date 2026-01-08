@@ -21,6 +21,7 @@ return {
           { "<leader>s", group = "search" },
           { "<leader>u", group = "ui" },
           { "<leader>x", group = "diagnostics/quickfix" },
+          { "<leader>a", group = "AI (Opencode)" },
           { "[", group = "prev" },
           { "]", group = "next" },
           { "g", group = "goto" },

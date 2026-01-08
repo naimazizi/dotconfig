@@ -21,7 +21,7 @@ if not vim.g.vscode then
   vim.opt.spell = false
 
   -- custom global variables
-  vim.g.md_ft = { "markdown", "quarto" }
+  vim.g.md_ft = { "markdown", "quarto", "copilot-chat", "opencode_output", "Avante" }
   vim.g.md_injected_ft = { "markdown", "quarto" }
   vim.g.sql_ft = { "sql", "mysql", "plsql" }
   vim.g.sh_ft = { "sh", "bash", "zsh", "ksh" }
