@@ -137,6 +137,7 @@
       "space f n": "workspace::NewFile",
       // Git
       "space g b": "git::Blame",
+      "space g g": ["task::Spawn", { "task_name": "gitui" }],
     },
   },
   // Empty pane, set of keybindings that are available when there is no active editor
@@ -179,13 +180,6 @@
     "bindings": {
       "c": "vim::CurrentLine",
       "a": "editor::ToggleCodeActions", // zed specific
-    },
-  },
-  // Toggle terminal
-  {
-    "context": "Workspace",
-    "bindings": {
-      "ctrl-\\": "terminal_panel::ToggleFocus",
     },
   },
   {

@@ -247,17 +247,16 @@ return {
             filter = function(buf)
               return vim.b[buf].neo_tree_source == "filesystem"
             end,
-            pinned = true,
             open = "Neotree",
             size = { height = 0.4 },
           },
+        },
+        right = {
           {
             title = "Outline",
             ft = "Outline",
             open = "Outline",
           },
-        },
-        right = {
           { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
           -- { title = "AI", ft = "sidekick_terminal", size = { height = 0.5 } },
           {
