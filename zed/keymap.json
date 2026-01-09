@@ -17,6 +17,9 @@
       // NOTE: Toggle Zen mode, not fully working yet
       "space c z": "workspace::ToggleCenteredLayout",
 
+      // Toggle Outline
+      "space c s": "outline_panel::ToggleFocus",
+
       // Open markdown preview
       "space m p": "markdown::OpenPreview",
       "space m P": "markdown::OpenPreviewToTheSide",

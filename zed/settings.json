@@ -10,7 +10,7 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Kanso Zen",
+    "dark": "Kanagawa Wave",
   },
 
   "lsp": {
@@ -131,7 +131,7 @@
   // Move all panel to the right
   "project_panel": {
     "button": true,
-    "dock": "right",
+    "dock": "left",
     "git_status": true,
   },
   "outline_panel": {
