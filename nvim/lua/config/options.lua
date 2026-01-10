@@ -26,6 +26,13 @@ if not vim.g.vscode then
   vim.g.sql_ft = { "sql", "mysql", "plsql" }
   vim.g.sh_ft = { "sh", "bash", "zsh", "ksh" }
 
+  -- workaround for cybereason
+  vim.opt.swapfile = false
+  vim.opt.backup = false
+  vim.opt.writebackup = false
+  vim.opt.undofile = false
+  vim.opt.fsync = false
+
   local function system(command)
     local file = io.popen(command, "r")
     local output = file:read("*all"):gsub("%s+", "")
