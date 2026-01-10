@@ -23,6 +23,7 @@ return {
           filetypes = {
             "markdown",
             "gitcommit",
+            "typst",
           },
           settings = {
             ["harper-ls"] = {

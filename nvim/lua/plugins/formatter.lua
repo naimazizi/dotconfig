@@ -19,6 +19,9 @@ return {
         table.insert(opts.formatters_by_ft[ft], "markdownlint-cli2")
       end
 
+      -- Typst formatters
+      opts.formatters_by_ft["typst"] = { "typstyle", lsp_format = "prefer" }
+
       -- Python formatters
       for _, ft in ipairs({ "python" }) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
