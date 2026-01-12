@@ -130,11 +130,9 @@ return {
       sources = {
         default = {
           "lsp",
-          "path",
           "snippets",
           "buffer",
           "references",
-          "path",
           "copilot",
           "ecolog",
           "dadbod",
@@ -146,13 +144,6 @@ return {
           references = {
             name = "pandoc_references",
             module = "cmp-pandoc-references.blink",
-          },
-          path = {
-            opts = {
-              get_cwd = function(_)
-                return vim.fn.getcwd()
-              end,
-            },
           },
           copilot = {
             name = "copilot",

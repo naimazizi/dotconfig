@@ -3,8 +3,8 @@ description: Agent for system design and architecture review. Use this agent to 
 mode: primary
 tools:
   bash: false
-  write: false
-  edit: false
+  write: true
+  edit: true
 ---
 # System Design Architect — Production Prompt
 
