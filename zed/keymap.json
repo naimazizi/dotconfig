@@ -141,6 +141,16 @@
       // Git
       "space g b": "git::Blame",
       "space g g": ["task::Spawn", { "task_name": "gitui" }],
+
+      // Debug
+      "space d b": "editor::ToggleBreakpoint",
+      "space d u": "debug_panel::ToggleFocus",
+      "space d c": "debugger::Continue",
+      "space d P": "debugger::Pause",
+      "space d d": "debugger::FocusBreakpointList",
+      "space d v": "debugger::FocusVariables",
+      "space d a": "debugger::Start",
+      "space d l": "debugger::RerunSession",
     },
   },
   // Empty pane, set of keybindings that are available when there is no active editor
@@ -245,6 +255,13 @@
     "bindings": {
       "s": ["vim::PushSneak", {}],
       "S": ["vim::PushSneakBackward", {}],
+    },
+  },
+  // Surround
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "g s a": "vim::PushAddSurrounds",
     },
   },
   // Subword motion is not working really nice with `ciw`, disable for now

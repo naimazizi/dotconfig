@@ -75,6 +75,7 @@ return {
   },
   {
     "chrisgrieser/nvim-various-textobjs",
+    vscode = false,
     event = "BufRead",
     opts = {
       keymaps = {
