@@ -46,7 +46,6 @@ return {
           kind_icon = " ", ---@type string | false
         },
       },
-      "t3ntxcl3s/ecolog.nvim",
       "mayromr/blink-cmp-dap",
       "kristijanhusak/vim-dadbod-completion",
     },
@@ -134,7 +133,6 @@ return {
           "buffer",
           "references",
           "copilot",
-          "ecolog",
           "dadbod",
         },
         per_filetype = {
@@ -151,7 +149,6 @@ return {
             score_offset = 100,
             async = true,
           },
-          ecolog = { name = "ecolog", module = "ecolog.integrations.cmp.blink_cmp" },
           dap = {
             name = "dap",
             module = "blink-cmp-dap",
