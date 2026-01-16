@@ -35,6 +35,7 @@
 !/kitty/
 !/niri/
 !/tmuxinator/
+!/vimclap/
 
 fish/fish_variables
 fish/fishd.*

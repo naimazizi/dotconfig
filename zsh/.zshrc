@@ -88,6 +88,12 @@ if [[ -d "${BUN_PATH}" ]]; then
   export PATH=$PATH:$BUN_PATH
 fi
 
+# Mason bin
+export MASON_BIN_PATH="$HOME/.local/share/nvim/mason/bin"
+if [[ -d "${MASON_BIN_PATH}" ]]; then
+  export PATH=$PATH:$MASON_BIN_PATH
+fi
+
 # local bin
 export LOCAL_BIN_PATH="$HOME/.local/bin"
 if [[ -d "${LOCAL_BIN_PATH}" ]]; then

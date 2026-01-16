@@ -62,6 +62,8 @@ Plug 'inkarkat/vim-AdvancedSorters' " advanced sorting of text.
 Plug 'inkarkat/vim-ingo-library' 
 Plug 'jdhao/better-escape.vim'
 Plug 'kshenoy/vim-signature'
+Plug 'vim-test/vim-test' 
+Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -260,12 +262,40 @@ nnoremap <silent> <leader>e :NERDTreeToggle<CR>
 " terminal emulation
 nnoremap <silent> <leader>ft :terminal<CR>
 
+" vim-test (LazyVim-style)
+" t: test
+nnoremap <silent> <leader>tt :TestNearest<CR>
+nnoremap <silent> <leader>tT :TestFile<CR>
+nnoremap <silent> <leader>ta :TestSuite<CR>
+nnoremap <silent> <leader>tl :TestLast<CR>
+nnoremap <silent> <leader>tg :TestVisit<CR>
+
+" vimspector (LazyVim-style)
+" d: debug
+nnoremap <silent> <leader>db :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <silent> <leader>dB :call vimspector#ClearBreakpoints()<CR>
+nnoremap <silent> <leader>dc :call vimspector#Continue()<CR>
+nnoremap <silent> <leader>di :call vimspector#StepInto()<CR>
+nnoremap <silent> <leader>do :call vimspector#StepOver()<CR>
+nnoremap <silent> <leader>dO :call vimspector#StepOut()<CR>
+nnoremap <silent> <leader>dr :call vimspector#Restart()<CR>
+nnoremap <silent> <leader>dq :call vimspector#Stop()<CR>
+
 
 "*****************************************************************************
 "" Commands
 "*****************************************************************************
 " remove trailing whitespaces
 command! FixWhitespace :%s/\s\+$//e
+
+" vim-test + python defaults
+let g:test#strategy = 'vimterminal'
+let g:test#python#runner = 'pytest'
+let g:test#python#pytest#options = '-q'
+
+" vimspector (python)
+let g:vimspector_enable_mappings = 'HUMAN'
+let g:vimspector_install_gadgets = ['debugpy']
 
 "*****************************************************************************
 "" Functions
@@ -475,6 +505,27 @@ let g:which_key_map['s'] = {
         \ 'k' : [':Clap maps', 'Maps'],
         \ '"': [':Clap registers', 'Registers'],
         \ "d": [':CoCList Diagnostics', 'Diagnostics'],
+    \ }
+
+let g:which_key_map['t'] = {
+      \ 'name' : '+Test',
+        \ 't' : [':TestNearest', 'Test Nearest'],
+        \ 'T' : [':TestFile', 'Test File'],
+        \ 'a' : [':TestSuite', 'Test Suite'],
+        \ 'l' : [':TestLast', 'Test Last'],
+        \ 'g' : [':TestVisit', 'Test Visit'],
+    \ }
+
+let g:which_key_map['d'] = {
+      \ 'name' : '+Debug',
+        \ 'b' : [':call vimspector#ToggleBreakpoint()', 'Breakpoint'],
+        \ 'B' : [':call vimspector#ClearBreakpoints()', 'Clear Breakpoints'],
+        \ 'c' : [':call vimspector#Continue()', 'Continue'],
+        \ 'i' : [':call vimspector#StepInto()', 'Step Into'],
+        \ 'o' : [':call vimspector#StepOver()', 'Step Over'],
+        \ 'O' : [':call vimspector#StepOut()', 'Step Out'],
+        \ 'r' : [':call vimspector#Restart()', 'Restart'],
+        \ 'q' : [':call vimspector#Stop()', 'Stop'],
     \ }
 let g:which_key_map['q'] = {
       \ 'name' : '+Session',
@@ -706,3 +757,5 @@ nnoremap <silent><nowait> <leader>cs  :<C-u>CocList symbols<cr>
 nnoremap <silent><nowait> <leader>cj  :<C-u>CocNext<CR>
 " Do default action for previous item
 nnoremap <silent><nowait> <leader>ck  :<C-u>CocPrev<CR>
+
+
