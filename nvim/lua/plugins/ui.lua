@@ -14,7 +14,6 @@ return {
       },
     },
   },
-  { "adlrwbr/keep-split-ratio.nvim", vscode = false, opts = {} },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "LspAttach",
@@ -58,83 +57,6 @@ return {
         disabled_ft = {},
       })
       vim.diagnostic.config({ virtual_text = false }) -- Disable default virtual text
-    end,
-  },
-  {
-    "oribarilan/lensline.nvim",
-    event = "LspAttach",
-    vscode = false,
-    config = function()
-      require("lensline").setup({
-        profiles = {
-          {
-            name = "minimal",
-            style = {
-              placement = "inline",
-              prefix = "",
-            },
-            providers = { -- Array format: order determines display sequence
-              {
-                name = "usages",
-                enabled = true,
-                include = { "refs", "defs", "impls" },
-                breakdown = true,
-                show_zero = true,
-              },
-              {
-                name = "last_author",
-                enabled = true, -- enabled by default with caching optimization
-                cache_max_files = 50, -- maximum number of files to cache blame data for (default: 50)
-              },
-              -- built-in providers that are disabled by default:
-              {
-                name = "diagnostics",
-                enabled = true, -- disabled by default - enable explicitly to use
-                min_level = "WARN", -- only show WARN and ERROR by default (HINT, INFO, WARN, ERROR)
-              },
-              {
-                name = "function_length",
-                enabled = true,
-                event = { "BufWritePost", "TextChanged" },
-                handler = function(bufnr, func_info, _provider_config, callback)
-                  local utils = require("lensline.utils")
-                  local function_lines = utils.get_function_lines(bufnr, func_info)
-                  local func_line_count = math.max(0, #function_lines - 1) -- Subtract 1 for signature
-                  local total_lines = vim.api.nvim_buf_line_count(bufnr)
-
-                  -- Show line count for all functions
-                  callback({
-                    line = func_info.line,
-                    text = string.format("(%d/%d lines)", func_line_count, total_lines),
-                  })
-                end,
-              },
-              {
-                name = "complexity",
-                enabled = false, -- disabled by default - enable explicitly to use
-                min_level = "L", -- only show L (Large) and XL (Extra Large) complexity by default
-              },
-            },
-          },
-        },
-
-        style = {
-          separator = " • ", -- separator between all lens attributes
-          highlight = "Comment", -- highlight group for lens text
-          prefix = "┃ ", -- prefix before lens content
-          use_nerdfont = true, -- enable nerd font icons in built-in providers
-        },
-        limits = {
-          exclude = {
-            -- see config.lua for extensive list of default patterns
-          },
-          exclude_gitignored = true, -- respect .gitignore by not processing ignored files
-          max_lines = 1000, -- process only first N lines of large files
-          max_lenses = 70, -- skip rendering if too many lenses generated
-        },
-        debounce_ms = 500, -- unified debounce delay for all providers
-        debug_mode = false, -- enable debug output for development, see CONTRIBUTE.md
-      })
     end,
   },
   {
