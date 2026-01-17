@@ -1,0 +1,9 @@
+{
+  "snippets.ultisnips.pythonPrompt": false,
+  "diagnostic.enable": true,
+  "diagnostic.displayByAle": false,
+  "diagnostic.refreshOnInsertMode": true,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.virtualText": true,
+  "sumneko-lua.enableNvimLuaDev": true
+}

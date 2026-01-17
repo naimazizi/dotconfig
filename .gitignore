@@ -15,6 +15,7 @@
 !/wezterm/
 !/helix/
 !/nvim/
+!/nvim-minimax/
 !/vscode/
 !/television/
 !/ghostty/
@@ -27,7 +28,6 @@
 !/lazygit/
 !/neovide/
 !/vim/
-!/coc/
 !/zsh/
 !/tmux/
 !/hypr/
@@ -40,8 +40,10 @@
 fish/fish_variables
 fish/fishd.*
 nvim/lazy-lock.json
+nvim-minimax/lazy-lock.json
 zsh/.zcomp*
 zsh/.zsh_sessions/
 zsh/.zsh_history
 zsh/.zim/
 zsh/.zhistory
+coc/memos.json
