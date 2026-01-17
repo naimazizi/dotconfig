@@ -3,8 +3,27 @@
   "diagnostic.enable": true,
   "diagnostic.displayByAle": false,
   "diagnostic.refreshOnInsertMode": true,
-  "diagnostic.checkCurrentLine": true,
-  "diagnostic.virtualText": true,
   "sumneko-lua.enableNvimLuaDev": true,
-  "copilot.enable": true
+  "copilot.enable": true,
+
+  // enable inline diagnostics for all lines in the file
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "diagnostic.virtualText": true,
+
+  // make documentation window rounded and bordered
+  "hover.floatConfig": {
+    "border": true,
+    "rounded": true
+  },
+
+  "hover.target": "float",
+
+  // make suggestions window rounded and bordered
+  "suggest.virtualText": true,
+  "suggest.enableFloat": true,
+  "suggest.floatConfig": {
+    "border": true,
+    "rounded": true
+  }
 }
