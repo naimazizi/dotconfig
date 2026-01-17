@@ -105,7 +105,6 @@ return {
       require("mini.ai").setup()
 
       require("mini.diff").setup()
-      require("mini.git").setup()
 
       require("mini.sessions").setup({
         autoread = true,

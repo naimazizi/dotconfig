@@ -44,7 +44,7 @@ return {
       debug = false,
     },
   },
-{
+  {
     "RRethy/vim-illuminate",
     event = "VeryLazy",
     opts = {

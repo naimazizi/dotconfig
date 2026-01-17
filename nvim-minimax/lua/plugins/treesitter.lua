@@ -1,7 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    branch="main",
+    branch = "main",
     build = ":TSUpdate",
     event = { "BufReadPre", "BufNewFile", "VeryLazy" },
     cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },

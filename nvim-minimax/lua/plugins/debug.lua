@@ -1,7 +1,7 @@
 return {
   {
-    'mfussenegger/nvim-dap',
-    event = 'VeryLazy',
+    "mfussenegger/nvim-dap",
+    event = "VeryLazy",
     dependencies = {
       {
         "theHamsta/nvim-dap-virtual-text",
@@ -10,19 +10,21 @@ return {
     },
     config = function()
       -- no-op; keymaps live in lua/config/keymaps.lua
-        require("mason-nvim-dap").setup({ handlers = {
-        python = function() end },
-      })
+      require("mason-nvim-dap").setup({ handlers = {
+        python = function() end,
+      } })
 
-vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
-local vscode = require("dap.ext.vscode")
+      require("overseer").enable_dap()
+
+      vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+      local vscode = require("dap.ext.vscode")
       local json = require("plenary.json")
       vscode.json_decode = function(str)
         return vim.json.decode(json.json_strip_comments(str))
       end
     end,
   },
-{
+  {
     "igorlfs/nvim-dap-view",
     vscode = false,
     event = { "BufReadPre" },
@@ -56,7 +58,7 @@ local vscode = require("dap.ext.vscode")
       },
     },
   },
-{
+  {
     "mfussenegger/nvim-dap",
     optional = true,
     dependencies = {
@@ -71,7 +73,7 @@ local vscode = require("dap.ext.vscode")
       end,
     },
   },
-{
+  {
     "jay-babu/mason-nvim-dap.nvim",
     dependencies = "mason.nvim",
     cmd = { "DapInstall", "DapUninstall" },
@@ -93,5 +95,4 @@ local vscode = require("dap.ext.vscode")
     -- mason-nvim-dap is loaded when nvim-dap loads
     config = function() end,
   },
-
 }

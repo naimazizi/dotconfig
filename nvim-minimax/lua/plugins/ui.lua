@@ -79,15 +79,12 @@ return {
             end,
           },
           {
-            title = "Snacks Terminal",
-            ft = "snacks_terminal",
-            filter = function(_buf, win)
-              return vim.api.nvim_win_get_config(win).relative == ""
-            end,
-          },
-          {
             title = "Overseer Output",
             ft = "OverseerOutput",
+          },
+          {
+            title = "Terminal",
+            ft = "toggleterm"
           },
           {
             title = "DB Query Result",

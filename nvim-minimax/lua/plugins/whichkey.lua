@@ -1,23 +1,39 @@
 return {
   {
-    'folke/which-key.nvim',
-    event = 'VeryLazy',
+    "folke/which-key.nvim",
+    event = "VeryLazy",
     opts = {
-      preset = 'helix',
-      delay = 200,
+      preset = "helix",
+      delay = 100,
       icons = {
-        mappings = false,
+        mappings = true,
       },
       spec = {
-        { '<leader>a', group = 'AI' },
-        { '<leader>b', group = 'buffer' },
-        { '<leader>c', group = 'code' },
-        { '<leader>d', group = 'debug' },
-        { '<leader>f', group = 'find' },
-        { '<leader>g', group = 'git' },
-        { '<leader>q', group = 'quit/session' },
-        { '<leader>t', group = 'test' },
-        { '<leader>w', group = 'windows' },
+        { "<leader>a", group = "AI" },
+        { "<leader>b", group = "buffer" },
+        { "<leader>c", group = "code" },
+        { "<leader>d", group = "debug" },
+        { "<leader>f", group = "find" },
+        { "<leader>g", group = "git" },
+        { "<leader>s", group = "search" },
+        { "<leader>q", group = "quit/session" },
+        { "<leader>t", group = "test" },
+        { "<leader>u", group = "ui" },
+        { "<leader>x", group = "diagnostic" },
+        { "<leader>w", group = "windows" },
+        { "<leader>o", group = "overseer" },
+        -- additional plugin
+        { "<localleader>r", group = "REPL", icon = "" },
+        { "<localleader>c", group = "Curl (hurl)", icon = "󱂛" },
+      },
+    },
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Keymaps (which-key)",
       },
     },
   },

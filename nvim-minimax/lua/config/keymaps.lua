@@ -146,7 +146,6 @@ map("n", "<leader>cl", "<cmd>CocList diagnostics<cr>", { silent = true, desc = "
 map("n", "<leader>cq", vim.diagnostic.setloclist, { silent = true, desc = "Quickfix diagnostics" })
 
 -- Quickfix / location list (LazyVim-ish)
-map("n", "<leader>xx", "<cmd>CocList diagnostics<cr>", { silent = true, desc = "Diagnostics" })
 map("n", "<leader>xl", "<cmd>lopen<cr>", { silent = true, desc = "Location list" })
 map("n", "[q", "<cmd>cprev<cr>", { silent = true, desc = "Prev quickfix" })
 map("n", "]q", "<cmd>cnext<cr>", { silent = true, desc = "Next quickfix" })
@@ -192,7 +191,6 @@ map("n", "<leader><space>", function()
 end, { silent = true, desc = "Find files (fff)" })
 
 -- Git (mini)
-map("n", "<leader>gg", "<cmd>lua MiniGit.show_at_cursor()<cr>", { silent = true, desc = "Git show at cursor" })
 map("n", "<leader>go", "<cmd>lua MiniDiff.toggle_overlay()<cr>", { silent = true, desc = "Git overlay" })
 
 -- Coc (as close to LazyVim bindings as possible)
@@ -206,17 +204,17 @@ map("n", "gr", "<Plug>(coc-references)", { silent = true, desc = "References" })
 -- Next/Prev reference / section
 -- Order: CocNext/CocPrev -> built-in [[/]]
 map("n", "]]", function()
-	local ok = pcall(vim.cmd, "silent CocNext")
-	if not ok then
-		vim.cmd("normal! ]]")
-	end
+  local ok = pcall(vim.cmd, "silent CocNext")
+  if not ok then
+    vim.cmd("normal! ]]")
+  end
 end, { silent = true, desc = "Next reference/section" })
 
 map("n", "[[", function()
-	local ok = pcall(vim.cmd, "silent CocPrev")
-	if not ok then
-		vim.cmd("normal! [[")
-	end
+  local ok = pcall(vim.cmd, "silent CocPrev")
+  if not ok then
+    vim.cmd("normal! [[")
+  end
 end, { silent = true, desc = "Prev reference/section" })
 map("n", "gi", "<Plug>(coc-implementation)", { silent = true, desc = "Goto implementation" })
 map("n", "gy", "<Plug>(coc-type-definition)", { silent = true, desc = "Goto type definition" })
@@ -259,7 +257,7 @@ end
 local coc_expr_opts = { silent = true, noremap = true, expr = true, replace_keycodes = false }
 map(
   "i",
-  "<Tab>",
+  "<TAB>",
   'coc#pum#visible() ? coc#pum#confirm() : v:lua.check_back_space() ? "<Tab>" : coc#refresh()',
   coc_expr_opts
 )
@@ -346,17 +344,26 @@ end, { desc = "DAP UI" })
 map("n", "<leader>dt", function()
   require("dap").terminate()
 end, { desc = "Terminate" })
+map("n", "<leader>td", function()
+  require("neotest").run.run({ strategy = "dap" })
+end, { desc = "Debug Nearest" })
 
--- Tests (neotest)
-map("n", "<leader>tt", function()
-  require("neotest").run.run()
-end, { desc = "Run nearest test" })
-map("n", "<leader>tT", function()
-  require("neotest").run.run(vim.fn.expand("%"))
-end, { desc = "Run file tests" })
-map("n", "<leader>to", function()
-  require("neotest").output.open({ enter = true })
-end, { desc = "Test output" })
-map("n", "<leader>ts", function()
-  require("neotest").summary.toggle()
-end, { desc = "Test summary" })
+-- Search
+map("n", "<leader>sd", "<cmd>CocList diagnostics<cr>", { silent = true, desc = "Diagnostics" })
+map("n", "<leader>sr", function()
+  require("fzf-lua").resume()
+end, { silent = true, desc = "Resume" })
+map("n", "<leader>sk", function()
+  require("fzf-lua").keymaps()
+end, { silent = true, desc = "Keymaps" })
+map("n", "<leader>ss", "<cmd>CocList outline<cr>", { silent = true, desc = "Symbols (document)" })
+map("n", "<leader>sS", "<cmd>CocList -I symbols<cr>", { silent = true, desc = "Symbols (workspace)" })
+map("n", "<leader>st", function()
+  require("fzf-lua").grep({
+    search = [[(TODO|FIXME|FIX)]],
+    no_esc = true,
+  })
+end, { silent = true, desc = "TODO/FIXME/FIX" })
+map("n", "<leader>sm", function()
+  require("fzf-lua").marks()
+end, { silent = true, desc = "Marks" })

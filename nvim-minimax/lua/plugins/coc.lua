@@ -3,6 +3,7 @@ return {
     "nemclide/coc.nvim",
     branch = "release",
     event = { "BufReadPre", "BufNewFile" },
+    vscode = false,
     init = function()
       -- Install desired extensions with :CocInstall
       vim.g.coc_global_extensions = {
@@ -12,6 +13,7 @@ return {
         "coc-snippets",
         "coc-sumneko-lua",
         "coc-typos",
+        "@hexuhua/coc-copilot",
       }
 
       -- Recommended by coc.nvim docs (diagnostics update)
@@ -34,5 +36,10 @@ return {
         end,
       })
     end,
+  },
+  {
+    "github/copilot.vim",
+    event = "VeryLazy",
+    vscode = false,
   },
 }
