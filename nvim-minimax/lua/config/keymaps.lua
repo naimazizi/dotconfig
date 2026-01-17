@@ -85,6 +85,10 @@ end
 map("n", "<S-h>", "<cmd>bprevious<cr>", { silent = true, desc = "Prev buffer" })
 map("n", "<S-l>", "<cmd>bnext<cr>", { silent = true, desc = "Next buffer" })
 
+-- list all buffers
+map("n", "<leader>bb", function()
+  require("mini.pick").builtin.buffers()
+end, { silent = false, desc = "List buffers" })
 -- New buffer
 map("n", "<leader>bn", "<cmd>enew<cr>", { silent = true, desc = "New buffer" })
 
@@ -314,7 +318,7 @@ end, { desc = "Debug Nearest" })
 map("n", "<leader>sd", function()
   require("mini.extra").pickers.diagnostic()
 end, { silent = true, desc = "Diagnostics" })
-map("n", "<leader>sr", function()
+map("n", "<leader>sR", function()
   require("mini.pick").resume()
 end, { silent = true, desc = "Resume" })
 map("n", "<leader>sk", function()
@@ -335,3 +339,27 @@ map("n", "<leader>sS", vim.lsp.buf.workspace_symbol, { silent = true, desc = "Sy
 
 -- Lazy manager
 map("n", "<leader>l", "<cmd>Lazy<cr>", { silent = true, desc = "Lazy" })
+
+-- Fold
+vim.keymap.set("n", "z1", "zM", { noremap = true, desc = "Fold 1" })
+vim.keymap.set("n", "z2", "zM1zr", { noremap = true, desc = "Fold 2" })
+vim.keymap.set("n", "z3", "zM2zr", { noremap = true, desc = "Fold 3" })
+vim.keymap.set("n", "z4", "zM3zr", { noremap = true, desc = "Fold 4" })
+
+-- mark
+vim.keymap.set("n", "dm", function()
+  local mark = vim.fn.input("Enter mark to delete: ")
+  if mark ~= "" then
+    vim.cmd("delmark " .. mark)
+  end
+end, { noremap = true, desc = "Delete specific mark" })
+
+-- neovide
+if vim.g.neovide then
+  vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
+  vim.keymap.set("v", "<D-c>", '"+y') -- Copy
+  vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
+  vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
+  vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
+  vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
+end

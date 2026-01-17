@@ -1,5 +1,24 @@
 local lsp = "pyrefly"
 
+vim.lsp.config(lsp, {})
+vim.lsp.config("ruff", {
+  on_attach = function(client, bufnr)
+    if client.name ~= "ruff" then
+      return
+    end
+
+    vim.keymap.set("n", "<leader>co", function()
+      vim.lsp.buf.code_action({
+        context = {
+          only = { "source.organizeImports" },
+          diagnostics = {},
+        },
+        apply = true,
+      })
+    end, { buffer = bufnr, silent = true, desc = "Organize Imports" })
+  end,
+})
+
 vim.lsp.enable({ lsp, "ruff" })
 
 return {
@@ -8,44 +27,12 @@ return {
     opts = { ensure_installed = { lsp, "ruff" } },
   },
   {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        -- ty = {
-        --   diagnosticMode = "workspace",
-        --   completions = {
-        --     autoImport = true,
-        --   },
-        -- },
-        pyrefly = {},
-        -- ruff = {
-        --   keys = {
-        --     {
-        --       "<leader>co",
-        --       LazyVim.lsp.action["source.organizeImports"],
-        --       desc = "Organize Imports",
-        --     },
-        --   },
-        -- },
-      },
-      setup = {
-        ["ruff"] = function()
-          -- Snacks.util.lsp.on({ name = "ruff" }, function(_, client)
-          --   ---@diagnostic disable-next-line: need-check-nil
-          --   -- Disable hover in favor of Pyright
-          --   client.server_capabilities.hoverProvider = false
-          -- end)
-        end,
-      },
-    },
-  },
-  {
     "linux-cultist/venv-selector.nvim",
     cmd = "VenvSelect",
     opts = {
       options = {
         notify_user_on_venv_activation = true,
-        picker = "fzf-lua",
+        picker = "mini-pick",
         statusline_func = {
           lualine = function()
             local venv_path = require("venv-selector").venv()
@@ -58,13 +45,12 @@ return {
               return ""
             end
 
-            local output = "󱔎 " .. venv_name .. " " -- Changes only the icon but you can change colors or use powerline symbols here.
+            local output = "󱔎 " .. venv_name .. " "
             return output
           end,
         },
       },
     },
-    --  Call config for Python files and load the cached venv automatically
     ft = "python",
     keys = { { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv", ft = "python" } },
   },

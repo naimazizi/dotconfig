@@ -95,7 +95,11 @@ return {
       require("mini.statusline").setup()
       require("mini.tabline").setup()
       require("mini.bufremove").setup()
-      require("mini.cmdline").setup()
+      require("mini.cmdline").setup({
+        autocomplete = { enable = false },
+        autocorrect = { enable = false },
+        autopeek = { enable = true },
+      })
       require("mini.pick").setup()
       require("mini.extra").setup()
 

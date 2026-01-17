@@ -1,3 +1,12 @@
+vim.lsp.config("bacon_ls", {
+  init_options = {
+    updateOnSave = true,
+    updateOnSaveWaitMillis = 1000,
+  },
+})
+
+vim.lsp.enable({ "bacon_ls" })
+
 return {
   -- LSP for Cargo.toml
   {
@@ -91,21 +100,13 @@ return {
       vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
     end,
   },
-  -- Correctly setup lspconfig for Rust 🚀
   {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        bacon_ls = {
-          enabled = "bacon-ls",
-          init_options = {
-            updateOnSave = true,
-            updateOnSaveWaitMillis = 1000,
-          },
-        },
-        rust_analyzer = { enabled = false },
-      },
-    },
+    "mason-org/mason.nvim",
+    optional = true,
+    opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
+      vim.list_extend(opts.ensure_installed, { "bacon-ls" })
+    end,
   },
   {
     "nvim-neotest/neotest",

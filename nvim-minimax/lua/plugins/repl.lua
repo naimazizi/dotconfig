@@ -1,6 +1,7 @@
 return {
   {
     "GCBallesteros/NotebookNavigator.nvim",
+    enabled = false,
     vscode = false,
     dependencies = {
       "nvim-mini/mini.comment",

@@ -24,6 +24,7 @@ return {
         { "<leader>o", group = "overseer" },
         -- additional plugin
         { "<localleader>r", group = "REPL", icon = "" },
+        { "<localleader>s", group = "Quarto", icon = "" },
         { "<localleader>c", group = "Curl (hurl)", icon = "󱂛" },
       },
     },

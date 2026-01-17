@@ -1,3 +1,6 @@
+vim.lsp.config("marksman", {})
+vim.lsp.enable({ "marksman" })
+
 return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
@@ -15,12 +18,7 @@ return {
     },
   },
   {
-    "neovim/nvim-lspconfig",
-    optional = true,
-    opts = {
-      servers = {
-        marksman = {},
-      },
-    },
+    "mason-org/mason.nvim",
+    opts = { ensure_installed = { "marksman" } },
   },
 }
