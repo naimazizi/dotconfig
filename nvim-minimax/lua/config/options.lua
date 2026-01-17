@@ -34,3 +34,8 @@ vim.g.sql_ft = { "sql", "mysql", "plsql" }
 vim.g.sh_ft = { "sh", "bash", "zsh", "ksh" }
 
 vim.g.copilot_no_tab_map = true
+
+vim.g.slime_target = "tmux"
+vim.g.slime_cell_delimiter = "# %%"
+vim.g.slime_bracketed_paste = 1
+

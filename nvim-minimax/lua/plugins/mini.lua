@@ -1,4 +1,4 @@
-function ai_buffer(ai_type)
+local function ai_buffer(ai_type)
   local start_line, end_line = 1, vim.fn.line("$")
   if ai_type == "i" then
     -- Skip first and last blank lines for `i` textobject
@@ -14,7 +14,18 @@ function ai_buffer(ai_type)
   return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
 end
 
-function ai_whichkey(opts)
+local censor_extmark_opts = function(buf_id, match, data)
+  local mask = string.rep("⎯", vim.api.nvim_win_get_width(0))
+  return {
+    virt_text = { { mask, "SignColumn" } },
+    virt_text_pos = "overlay",
+    virt_text_hide = true,
+    priority = 200,
+    right_gravity = false,
+  }
+end
+
+local function ai_whichkey(opts)
   local objects = {
     { " ", desc = "whitespace" },
     { '"', desc = '" string' },
@@ -87,6 +98,25 @@ return {
       require("mini.cmdline").setup()
       require("mini.pick").setup()
       require("mini.extra").setup()
+
+      local hipatterns = require("mini.hipatterns")
+      hipatterns.setup({
+        highlighters = {
+          fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+          hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+          todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+          note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+          hex_color = hipatterns.gen_highlighter.hex_color(),
+          cell_marker = {
+            pattern = function(bufid)
+              local cmt_str = vim.api.nvim_get_option_value("commentstring", { buf = bufid })
+              return "^" .. string.gsub(cmt_str, [[%s]], "") .. [[*%%.*]]
+            end,
+            group = "",
+            extmark_opts = censor_extmark_opts,
+          },
+        },
+      })
 
       require("mini.surround").setup({
         mappings = {
@@ -198,6 +228,38 @@ return {
           g = ai_buffer, -- buffer
           u = ai.gen_spec.function_call(), -- u for "Usage"
           U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
+          r = function(ai_mode, _, _) -- r for "cell"
+            local buf_nlines = vim.api.nvim_buf_line_count(0)
+            local cell_markers = {}
+            for line_no = 1, buf_nlines do
+              local line = vim.fn.getline(line_no)
+              if line:match("^# *%%%%") then
+                table.insert(cell_markers, line_no)
+              end
+            end
+            table.insert(cell_markers, 1, 0) -- Beginning
+            table.insert(cell_markers, #cell_markers + 1, buf_nlines + 1)
+
+            local regions = {}
+            for i = 1, #cell_markers - 1 do
+              local from_line, to_line
+              if ai_mode == "i" then
+                from_line = cell_markers[i] + 1
+                to_line = cell_markers[i + 1] - 1
+              else
+                from_line = math.max(cell_markers[i], 1)
+                to_line = cell_markers[i + 1] - 1
+              end
+              ---@diagnostic disable-next-line: param-type-mismatch
+              -- for `around cell` on empty line select previous cell
+              local to_line_len = vim.fn.getline(to_line):len() + 1
+              table.insert(regions, {
+                from = { line = from_line, col = 1 },
+                to = { line = to_line, col = to_line_len },
+              })
+            end
+            return regions
+          end,
         },
       }
       ai.setup(ai_opts)
