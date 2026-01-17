@@ -10,6 +10,8 @@ return {
       require("mini.tabline").setup()
       require("mini.bufremove").setup()
       require("mini.cmdline").setup()
+      require("mini.pick").setup()
+      require("mini.extra").setup()
 
       require("mini.surround").setup({
         mappings = {

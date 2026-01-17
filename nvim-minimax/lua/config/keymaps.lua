@@ -155,34 +155,38 @@ map("n", "]l", "<cmd>lnext<cr>", { silent = true, desc = "Next location" })
 -- Files / finders
 map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { silent = true, desc = "Explorer" })
 
--- LazyVim-ish (fzf-lua)
+-- Files / search (mini.pick)
 map("n", "<leader>ff", function()
-  require("fzf-lua").files()
+  require("mini.pick").builtin.files()
 end, { silent = true, desc = "Find files" })
+
 map("n", "<leader>fF", function()
-  require("fzf-lua").files({ cwd = vim.fn.expand("%:p:h") })
+  require("mini.pick").builtin.files({ source = { cwd = vim.fn.expand("%:p:h") } })
 end, { silent = true, desc = "Find files (cwd)" })
+
 map("n", "<leader>fg", function()
-  require("fzf-lua").live_grep()
+  require("mini.pick").builtin.grep_live()
 end, { silent = true, desc = "Grep" })
 
--- Search (LazyVim-ish)
 map("n", "<leader>/", function()
-  require("fzf-lua").live_grep({ cwd = vim.fn.getcwd() })
+  require("mini.pick").builtin.grep_live({ source = { cwd = vim.fn.getcwd() } })
 end, { silent = true, desc = "Grep (cwd)" })
 
 -- Search/Replace (grug-far)
 map("n", "<leader>sr", function()
   require("grug-far").open()
 end, { silent = true, desc = "Search/Replace (grug-far)" })
+
 map("n", "<leader>fb", function()
-  require("fzf-lua").buffers()
+  require("mini.pick").builtin.buffers()
 end, { silent = true, desc = "Buffers" })
+
 map("n", "<leader>fr", function()
-  require("fzf-lua").oldfiles()
+  require("mini.extra").pickers.oldfiles()
 end, { silent = true, desc = "Recent" })
+
 map("n", "<leader>fh", function()
-  require("fzf-lua").help_tags()
+  require("mini.pick").builtin.help()
 end, { silent = true, desc = "Help" })
 
 -- Alternative fast file picker (fff.nvim)
@@ -191,6 +195,29 @@ map("n", "<leader><space>", function()
 end, { silent = true, desc = "Find files (fff)" })
 
 -- Git (gitsigns)
+map("n", "<leader>gg", function()
+  if vim.fn.executable("gitui") == 0 then
+    vim.notify("gitui not found in PATH")
+    return
+  end
+
+  local ok, term = pcall(require, "toggleterm.terminal")
+  if not ok then
+    vim.notify("toggleterm.nvim not available")
+    return
+  end
+
+  local Terminal = term.Terminal
+  local gitui = Terminal:new({
+    cmd = "gitui",
+    direction = "float",
+    hidden = true,
+    close_on_exit = true,
+  })
+
+  gitui:toggle()
+end, { silent = true, desc = "GitUI (toggleterm)" })
+
 map("n", "]h", function()
   require("gitsigns").next_hunk()
 end, { silent = true, desc = "Next hunk" })
@@ -381,19 +408,20 @@ end, { desc = "Debug Nearest" })
 -- Search
 map("n", "<leader>sd", "<cmd>CocList diagnostics<cr>", { silent = true, desc = "Diagnostics" })
 map("n", "<leader>sr", function()
-  require("fzf-lua").resume()
+  require("mini.pick").resume()
 end, { silent = true, desc = "Resume" })
 map("n", "<leader>sk", function()
-  require("fzf-lua").keymaps()
+  require("mini.extra").pickers.keymaps()
 end, { silent = true, desc = "Keymaps" })
-map("n", "<leader>ss", "<cmd>CocList outline<cr>", { silent = true, desc = "Symbols (document)" })
-map("n", "<leader>sS", "<cmd>CocList -I symbols<cr>", { silent = true, desc = "Symbols (workspace)" })
 map("n", "<leader>st", function()
-  require("fzf-lua").grep({
-    search = [[(TODO|FIXME|FIX)]],
-    no_esc = true,
+  require("mini.pick").builtin.grep({
+    pattern = [[(TODO|FIXME|FIX)]],
   })
 end, { silent = true, desc = "TODO/FIXME/FIX" })
 map("n", "<leader>sm", function()
-  require("fzf-lua").marks()
+  require("mini.extra").pickers.marks()
 end, { silent = true, desc = "Marks" })
+
+-- Search symbols (document/workspace) based on COC
+map("n", "<leader>ss", "<cmd>CocList outline<cr>", { silent = true, desc = "Symbols (document)" })
+map("n", "<leader>sS", "<cmd>CocList -I symbols<cr>", { silent = true, desc = "Symbols (workspace)" })
