@@ -84,7 +84,7 @@ return {
           },
           {
             title = "Terminal",
-            ft = "toggleterm"
+            ft = "toggleterm",
           },
           {
             title = "DB Query Result",
@@ -140,7 +140,7 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     vscode = false,
-    event = "BufRead",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       current_line_blame = true,
       current_line_blame_opts = {

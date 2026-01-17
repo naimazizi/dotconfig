@@ -190,8 +190,38 @@ map("n", "<leader><space>", function()
   require("fff").find_files()
 end, { silent = true, desc = "Find files (fff)" })
 
--- Git (mini)
-map("n", "<leader>go", "<cmd>lua MiniDiff.toggle_overlay()<cr>", { silent = true, desc = "Git overlay" })
+-- Git (gitsigns)
+map("n", "]h", function()
+  require("gitsigns").next_hunk()
+end, { silent = true, desc = "Next hunk" })
+
+map("n", "[h", function()
+  require("gitsigns").prev_hunk()
+end, { silent = true, desc = "Prev hunk" })
+
+map({ "n", "v" }, "<leader>gs", function()
+  require("gitsigns").stage_hunk()
+end, { silent = true, desc = "Stage hunk" })
+
+map({ "n", "v" }, "<leader>gr", function()
+  require("gitsigns").reset_hunk()
+end, { silent = true, desc = "Reset hunk" })
+
+map("n", "<leader>gS", function()
+  require("gitsigns").stage_buffer()
+end, { silent = true, desc = "Stage buffer" })
+
+map("n", "<leader>gR", function()
+  require("gitsigns").reset_buffer()
+end, { silent = true, desc = "Reset buffer" })
+
+map("n", "<leader>gp", function()
+  require("gitsigns").preview_hunk()
+end, { silent = true, desc = "Preview hunk" })
+
+map("n", "<leader>gb", function()
+  require("gitsigns").toggle_current_line_blame()
+end, { silent = true, desc = "Toggle line blame" })
 
 -- Coc (as close to LazyVim bindings as possible)
 map("n", "[d", "<Plug>(coc-diagnostic-prev)", { silent = true, desc = "Prev diagnostic (coc)" })

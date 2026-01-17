@@ -104,8 +104,6 @@ return {
       })
       require("mini.ai").setup()
 
-      require("mini.diff").setup()
-
       require("mini.sessions").setup({
         autoread = true,
         autowrite = true,
