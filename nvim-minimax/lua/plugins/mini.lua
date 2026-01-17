@@ -99,6 +99,9 @@ return {
       require("mini.pick").setup()
       require("mini.extra").setup()
 
+      require("mini.icons").setup()
+      require("mini.icons").mock_nvim_web_devicons()
+
       local hipatterns = require("mini.hipatterns")
       hipatterns.setup({
         highlighters = {
