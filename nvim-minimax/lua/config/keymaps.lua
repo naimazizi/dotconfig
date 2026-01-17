@@ -425,3 +425,6 @@ end, { silent = true, desc = "Marks" })
 -- Search symbols (document/workspace) based on COC
 map("n", "<leader>ss", "<cmd>CocList outline<cr>", { silent = true, desc = "Symbols (document)" })
 map("n", "<leader>sS", "<cmd>CocList -I symbols<cr>", { silent = true, desc = "Symbols (workspace)" })
+
+-- Lazy manager
+map("n", "<leader>l", "<cmd>Lazy<cr>", { silent = true, desc = "Lazy" })

@@ -1,3 +1,11 @@
+local dap_icon = {
+  Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
+  Breakpoint = " ",
+  BreakpointCondition = " ",
+  BreakpointRejected = { " ", "DiagnosticError" },
+  LogPoint = ".>",
+}
+
 return {
   {
     "mfussenegger/nvim-dap",
@@ -17,6 +25,15 @@ return {
       require("overseer").enable_dap()
 
       vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+
+      for name, sign in pairs(dap_icon) do
+        sign = type(sign) == "table" and sign or { sign }
+        vim.fn.sign_define(
+          "Dap" .. name,
+          { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
+        )
+      end
+
       local vscode = require("dap.ext.vscode")
       local json = require("plenary.json")
       vscode.json_decode = function(str)

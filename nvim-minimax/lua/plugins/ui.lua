@@ -85,7 +85,7 @@ return {
           {
             title = "Terminal",
             ft = "toggleterm",
-filter = function(_buf, win)
+            filter = function(_, win)
               return vim.api.nvim_win_get_config(win).relative == ""
             end,
           },

@@ -1,19 +1,23 @@
 return {
   {
-    "nemclide/coc.nvim",
+    "neoclide/coc.nvim",
     branch = "release",
     event = { "BufReadPre", "BufNewFile" },
     vscode = false,
     init = function()
       -- Install desired extensions with :CocInstall
       vim.g.coc_global_extensions = {
-        "@yaegassy/coc-pyrefly",
         "coc-json",
         "coc-yaml",
+        "coc-toml",
         "coc-snippets",
         "coc-sumneko-lua",
         "coc-typos",
         "@hexuhua/coc-copilot",
+        "@yaegassy/coc-marksman",
+        "@yaegassy/coc-ruff",
+        "@yaegassy/coc-pyrefly",
+        "coc-lightbulb",
       }
 
       -- Recommended by coc.nvim docs (diagnostics update)
