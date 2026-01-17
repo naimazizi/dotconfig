@@ -48,7 +48,7 @@ map("n", "<leader>qd", function()
     vim.notify("No active session")
     return
   end
-  require("mini.sessions").delete(name, { force = true})
+  require("mini.sessions").delete(name, { force = true })
 end, { silent = true, desc = "Delete current session" })
 
 -- Buffers (LazyVim-ish)
@@ -144,7 +144,7 @@ map("n", "]t", function()
 end, { silent = true, desc = "Next todo comment" })
 
 map("n", "<leader>cd", vim.diagnostic.open_float, { silent = true, desc = "Line diagnostics" })
-map("n", "<leader>cl", "<cmd>CocList diagnostics<cr>", { silent = true, desc = "Diagnostics (CocList)" })
+map("n", "<leader>cl", "<cmd>LspInfo<cr>", { silent = true, desc = "Lsp Info" })
 map("n", "<leader>cq", vim.diagnostic.setloclist, { silent = true, desc = "Quickfix diagnostics" })
 
 -- Quickfix / location list (LazyVim-ish)
@@ -252,119 +252,22 @@ map("n", "<leader>gb", function()
   require("gitsigns").toggle_current_line_blame()
 end, { silent = true, desc = "Toggle line blame" })
 
--- Coc (as close to LazyVim bindings as possible)
-map("n", "[d", "<Plug>(coc-diagnostic-prev)", { silent = true, desc = "Prev diagnostic (coc)" })
-map("n", "]d", "<Plug>(coc-diagnostic-next)", { silent = true, desc = "Next diagnostic (coc)" })
+-- Workspace symbols / document symbols
+map("n", "<leader>ss", vim.lsp.buf.document_symbol, { silent = true, desc = "Symbols (document)" })
+map("n", "<leader>sS", vim.lsp.buf.workspace_symbol, { silent = true, desc = "Symbols (workspace)" })
 
--- GoTo code navigation (LazyVim defaults)
-map("n", "gd", "<Plug>(coc-definition)", { silent = true, desc = "Goto definition" })
-map("n", "gr", "<Plug>(coc-references)", { silent = true, desc = "References" })
-
--- Next/Prev reference / section
--- Order: CocNext/CocPrev -> built-in [[/]]
-map("n", "]]", function()
-  local ok = pcall(vim.cmd, "silent CocNext")
+-- Selection range isn't always available; fall back safely
+map({ "n", "x" }, "<leader>cs", function()
+  local ok = pcall(vim.lsp.buf.selection_range)
   if not ok then
-    vim.cmd("normal! ]]")
+    vim.notify("Selection range not supported", vim.log.levels.WARN)
   end
-end, { silent = true, desc = "Next reference/section" })
+end, { silent = true, desc = "Selection range" })
 
-map("n", "[[", function()
-  local ok = pcall(vim.cmd, "silent CocPrev")
-  if not ok then
-    vim.cmd("normal! [[")
-  end
-end, { silent = true, desc = "Prev reference/section" })
-map("n", "gi", "<Plug>(coc-implementation)", { silent = true, desc = "Goto implementation" })
-map("n", "gy", "<Plug>(coc-type-definition)", { silent = true, desc = "Goto type definition" })
-
--- Hover docs (LazyVim: K)
-function _G.show_docs()
-  local cw = vim.fn.expand("<cword>")
-  if vim.fn.index({ "vim", "help" }, vim.bo.filetype) >= 0 then
-    vim.api.nvim_command("h " .. cw)
-  elseif vim.api.nvim_eval("coc#rpc#ready()") == 1 then
-    vim.fn.CocActionAsync("doHover")
-  else
-    vim.api.nvim_command("!" .. vim.o.keywordprg .. " " .. cw)
-  end
-end
-map("n", "K", "<cmd>lua _G.show_docs()<cr>", { silent = true, desc = "Hover" })
-
--- LazyVim-style leader bindings
-map("n", "<leader>cr", "<Plug>(coc-rename)", { silent = true, desc = "Rename" })
-map("n", "<leader>ca", "<Plug>(coc-codeaction-cursor)", { silent = true, nowait = true, desc = "Code action" })
-map("x", "<leader>ca", "<Plug>(coc-codeaction-selected)", { silent = true, nowait = true, desc = "Code action" })
-map("n", "<leader>cA", "<Plug>(coc-codeaction-source)", { silent = true, nowait = true, desc = "Source action" })
-
--- Quickfix / preferred fixes (LazyVim-ish)
-map("n", "<leader>cF", "<Plug>(coc-fix-current)", { silent = true, nowait = true, desc = "Fix current" })
-
--- Refactor
-map("n", "<leader>cR", "<Plug>(coc-codeaction-refactor)", { silent = true, desc = "Refactor" })
-map("x", "<leader>cR", "<Plug>(coc-codeaction-refactor-selected)", { silent = true, desc = "Refactor selection" })
-
--- CodeLens
-map("n", "<leader>cl", "<Plug>(coc-codelens-action)", { silent = true, nowait = true, desc = "CodeLens" })
-
--- Coc completion/snippets
-function _G.check_back_space()
-  local col = vim.fn.col(".") - 1
-  return col == 0 or vim.fn.getline("."):sub(col, col):match("%s") ~= nil
-end
-
-local coc_expr_opts = { silent = true, noremap = true, expr = true, replace_keycodes = false }
-map(
-  "i",
-  "<TAB>",
-  'coc#pum#visible() ? coc#pum#confirm() : v:lua.check_back_space() ? "<Tab>" : coc#refresh()',
-  coc_expr_opts
-)
-map("i", "<S-Tab>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], coc_expr_opts)
-map("i", "<C-j>", "<Plug>(coc-snippets-expand-jump)", { silent = true, desc = "Snippet expand/jump" })
-map("i", "<C-k>", "<Plug>(coc-snippets-expand-jump-backward)", { silent = true, desc = "Snippet jump backward" })
-map("i", "<C-Space>", "coc#refresh()", { silent = true, expr = true, desc = "Completion" })
-
--- Map function/class textobjects
-local coc_nowait = { silent = true, nowait = true }
-map("x", "if", "<Plug>(coc-funcobj-i)", coc_nowait)
-map("o", "if", "<Plug>(coc-funcobj-i)", coc_nowait)
-map("x", "af", "<Plug>(coc-funcobj-a)", coc_nowait)
-map("o", "af", "<Plug>(coc-funcobj-a)", coc_nowait)
-map("x", "ic", "<Plug>(coc-classobj-i)", coc_nowait)
-map("o", "ic", "<Plug>(coc-classobj-i)", coc_nowait)
-map("x", "ac", "<Plug>(coc-classobj-a)", coc_nowait)
-map("o", "ac", "<Plug>(coc-classobj-a)", coc_nowait)
-
--- Scroll Coc floating windows
-local coc_float_opts = { silent = true, nowait = true, expr = true }
-map("n", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', coc_float_opts)
-map("n", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', coc_float_opts)
-map("i", "<C-f>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', coc_float_opts)
-map("i", "<C-b>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', coc_float_opts)
-map("v", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', coc_float_opts)
-map("v", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', coc_float_opts)
-
--- Selection range (keep your save binding on <C-s>)
-map("n", "<leader>cs", "<Plug>(coc-range-select)", { silent = true, desc = "Selection range" })
-map("x", "<leader>cs", "<Plug>(coc-range-select)", { silent = true, desc = "Selection range" })
-
--- Commands
-vim.api.nvim_create_user_command("Fold", "call CocAction('fold', <f-args>)", { nargs = "?" })
-vim.api.nvim_create_user_command("OR", "call CocActionAsync('runCommand', 'editor.action.organizeImport')", {})
-
--- Statusline integration
-vim.opt.statusline:prepend("%{coc#status()}%{get(b:,'coc_current_function','')}")
-
--- CocList (mapped to LazyVim's <leader>x* where sensible)
-map("n", "<leader>xx", ":<C-u>CocList diagnostics<cr>", { silent = true, nowait = true, desc = "Diagnostics" })
-map("n", "<leader>ce", ":<C-u>CocList extensions<cr>", { silent = true, nowait = true, desc = "Extensions" })
-map("n", "<leader>cc", ":<C-u>CocList commands<cr>", { silent = true, nowait = true, desc = "Coc commands" })
-map("n", "<leader>co", ":<C-u>CocList outline<cr>", { silent = true, nowait = true, desc = "Outline" })
-map("n", "<leader>cS", ":<C-u>CocList -I symbols<cr>", { silent = true, nowait = true, desc = "Workspace symbols" })
-map("n", "<leader>cj", ":<C-u>CocNext<cr>", { silent = true, nowait = true, desc = "Coc next" })
-map("n", "<leader>ck", ":<C-u>CocPrev<cr>", { silent = true, nowait = true, desc = "Coc prev" })
-map("n", "<leader>cp", ":<C-u>CocListResume<cr>", { silent = true, nowait = true, desc = "Coc resume" })
+-- Diagnostics picker (mini.pick)
+map("n", "<leader>xx", function()
+  require("mini.extra").pickers.diagnostic()
+end, { silent = true, desc = "Diagnostics" })
 
 -- Tools
 map("n", "<leader>cm", "<cmd>Mason<cr>", { silent = true, desc = "Mason" })
@@ -408,7 +311,9 @@ map("n", "<leader>td", function()
 end, { desc = "Debug Nearest" })
 
 -- Search
-map("n", "<leader>sd", "<cmd>CocList diagnostics<cr>", { silent = true, desc = "Diagnostics" })
+map("n", "<leader>sd", function()
+  require("mini.extra").pickers.diagnostic()
+end, { silent = true, desc = "Diagnostics" })
 map("n", "<leader>sr", function()
   require("mini.pick").resume()
 end, { silent = true, desc = "Resume" })
@@ -424,9 +329,9 @@ map("n", "<leader>sm", function()
   require("mini.extra").pickers.marks()
 end, { silent = true, desc = "Marks" })
 
--- Search symbols (document/workspace) based on COC
-map("n", "<leader>ss", "<cmd>CocList outline<cr>", { silent = true, desc = "Symbols (document)" })
-map("n", "<leader>sS", "<cmd>CocList -I symbols<cr>", { silent = true, desc = "Symbols (workspace)" })
+-- Search symbols (document/workspace)
+map("n", "<leader>ss", vim.lsp.buf.document_symbol, { silent = true, desc = "Symbols (document)" })
+map("n", "<leader>sS", vim.lsp.buf.workspace_symbol, { silent = true, desc = "Symbols (workspace)" })
 
 -- Lazy manager
 map("n", "<leader>l", "<cmd>Lazy<cr>", { silent = true, desc = "Lazy" })
