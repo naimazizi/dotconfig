@@ -1,33 +1,14 @@
-return {
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        tinymist = {
-          keys = {
-            {
-              "<leader>cP",
-              function()
-                local buf_name = vim.api.nvim_buf_get_name(0)
-                local file_name = vim.fn.fnamemodify(buf_name, ":t")
-                LazyVim.lsp.execute({
-                  command = "tinymist.pinMain",
-                  arguments = { buf_name },
-                })
-                LazyVim.info("Tinymist: Pinned " .. file_name)
-              end,
-              desc = "Pin main file",
-            },
-          },
-          single_file_support = true, -- Fixes LSP attachment in non-Git directories
-          settings = {
-            formatterMode = "typstyle",
-            semanticTokens = "enable",
-          },
-        },
-      },
-    },
+vim.lsp.config("tinymist", {
+  single_file_support = true, -- Fixes LSP attachment in non-Git directories
+  settings = {
+    formatterMode = "typstyle",
+    semanticTokens = "enable",
   },
+})
+
+vim.lsp.enable({ "tinymist" })
+
+return {
   {
     "chomosuke/typst-preview.nvim",
     vscode = false,
@@ -53,14 +34,6 @@ return {
       ensure_installed = {
         "tinymist",
         "typstyle",
-      },
-    },
-  },
-  {
-    "folke/ts-comments.nvim",
-    opts = {
-      lang = {
-        typst = { "// %s", "/* %s */" },
       },
     },
   },

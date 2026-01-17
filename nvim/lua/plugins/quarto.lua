@@ -2,6 +2,7 @@ return {
   { -- requires plugins in lua/plugins/treesitter.lua and lua/plugins/lsp.lua
     -- for complete functionality (language features)
     "quarto-dev/quarto-nvim",
+    cmd = { "QuartoPreview", "QuartoClosePreview", "QuartoRender", "QuartoActivate" },
     vscode = false,
     config = function()
       require("quarto").setup({
@@ -33,12 +34,7 @@ return {
       vim.keymap.set("n", "<localleader>sf", function()
         runner.run_all(true)
       end, { desc = "run all cells of all languages", silent = true })
-
-      require("which-key").add({
-        { "<localleader>s", desc = "Quarto (REPL)", icon = " " },
-      })
     end,
-
     dependencies = {
       "jmbuhr/otter.nvim",
       "nvim-treesitter/nvim-treesitter",

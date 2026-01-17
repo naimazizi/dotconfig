@@ -1,5 +1,24 @@
 local lsp = "pyrefly"
 
+vim.lsp.config(lsp, {})
+vim.lsp.config("ruff", {
+  on_attach = function(client, bufnr)
+    if client.name ~= "ruff" then
+      return
+    end
+
+    vim.keymap.set("n", "<leader>co", function()
+      vim.lsp.buf.code_action({
+        context = {
+          only = { "source.organizeImports" },
+          diagnostics = {},
+        },
+        apply = true,
+      })
+    end, { buffer = bufnr, silent = true, desc = "Organize Imports" })
+  end,
+})
+
 vim.lsp.enable({ lsp, "ruff" })
 
 return {
@@ -8,79 +27,12 @@ return {
     opts = { ensure_installed = { lsp, "ruff" } },
   },
   {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        -- ty = {
-        --   diagnosticMode = "workspace",
-        --   completions = {
-        --     autoImport = true,
-        --   },
-        -- },
-        pyrefly = {},
-        ruff = {
-          keys = {
-            {
-              "<leader>co",
-              LazyVim.lsp.action["source.organizeImports"],
-              desc = "Organize Imports",
-            },
-          },
-        },
-      },
-      setup = {
-        ["ruff"] = function()
-          Snacks.util.lsp.on({ name = "ruff" }, function(_, client)
-            ---@diagnostic disable-next-line: need-check-nil
-            -- Disable hover in favor of Pyright
-            client.server_capabilities.hoverProvider = false
-          end)
-        end,
-      },
-    },
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "ninja", "rst" } },
-  },
-  {
-    "nvim-neotest/neotest",
-    optional = true,
-    dependencies = {
-      "nvim-neotest/neotest-python",
-    },
-    opts = {
-      adapters = {
-        ["neotest-python"] = {
-          -- Here you can specify the settings for the adapter, i.e.
-          -- runner = "pytest",
-          -- python = ".venv/bin/python",
-        },
-      },
-    },
-  },
-  {
-    "mfussenegger/nvim-dap",
-    optional = true,
-    dependencies = {
-      "mfussenegger/nvim-dap-python",
-      -- stylua: ignore
-      keys = {
-        { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method", ft = "python" },
-        { "<leader>dPc", function() require('dap-python').test_class() end, desc = "Debug Class", ft = "python" },
-      },
-      config = function()
-        require("dap-python").setup("debugpy-adapter")
-      end,
-    },
-  },
-  {
     "linux-cultist/venv-selector.nvim",
     cmd = "VenvSelect",
     opts = {
       options = {
         notify_user_on_venv_activation = true,
-        picker = "fzf-lua",
+        picker = "mini-pick",
         statusline_func = {
           lualine = function()
             local venv_path = require("venv-selector").venv()
@@ -93,24 +45,13 @@ return {
               return ""
             end
 
-            local output = "󱔎 " .. venv_name .. " " -- Changes only the icon but you can change colors or use powerline symbols here.
+            local output = "󱔎 " .. venv_name .. " "
             return output
           end,
         },
       },
     },
-    --  Call config for Python files and load the cached venv automatically
     ft = "python",
     keys = { { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv", ft = "python" } },
-  },
-  -- Don't mess up DAP adapters provided by nvim-dap-python
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    optional = true,
-    opts = {
-      handlers = {
-        python = function() end,
-      },
-    },
   },
 }

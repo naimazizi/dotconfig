@@ -45,6 +45,10 @@ return {
         callback = function(ev)
           local ft = ev.match
 
+          if ft == "quarto" then
+            vim.treesitter.language.register("markdown", { "quarto", "rmd" })
+          end
+
           local function enabled(feat)
             local f = opts[feat] or {}
             return f.enable ~= false

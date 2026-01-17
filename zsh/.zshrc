@@ -35,7 +35,6 @@ alias ll="lsd -ltr"
 alias find='fd'
 alias gg='gitui'
 alias vv='nvim'
-alias vx='NVIM_APPNAME=nvim-minimax nvim'
 alias nvim_update='nvim --headless "+Lazy! sync" +qa'
 alias neovide_remote="neovide --neovim-bin ~/.config/nvim-remote.sh"
 alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'

@@ -47,7 +47,6 @@ return {
         },
       },
       "mayromr/blink-cmp-dap",
-      "kristijanhusak/vim-dadbod-completion",
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -133,7 +132,6 @@ return {
           "buffer",
           "references",
           "copilot",
-          "dadbod",
         },
         per_filetype = {
           ["dap-repl"] = { "dap" },
@@ -153,7 +151,6 @@ return {
             name = "dap",
             module = "blink-cmp-dap",
           },
-          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
       },
 

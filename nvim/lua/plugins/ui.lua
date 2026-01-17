@@ -1,73 +1,5 @@
 return {
   {
-    "akinsho/bufferline.nvim",
-    vscode = false,
-    opts = {
-      options = {
-        separator_style = "thick",
-        diagnostic = "nvim_lsp",
-        indicator = {
-          icon = "▎", -- this should be omitted if indicator style is not 'icon'
-          style = "icon",
-        },
-        show_buffer_close_icons = false,
-      },
-    },
-  },
-  {
-    "rachartier/tiny-inline-diagnostic.nvim",
-    event = "LspAttach",
-    vscode = false,
-    config = function()
-      require("tiny-inline-diagnostic").setup({
-        preset = "modern",
-        transparent_bg = false,
-        transparent_cursorline = true,
-        options = {
-          show_source = {
-            enabled = false,
-            if_many = true,
-          },
-          set_arrow_to_diag_color = true,
-          throttle = 20,
-          softwrap = 30,
-          multilines = {
-            enabled = true,
-            trim_whitespaces = true,
-            tabstop = 4,
-          },
-          -- Display all diagnostic messages on the cursor line, not just those under cursor
-          show_all_diags_on_cursorline = false,
-          -- Enable diagnostics in Insert mode
-          -- If enabled, consider setting throttle to 0 to avoid visual artifacts
-          enable_on_insert = false,
-          -- Enable diagnostics in Select mode (e.g., when auto-completing with Blink)
-          enable_on_select = false,
-          -- Configuration for breaking long messages into separate lines
-          break_line = {
-            enabled = true,
-            after = 30,
-          },
-          format = nil,
-          virt_texts = {
-            priority = 2048,
-          },
-        },
-        -- List of filetypes to disable the plugin for
-        disabled_ft = {},
-      })
-      vim.diagnostic.config({ virtual_text = false }) -- Disable default virtual text
-    end,
-  },
-  {
-    "nacro90/numb.nvim",
-    vscode = false,
-    event = "BufRead",
-    config = function()
-      require("numb").setup()
-    end,
-  },
-  {
     "folke/edgy.nvim",
     event = "VeryLazy",
     vscode = false,
@@ -147,15 +79,15 @@ return {
             end,
           },
           {
-            title = "Snacks Terminal",
-            ft = "snacks_terminal",
-            filter = function(_buf, win)
-              return vim.api.nvim_win_get_config(win).relative == ""
-            end,
-          },
-          {
             title = "Overseer Output",
             ft = "OverseerOutput",
+          },
+          {
+            title = "Terminal",
+            ft = "toggleterm",
+            filter = function(_, win)
+              return vim.api.nvim_win_get_config(win).relative == ""
+            end,
           },
           {
             title = "DB Query Result",
@@ -165,11 +97,7 @@ return {
         left = {
           {
             title = "Explorer",
-            ft = "neo-tree",
-            filter = function(buf)
-              return vim.b[buf].neo_tree_source == "filesystem"
-            end,
-            open = "Neotree",
+            ft = "NvimTree",
             size = { height = 0.4 },
           },
         },
@@ -190,72 +118,10 @@ return {
             size = { height = 0.4 },
           },
           { title = "Neotest Summary", ft = "neotest-summary" },
-          { title = "REPL", ft = "iron" },
-          {
-            title = "Database",
-            ft = "dbui",
-            width = 0.3,
-            open = function()
-              vim.cmd("DBUI")
-            end,
-          },
         },
       }
       require("edgy").setup(opts)
-
-      -- trouble
-      for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
-        opts[pos] = opts[pos] or {}
-        table.insert(opts[pos], {
-          ft = "trouble",
-          filter = function(_buf, win)
-            return vim.w[win].trouble
-              and vim.w[win].trouble.position == pos
-              and vim.w[win].trouble.type == "split"
-              and vim.w[win].trouble.relative == "editor"
-              and not vim.w[win].trouble_preview
-          end,
-        })
-      end
-
-      -- snacks terminal
-      for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
-        opts[pos] = opts[pos] or {}
-        table.insert(opts[pos], {
-          ft = "snacks_terminal",
-          size = { height = 0.4 },
-          title = "%{b:snacks_terminal.id}: %{b:term_title}",
-          filter = function(_buf, win)
-            return vim.w[win].snacks_win
-              and vim.w[win].snacks_win.position == pos
-              and vim.w[win].snacks_win.relative == "editor"
-              and not vim.w[win].trouble_preview
-          end,
-        })
-      end
       return opts
-    end,
-  },
-  {
-    "nvim-lualine/lualine.nvim",
-    vscode = false,
-    optional = true,
-    event = "VeryLazy",
-    opts = function(_, opts)
-      table.insert(opts.sections.lualine_x, { require("recorder").displaySlots })
-      table.insert(opts.sections.lualine_x, { "overseer" })
-      table.insert(opts.sections.lualine_x, { "venv-selector" })
-      table.insert(opts.sections.lualine_x, {
-        function()
-          return "  " .. require("dap").status()
-        end,
-        cond = function()
-          return package.loaded["dap"] and require("dap").status() ~= ""
-        end,
-        color = function()
-          return { fg = Snacks.util.color("Debug") }
-        end,
-      })
     end,
   },
   {
@@ -275,67 +141,14 @@ return {
     opts = { outline_window = { position = "left", auto_jump = true, wrap = false } },
   },
   {
-    "folke/trouble.nvim",
-    optional = true,
-    keys = {
-      { "<leader>cs", false },
-    },
-    opts = {
-      auto_preview = false,
-    },
-  },
-  {
-    "akinsho/bufferline.nvim",
-    optional = true,
-    opts = function()
-      local Offset = require("bufferline.offset")
-      if not Offset.edgy then
-        local get = Offset.get
-        Offset.get = function()
-          if package.loaded.edgy then
-            local old_offset = get()
-            local layout = require("edgy.config").layout
-            local ret = { left = "", left_size = 0, right = "", right_size = 0 }
-            for _, pos in ipairs({ "left", "right" }) do
-              local sb = layout[pos]
-              ---@diagnostic disable-next-line: param-type-not-match, param-type-mismatch
-              local title = " Sidebar" .. string.rep(" ", sb.bounds.width - 8)
-              if sb and #sb.wins > 0 then
-                ret[pos] = old_offset[pos .. "_size"] > 0 and old_offset[pos]
-                  or pos == "left" and ("%#Bold#" .. title .. "%*" .. "%#BufferLineOffsetSeparator#│%*")
-                  or pos == "right" and ("%#BufferLineOffsetSeparator#│%*" .. "%#Bold#" .. title .. "%*")
-                ret[pos .. "_size"] = old_offset[pos .. "_size"] > 0 and old_offset[pos .. "_size"] or sb.bounds.width
-              end
-            end
-            ret.total_size = ret.left_size + ret.right_size
-            ---@diagnostic disable-next-line: unnecessary-if
-            if ret.total_size > 0 then
-              return ret
-            end
-          end
-          return get()
-        end
-        Offset.edgy = true
-      end
-    end,
-  },
-  {
     "lewis6991/gitsigns.nvim",
     vscode = false,
-    event = "BufRead",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       current_line_blame = true,
       current_line_blame_opts = {
         virt_text_pos = "right_align",
         delay = 500,
-      },
-    },
-  },
-  {
-    "folke/noice.nvim",
-    opts = {
-      lsp = {
-        hover = { silent = true },
       },
     },
   },

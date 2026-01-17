@@ -1,3 +1,5 @@
+vim.lsp.enable("copilot")
+
 return {
   {
     "sudo-tee/opencode.nvim",
@@ -6,7 +8,7 @@ return {
     cmd = "Opencode",
     config = function()
       require("opencode").setup({
-        preferred_picker = "fzf", -- 'telescope', 'fzf', 'mini.pick', 'snacks', 'select', if nil, it will use the best available picker. Note mini.pick does not support multiple selections
+        preferred_picker = "mini.pick", -- 'telescope', 'fzf', 'mini.pick', 'snacks', 'select', if nil, it will use the best available picker. Note mini.pick does not support multiple selections
         preferred_completion = "blink",
         default_global_keymaps = true,
         default_mode = "build",
@@ -17,7 +19,6 @@ return {
       "nvim-lua/plenary.nvim",
       "MeanderingProgrammer/render-markdown.nvim",
       "saghen/blink.cmp",
-      "ibhagwan/fzf-lua",
     },
   },
 }

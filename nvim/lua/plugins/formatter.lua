@@ -3,24 +3,18 @@ return {
     "stevearc/conform.nvim",
     vscode = false,
     opts = function(_, opts)
-      --Custom formatters
-      opts.formatters.dawet_lint = {
-        command = "dawet",
-        args = function()
-          return { "lint", "-m", vim.fn.expand("%:t:r") }
-        end,
-        cwd = require("conform.util").root_file({ "dawet_project.yml" }),
-        require_cwd = true,
-      }
+      opts.formatters_by_ft = opts.formatters_by_ft or {}
+      opts.formatters = opts.formatters or {}
 
       -- Markdown formatters
-      for _, ft in ipairs(vim.g.md_ft) do
+      for _, ft in ipairs(vim.g.md_ft or {}) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
         table.insert(opts.formatters_by_ft[ft], "markdownlint-cli2")
       end
 
       -- Typst formatters
-      opts.formatters_by_ft["typst"] = { "typstyle", lsp_format = "prefer" }
+      -- Conform expects only formatter names in this list.
+      opts.formatters_by_ft["typst"] = { "typstyle" }
 
       -- Python formatters
       for _, ft in ipairs({ "python" }) do
@@ -29,7 +23,7 @@ return {
       end
 
       -- SQL formatters
-      for _, ft in ipairs(vim.g.sql_ft) do
+      for _, ft in ipairs(vim.g.sql_ft or {}) do
         opts.formatters_by_ft[ft] = { "sqlfmt" }
         -- opts.formatters_by_ft[ft] = { "dawet_lint" } -- slow
       end
@@ -38,7 +32,7 @@ return {
       opts.formatters_by_ft["lua"] = { "stylua" }
 
       -- shell formatter
-      for _, ft in ipairs(vim.g.sh_ft) do
+      for _, ft in ipairs(vim.g.sh_ft or {}) do
         opts.formatters_by_ft[ft] = { "shfmt" }
       end
 
@@ -49,7 +43,7 @@ return {
       opts.formatters_by_ft["kdl"] = { "kdlfmt" }
 
       -- Injected formatter for code blocks in markdown-like file
-      for _, ft in ipairs(vim.g.md_injected_ft) do
+      for _, ft in ipairs(vim.g.md_injected_ft or {}) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
         table.insert(opts.formatters_by_ft[ft], "injected")
       end
@@ -82,10 +76,20 @@ return {
           lang_to_formatters = {},
         },
       }
+
+      vim.g.autoformat = vim.g.autoformat ~= false
+
+      opts.format_on_save = function(bufnr)
+        if vim.g.autoformat == false then
+          return
+        end
+        return {
+          timeout_ms = 500,
+          lsp_format = "fallback",
+        }
+      end
+
+      return opts
     end,
-  },
-  {
-    "mason-org/mason.nvim",
-    opts = { ensure_installed = { "markdownlint-cli2", "ruff", "stylua", "kdlfmt" } },
   },
 }

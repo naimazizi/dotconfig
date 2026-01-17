@@ -1,45 +1,38 @@
----@diagnostic disable: missing-fields, assign-type-mismatch
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
-vim.o.spell = false
+local opt = vim.opt
 
-if not vim.g.vscode then
-  -- ordinary Neovim
+opt.number = true
+opt.relativenumber = true
+opt.cursorline = true
+opt.signcolumn = "yes"
+opt.termguicolors = true
 
-  vim.g.lazyvim_picker = "fzf"
-  vim.g.root_spec = { "cwd" }
-  vim.g.lazyvim_blink_main = true
-  vim.g.snacks_animate = false
+opt.expandtab = true
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.smartindent = true
 
-  vim.g.slime_target = "tmux"
-  vim.g.slime_cell_delimiter = "# %%"
-  vim.g.slime_bracketed_paste = 1
+opt.ignorecase = true
+opt.smartcase = true
+opt.incsearch = true
 
-  vim.o.conceallevel = 0
-  vim.o.mousemoveevent = true
-  vim.opt.spell = false
+opt.splitbelow = true
+opt.splitright = true
 
-  -- custom global variables
-  vim.g.md_ft = { "markdown", "quarto", "copilot-chat", "opencode_output", "Avante" }
-  vim.g.md_injected_ft = { "markdown", "quarto" }
-  vim.g.sql_ft = { "sql", "mysql", "plsql" }
-  vim.g.sh_ft = { "sh", "bash", "zsh", "ksh" }
+opt.updatetime = 250
+opt.timeoutlen = 300 -- LazyVim-ish
 
-  -- workaround for cybereason
-  vim.opt.swapfile = false
-  vim.opt.backup = false
-  vim.opt.writebackup = false
-  vim.opt.undofile = false
-  vim.opt.fsync = false
+opt.undofile = true
 
-  local function system(command)
-    local file = io.popen(command, "r")
-    local output = file:read("*all"):gsub("%s+", "")
-    file:close()
-    return output
-  end
+opt.clipboard = "unnamedplus"
 
-  vim.g.python3_host_prog = system("which python")
-elseif vim.g.vscode then
-end
+opt.completeopt = { "menuone", "noselect" }
+
+-- custom global variables
+vim.g.md_ft = { "markdown", "quarto", "copilot-chat", "opencode_output", "Avante" }
+vim.g.md_injected_ft = { "markdown", "quarto" }
+vim.g.sql_ft = { "sql", "mysql", "plsql" }
+vim.g.sh_ft = { "sh", "bash", "zsh", "ksh" }
+
+vim.g.slime_target = "tmux"
+vim.g.slime_cell_delimiter = "# %%"
+vim.g.slime_bracketed_paste = 1
