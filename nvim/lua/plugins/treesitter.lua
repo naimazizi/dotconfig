@@ -34,6 +34,7 @@ return {
         "vimdoc",
         "xml",
         "yaml",
+        "hurl",
       },
     },
     config = function(_, opts)

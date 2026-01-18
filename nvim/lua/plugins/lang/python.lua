@@ -24,7 +24,10 @@ vim.lsp.enable({ lsp, "ruff" })
 return {
   {
     "mason-org/mason.nvim",
-    opts = { ensure_installed = { lsp, "ruff" } },
+    opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
+      vim.list_extend(opts.ensure_installed, { lsp, "ruff", "debugpy" })
+    end,
   },
   {
     "linux-cultist/venv-selector.nvim",

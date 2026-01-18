@@ -90,26 +90,35 @@ return {
       end,
     },
   },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    dependencies = "mason.nvim",
-    cmd = { "DapInstall", "DapUninstall" },
-    opts = {
-      -- Makes a best effort to setup the various debuggers with
-      -- reasonable debug configurations
-      automatic_installation = true,
+   {
+     "jay-babu/mason-nvim-dap.nvim",
+     dependencies = "mason.nvim",
+     cmd = { "DapInstall", "DapUninstall" },
+     opts = function(_, opts)
+       opts = opts or {}
+       opts.automatic_installation = true
+       opts.handlers = opts.handlers or {}
 
-      -- You can provide additional configuration to the handlers,
-      -- see mason-nvim-dap README for more information
-      handlers = {},
+       -- DAP adapter packages are NOT part of Mason's global ensure_installed.
+       -- Manage them explicitly here so they reliably auto-install.
+       opts.ensure_installed = opts.ensure_installed or {}
+       vim.list_extend(opts.ensure_installed, { "debugpy", "codelldb" })
 
-      -- You'll need to check that you have the required things installed
-      -- online, please don't ask me how to install them :)
-      ensure_installed = {
-        -- Update this to ensure that you have the debuggers for the langs you want
-      },
-    },
-    -- mason-nvim-dap is loaded when nvim-dap loads
-    config = function() end,
-  },
+       -- Keep the list stable & unique.
+       local seen = {}
+       local out = {}
+       for _, item in ipairs(opts.ensure_installed) do
+         if type(item) == "string" and item ~= "" and not seen[item] then
+           seen[item] = true
+           table.insert(out, item)
+         end
+       end
+       table.sort(out)
+       opts.ensure_installed = out
+
+       return opts
+     end,
+     -- mason-nvim-dap is loaded when nvim-dap loads
+     config = function() end,
+   },
 }

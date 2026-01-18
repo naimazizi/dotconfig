@@ -28,14 +28,12 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = { ensure_installed = { "rust", "ron" } },
   },
-
-  -- Ensure Rust debugger is installed
   {
     "mason-org/mason.nvim",
     optional = true,
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "codelldb", "bacon-ls", "bacon", "rust-analyzer" })
+      vim.list_extend(opts.ensure_installed, { "codelldb", "bacon", "rust-analyzer" })
     end,
   },
   {
@@ -98,14 +96,6 @@ return {
         adapter = require("rustaceanvim.config").get_codelldb_adapter(codelldb, library_path),
       }
       vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
-    end,
-  },
-  {
-    "mason-org/mason.nvim",
-    optional = true,
-    opts = function(_, opts)
-      opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "bacon-ls" })
     end,
   },
   {
