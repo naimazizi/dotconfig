@@ -1,5 +1,3 @@
-vim.lsp.enable("copilot")
-
 return {
   {
     "sudo-tee/opencode.nvim",
@@ -26,6 +24,13 @@ return {
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, { "copilot-language-server" })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    optional = true,
+    config = function()
+      vim.lsp.enable("copilot")
     end,
   },
 }

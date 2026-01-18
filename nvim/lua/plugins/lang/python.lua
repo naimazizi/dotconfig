@@ -1,32 +1,38 @@
 local lsp = "pyrefly"
 
-vim.lsp.config(lsp, {})
-vim.lsp.config("ruff", {
-  on_attach = function(client, bufnr)
-    if client.name ~= "ruff" then
-      return
-    end
-
-    vim.keymap.set("n", "<leader>co", function()
-      vim.lsp.buf.code_action({
-        context = {
-          only = { "source.organizeImports" },
-          diagnostics = {},
-        },
-        apply = true,
-      })
-    end, { buffer = bufnr, silent = true, desc = "Organize Imports" })
-  end,
-})
-
-vim.lsp.enable({ lsp, "ruff" })
-
 return {
   {
     "mason-org/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, { lsp, "ruff", "debugpy" })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    optional = true,
+    ft = "python",
+    config = function()
+      vim.lsp.config(lsp, {})
+      vim.lsp.config("ruff", {
+        on_attach = function(client, bufnr)
+          if client.name ~= "ruff" then
+            return
+          end
+
+          vim.keymap.set("n", "<leader>co", function()
+            vim.lsp.buf.code_action({
+              context = {
+                only = { "source.organizeImports" },
+                diagnostics = {},
+              },
+              apply = true,
+            })
+          end, { buffer = bufnr, silent = true, desc = "Organize Imports" })
+        end,
+      })
+
+      vim.lsp.enable({ lsp, "ruff" })
     end,
   },
   {

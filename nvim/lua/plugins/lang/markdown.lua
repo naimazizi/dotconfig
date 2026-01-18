@@ -1,6 +1,3 @@
-vim.lsp.config("marksman", {})
-vim.lsp.enable({ "marksman" })
-
 return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
@@ -22,6 +19,15 @@ return {
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, { "marksman" })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    optional = true,
+    ft = vim.g.md_ft,
+    config = function()
+      vim.lsp.config("marksman", {})
+      vim.lsp.enable({ "marksman" })
     end,
   },
 }

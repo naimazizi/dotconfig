@@ -1,12 +1,3 @@
-vim.lsp.config("bacon_ls", {
-  init_options = {
-    updateOnSave = true,
-    updateOnSaveWaitMillis = 1000,
-  },
-})
-
-vim.lsp.enable({ "bacon_ls" })
-
 return {
   -- LSP for Cargo.toml
   {
@@ -34,6 +25,21 @@ return {
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, { "codelldb", "bacon", "rust-analyzer" })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    optional = true,
+    ft = "rust",
+    config = function()
+      vim.lsp.config("bacon_ls", {
+        init_options = {
+          updateOnSave = true,
+          updateOnSaveWaitMillis = 1000,
+        },
+      })
+
+      vim.lsp.enable({ "bacon_ls" })
     end,
   },
   {
@@ -97,14 +103,5 @@ return {
       }
       vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
     end,
-  },
-  {
-    "nvim-neotest/neotest",
-    optional = true,
-    opts = {
-      adapters = {
-        ["rustaceanvim.neotest"] = {},
-      },
-    },
   },
 }

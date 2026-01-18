@@ -1,13 +1,14 @@
 return {
   {
     "nvim-neotest/neotest",
-    dependencies = { "nvim-neotest/nvim-nio", "nvim-neotest/neotest-python" },
+    dependencies = { "nvim-neotest/nvim-nio", "nvim-neotest/neotest-python", "mrcjkb/rustaceanvim" },
     opts = {
       adapters = {
         ["neotest-python"] = {
           runner = "pytest",
           -- python = ".venv/bin/python",
         },
+        ["rustaceanvim.neotest"] = {},
       },
       status = { virtual_text = true },
       output = { open_on_run = true },
