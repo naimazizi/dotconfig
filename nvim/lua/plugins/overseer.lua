@@ -25,20 +25,8 @@ return {
           ["<C-k>"] = false,
           ["<C-l>"] = false,
         },
-      },
-      form = {
-        win_opts = {
-          winblend = 0,
-        },
-      },
-      confirm = {
-        win_opts = {
-          winblend = 0,
-        },
-      },
-      task_win = {
-        win_opts = {
-          winblend = 0,
+        keymaps = {
+          ["o"] = { "keymap.open", opts = { dir = "float" }, desc = "Open task" },
         },
       },
     },
@@ -52,6 +40,10 @@ return {
       { "<leader>ot", "<cmd>OverseerTaskAction<cr>",  desc = "Task action" },
       { "<leader>oc", "<cmd>OverseerClearCache<cr>",  desc = "Clear cache" },
     },
+    config = function(_, opts)
+      local overseer = require("overseer")
+      overseer.setup(opts)
+    end,
   },
   {
     "mfussenegger/nvim-dap",
