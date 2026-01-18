@@ -38,6 +38,13 @@ return {
         "<cmd>lua _terminal_toggle()<CR>",
         { silent = true, desc = "Toggle terminal" }
       )
+
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>ft",
+        "<cmd>lua _terminal_toggle()<CR>",
+        { silent = true, desc = "Toggle terminal" }
+      )
     end,
   },
 }
