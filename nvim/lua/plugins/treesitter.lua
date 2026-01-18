@@ -9,6 +9,9 @@ return {
       indent = { enable = true },
       highlight = { enable = true },
       folds = { enable = true },
+
+      -- NOTE: nvim-treesitter `main` branch moved away from `nvim-treesitter.configs`
+      -- and the old `ensure_installed/auto_install` options.
       ensure_installed = {
         "bash",
         "c",
@@ -41,6 +44,38 @@ return {
       local TS = require("nvim-treesitter")
       TS.setup(opts)
 
+      local ts_install = require("nvim-treesitter.install")
+      local ts_parsers = require("nvim-treesitter.parsers")
+
+      ---Install one or more parsers (best-effort).
+      ---@param languages string[]
+      local function install_parsers(languages)
+        if not languages or #languages == 0 then
+          return
+        end
+
+        -- Filter out already-installed parsers and anything without an install config.
+        local installed = TS.get_installed("parsers")
+        local to_install = {}
+        for _, lang in ipairs(languages) do
+          if ts_parsers[lang] and not vim.list_contains(installed, lang) then
+            table.insert(to_install, lang)
+          end
+        end
+
+        if #to_install == 0 then
+          return
+        end
+
+        -- Install in the background; avoid blocking UI.
+        vim.schedule(function()
+          pcall(ts_install.install, to_install, { silent = true })
+        end)
+      end
+
+      -- Ensure configured languages are installed.
+      install_parsers(opts.ensure_installed or {})
+
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("nvim_minimax_treesitter", { clear = true }),
         callback = function(ev)
@@ -49,6 +84,10 @@ return {
           if ft == "quarto" then
             vim.treesitter.language.register("markdown", { "quarto", "rmd" })
           end
+
+          -- Auto-install parser for the current filetype (if available).
+          local lang = vim.treesitter.language.get_lang(ft) or ft
+          install_parsers({ lang })
 
           local function enabled(feat)
             local f = opts[feat] or {}
