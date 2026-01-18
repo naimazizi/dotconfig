@@ -3,7 +3,7 @@ return {
     "mason-org/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "typos-lsp", "harper-ls" })
+      vim.list_extend(opts.ensure_installed, { "typos-lsp" })
     end,
   },
   {
@@ -23,44 +23,7 @@ return {
           diagnosticSeverity = "Hint",
         },
       })
-
-      vim.lsp.config("harper_ls", {
-        filetypes = {
-          "markdown",
-          "gitcommit",
-          "typst",
-        },
-        settings = {
-          ["harper-ls"] = {
-            userDictPath = "",
-            fileDictPath = "",
-            linters = {
-              SpellCheck = true,
-              SpelledNumbers = false,
-              AnA = true,
-              SentenceCapitalization = true,
-              UnclosedQuotes = true,
-              WrongQuotes = false,
-              LongSentences = true,
-              RepeatedWords = true,
-              Spaces = true,
-              Matcher = true,
-              CorrectNumberSuffix = true,
-            },
-            codeActions = {
-              ForceStable = false,
-            },
-            markdown = {
-              IgnoreLinkTitle = true,
-            },
-            diagnosticSeverity = "hint",
-            isolateEnglish = false,
-            dialect = "British",
-          },
-        },
-      })
-
-      vim.lsp.enable({ "harper_ls", "typos_lsp" })
+      vim.lsp.enable({ "typos_lsp" })
     end,
   },
 }
