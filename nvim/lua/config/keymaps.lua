@@ -19,16 +19,6 @@ map("n", "<leader>uf", function()
   vim.notify("Autoformat " .. (vim.g.autoformat and "enabled" or "disabled"))
 end, { silent = true, desc = "Toggle autoformat" })
 
--- Notifications (mini.notify)
-map("n", "<leader>n", function()
-  local ok, notify = pcall(require, "mini.notify")
-  if ok then
-    notify.show_history()
-    return
-  end
-  vim.notify("mini.notify not available")
-end, { silent = true, desc = "Notifications" })
-
 -- Sessions / quit (LazyVim-ish)
 map("n", "<leader>qq", "<cmd>qa<cr>", { silent = true, desc = "Quit all" })
 map("n", "<leader>qs", function()
@@ -147,19 +137,34 @@ map("n", "]t", function()
   require("mini.bracketed").comment("forward")
 end, { silent = true, desc = "Next todo comment" })
 
+-- LazyVim-ish LSP/diagnostics mappings
 map("n", "<leader>cd", vim.diagnostic.open_float, { silent = true, desc = "Line diagnostics" })
 map("n", "<leader>cl", "<cmd>LspInfo<cr>", { silent = true, desc = "Lsp Info" })
 map("n", "<leader>cq", vim.diagnostic.setloclist, { silent = true, desc = "Quickfix diagnostics" })
 
+map("n", "<leader>cf", function()
+  require("conform").format({ async = true, lsp_format = "fallback" })
+end, { silent = true, desc = "Format" })
+map("x", "<leader>cf", function()
+  require("conform").format({ async = true, lsp_format = "fallback" })
+end, { silent = true, desc = "Format selection" })
+
+map("n", "<leader>cm", "<cmd>Mason<cr>", { silent = true, desc = "Mason" })
+
 -- Quickfix / location list (LazyVim-ish)
 map("n", "<leader>xl", "<cmd>lopen<cr>", { silent = true, desc = "Location list" })
+map("n", "<leader>xq", "<cmd>copen<cr>", { silent = true, desc = "Quickfix" })
+map("n", "<leader>xx", function()
+  require("mini.extra").pickers.diagnostic()
+end, { silent = true, desc = "Diagnostics" })
 map("n", "[q", "<cmd>cprev<cr>", { silent = true, desc = "Prev quickfix" })
 map("n", "]q", "<cmd>cnext<cr>", { silent = true, desc = "Next quickfix" })
 map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
 map("n", "]l", "<cmd>lnext<cr>", { silent = true, desc = "Next location" })
 
--- Files / finders
+-- Explorer (LazyVim defaults)
 map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { silent = true, desc = "Explorer" })
+map("n", "<leader>E", "<cmd>NvimTreeFindFile<cr>", { silent = true, desc = "Explorer (reveal file)" })
 
 -- Files / search (mini.pick)
 map("n", "<leader>ff", function()
@@ -174,14 +179,56 @@ map("n", "<leader>fg", function()
   require("mini.pick").builtin.grep_live()
 end, { silent = true, desc = "Grep" })
 
+-- LazyVim uses `<leader>/` for grep (root). Here we treat cwd as root.
 map("n", "<leader>/", function()
   require("mini.pick").builtin.grep_live({ source = { cwd = vim.fn.getcwd() } })
 end, { silent = true, desc = "Grep (cwd)" })
+
+map("n", "<leader>sw", function()
+  require("mini.pick").builtin.grep({ pattern = vim.fn.expand("<cword>") })
+end, { silent = true, desc = "Search word under cursor" })
+
+map("v", "<leader>sw", function()
+  local start_pos = vim.fn.getpos("v")
+  local end_pos = vim.fn.getpos(".")
+  local start_row, start_col = start_pos[2] - 1, start_pos[3] - 1
+  local end_row, end_col = end_pos[2] - 1, end_pos[3]
+  if start_row > end_row or (start_row == end_row and start_col > end_col) then
+    start_row, end_row = end_row, start_row
+    start_col, end_col = end_col, start_col
+  end
+  local lines = vim.api.nvim_buf_get_text(0, start_row, start_col, end_row, end_col, {})
+  local text = table.concat(lines, "\n")
+  if text == "" then
+    return
+  end
+  require("mini.pick").builtin.grep({ pattern = text })
+end, { silent = true, desc = "Search selection" })
 
 -- Search/Replace (grug-far)
 map("n", "<leader>sr", function()
   require("grug-far").open()
 end, { silent = true, desc = "Search/Replace (grug-far)" })
+
+map("n", "<leader>sR", function()
+  require("mini.pick").resume()
+end, { silent = true, desc = "Resume" })
+
+map("n", "<leader>sk", function()
+  require("mini.extra").pickers.keymaps()
+end, { silent = true, desc = "Keymaps" })
+
+map("n", "<leader>sm", function()
+  require("mini.extra").pickers.marks()
+end, { silent = true, desc = "Marks" })
+
+map("n", "<leader>st", function()
+  require("mini.pick").builtin.grep({ pattern = [[(TODO|FIXME|FIX)]] })
+end, { silent = true, desc = "TODO" })
+
+map("n", "<leader>sd", function()
+  require("mini.extra").pickers.diagnostic()
+end, { silent = true, desc = "Diagnostics" })
 
 map("n", "<leader>fb", function()
   require("mini.pick").builtin.buffers()
@@ -190,6 +237,15 @@ end, { silent = true, desc = "Buffers" })
 map("n", "<leader>fr", function()
   require("mini.extra").pickers.oldfiles()
 end, { silent = true, desc = "Recent" })
+
+map("n", "<leader>fn", function()
+  local ok, notify = pcall(require, "mini.notify")
+  if ok then
+    notify.show_history()
+    return
+  end
+  vim.notify("mini.notify not available")
+end, { silent = true, desc = "Notifications" })
 
 map("n", "<leader>fh", function()
   require("mini.pick").builtin.help()
@@ -255,87 +311,6 @@ end, { silent = true, desc = "Preview hunk" })
 map("n", "<leader>gb", function()
   require("gitsigns").toggle_current_line_blame()
 end, { silent = true, desc = "Toggle line blame" })
-
--- Workspace symbols / document symbols
-map("n", "<leader>ss", vim.lsp.buf.document_symbol, { silent = true, desc = "Symbols (document)" })
-map("n", "<leader>sS", vim.lsp.buf.workspace_symbol, { silent = true, desc = "Symbols (workspace)" })
-
--- Selection range isn't always available; fall back safely
-map({ "n", "x" }, "<leader>cs", function()
-  local ok = pcall(vim.lsp.buf.selection_range)
-  if not ok then
-    vim.notify("Selection range not supported", vim.log.levels.WARN)
-  end
-end, { silent = true, desc = "Selection range" })
-
--- Diagnostics picker (mini.pick)
-map("n", "<leader>xx", function()
-  require("mini.extra").pickers.diagnostic()
-end, { silent = true, desc = "Diagnostics" })
-
--- Tools
-map("n", "<leader>cm", "<cmd>Mason<cr>", { silent = true, desc = "Mason" })
-
--- Formatting (Conform)
--- LazyVim-ish: <leader>cf
-map("n", "<leader>cf", function()
-  require("conform").format({ async = true, lsp_format = "fallback" })
-end, { silent = true, desc = "Format" })
-map("x", "<leader>cf", function()
-  require("conform").format({ async = true, lsp_format = "fallback" })
-end, { silent = true, desc = "Format selection" })
-
--- Debug (DAP)
-map("n", "<leader>db", function()
-  require("dap").toggle_breakpoint()
-end, { desc = "Toggle breakpoint" })
-map("n", "<leader>dc", function()
-  require("dap").continue()
-end, { desc = "Continue" })
-map("n", "<leader>di", function()
-  require("dap").step_into()
-end, { desc = "Step into" })
-map("n", "<leader>do", function()
-  require("dap").step_over()
-end, { desc = "Step over" })
-map("n", "<leader>dO", function()
-  require("dap").step_out()
-end, { desc = "Step out" })
-map("n", "<leader>dr", function()
-  require("dap").repl.open()
-end, { desc = "REPL" })
-map("n", "<leader>du", function()
-  require("dapui").toggle()
-end, { desc = "DAP UI" })
-map("n", "<leader>dt", function()
-  require("dap").terminate()
-end, { desc = "Terminate" })
-map("n", "<leader>td", function()
-  require("neotest").run.run({ strategy = "dap" })
-end, { desc = "Debug Nearest" })
-
--- Search
-map("n", "<leader>sd", function()
-  require("mini.extra").pickers.diagnostic()
-end, { silent = true, desc = "Diagnostics" })
-map("n", "<leader>sR", function()
-  require("mini.pick").resume()
-end, { silent = true, desc = "Resume" })
-map("n", "<leader>sk", function()
-  require("mini.extra").pickers.keymaps()
-end, { silent = true, desc = "Keymaps" })
-map("n", "<leader>st", function()
-  require("mini.pick").builtin.grep({
-    pattern = [[(TODO|FIXME|FIX)]],
-  })
-end, { silent = true, desc = "TODO/FIXME/FIX" })
-map("n", "<leader>sm", function()
-  require("mini.extra").pickers.marks()
-end, { silent = true, desc = "Marks" })
-
--- Search symbols (document/workspace)
-map("n", "<leader>ss", vim.lsp.buf.document_symbol, { silent = true, desc = "Symbols (document)" })
-map("n", "<leader>sS", vim.lsp.buf.workspace_symbol, { silent = true, desc = "Symbols (workspace)" })
 
 -- Lazy manager
 map("n", "<leader>l", "<cmd>Lazy<cr>", { silent = true, desc = "Lazy" })
