@@ -27,6 +27,7 @@ return {
         { "<localleader>r", group = "REPL", icon = "" },
         { "<localleader>s", group = "Quarto", icon = "" },
         { "<localleader>c", group = "Curl (hurl)", icon = "󱂛" },
+        { "gs", group = "Surround" },
       },
     },
     keys = {

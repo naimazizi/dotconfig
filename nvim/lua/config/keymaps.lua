@@ -218,7 +218,7 @@ map("n", "<leader>sr", function()
 end, { silent = true, desc = "Search/Replace (grug-far)" })
 
 map("n", "<leader>sR", function()
-  require("mini.pick").resume()
+  require("mini.pick").builtin.resume()
 end, { silent = true, desc = "Resume" })
 
 map("n", "<leader>sk", function()
