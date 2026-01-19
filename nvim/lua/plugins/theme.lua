@@ -1,7 +1,7 @@
 return {
   {
     "thesimonho/kanagawa-paper.nvim",
-    enabled = true,
+    enabled = false,
     vscode = false,
     lazy = false,
     priority = 1000,
@@ -60,6 +60,22 @@ return {
       })
 
       vim.cmd.colorscheme("kanagawa-paper")
+    end,
+  },
+  {
+    "ilof2/posterpole.nvim",
+    enabled = true,
+    vscode = false,
+    lazy = false,
+    priority = 1000,
+    config = function()
+      local posterpole = require("posterpole")
+
+      posterpole.setup({
+        transparent = true,
+        dim_inactive = false,
+      })
+      vim.cmd("colorscheme posterpole")
     end,
   },
 }
