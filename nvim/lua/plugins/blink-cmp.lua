@@ -102,7 +102,7 @@ return {
           window = { border = "rounded" },
         },
         ghost_text = {
-          enabled = vim.g.ai_cmp,
+          enabled = true,
         },
         list = {
           selection = {

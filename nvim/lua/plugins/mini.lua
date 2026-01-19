@@ -102,6 +102,19 @@ return {
       })
       require("mini.pick").setup()
       require("mini.extra").setup()
+      require("mini.indentscope").setup({
+        draw = {
+          -- Delay (in ms) between event and start of drawing scope indicator
+          delay = 50,
+        },
+        options = {
+          border = "both",
+          indent_at_cursor = true,
+          n_lines = 10000,
+          try_as_border = true,
+        },
+        symbol = "╎",
+      })
 
       require("mini.icons").setup()
       require("mini.icons").mock_nvim_web_devicons()

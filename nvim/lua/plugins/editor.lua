@@ -1,12 +1,5 @@
 return {
   {
-    "saghen/blink.indent",
-    vscode = false,
-    event = "BufRead",
-    version = "*",
-    opts = {},
-  },
-  {
     "saghen/blink.pairs",
     vscode = false,
     event = "BufRead",
