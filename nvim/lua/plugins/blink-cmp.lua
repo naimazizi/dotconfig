@@ -47,6 +47,7 @@ return {
         },
       },
       "mayromr/blink-cmp-dap",
+      "Fildo7525/pretty_hover",
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -100,6 +101,13 @@ return {
         documentation = {
           auto_show = true,
           window = { border = "rounded" },
+          draw = function(opts)
+            if opts.item and opts.item.documentation and opts.item.documentation.value then
+              local out = require("pretty_hover.parser").parse(opts.item.documentation.value)
+              opts.item.documentation.value = out:string()
+            end
+            opts.default_implementation(opts)
+          end,
         },
         ghost_text = {
           enabled = true,

@@ -22,7 +22,30 @@ local function lsp_keymaps(bufnr)
   map("n", "gi", lsp_goto("implementation"), "Goto implementation")
   map("n", "gy", lsp_goto("type_definition"), "Goto type definition")
 
-  map("n", "K", vim.lsp.buf.hover, "Hover")
+  map("n", "K", function()
+    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+    local supports_hover = vim.iter(clients):any(function(client)
+      return client.supports_method("textDocument/hover")
+    end)
+
+    if supports_hover then
+      local ok, pretty_hover = pcall(require, "pretty_hover")
+      if ok and pretty_hover and type(pretty_hover.hover) == "function" then
+        local notify = vim.notify
+        vim.notify = function() end
+
+        local ok_hover, res = pcall(pretty_hover.hover)
+
+        vim.notify = notify
+
+        if ok_hover and res ~= false and res ~= nil then
+          return res
+        end
+      end
+    end
+
+    return vim.lsp.buf.hover()
+  end, "Hover")
 
   map("n", "<leader>cr", vim.lsp.buf.rename, "Rename")
   map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
