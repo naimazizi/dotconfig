@@ -22,31 +22,6 @@ local function lsp_keymaps(bufnr)
   map("n", "gi", lsp_goto("implementation"), "Goto implementation")
   map("n", "gy", lsp_goto("type_definition"), "Goto type definition")
 
-  map("n", "K", function()
-    local clients = vim.lsp.get_clients({ bufnr = bufnr })
-    local supports_hover = vim.iter(clients):any(function(client)
-      return client.supports_method("textDocument/hover")
-    end)
-
-    if supports_hover then
-      local ok, pretty_hover = pcall(require, "pretty_hover")
-      if ok and pretty_hover and type(pretty_hover.hover) == "function" then
-        local notify = vim.notify
-        vim.notify = function() end
-
-        local ok_hover, res = pcall(pretty_hover.hover)
-
-        vim.notify = notify
-
-        if ok_hover and res ~= false and res ~= nil then
-          return res
-        end
-      end
-    end
-
-    return vim.lsp.buf.hover()
-  end, "Hover")
-
   map("n", "<leader>cr", vim.lsp.buf.rename, "Rename")
   map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
 
@@ -64,8 +39,6 @@ local function lsp_keymaps(bufnr)
     map("n", "<leader>cc", vim.lsp.codelens.run, "CodeLens")
     map("n", "<leader>cC", vim.lsp.codelens.refresh, "Refresh CodeLens")
   end
-
-  map("n", "gK", vim.lsp.buf.signature_help, "Signature help")
 
   for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt" }) do
     pcall(vim.keymap.del, "n", key, { buffer = bufnr })
