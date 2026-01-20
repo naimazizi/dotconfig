@@ -28,6 +28,7 @@ return {
         { "<localleader>s", group = "Quarto", icon = "" },
         { "<localleader>c", group = "Curl (hurl)", icon = "󱂛" },
         { "gs", group = "Surround" },
+        { "<leader>dP", group = "Debug Python" },
       },
     },
     keys = {

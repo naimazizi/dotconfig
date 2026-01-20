@@ -9,11 +9,37 @@ local dap_icon = {
 return {
   {
     "mfussenegger/nvim-dap",
-    event = "VeryLazy",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       {
         "theHamsta/nvim-dap-virtual-text",
         opts = {},
+      },
+      {
+        "mfussenegger/nvim-dap-python",
+        ft = "python",
+        event = { "BufReadPre", "BufNewFile" },
+        keys = {
+          {
+            "<leader>dPt",
+            function()
+              require("dap-python").test_method()
+            end,
+            desc = "Debug Method",
+            ft = "python",
+          },
+          {
+            "<leader>dPc",
+            function()
+              require("dap-python").test_class()
+            end,
+            desc = "Debug Class",
+            ft = "python",
+          },
+        },
+        config = function()
+          require("dap-python").setup("debugpy-adapter")
+        end,
       },
     },
     config = function()
@@ -76,49 +102,34 @@ return {
     },
   },
   {
-    "mfussenegger/nvim-dap",
-    optional = true,
-    dependencies = {
-      "mfussenegger/nvim-dap-python",
-      -- stylua: ignore
-      keys = {
-        { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method", ft = "python" },
-        { "<leader>dPc", function() require('dap-python').test_class() end, desc = "Debug Class", ft = "python" },
-      },
-      config = function()
-        require("dap-python").setup("debugpy-adapter")
-      end,
-    },
+    "jay-babu/mason-nvim-dap.nvim",
+    dependencies = "mason.nvim",
+    cmd = { "DapInstall", "DapUninstall" },
+    opts = function(_, opts)
+      opts = opts or {}
+      opts.automatic_installation = true
+      opts.handlers = opts.handlers or {}
+
+      -- DAP adapter packages are NOT part of Mason's global ensure_installed.
+      -- Manage them explicitly here so they reliably auto-install.
+      opts.ensure_installed = opts.ensure_installed or {}
+      vim.list_extend(opts.ensure_installed, { "debugpy", "codelldb" })
+
+      -- Keep the list stable & unique.
+      local seen = {}
+      local out = {}
+      for _, item in ipairs(opts.ensure_installed) do
+        if type(item) == "string" and item ~= "" and not seen[item] then
+          seen[item] = true
+          table.insert(out, item)
+        end
+      end
+      table.sort(out)
+      opts.ensure_installed = out
+
+      return opts
+    end,
+    -- mason-nvim-dap is loaded when nvim-dap loads
+    config = function() end,
   },
-   {
-     "jay-babu/mason-nvim-dap.nvim",
-     dependencies = "mason.nvim",
-     cmd = { "DapInstall", "DapUninstall" },
-     opts = function(_, opts)
-       opts = opts or {}
-       opts.automatic_installation = true
-       opts.handlers = opts.handlers or {}
-
-       -- DAP adapter packages are NOT part of Mason's global ensure_installed.
-       -- Manage them explicitly here so they reliably auto-install.
-       opts.ensure_installed = opts.ensure_installed or {}
-       vim.list_extend(opts.ensure_installed, { "debugpy", "codelldb" })
-
-       -- Keep the list stable & unique.
-       local seen = {}
-       local out = {}
-       for _, item in ipairs(opts.ensure_installed) do
-         if type(item) == "string" and item ~= "" and not seen[item] then
-           seen[item] = true
-           table.insert(out, item)
-         end
-       end
-       table.sort(out)
-       opts.ensure_installed = out
-
-       return opts
-     end,
-     -- mason-nvim-dap is loaded when nvim-dap loads
-     config = function() end,
-   },
 }
