@@ -451,8 +451,8 @@ end, { silent = true, desc = "Find files (fff)" })
 
 -- Git (gitsigns)
 map("n", "<leader>gg", function()
-  if vim.fn.executable("gitui") == 0 then
-    vim.notify("gitui not found in PATH")
+  if vim.fn.executable("lazygit") == 0 then
+    vim.notify("lazygit not found in PATH")
     return
   end
 
@@ -467,15 +467,15 @@ map("n", "<leader>gg", function()
     vim.notify("toggleterm Terminal not available")
     return
   end
-  local gitui = Terminal:new({
-    cmd = "gitui",
+  local lazygit= Terminal:new({
+    cmd = "lazygit",
     direction = "float",
     hidden = true,
     close_on_exit = true,
   })
 
-  gitui:toggle()
-end, { silent = true, desc = "GitUI (toggleterm)" })
+  lazygit:toggle()
+end, { silent = true, desc = "lazygit (toggleterm)" })
 
 map("n", "]h", function()
   require("gitsigns").next_hunk()

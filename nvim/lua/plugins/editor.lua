@@ -276,7 +276,7 @@ return {
     event = "VeryLazy",
     opts = {
       show_icons = true,
-      leader_key = "'", -- Recommended to be a single key
+      leader_key = ";", -- Recommended to be a single key
       buffer_leader_key = "m", -- Per Buffer Mappings
     },
   },
@@ -284,14 +284,14 @@ return {
     "MagicDuck/grug-far.nvim",
     vscode = false,
     event = "VeryLazy",
-      dependencies = {
-        {
-          "mason-org/mason.nvim",
-          opts = function(_, opts)
-            opts.ensure_installed = opts.ensure_installed or {}
-            vim.list_extend(opts.ensure_installed, { "ast-grep" })
-          end,
-        },
+    dependencies = {
+      {
+        "mason-org/mason.nvim",
+        opts = function(_, opts)
+          opts.ensure_installed = opts.ensure_installed or {}
+          vim.list_extend(opts.ensure_installed, { "ast-grep" })
+        end,
       },
+    },
   },
 }
