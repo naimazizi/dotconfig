@@ -513,25 +513,28 @@ end, { silent = true, desc = "Toggle line blame" })
 map("n", "<leader>l", "<cmd>Lazy<cr>", { silent = true, desc = "Lazy" })
 
 -- Fold
-vim.keymap.set("n", "z1", "zM", { noremap = true, desc = "Fold 1" })
-vim.keymap.set("n", "z2", "zM1zr", { noremap = true, desc = "Fold 2" })
-vim.keymap.set("n", "z3", "zM2zr", { noremap = true, desc = "Fold 3" })
-vim.keymap.set("n", "z4", "zM3zr", { noremap = true, desc = "Fold 4" })
+map("n", "z1", "zM", { noremap = true, desc = "Fold 1" })
+map("n", "z2", "zM1zr", { noremap = true, desc = "Fold 2" })
+map("n", "z3", "zM2zr", { noremap = true, desc = "Fold 3" })
+map("n", "z4", "zM3zr", { noremap = true, desc = "Fold 4" })
 
 -- mark
-vim.keymap.set("n", "dm", function()
+map("n", "dm", function()
   local mark = vim.fn.input("Enter mark to delete: ")
   if mark ~= "" then
     vim.cmd("delmark " .. mark)
   end
 end, { noremap = true, desc = "Delete specific mark" })
 
+-- Center buffer (zen-mode)
+map("n", "<leader>uz", "<cmd>NoNeckPain<cr>", { noremap = true, desc = "Toggle zen-mode" })
+
 -- neovide
 if vim.g.neovide then
-  vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
-  vim.keymap.set("v", "<D-c>", '"+y') -- Copy
-  vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
-  vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
-  vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
-  vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
+  map("n", "<D-s>", ":w<CR>") -- Save
+  map("v", "<D-c>", '"+y') -- Copy
+  map("n", "<D-v>", '"+P') -- Paste normal mode
+  map("v", "<D-v>", '"+P') -- Paste visual mode
+  map("c", "<D-v>", "<C-R>+") -- Paste command mode
+  map("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
 end
