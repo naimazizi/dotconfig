@@ -4,15 +4,6 @@ local silent = { silent = true }
 -- LazyVim-ish
 map("n", "<Esc>", "<cmd>nohlsearch<cr><Esc>", { silent = true, desc = "Clear hlsearch" })
 
--- Better window navigation
-map("n", "<C-h>", "<C-w>h", silent)
-map("n", "<C-j>", "<C-w>j", silent)
-map("n", "<C-k>", "<C-w>k", silent)
-map("n", "<C-l>", "<C-w>l", silent)
-
--- Save file
-map({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr>", { silent = true, desc = "Save file" })
-
 -- Toggle autoformat (LazyVim-ish)
 map("n", "<leader>uf", function()
   vim.g.autoformat = not vim.g.autoformat
@@ -64,7 +55,7 @@ end
 
 local function delete_where(predicate, force)
   for _, buf in ipairs(bufs_listed()) do
-    if predicate(buf)  then
+    if predicate(buf) then
       delete_buf(buf, force)
     end
   end
