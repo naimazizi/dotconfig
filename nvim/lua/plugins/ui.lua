@@ -90,6 +90,19 @@ return {
             end,
           },
           {
+            title = "DAP",
+            ft = "dap-view",
+          },
+          {
+            title = "DAP",
+            ft = "dap-repl",
+          },
+
+          {
+            title = "DAP Term",
+            ft = "dap-view-term",
+          },
+          {
             title = "DB Query Result",
             ft = "dbout",
           },

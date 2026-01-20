@@ -71,13 +71,37 @@ return {
     "igorlfs/nvim-dap-view",
     vscode = false,
     event = { "BufReadPre" },
-    opts = {},
     ---@module 'dap-view'
     ---@type dapview.Config
     config = function()
       local dap, dv = require("dap"), require("dap-view")
       -- dap.defaults.fallback.force_external_terminal = true
       -- dap.defaults.fallback.terminal_win_cmd = "belowright new | resize 15"
+      dv.setup({
+        winbar = {
+          default_section = "watches",
+          controls = {
+            enabled = true,
+            position = "right",
+          },
+        },
+        windows = {
+          terminal = {
+            hide = { "delve", "debugpy" },
+          },
+          anchor = function()
+            local windows = vim.api.nvim_tabpage_list_wins(0)
+
+            for _, win in ipairs(windows) do
+              local bufnr = vim.api.nvim_win_get_buf(win)
+              if vim.bo[bufnr].buftype == "terminal" then
+                return win
+              end
+            end
+          end,
+        },
+      })
+
       dap.listeners.before.attach["dap-view-config"] = function()
         dv.open()
       end
