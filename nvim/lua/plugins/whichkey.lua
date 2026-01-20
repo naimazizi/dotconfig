@@ -29,6 +29,7 @@ return {
         { "<localleader>c", group = "Curl (hurl)", icon = "󱂛" },
         { "gs", group = "Surround" },
         { "<leader>dP", group = "Debug Python" },
+        { "<leader>h", group = "Haunting Notes", icon = "󱙝" },
       },
     },
     keys = {

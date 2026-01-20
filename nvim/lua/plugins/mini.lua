@@ -286,7 +286,7 @@ return {
       ai_whichkey(ai_opts)
 
       require("mini.sessions").setup({
-        autoread = true,
+        autoread = false,
         autowrite = true,
       })
 
