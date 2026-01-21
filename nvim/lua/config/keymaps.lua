@@ -4,15 +4,6 @@ local silent = { silent = true }
 -- LazyVim-ish
 map("n", "<Esc>", "<cmd>nohlsearch<cr><Esc>", { silent = true, desc = "Clear hlsearch" })
 
--- Better window navigation
-map("n", "<C-h>", "<C-w>h", silent)
-map("n", "<C-j>", "<C-w>j", silent)
-map("n", "<C-k>", "<C-w>k", silent)
-map("n", "<C-l>", "<C-w>l", silent)
-
--- Save file
-map({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr>", { silent = true, desc = "Save file" })
-
 -- Toggle autoformat (LazyVim-ish)
 map("n", "<leader>uf", function()
   vim.g.autoformat = not vim.g.autoformat
@@ -43,8 +34,6 @@ end, { silent = true, desc = "Delete current session" })
 
 -- Buffers (LazyVim-ish)
 -- Note: MiniBufremove is used so window layout stays intact.
-local pinned_buffers = {}
-
 local function is_listed(buf)
   return vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted
 end
@@ -66,7 +55,7 @@ end
 
 local function delete_where(predicate, force)
   for _, buf in ipairs(bufs_listed()) do
-    if predicate(buf) and not pinned_buffers[buf] then
+    if predicate(buf) then
       delete_buf(buf, force)
     end
   end
@@ -114,20 +103,6 @@ map("n", "<leader>bl", function()
     return buf ~= current and vim.fn.bufnr(buf) > current_nr
   end, true)
 end, { silent = true, desc = "Delete buffers to the right" })
-
--- Delete all buffers (respects pinned)
-map("n", "<leader>bA", function()
-  delete_where(function(_)
-    return true
-  end, true)
-end, { silent = true, desc = "Delete all buffers" })
-
--- Pin buffer (not a mini.nvim feature, implemented here)
-map("n", "<leader>bp", function()
-  local buf = vim.api.nvim_get_current_buf()
-  pinned_buffers[buf] = not pinned_buffers[buf]
-  vim.notify(("Buffer %s"):format(pinned_buffers[buf] and "pinned" or "unpinned"))
-end, { silent = true, desc = "Pin buffer" })
 
 -- TODO/NOTE/FIX comment navigation (via mini.bracketed)
 map("n", "[t", function()
