@@ -5,9 +5,11 @@ clipboard-write = allow
 
 window-theme = dark
 window-padding-color = background
-background-opacity = 0.95
+background-opacity = 0.96
+background-blur=true
 background-blur-radius = 20
 font-family = Maple Mono NF
+font-size=11
 
 # Kanso zen 
 palette = 0=#090E13
