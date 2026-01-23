@@ -53,6 +53,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if client == nil then
       return
     end
+    if client.server_capabilities == nil then
+      return
+    end
     if client.name == "ruff" then
       client.server_capabilities.hoverProvider = false
     end
