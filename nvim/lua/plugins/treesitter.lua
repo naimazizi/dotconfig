@@ -47,55 +47,54 @@ return {
       local ts_install = require("nvim-treesitter.install")
       local ts_parsers = require("nvim-treesitter.parsers")
 
-       ---Install one or more parsers (best-effort).
-       ---@param languages string[]
-       local function install_parsers(languages)
-         if not languages or #languages == 0 then
-           return
-         end
+      ---Install one or more parsers (best-effort).
+      ---@param languages string[]
+      local function install_parsers(languages)
+        if not languages or #languages == 0 then
+          return
+        end
 
-         -- Filter out already-installed parsers and anything without an install config.
-         local installed = TS.get_installed("parsers")
-         local to_install = {}
-         for _, lang in ipairs(languages) do
-           if ts_parsers[lang] and not vim.list_contains(installed, lang) then
-             table.insert(to_install, lang)
-           end
-         end
+        -- Filter out already-installed parsers and anything without an install config.
+        local installed = TS.get_installed("parsers")
+        local to_install = {}
+        for _, lang in ipairs(languages) do
+          if ts_parsers[lang] and not vim.list_contains(installed, lang) then
+            table.insert(to_install, lang)
+          end
+        end
 
-         if #to_install == 0 then
-           return
-         end
+        if #to_install == 0 then
+          return
+        end
 
-         -- Install in the background; avoid repeated scheduling.
-         vim.g.__nvim_minimax_ts_install_queue = vim.g.__nvim_minimax_ts_install_queue or {}
-         local queue = vim.g.__nvim_minimax_ts_install_queue
+        -- Install in the background; avoid repeated scheduling.
+        vim.g.__nvim_minimax_ts_install_queue = vim.g.__nvim_minimax_ts_install_queue or {}
+        local queue = vim.g.__nvim_minimax_ts_install_queue
 
-         local scheduled = false
-         for _, lang in ipairs(to_install) do
-           if not queue[lang] then
-             queue[lang] = true
-             scheduled = true
-           end
-         end
+        local scheduled = false
+        for _, lang in ipairs(to_install) do
+          if not queue[lang] then
+            queue[lang] = true
+            scheduled = true
+          end
+        end
 
-         if not scheduled then
-           return
-         end
+        if not scheduled then
+          return
+        end
 
-         vim.schedule(function()
-           local langs = {}
-           for lang, _ in pairs(queue) do
-             table.insert(langs, lang)
-           end
-           vim.g.__nvim_minimax_ts_install_queue = {}
+        vim.schedule(function()
+          local langs = {}
+          for lang, _ in pairs(queue) do
+            table.insert(langs, lang)
+          end
+          vim.g.__nvim_minimax_ts_install_queue = {}
 
-           if #langs > 0 then
-             pcall(ts_install.install, langs, { silent = true })
-           end
-         end)
-       end
-
+          if #langs > 0 then
+            pcall(ts_install.install, langs, { silent = true })
+          end
+        end)
+      end
 
       -- Ensure configured languages are installed.
       install_parsers(opts.ensure_installed or {})

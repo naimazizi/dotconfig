@@ -110,7 +110,7 @@ return {
         left = {
           {
             title = "Explorer",
-            ft = "NvimTree",
+            ft = "neo-tree",
             size = { height = 0.4 },
           },
         },

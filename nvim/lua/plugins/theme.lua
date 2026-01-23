@@ -1,7 +1,7 @@
 return {
   {
     "thesimonho/kanagawa-paper.nvim",
-    enabled = false,
+    enabled = true,
     vscode = false,
     lazy = false,
     priority = 1000,
@@ -12,7 +12,7 @@ return {
         -- enable undercurls for underlined text
         undercurl = true,
         -- transparent background
-        transparent = true,
+        transparent = false,
         -- highlight background for the left gutter
         gutter = false,
         -- background for diagnostic virtual text
@@ -65,7 +65,7 @@ return {
   {
     "everviolet/nvim",
     name = "evergarden",
-    enabled = true,
+    enabled = false,
     vscode = false,
     lazy = false,
     priority = 1000,

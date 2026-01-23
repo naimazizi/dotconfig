@@ -291,10 +291,6 @@ map("n", "]q", "<cmd>cnext<cr>", { silent = true, desc = "Next quickfix" })
 map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
 map("n", "]l", "<cmd>lnext<cr>", { silent = true, desc = "Next location" })
 
--- Explorer (LazyVim defaults)
-map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { silent = true, desc = "Explorer" })
-map("n", "<leader>E", "<cmd>NvimTreeFindFile<cr>", { silent = true, desc = "Explorer (reveal file)" })
-
 -- Files / search (mini.pick)
 map("n", "<leader>ff", function()
   require("mini.pick").builtin.files()
@@ -442,11 +438,14 @@ map("n", "<leader>gg", function()
     vim.notify("toggleterm Terminal not available")
     return
   end
-  local lazygit= Terminal:new({
+  local lazygit = Terminal:new({
     cmd = "lazygit",
     direction = "float",
     hidden = true,
     close_on_exit = true,
+    float_opts = {
+      border = "double",
+    },
   })
 
   lazygit:toggle()
