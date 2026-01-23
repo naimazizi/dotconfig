@@ -72,7 +72,7 @@ return {
     config = function()
       require("evergarden").setup({
         editor = {
-          transparent_background = false,
+          transparent_background = true,
         },
         integrations = {
           blink_cmp = true,

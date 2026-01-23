@@ -268,6 +268,7 @@ return {
     -- recommended keymaps, with a helpful prefix alias
     init = function()
       local haunt = require("haunt.api")
+      local haunt_picker = require("haunt.picker")
       local map = vim.keymap.set
       local prefix = "<leader>h"
 
@@ -303,7 +304,7 @@ return {
 
       -- picker
       map("n", prefix .. "l", function()
-        haunt.to_quickfix()
+        haunt_picker.show()
       end, { desc = "Show Picker" })
     end,
   },
