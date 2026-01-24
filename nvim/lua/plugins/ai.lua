@@ -6,7 +6,7 @@ return {
     cmd = "Opencode",
     config = function()
       require("opencode").setup({
-        preferred_picker = "mini.pick", -- 'telescope', 'fzf', 'mini.pick', 'snacks', 'select', if nil, it will use the best available picker. Note mini.pick does not support multiple selections
+        preferred_picker = "telescope", -- 'telescope', 'fzf', 'mini.pick', 'snacks', 'select', if nil, it will use the best available picker. Note mini.pick does not support multiple selections
         preferred_completion = "blink",
         default_global_keymaps = true,
         default_mode = "build",

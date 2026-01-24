@@ -1,45 +1,46 @@
--- Open LSP picker for the given scope
+-- Telescope LSP pickers for the given scope
 ---@param scope "declaration" | "definition" | "document_symbol" | "implementation" | "references" | "type_definition" | "workspace_symbol"
----@param autojump boolean? If there is only one result it will jump to it.
-local function picker(scope, autojump)
-  ---@return string
-  local function get_symbol_query()
-    return vim.fn.input("Symbol: ")
-  end
+local function telescope_lsp(scope)
+  return function()
+    local ok, builtin = pcall(require, "telescope.builtin")
+    if not ok then
+      vim.notify("telescope.nvim not available", vim.log.levels.WARN)
+      return
+    end
 
-  if not autojump then
-    local opts = { scope = scope }
+    if scope == "references" then
+      builtin.lsp_references()
+      return
+    end
+
+    if scope == "definition" then
+      builtin.lsp_definitions()
+      return
+    end
+
+    if scope == "implementation" then
+      builtin.lsp_implementations()
+      return
+    end
+
+    if scope == "type_definition" then
+      builtin.lsp_type_definitions()
+      return
+    end
+
+    if scope == "document_symbol" then
+      builtin.lsp_document_symbols()
+      return
+    end
 
     if scope == "workspace_symbol" then
-      opts.symbol_query = get_symbol_query()
+      builtin.lsp_dynamic_workspace_symbols()
+      return
     end
 
-    require("mini.extra").pickers.lsp(opts)
-    return
+    -- Fallback for less common scopes
+    pcall(vim.lsp.buf[scope])
   end
-
-  ---@param opts vim.lsp.LocationOpts.OnList
-  local function on_list(opts)
-    vim.fn.setqflist({}, " ", opts)
-
-    if #opts.items == 1 then
-      vim.cmd.cfirst()
-    else
-      require("mini.extra").pickers.list({ scope = "quickfix" }, { source = { name = opts.title } })
-    end
-  end
-
-  if scope == "references" then
-    vim.lsp.buf.references(nil, { on_list = on_list })
-    return
-  end
-
-  if scope == "workspace_symbol" then
-    vim.lsp.buf.workspace_symbol(get_symbol_query(), { on_list = on_list })
-    return
-  end
-
-  vim.lsp.buf[scope]({ on_list = on_list })
 end
 
 local function lsp_keymaps(bufnr)
@@ -47,31 +48,22 @@ local function lsp_keymaps(bufnr)
     vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
   end
 
-  local ok_pick, _ = pcall(require, "mini.pick")
-  local ok_extras, extras = pcall(require, "mini.extra")
-
-  local lsp_goto = function(scope)
-    return function()
-      if ok_pick and ok_extras and extras.pickers and extras.pickers.lsp then
-        return picker(scope, true)
-      end
-
-      vim.notify(string.format("mini.pick/mini.extra not available for %s", scope), vim.log.levels.WARN)
-    end
-  end
-
-  -- Remove default vim.lsp.buf goto mappings; use mini.pick instead
-  map("n", "gd", lsp_goto("definition"), "Goto definition")
-  map("n", "gr", lsp_goto("references"), "References")
-  map("n", "gi", lsp_goto("implementation"), "Goto implementation")
-  map("n", "gy", lsp_goto("type_definition"), "Goto type definition")
+  -- Remove default vim.lsp.buf goto mappings; use telescope instead
+  map("n", "gd", telescope_lsp("definition"), "Goto definition")
+  map("n", "gr", telescope_lsp("references"), "References")
+  map("n", "gi", telescope_lsp("implementation"), "Goto implementation")
+  map("n", "gy", telescope_lsp("type_definition"), "Goto type definition")
 
   map("n", "<leader>cr", vim.lsp.buf.rename, "Rename")
   map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
 
   -- Workspace symbols / document symbols
-  map("n", "<leader>ss", lsp_goto("document_symbol"), "Symbols (document)")
-  map("n", "<leader>sS", lsp_goto("workspace_symbol"), "Symbols (workspace)")
+  map("n", "<leader>ss", telescope_lsp("document_symbol"), "Symbols (document)")
+  map("n", "<leader>sS", telescope_lsp("workspace_symbol"), "Symbols (workspace)")
+
+  -- LSP call
+  map("n", "<leader>ci", "<cmd>Telescope hierarchy incoming_calls<cr>", "Incoming Calls")
+  map("n", "<leader>co", "<cmd>Telescope hierarchy outgoing_calls<cr>", "Outgoing Calls")
 
   -- CodeLens (conditionally mapped; not all servers support it)
   local clients = vim.lsp.get_clients({ bufnr = bufnr })

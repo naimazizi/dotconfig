@@ -1,6 +1,24 @@
 local map = vim.keymap.set
 local silent = { silent = true }
 
+local function t(fn)
+  return function(...)
+    local ok, builtin = pcall(require, "telescope.builtin")
+    if not ok then
+      local ok_lazy, lazy = pcall(require, "lazy")
+      if ok_lazy and type(lazy.load) == "function" then
+        lazy.load({ plugins = { "telescope.nvim" } })
+      end
+      ok, builtin = pcall(require, "telescope.builtin")
+      if not ok then
+        vim.notify("telescope.nvim not available")
+        return
+      end
+    end
+    return builtin[fn](...)
+  end
+end
+
 -- LazyVim-ish
 map("n", "<Esc>", "<cmd>nohlsearch<cr><Esc>", { silent = true, desc = "Clear hlsearch" })
 
@@ -66,7 +84,7 @@ map("n", "<S-l>", "<cmd>bnext<cr>", { silent = true, desc = "Next buffer" })
 
 -- list all buffers
 map("n", "<leader>bb", function()
-  require("mini.pick").builtin.buffers()
+  t("buffers")({ sort_mru = true, ignore_current_buffer = true })
 end, { silent = false, desc = "List buffers" })
 -- New buffer
 map("n", "<leader>bn", "<cmd>enew<cr>", { silent = true, desc = "New buffer" })
@@ -276,41 +294,36 @@ end, { silent = true, desc = "Format selection" })
 map("n", "<leader>cm", "<cmd>Mason<cr>", { silent = true, desc = "Mason" })
 
 -- Quickfix / location list (LazyVim-ish)
-map("n", "<leader>xl", "<cmd>lopen<cr>", { silent = true, desc = "Location list" })
-map("n", "<leader>xq", "<cmd>copen<cr>", { silent = true, desc = "Quickfix" })
+map("n", "<leader>xl", "<cmd>Telescope loclist<cr>", { silent = true, desc = "Location list" })
+map("n", "<leader>xq", "<cmd>Telescope quickfix<cr>", { silent = true, desc = "Quickfix" })
 map("n", "<leader>xx", function()
-  local ok, extra = pcall(require, "mini.extra")
-  if ok and extra.pickers and extra.pickers.diagnostic then
-    extra.pickers.diagnostic()
-    return
-  end
-  vim.notify("mini.extra not available")
+  t("diagnostics")()
 end, { silent = true, desc = "Diagnostics" })
 map("n", "[q", "<cmd>cprev<cr>", { silent = true, desc = "Prev quickfix" })
 map("n", "]q", "<cmd>cnext<cr>", { silent = true, desc = "Next quickfix" })
 map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
 map("n", "]l", "<cmd>lnext<cr>", { silent = true, desc = "Next location" })
 
--- Files / search (mini.pick)
+-- Files / search (telescope)
 map("n", "<leader>ff", function()
-  require("mini.pick").builtin.files()
+  t("find_files")()
 end, { silent = true, desc = "Find files" })
 
 map("n", "<leader>fF", function()
-  require("mini.pick").builtin.files({ source = { cwd = vim.fn.expand("%:p:h") } })
+  t("find_files")({ cwd = vim.fn.expand("%:p:h") })
 end, { silent = true, desc = "Find files (cwd)" })
 
 map("n", "<leader>fg", function()
-  require("mini.pick").builtin.grep_live()
+  t("live_grep")()
 end, { silent = true, desc = "Grep" })
 
 -- LazyVim uses `<leader>/` for grep (root). Here we treat cwd as root.
 map("n", "<leader>/", function()
-  require("mini.pick").builtin.grep_live({ source = { cwd = vim.fn.getcwd() } })
+  require("telescope").extensions.live_grep_args.live_grep_args({ cwd = vim.fn.getcwd() })
 end, { silent = true, desc = "Grep (cwd)" })
 
 map("n", "<leader>sw", function()
-  require("mini.pick").builtin.grep({ pattern = vim.fn.expand("<cword>") })
+  t("grep_string")({ search = vim.fn.expand("<cword>") })
 end, { silent = true, desc = "Search word under cursor" })
 
 map("v", "<leader>sw", function()
@@ -339,7 +352,7 @@ map("v", "<leader>sw", function()
   if text == "" then
     return
   end
-  require("mini.pick").builtin.grep({ pattern = text })
+  t("grep_string")({ search = text })
 end, { silent = true, desc = "Search selection" })
 
 -- Search/Replace (grug-far)
@@ -355,51 +368,31 @@ map("n", "<leader>sr", function()
 end, { silent = true, desc = "Search/Replace (grug-far)" })
 
 map("n", "<leader>sR", function()
-  require("mini.pick").builtin.resume()
+  t("resume")()
 end, { silent = true, desc = "Resume" })
 
 map("n", "<leader>sk", function()
-  local ok, extra = pcall(require, "mini.extra")
-  if ok and extra.pickers and extra.pickers.keymaps then
-    extra.pickers.keymaps()
-    return
-  end
-  vim.notify("mini.extra not available")
+  t("keymaps")()
 end, { silent = true, desc = "Keymaps" })
 
 map("n", "<leader>sm", function()
-  local ok, extra = pcall(require, "mini.extra")
-  if ok and extra.pickers and extra.pickers.marks then
-    extra.pickers.marks()
-    return
-  end
-  vim.notify("mini.extra not available")
+  t("marks")()
 end, { silent = true, desc = "Marks" })
 
 map("n", "<leader>st", function()
-  require("mini.pick").builtin.grep({ pattern = [[(TODO|FIXME|FIX)]] })
+  t("live_grep")({ default_text = "TODO|FIXME|FIX" })
 end, { silent = true, desc = "TODO" })
 
 map("n", "<leader>sd", function()
-  local ok, extra = pcall(require, "mini.extra")
-  if ok and extra.pickers and extra.pickers.diagnostic then
-    extra.pickers.diagnostic()
-    return
-  end
-  vim.notify("mini.extra not available")
+  t("diagnostics")()
 end, { silent = true, desc = "Diagnostics" })
 
 map("n", "<leader>fb", function()
-  require("mini.pick").builtin.buffers()
+  t("buffers")({ sort_mru = true, ignore_current_buffer = true })
 end, { silent = true, desc = "Buffers" })
 
 map("n", "<leader>fr", function()
-  local ok, extra = pcall(require, "mini.extra")
-  if ok and extra.pickers and extra.pickers.oldfiles then
-    extra.pickers.oldfiles()
-    return
-  end
-  vim.notify("mini.extra not available")
+  t("oldfiles")()
 end, { silent = true, desc = "Recent" })
 
 map("n", "<leader>fn", function()
@@ -412,7 +405,7 @@ map("n", "<leader>fn", function()
 end, { silent = true, desc = "Notifications" })
 
 map("n", "<leader>fh", function()
-  require("mini.pick").builtin.help()
+  t("help_tags")()
 end, { silent = true, desc = "Help" })
 
 -- Alternative fast file picker (fff.nvim)

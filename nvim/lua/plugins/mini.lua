@@ -100,8 +100,6 @@ return {
         autocorrect = { enable = false },
         autopeek = { enable = true },
       })
-      require("mini.pick").setup()
-      require("mini.extra").setup()
       require("mini.indentscope").setup({
         draw = {
           -- Delay (in ms) between event and start of drawing scope indicator
