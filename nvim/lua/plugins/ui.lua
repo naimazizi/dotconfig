@@ -84,7 +84,7 @@ return {
           },
           {
             title = "Terminal",
-            ft = "toggleterm",
+            ft = "snacks_terminal",
             filter = function(_, win)
               return vim.api.nvim_win_get_config(win).relative == ""
             end,
@@ -115,13 +115,13 @@ return {
           },
         },
         right = {
+          { title = "Grug Far", ft = "grug-far", size = { height = 0.50 } },
           {
             title = "Outline",
             ft = "Outline",
             open = "Outline",
           },
-          { title = "Grug Far", ft = "grug-far", size = { height = 0.30 } },
-          -- { title = "AI", ft = "sidekick_terminal", size = { height = 0.5 } },
+
           {
             title = "Overseer",
             ft = "OverseerList",

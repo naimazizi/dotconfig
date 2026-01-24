@@ -1,40 +1,28 @@
--- Telescope LSP pickers for the given scope
----@param scope "declaration" | "definition" | "document_symbol" | "implementation" | "references" | "type_definition" | "workspace_symbol"
-local function telescope_lsp(scope)
+-- fzf-lua LSP pickers for the given scope
+---@param scope "declaration" | "definition" | "document_symbol" | "implementation" | "references" | "type_definition" | "workspace_symbol" | "incoming_calls" | "outgoing_calls" | "code_action"
+local function fzf_lua_lsp(scope)
   return function()
-    local ok, builtin = pcall(require, "telescope.builtin")
+    local ok, fzf = pcall(require, "fzf-lua")
     if not ok then
-      vim.notify("telescope.nvim not available", vim.log.levels.WARN)
+      vim.notify("fzf-lua not available", vim.log.levels.WARN)
       return
     end
 
-    if scope == "references" then
-      builtin.lsp_references()
-      return
-    end
+    local lsp_mappings = {
+      references = "lsp_references",
+      definition = "lsp_definitions",
+      implementation = "lsp_implementations",
+      type_definition = "lsp_typedefs",
+      document_symbol = "lsp_document_symbols",
+      workspace_symbol = "lsp_live_workspace_symbols",
+      incoming_calls = "lsp_incoming_calls",
+      outgoing_calls = "lsp_outgoing_calls",
+      code_action = "lsp_code_actions",
+    }
 
-    if scope == "definition" then
-      builtin.lsp_definitions()
-      return
-    end
-
-    if scope == "implementation" then
-      builtin.lsp_implementations()
-      return
-    end
-
-    if scope == "type_definition" then
-      builtin.lsp_type_definitions()
-      return
-    end
-
-    if scope == "document_symbol" then
-      builtin.lsp_document_symbols()
-      return
-    end
-
-    if scope == "workspace_symbol" then
-      builtin.lsp_dynamic_workspace_symbols()
+    local fn_name = lsp_mappings[scope]
+    if fn_name and fzf[fn_name] then
+      fzf[fn_name]()
       return
     end
 
@@ -48,22 +36,22 @@ local function lsp_keymaps(bufnr)
     vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
   end
 
-  -- Remove default vim.lsp.buf goto mappings; use telescope instead
-  map("n", "gd", telescope_lsp("definition"), "Goto definition")
-  map("n", "gr", telescope_lsp("references"), "References")
-  map("n", "gi", telescope_lsp("implementation"), "Goto implementation")
-  map("n", "gy", telescope_lsp("type_definition"), "Goto type definition")
+  -- Remove default vim.lsp.buf goto mappings; use fzf-lua instead
+  map("n", "gd", fzf_lua_lsp("definition"), "Goto definition")
+  map("n", "gr", fzf_lua_lsp("references"), "References")
+  map("n", "gi", fzf_lua_lsp("implementation"), "Goto implementation")
+  map("n", "gy", fzf_lua_lsp("type_definition"), "Goto type definition")
 
   map("n", "<leader>cr", vim.lsp.buf.rename, "Rename")
-  map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
+  map({ "n", "x" }, "<leader>ca", fzf_lua_lsp("code_action"), "Code action")
 
   -- Workspace symbols / document symbols
-  map("n", "<leader>ss", telescope_lsp("document_symbol"), "Symbols (document)")
-  map("n", "<leader>sS", telescope_lsp("workspace_symbol"), "Symbols (workspace)")
+  map("n", "<leader>ss", fzf_lua_lsp("document_symbol"), "Symbols (document)")
+  map("n", "<leader>sS", fzf_lua_lsp("workspace_symbol"), "Symbols (workspace)")
 
-  -- LSP call
-  map("n", "<leader>ci", "<cmd>Telescope hierarchy incoming_calls<cr>", "Incoming Calls")
-  map("n", "<leader>co", "<cmd>Telescope hierarchy outgoing_calls<cr>", "Outgoing Calls")
+  -- LSP calls
+  map("n", "<leader>ci", fzf_lua_lsp("incoming_calls"), "Symbols (document)")
+  map("n", "<leader>co", fzf_lua_lsp("outgoing_calls"), "Symbols (workspace)")
 
   -- CodeLens (conditionally mapped; not all servers support it)
   local clients = vim.lsp.get_clients({ bufnr = bufnr })

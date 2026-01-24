@@ -1,21 +1,22 @@
 local map = vim.keymap.set
 local silent = { silent = true }
 
-local function t(fn)
+local function fzf_lua_picker(fn, opts)
   return function(...)
-    local ok, builtin = pcall(require, "telescope.builtin")
+    local ok, fzf = pcall(require, "fzf-lua")
     if not ok then
       local ok_lazy, lazy = pcall(require, "lazy")
       if ok_lazy and type(lazy.load) == "function" then
-        lazy.load({ plugins = { "telescope.nvim" } })
+        lazy.load({ plugins = { "fzf-lua" } })
       end
-      ok, builtin = pcall(require, "telescope.builtin")
+      ok, fzf = pcall(require, "fzf-lua")
       if not ok then
-        vim.notify("telescope.nvim not available")
+        vim.notify("fzf-lua not available")
         return
       end
     end
-    return builtin[fn](...)
+    local merged_opts = vim.tbl_extend("force", opts or {}, select(1, ...) or {})
+    return fzf[fn](merged_opts)
   end
 end
 
@@ -83,9 +84,7 @@ map("n", "<S-h>", "<cmd>bprevious<cr>", { silent = true, desc = "Prev buffer" })
 map("n", "<S-l>", "<cmd>bnext<cr>", { silent = true, desc = "Next buffer" })
 
 -- list all buffers
-map("n", "<leader>bb", function()
-  t("buffers")({ sort_mru = true, ignore_current_buffer = true })
-end, { silent = false, desc = "List buffers" })
+map("n", "<leader>bb", fzf_lua_picker("buffers", {}), { silent = false, desc = "List buffers" })
 -- New buffer
 map("n", "<leader>bn", "<cmd>enew<cr>", { silent = true, desc = "New buffer" })
 
@@ -284,6 +283,15 @@ map(
   { silent = true, desc = "Eval" }
 )
 
+map("n", "<leader>dd", fzf_lua_picker("dap_commands", {}), { silent = true, desc = "DAP commands" })
+
+map("n", "<leader>dv", fzf_lua_picker("dap_variables", {}), { silent = true, desc = "DAP variables" })
+
+map("n", "<leader>dV", fzf_lua_picker("dap_breakpoints", {}), { silent = true, desc = "DAP breakpoint" })
+
+map("n", "<leader>df", fzf_lua_picker("dap_configurations", {}), { silent = true, desc = "Configuration" })
+
+-- Code formatting (conform.nvim)
 map("n", "<leader>cf", function()
   require("conform").format({ async = true, lsp_format = "fallback" })
 end, { silent = true, desc = "Format" })
@@ -291,40 +299,39 @@ map("x", "<leader>cf", function()
   require("conform").format({ async = true, lsp_format = "fallback" })
 end, { silent = true, desc = "Format selection" })
 
+-- Mason (LazyVim-ish)
 map("n", "<leader>cm", "<cmd>Mason<cr>", { silent = true, desc = "Mason" })
 
 -- Quickfix / location list (LazyVim-ish)
-map("n", "<leader>xl", "<cmd>Telescope loclist<cr>", { silent = true, desc = "Location list" })
-map("n", "<leader>xq", "<cmd>Telescope quickfix<cr>", { silent = true, desc = "Quickfix" })
-map("n", "<leader>xx", function()
-  t("diagnostics")()
-end, { silent = true, desc = "Diagnostics" })
+map("n", "<leader>xl", fzf_lua_picker("quickfix", {}), { silent = true, desc = "Location list" })
+map("n", "<leader>xq", fzf_lua_picker("quickfix", {}), { silent = true, desc = "Quickfix" })
+map("n", "<leader>xx", fzf_lua_picker("diagnostics", {}), { silent = true, desc = "Diagnostics" })
 map("n", "[q", "<cmd>cprev<cr>", { silent = true, desc = "Prev quickfix" })
 map("n", "]q", "<cmd>cnext<cr>", { silent = true, desc = "Next quickfix" })
 map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
 map("n", "]l", "<cmd>lnext<cr>", { silent = true, desc = "Next location" })
 
--- Files / search (telescope)
-map("n", "<leader>ff", function()
-  t("find_files")()
-end, { silent = true, desc = "Find files" })
+-- Files / search (fzf-lua)
+map("n", "<leader>ff", fzf_lua_picker("files", {}), { silent = true, desc = "Find files" })
 
-map("n", "<leader>fF", function()
-  t("find_files")({ cwd = vim.fn.expand("%:p:h") })
-end, { silent = true, desc = "Find files (cwd)" })
+map(
+  "n",
+  "<leader>fF",
+  fzf_lua_picker("files", { cwd = vim.fn.expand("%:p:h") }),
+  { silent = true, desc = "Find files (cwd)" }
+)
 
-map("n", "<leader>fg", function()
-  t("live_grep")()
-end, { silent = true, desc = "Grep" })
+map("n", "<leader>fg", fzf_lua_picker("live_grep", {}), { silent = true, desc = "Grep" })
 
 -- LazyVim uses `<leader>/` for grep (root). Here we treat cwd as root.
-map("n", "<leader>/", function()
-  require("telescope").extensions.live_grep_args.live_grep_args({ cwd = vim.fn.getcwd() })
-end, { silent = true, desc = "Grep (cwd)" })
+map("n", "<leader>/", fzf_lua_picker("live_grep", { cwd = vim.fn.getcwd() }), { silent = true, desc = "Grep (cwd)" })
 
-map("n", "<leader>sw", function()
-  t("grep_string")({ search = vim.fn.expand("<cword>") })
-end, { silent = true, desc = "Search word under cursor" })
+map(
+  "n",
+  "<leader>sw",
+  fzf_lua_picker("grep_string", { search = vim.fn.expand("<cword>") }),
+  { silent = true, desc = "Search word under cursor" }
+)
 
 map("v", "<leader>sw", function()
   local start_pos = vim.fn.getpos("v")
@@ -352,7 +359,7 @@ map("v", "<leader>sw", function()
   if text == "" then
     return
   end
-  t("grep_string")({ search = text })
+  fzf_lua_picker("grep_string", { search = text })()
 end, { silent = true, desc = "Search selection" })
 
 -- Search/Replace (grug-far)
@@ -367,33 +374,21 @@ map("n", "<leader>sr", function()
   })
 end, { silent = true, desc = "Search/Replace (grug-far)" })
 
-map("n", "<leader>sR", function()
-  t("resume")()
-end, { silent = true, desc = "Resume" })
+map("n", "<leader>sR", fzf_lua_picker("resume", {}), { silent = true, desc = "Resume" })
 
-map("n", "<leader>sk", function()
-  t("keymaps")()
-end, { silent = true, desc = "Keymaps" })
+map("n", "<leader>sk", fzf_lua_picker("keymaps", {}), { silent = true, desc = "Keymaps" })
 
-map("n", "<leader>sm", function()
-  t("marks")()
-end, { silent = true, desc = "Marks" })
+map("n", "<leader>sm", fzf_lua_picker("marks", {}), { silent = true, desc = "Marks" })
 
-map("n", "<leader>st", function()
-  t("live_grep")({ default_text = "TODO|FIXME|FIX" })
-end, { silent = true, desc = "TODO" })
+map("n", "<leader>st", fzf_lua_picker("live_grep", { search = "TODO|FIXME|FIX" }), { silent = true, desc = "TODO" })
 
-map("n", "<leader>sd", function()
-  t("diagnostics")()
-end, { silent = true, desc = "Diagnostics" })
+map("n", "<leader>sd", fzf_lua_picker("diagnostics_document", {}), { silent = true, desc = "Diagnostics" })
 
-map("n", "<leader>fb", function()
-  t("buffers")({ sort_mru = true, ignore_current_buffer = true })
-end, { silent = true, desc = "Buffers" })
+map("n", "<leader>sD", fzf_lua_picker("diagnostics_workspace", {}), { silent = true, desc = "Diagnostics Workspace" })
 
-map("n", "<leader>fr", function()
-  t("oldfiles")()
-end, { silent = true, desc = "Recent" })
+map("n", "<leader>fb", fzf_lua_picker("buffers", {}), { silent = true, desc = "Buffers" })
+
+map("n", "<leader>fr", fzf_lua_picker("oldfiles", {}), { silent = true, desc = "Recent" })
 
 map("n", "<leader>fn", function()
   local ok, notify = pcall(require, "mini.notify")
@@ -404,13 +399,11 @@ map("n", "<leader>fn", function()
   vim.notify("mini.notify not available")
 end, { silent = true, desc = "Notifications" })
 
-map("n", "<leader>fh", function()
-  t("help_tags")()
-end, { silent = true, desc = "Help" })
+map("n", "<leader>fh", fzf_lua_picker("help_tags", {}), { silent = true, desc = "Help" })
 
-map("n", "<leader>s/", function()
-  t("command_history")()
-end, { silent = true, desc = "Command History" })
+map("n", "<leader>fz", fzf_lua_picker("zoxide", {}), { silent = true, desc = "Zoxide" })
+
+map("n", "<leader>s/", fzf_lua_picker("command_history", {}), { silent = true, desc = "Command History" })
 
 -- Alternative fast file picker (fff.nvim)
 map("n", "<leader><space>", function()
@@ -418,47 +411,39 @@ map("n", "<leader><space>", function()
 end, { silent = true, desc = "Find files (fff)" })
 
 -- Picker (Git)
-map("n", "<leader>gc", function()
-  t("git_bcommits")()
-end, { silent = true, desc = "Buffer Commits" })
+map("n", "<leader>gc", fzf_lua_picker("git_bcommits", {}), { silent = true, desc = "Buffer Commits" })
 
-map("n", "<leader>gC", function()
-  t("git_commits")()
-end, { silent = true, desc = "Commits" })
+map("n", "<leader>gC", fzf_lua_picker("git_commits", {}), { silent = true, desc = "Commits" })
 
-map("n", "<leader>gd", function()
-  t("git_status")()
-end, { silent = true, desc = "Diff" })
+map("n", "<leader>gd", fzf_lua_picker("git_diff", {}), { silent = true, desc = "Diff" })
+
+map("n", "<leader>gB", function()
+  Snacks.gitbrowse()
+end, { silent = true, desc = "Browse" })
+
+map("n", "<leader>gi", function()
+  Snacks.picker.gh_issue()
+end, { silent = true, desc = "GitHub Issues (open)" })
+
+map("n", "<leader>gI", function()
+  Snacks.picker.gh_issue({ state = "all" })
+end, { silent = true, desc = "GitHub Issues (all)" })
+
+map("n", "<leader>gp", function()
+  Snacks.picker.gh_pr()
+end, { silent = true, desc = "GitHub Pull Requests (open)" })
+
+map("n", "<leader>gP", function()
+  Snacks.picker.gh_pr({ state = "all" })
+end, { silent = true, desc = "GitHub Pull Requests (all)" })
+
+-- Terminal
+map("n", "<C-/>", "<cmd>lua Snacks.terminal.toggle()<CR>", { silent = true, desc = "Toggle terminal" })
+map("n", "<leader>ft", "<cmd>lua Snacks.terminal()<CR>", { silent = true, desc = "Toggle terminal" })
 
 -- Git (gitsigns)
 map("n", "<leader>gg", function()
-  if vim.fn.executable("lazygit") == 0 then
-    vim.notify("lazygit not found in PATH")
-    return
-  end
-
-  local ok, term = pcall(require, "toggleterm.terminal")
-  if not ok then
-    vim.notify("toggleterm.nvim not available")
-    return
-  end
-
-  local Terminal = term.Terminal
-  if not Terminal then
-    vim.notify("toggleterm Terminal not available")
-    return
-  end
-  local lazygit = Terminal:new({
-    cmd = "lazygit",
-    direction = "float",
-    hidden = true,
-    close_on_exit = true,
-    float_opts = {
-      border = "double",
-    },
-  })
-
-  lazygit:toggle()
+  Snacks.lazygit()
 end, { silent = true, desc = "lazygit (toggleterm)" })
 
 map("n", "]h", function()
@@ -501,14 +486,6 @@ map("n", "z1", "zM", { noremap = true, desc = "Fold 1" })
 map("n", "z2", "zM1zr", { noremap = true, desc = "Fold 2" })
 map("n", "z3", "zM2zr", { noremap = true, desc = "Fold 3" })
 map("n", "z4", "zM3zr", { noremap = true, desc = "Fold 4" })
-
--- mark
-map("n", "dm", function()
-  local mark = vim.fn.input("Enter mark to delete: ")
-  if mark ~= "" then
-    vim.cmd("delmark " .. mark)
-  end
-end, { noremap = true, desc = "Delete specific mark" })
 
 -- Center buffer (zen-mode)
 map("n", "<leader>uz", "<cmd>NoNeckPain<cr>", { noremap = true, desc = "Toggle zen-mode" })

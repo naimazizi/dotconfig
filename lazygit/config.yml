@@ -227,8 +227,8 @@ gui:
 # Config relating to git
 git:
   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Custom_Pagers.md
-  pagers:
-    - pager: delta --dark --paging=never
+  # pagers:
+  #   - pager: delta --dark --paging=never
 
   # Config relating to committing
   commit:
