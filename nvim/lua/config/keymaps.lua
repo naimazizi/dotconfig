@@ -408,10 +408,27 @@ map("n", "<leader>fh", function()
   t("help_tags")()
 end, { silent = true, desc = "Help" })
 
+map("n", "<leader>s/", function()
+  t("command_history")()
+end, { silent = true, desc = "Command History" })
+
 -- Alternative fast file picker (fff.nvim)
 map("n", "<leader><space>", function()
   require("fff").find_files()
 end, { silent = true, desc = "Find files (fff)" })
+
+-- Picker (Git)
+map("n", "<leader>gc", function()
+  t("git_bcommits")()
+end, { silent = true, desc = "Buffer Commits" })
+
+map("n", "<leader>gC", function()
+  t("git_commits")()
+end, { silent = true, desc = "Commits" })
+
+map("n", "<leader>gd", function()
+  t("git_status")()
+end, { silent = true, desc = "Diff" })
 
 -- Git (gitsigns)
 map("n", "<leader>gg", function()
