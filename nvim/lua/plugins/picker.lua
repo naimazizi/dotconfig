@@ -18,7 +18,6 @@ return {
     event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-lua/popup.nvim",
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
       "jmacadie/telescope-hierarchy.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
