@@ -137,23 +137,4 @@ return {
     event = "VeryLazy",
     opts = {},
   },
-  {
-    "SmiteshP/nvim-navic",
-    vscode = false,
-    event = "LspAttach",
-    dependencies = "neovim/nvim-lspconfig",
-    config = function(_, opts)
-      require("nvim-navic").setup(opts)
-      vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function(args)
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-          if client and client.server_capabilities.documentSymbolProvider then
-            require("nvim-navic").attach(client, args.buf)
-          end
-        end,
-      })
-
-      vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-    end,
-  },
 }
