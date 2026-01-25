@@ -1,5 +1,4 @@
 local map = vim.keymap.set
-local silent = { silent = true }
 
 local function fzf_lua_picker(fn, opts)
   return function(...)
