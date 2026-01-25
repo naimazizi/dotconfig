@@ -94,6 +94,12 @@ if [[ -d "${MASON_BIN_PATH}" ]]; then
   export PATH=$PATH:$MASON_BIN_PATH
 fi
 
+# gcloud bin
+export GCLOUD_BIN_PATH="/opt/google-cloud-cli/bin/"
+if [[ -d "${GCLOUD_BIN_PATH}" ]]; then
+  export PATH=$PATH:$GCLOUD_BIN_PATH
+fi
+
 # local bin
 export LOCAL_BIN_PATH="$HOME/.local/bin"
 if [[ -d "${LOCAL_BIN_PATH}" ]]; then
