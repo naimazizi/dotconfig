@@ -379,7 +379,12 @@ map("n", "<leader>sk", fzf_lua_picker("keymaps", {}), { silent = true, desc = "K
 
 map("n", "<leader>sm", fzf_lua_picker("marks", {}), { silent = true, desc = "Marks" })
 
-map("n", "<leader>st", fzf_lua_picker("live_grep", { search = "TODO|FIXME|FIX" }), { silent = true, desc = "TODO" })
+map(
+  "n",
+  "<leader>st",
+  fzf_lua_picker("grep", { search = "TODO|HACK|PERF|NOTE|FIXME", no_esc = true }),
+  { silent = true, desc = "TODO" }
+)
 
 map("n", "<leader>sd", fzf_lua_picker("diagnostics_document", {}), { silent = true, desc = "Diagnostics" })
 
