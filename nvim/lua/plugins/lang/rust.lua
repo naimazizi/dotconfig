@@ -14,34 +14,6 @@ return {
       },
     },
   },
-  -- Add Rust & related to treesitter
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "rust", "ron" } },
-  },
-  {
-    "mason-org/mason.nvim",
-    optional = true,
-    opts = function(_, opts)
-      opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "codelldb", "bacon", "rust-analyzer" })
-    end,
-  },
-  {
-    "neovim/nvim-lspconfig",
-    optional = true,
-    ft = "rust",
-    config = function()
-      vim.lsp.config("bacon_ls", {
-        init_options = {
-          updateOnSave = true,
-          updateOnSaveWaitMillis = 1000,
-        },
-      })
-
-      vim.lsp.enable({ "bacon_ls" })
-    end,
-  },
   {
     "mrcjkb/rustaceanvim",
     ft = { "rust" },

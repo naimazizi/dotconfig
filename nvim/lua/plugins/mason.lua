@@ -32,6 +32,23 @@ return {
       if not vim.env.PATH:find(mason_bin, 1, true) then
         vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
       end
+
+      -- Need to be installed by Mason.
+      vim.list_extend(opts.ensure_installed, {
+        "jsonls",
+        "emmylua_ls",
+        "marksman",
+        "pyrefly",
+        "ruff",
+        "debugpy",
+        "codelldb",
+        "bacon",
+        "bacon_ls",
+        "rust-analyzer",
+        "typos-lsp",
+        "tinymist",
+        "typstyle",
+      })
     end,
   },
   {

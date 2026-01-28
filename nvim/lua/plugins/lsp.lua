@@ -114,6 +114,93 @@ return {
         },
       })
 
+      -- SQL (DBT)
+      vim.lsp.config("dbt", {
+        cmd = { "dbt-language-server" },
+        filetypes = { "sql", "yaml" },
+      })
+
+      -- Lua
+      vim.lsp.config("emmylua_ls", {
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = "Replace",
+            },
+            -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+            -- diagnostics = { disable = { 'missing-fields' } },
+          },
+        },
+      })
+
+      -- Markdown
+      vim.lsp.config("marksman", {})
+
+      -- Python
+      vim.lsp.config("pyrefly", {})
+      vim.lsp.config("ruff", {
+        on_attach = function(client, bufnr)
+          if client.name ~= "ruff" then
+            return
+          end
+
+          vim.keymap.set("n", "<leader>co", function()
+            vim.lsp.buf.code_action({
+              context = {
+                only = { "source.organizeImports" },
+                diagnostics = {},
+              },
+              apply = true,
+            })
+          end, { buffer = bufnr, silent = true, desc = "Organize Imports" })
+        end,
+      })
+
+      -- Rust
+      vim.lsp.config("bacon_ls", {
+        init_options = {
+          updateOnSave = true,
+          updateOnSaveWaitMillis = 1000,
+        },
+      })
+
+      -- Typos
+      vim.lsp.config("typos_lsp", {
+        -- Logging level of the language server. Logs appear in :LspLog. Defaults to error.
+        cmd_env = { RUST_LOG = "error" },
+        init_options = {
+          -- Custom config. Used together with a config file found in the workspace or its parents,
+          -- taking precedence for settings declared in both.
+          -- Equivalent to the typos `--config` cli argument.
+          config = "~/code/typos-lsp/crates/typos-lsp/tests/typos.toml",
+          -- How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
+          -- Defaults to error.
+          diagnosticSeverity = "Hint",
+        },
+      })
+
+      -- Typst
+      vim.lsp.config("tinymist", {
+        single_file_support = true, -- Fixes LSP attachment in non-Git directories
+        settings = {
+          formatterMode = "typstyle",
+          semanticTokens = "enable",
+        },
+      })
+
+      -- Enabled LSP
+      vim.lsp.enable({
+        "dbt",
+        "jsonls",
+        "emmylua_ls",
+        "marksman",
+        "pyrefly",
+        "ruff",
+        "bacon_ls",
+        "typos-lsp",
+        "tinymist",
+      })
+
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           lsp_keymaps(args.buf)
