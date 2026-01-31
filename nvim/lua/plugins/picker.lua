@@ -68,7 +68,6 @@ return {
         },
         files = {
           cwd_prompt = false,
-          path_shorten = 1,
           formatter = "path.filename_first",
           actions = {
             ["alt-i"] = { actions.toggle_ignore },
