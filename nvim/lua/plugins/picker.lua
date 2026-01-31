@@ -1,20 +1,5 @@
 return {
   {
-    "dmtrKovalenko/fff.nvim",
-    vscode = false,
-    build = function()
-      require("fff.download").download_or_build_binary()
-    end,
-    dependencies = {
-      "folke/snacks.nvim",
-    },
-    opts = {
-      prompt = " ",
-      title = "Find Files",
-    },
-    lazy = false,
-  },
-  {
     "ibhagwan/fzf-lua",
     vscode = false,
     event = "VeryLazy",
@@ -36,37 +21,12 @@ return {
       config.defaults.keymap.builtin["<c-f>"] = "preview-page-down"
       config.defaults.keymap.builtin["<c-b>"] = "preview-page-up"
 
-      local img_previewer ---@type string[]?
-      for _, v in ipairs({
-        { cmd = "ueberzug", args = {} },
-        { cmd = "chafa", args = { "{file}", "--format=symbols" } },
-        { cmd = "viu", args = { "-b" } },
-      }) do
-        if vim.fn.executable(v.cmd) == 1 then
-          img_previewer = vim.list_extend({ v.cmd }, v.args)
-          break
-        end
-      end
-
       fzf.setup({
         "default-title",
         fzf_colors = true,
         fzf_opts = {
           ["--no-scrollbar"] = true,
         },
-        previewers = {
-          builtin = {
-            extensions = {
-              ["png"] = img_previewer,
-              ["jpg"] = img_previewer,
-              ["jpeg"] = img_previewer,
-              ["gif"] = img_previewer,
-              ["webp"] = img_previewer,
-            },
-            ueberzug_scaler = "fit_contain",
-          },
-        },
-        -- Custom LazyVim option to configure vim.ui.select
         ui_select = function(fzf_opts, items)
           return vim.tbl_deep_extend("force", fzf_opts, {
             prompt = " ",
@@ -129,6 +89,18 @@ return {
         },
       })
       fzf.register_ui_select()
+    end,
+  },
+  {
+    "otavioschwanck/fzf-lua-enchanted-files",
+    vscode = false,
+    event = "VeryLazy",
+    dependencies = { "ibhagwan/fzf-lua" },
+    config = function()
+      vim.g.fzf_lua_enchanted_files = {
+        max_history_per_cwd = 50,
+        auto_history = true,
+      }
     end,
   },
   {
@@ -216,7 +188,12 @@ return {
 
           ---@type snacks.dashboard.Item[]
           keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":FFFFind" },
+            {
+              icon = " ",
+              key = "f",
+              desc = "Find File",
+              action = ":lua require('fzf-lua-enchanted-files').files()",
+            },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
             {

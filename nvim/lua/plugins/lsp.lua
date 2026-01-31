@@ -114,12 +114,6 @@ return {
         },
       })
 
-      -- SQL (DBT)
-      vim.lsp.config("dbt", {
-        cmd = { "dbt-language-server" },
-        filetypes = { "sql", "yaml" },
-      })
-
       -- Lua
       vim.lsp.config("emmylua_ls", {
         settings = {
@@ -188,6 +182,9 @@ return {
         },
       })
 
+      -- Copilot
+      vim.lsp.config("copilot", {})
+
       -- Enabled LSP
       vim.lsp.enable({
         "dbt",
@@ -197,8 +194,9 @@ return {
         "pyrefly",
         "ruff",
         "bacon_ls",
-        "typos-lsp",
+        "typos_lsp",
         "tinymist",
+        "copilot",
       })
 
       vim.api.nvim_create_autocmd("LspAttach", {

@@ -26,11 +26,4 @@ return {
       vim.list_extend(opts.ensure_installed, { "copilot-language-server" })
     end,
   },
-  {
-    "neovim/nvim-lspconfig",
-    optional = true,
-    config = function()
-      vim.lsp.enable("copilot")
-    end,
-  },
 }

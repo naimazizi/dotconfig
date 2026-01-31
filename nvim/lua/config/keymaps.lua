@@ -409,10 +409,10 @@ map("n", "<leader>fz", fzf_lua_picker("zoxide", {}), { silent = true, desc = "Zo
 
 map("n", "<leader>s/", fzf_lua_picker("command_history", {}), { silent = true, desc = "Command History" })
 
--- Alternative fast file picker (fff.nvim)
+-- Alternative fast file picker
 map("n", "<leader><space>", function()
-  require("fff").find_files()
-end, { silent = true, desc = "Find files (fff)" })
+  require("fzf-lua-enchanted-files").files()
+end, { silent = true, desc = "Find files (frecency)" })
 
 -- Picker (Git)
 map("n", "<leader>gc", fzf_lua_picker("git_bcommits", {}), { silent = true, desc = "Buffer Commits" })
