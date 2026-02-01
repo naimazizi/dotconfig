@@ -22,10 +22,12 @@ return {
       config.defaults.keymap.builtin["<c-b>"] = "preview-page-up"
 
       fzf.setup({
-        "default-title",
+        { "ivy" },
+        fzf_bin = "sk",
         fzf_colors = true,
         fzf_opts = {
           ["--no-scrollbar"] = true,
+          ["--algo"] = "frizbee",
         },
         ui_select = function(fzf_opts, items)
           return vim.tbl_deep_extend("force", fzf_opts, {
