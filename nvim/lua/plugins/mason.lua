@@ -35,18 +35,19 @@ return {
 
       -- Need to be installed by Mason.
       vim.list_extend(opts.ensure_installed, {
-        "jsonls",
+        "bacon",
+        "bacon_ls",
+        "codelldb",
+        "debugpy",
         "emmylua_ls",
+        "harper-ls",
+        "jsonls",
         "marksman",
         "pyrefly",
         "ruff",
-        "debugpy",
-        "codelldb",
-        "bacon",
-        "bacon_ls",
         "rust-analyzer",
-        "typos-lsp",
         "tinymist",
+        "typos-lsp",
         "typstyle",
       })
     end,

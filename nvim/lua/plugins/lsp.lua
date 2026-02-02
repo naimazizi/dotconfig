@@ -185,6 +185,42 @@ return {
       -- Copilot
       vim.lsp.config("copilot", {})
 
+      -- Harper
+      vim.lsp.config("harper_ls", {
+        filetypes = {
+          "markdown",
+          "gitcommit",
+        },
+        settings = {
+          ["harper-ls"] = {
+            userDictPath = "",
+            fileDictPath = "",
+            linters = {
+              SpellCheck = true,
+              SpelledNumbers = false,
+              AnA = true,
+              SentenceCapitalization = true,
+              UnclosedQuotes = true,
+              WrongQuotes = false,
+              LongSentences = true,
+              RepeatedWords = true,
+              Spaces = true,
+              Matcher = true,
+              CorrectNumberSuffix = true,
+            },
+            codeActions = {
+              ForceStable = false,
+            },
+            markdown = {
+              IgnoreLinkTitle = true,
+            },
+            diagnosticSeverity = "hint",
+            isolateEnglish = false,
+            dialect = "British",
+          },
+        },
+      })
+
       -- Enabled LSP
       vim.lsp.enable({
         "dbt",
@@ -197,6 +233,7 @@ return {
         "typos_lsp",
         "tinymist",
         "copilot",
+        "harper_ls",
       })
 
       vim.api.nvim_create_autocmd("LspAttach", {
