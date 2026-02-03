@@ -92,9 +92,6 @@ return {
     config = function()
       require("mini.notify").setup()
       vim.notify = require("mini.notify").make_notify()
-      require("mini.statusline").setup()
-      require("mini.tabline").setup()
-      require("mini.bufremove").setup()
       require("mini.cmdline").setup({
         autocomplete = { enable = false },
         autocorrect = { enable = false },

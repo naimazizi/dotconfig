@@ -51,74 +51,34 @@ map("n", "<leader>qd", function()
 end, { silent = true, desc = "Delete current session" })
 
 -- Buffers (LazyVim-ish)
--- Note: MiniBufremove is used so window layout stays intact.
-local function is_listed(buf)
-  return vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted
-end
-
-local function bufs_listed()
-  local out = {}
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if is_listed(buf) then
-      table.insert(out, buf)
-    end
-  end
-  table.sort(out)
-  return out
-end
-
-local function delete_buf(buf, force)
-  require("mini.bufremove").delete(buf or 0, force or false)
-end
-
-local function delete_where(predicate, force)
-  for _, buf in ipairs(bufs_listed()) do
-    if predicate(buf) then
-      delete_buf(buf, force)
-    end
-  end
-end
-
-map("n", "<S-h>", "<cmd>bprevious<cr>", { silent = true, desc = "Prev buffer" })
-map("n", "<S-l>", "<cmd>bnext<cr>", { silent = true, desc = "Next buffer" })
+map("n", "<S-h>", "<cmd>BufferPrevious<cr>", { silent = true, desc = "Prev buffer" })
+map("n", "<S-l>", "<cmd>BufferNext<cr>", { silent = true, desc = "Next buffer" })
 
 -- list all buffers
 map("n", "<leader>bb", fzf_lua_picker("buffers", {}), { silent = false, desc = "List buffers" })
+
 -- New buffer
 map("n", "<leader>bn", "<cmd>enew<cr>", { silent = true, desc = "New buffer" })
 
 -- Delete/close buffers
-map("n", "<leader>bd", function()
-  delete_buf(0, false)
-end, { silent = true, desc = "Delete buffer" })
-map("n", "<leader>bD", function()
-  delete_buf(0, true)
-end, { silent = true, desc = "Delete buffer (force)" })
+map("n", "<leader>bd", "<cmd>BufferClose<cr>", { silent = true, desc = "Delete buffer" })
+map("n", "<leader>bD", "<cmd>BufferPickDelete<cr>", { silent = true, desc = "Delete buffer (pick)" })
 
 -- Delete other buffers
-map("n", "<leader>bo", function()
-  local current = vim.api.nvim_get_current_buf()
-  delete_where(function(buf)
-    return buf ~= current
-  end, true)
-end, { silent = true, desc = "Delete other buffers" })
+map("n", "<leader>bo", "<cmd>BufferCloseAllButCurrent<cr>", { silent = true, desc = "Delete other buffers" })
 
 -- Delete buffers to the left/right
-map("n", "<leader>bh", function()
-  local current = vim.api.nvim_get_current_buf()
-  local current_nr = vim.fn.bufnr("%")
-  delete_where(function(buf)
-    return buf ~= current and vim.fn.bufnr(buf) < current_nr
-  end, true)
-end, { silent = true, desc = "Delete buffers to the left" })
+map("n", "<leader>bh", "<cmd>BufferCloseBuffersLeft<cr>", { silent = true, desc = "Delete buffers to the left" })
+map("n", "<leader>bl", "<cmd>BufferCloseBuffersRight<cr>", { silent = true, desc = "Delete buffers to the right" })
 
-map("n", "<leader>bl", function()
-  local current = vim.api.nvim_get_current_buf()
-  local current_nr = vim.fn.bufnr("%")
-  delete_where(function(buf)
-    return buf ~= current and vim.fn.bufnr(buf) > current_nr
-  end, true)
-end, { silent = true, desc = "Delete buffers to the right" })
+-- Pick buffer
+map("n", "<leader>bB", "<cmd>BufferPick<cr>", { silent = true, desc = "Pick Buffer" })
+
+-- Toggle pin buffer
+map("n", "<leader>bp", "<cmd>BufferPin<cr>", { silent = true, desc = "Pin Buffer" })
+
+-- Delete all unpinned buffers
+map("n", "<leader>bP", "<cmd>BufferCloseAllButPinned<cr>", { silent = true, desc = "Delete unpinned buffers" })
 
 -- TODO/NOTE/FIX comment navigation (via mini.bracketed)
 map("n", "[t", function()
@@ -493,6 +453,11 @@ map("n", "z4", "zM3zr", { noremap = true, desc = "Fold 4" })
 
 -- Center buffer (zen-mode)
 map("n", "<leader>uz", "<cmd>NoNeckPain<cr>", { noremap = true, desc = "Toggle zen-mode" })
+
+-- Delete LSP keymaps
+for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt" }) do
+  pcall(vim.keymap.del, "n", key)
+end
 
 -- neovide
 if vim.g.neovide then

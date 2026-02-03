@@ -63,10 +63,6 @@ local function lsp_keymaps(bufnr)
     map("n", "<leader>cc", vim.lsp.codelens.run, "CodeLens")
     map("n", "<leader>cC", vim.lsp.codelens.refresh, "Refresh CodeLens")
   end
-
-  for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt" }) do
-    pcall(vim.keymap.del, "n", key, { buffer = bufnr })
-  end
 end
 
 return {

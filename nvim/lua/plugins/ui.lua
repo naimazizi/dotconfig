@@ -3,10 +3,6 @@ return {
     "folke/edgy.nvim",
     event = "VeryLazy",
     vscode = false,
-    init = function()
-      vim.opt.laststatus = 3
-      vim.opt.splitkeep = "screen"
-    end,
     keys = {
       {
         "<leader>uE",
@@ -112,16 +108,19 @@ return {
             title = "Explorer",
             ft = "neo-tree",
             size = { height = 0.4 },
+            pinned = true,
+            open = function()
+              require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
+            end,
           },
-        },
-        right = {
-          { title = "Grug Far", ft = "grug-far", size = { height = 0.50 } },
           {
             title = "Outline",
             ft = "Outline",
             open = "Outline",
           },
-
+        },
+        right = {
+          { title = "Grug Far", ft = "grug-far", size = { height = 0.50 } },
           {
             title = "Overseer",
             ft = "OverseerList",
@@ -151,7 +150,13 @@ return {
     cmd = { "Outline", "OutlineOpen" },
     vscode = false,
     keys = { { "<leader>cs", "<cmd>Outline<cr>", desc = "Toggle Outline" } },
-    opts = { outline_window = { position = "left", auto_jump = true, wrap = false } },
+    opts = {
+      outline_window = { position = "left", auto_jump = true, wrap = false },
+      keymaps = {
+        down_and_jump = {},
+        up_and_jump = {},
+      },
+    },
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -307,5 +312,25 @@ return {
         haunt_picker.show()
       end, { desc = "Show Picker" })
     end,
+  },
+  {
+    "romgrk/barbar.nvim",
+    vscode = false,
+    event = "VimEnter",
+    dependencies = {
+      "lewis6991/gitsigns.nvim",
+    },
+    init = function()
+      vim.g.barbar_auto_setup = false
+    end,
+    opts = {
+      insert_at_start = true,
+      icons = {
+        pinned = { button = "", filename = true },
+      },
+      sidebar_filetypes = {
+        ["neo-tree"] = true,
+      },
+    },
   },
 }

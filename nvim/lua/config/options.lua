@@ -24,7 +24,12 @@ opt.undofile = true
 
 opt.clipboard = "unnamedplus"
 
-opt.completeopt = { "menuone", "noselect" }
+opt.laststatus = 0
+opt.splitkeep = "screen"
+
+vim.o.scrolloff = 10
+vim.o.confirm = true
+vim.o.mouse = "a"
 
 -- custom global variables
 vim.g.md_ft = { "markdown", "quarto", "copilot-chat", "opencode_output", "Avante" }
