@@ -53,11 +53,22 @@ return {
           enabled = false,
         },
         options = {
-          left = { size = 0.2 },
-          bottom = { size = 0.2 },
+          left = { size = 0.15 },
+          bottom = { size = 0.15 },
           right = { size = 0.30 },
         },
         bottom = {
+          {
+            title = "Terminal",
+            ft = "snacks_terminal",
+            pinned = true,
+            open = function()
+              Snacks.terminal()
+            end,
+            filter = function(_, win)
+              return vim.api.nvim_win_get_config(win).relative == ""
+            end,
+          },
           { title = "Neotest Output", ft = "neotest-output-panel" },
           { ft = "trouble", title = "Diagnostics" },
           {
@@ -77,13 +88,6 @@ return {
           {
             title = "Overseer Output",
             ft = "OverseerOutput",
-          },
-          {
-            title = "Terminal",
-            ft = "snacks_terminal",
-            filter = function(_, win)
-              return vim.api.nvim_win_get_config(win).relative == ""
-            end,
           },
           {
             title = "DAP",
@@ -112,10 +116,14 @@ return {
             open = function()
               require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
             end,
+            filter = function(buf)
+              return vim.b[buf].neo_tree_source == "filesystem"
+            end,
           },
           {
             title = "Outline",
             ft = "Outline",
+            pinned = true,
             open = "Outline",
           },
         },

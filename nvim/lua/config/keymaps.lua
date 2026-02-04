@@ -454,6 +454,10 @@ map("n", "z4", "zM3zr", { noremap = true, desc = "Fold 4" })
 -- Center buffer (zen-mode)
 map("n", "<leader>uz", "<cmd>NoNeckPain<cr>", { noremap = true, desc = "Toggle zen-mode" })
 
+-- Split window
+map("n", "<leader>-", "<cmd>split<cr>", { noremap = true, desc = "Split window below" })
+map("n", "<leader>|", "<cmd>vsplit<cr>", { noremap = true, desc = "Split window right" })
+
 -- Delete LSP keymaps
 for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt" }) do
   pcall(vim.keymap.del, "n", key)
