@@ -48,6 +48,17 @@ return {
       },
 
       render = function(props)
+        local fullpath = vim.api.nvim_buf_get_name(props.buf)
+        local reldir
+        if fullpath == "" then
+          reldir = "[No Name]"
+        else
+          reldir = vim.fn.fnamemodify(fullpath, ":~:.:h")
+          if reldir == "." then
+            reldir = ""
+          end
+        end
+
         local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
         if filename == "" then
           filename = "[No Name]"
@@ -56,6 +67,14 @@ return {
         local ft_icon, ft_color = mini_icons.get("file", filename)
 
         local result = {}
+
+        -- Relative path
+        if reldir ~= "" then
+          table.insert(result, {
+            reldir == "[No Name]" and reldir or (reldir .. "/"),
+            gui = modified and "bold,italic" or "italic",
+          })
+        end
 
         -- GIT DIFF (gitsigns.nvim)
         local function get_gitsigns_diff()
