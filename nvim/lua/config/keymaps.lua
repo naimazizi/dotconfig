@@ -80,7 +80,7 @@ map("n", "<leader>bp", "<cmd>BufferPin<cr>", { silent = true, desc = "Pin Buffer
 -- Delete all unpinned buffers
 map("n", "<leader>bP", "<cmd>BufferCloseAllButPinned<cr>", { silent = true, desc = "Delete unpinned buffers" })
 
--- TODO/NOTE/FIX comment navigation (via mini.bracketed)
+-- TODO/NOTE/FIXME comment navigation (via mini.bracketed)
 map("n", "[t", function()
   require("mini.bracketed").comment("backward")
 end, { silent = true, desc = "Prev todo comment" })
@@ -285,12 +285,7 @@ map("n", "<leader>fg", fzf_lua_picker("live_grep", {}), { silent = true, desc = 
 -- LazyVim uses `<leader>/` for grep (root). Here we treat cwd as root.
 map("n", "<leader>/", fzf_lua_picker("live_grep", { cwd = vim.fn.getcwd() }), { silent = true, desc = "Grep (cwd)" })
 
-map(
-  "n",
-  "<leader>sw",
-  fzf_lua_picker("grep_string", { search = vim.fn.expand("<cword>") }),
-  { silent = true, desc = "Search word under cursor" }
-)
+map("n", "<leader>sw", fzf_lua_picker("grep_cword", {}), { silent = true, desc = "Search word under cursor" })
 
 map("v", "<leader>sw", function()
   local start_pos = vim.fn.getpos("v")
@@ -318,7 +313,7 @@ map("v", "<leader>sw", function()
   if text == "" then
     return
   end
-  fzf_lua_picker("grep_string", { search = text })()
+  fzf_lua_picker("grep_cword", { search = text })()
 end, { silent = true, desc = "Search selection" })
 
 -- Search/Replace (grug-far)
@@ -349,8 +344,6 @@ map(
 map("n", "<leader>sd", fzf_lua_picker("diagnostics_document", {}), { silent = true, desc = "Diagnostics" })
 
 map("n", "<leader>sD", fzf_lua_picker("diagnostics_workspace", {}), { silent = true, desc = "Diagnostics Workspace" })
-
-map("n", "<leader>fb", fzf_lua_picker("buffers", {}), { silent = true, desc = "Buffers" })
 
 map("n", "<leader>fr", fzf_lua_picker("oldfiles", {}), { silent = true, desc = "Recent" })
 

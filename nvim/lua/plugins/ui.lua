@@ -341,4 +341,13 @@ return {
       },
     },
   },
+  {
+    "yorickpeterse/nvim-window",
+    vscode = false,
+    event = "VeryLazy",
+    keys = {
+      { "<leader>w", "<cmd>lua require('nvim-window').pick()<cr>", desc = "Window Selection" },
+    },
+    config = true,
+  },
 }
