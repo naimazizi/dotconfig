@@ -45,6 +45,7 @@ return {
         "marksman",
         "pyrefly",
         "ruff",
+        "rumdl",
         "rust-analyzer",
         "tinymist",
         "typos-lsp",

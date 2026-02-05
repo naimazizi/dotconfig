@@ -9,7 +9,7 @@ return {
       -- Markdown formatters
       for _, ft in ipairs(vim.g.md_ft or {}) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
-        table.insert(opts.formatters_by_ft[ft], "markdownlint-cli2")
+        table.insert(opts.formatters_by_ft[ft], "rumdl")
       end
 
       -- Typst formatters
