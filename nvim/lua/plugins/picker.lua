@@ -1,3 +1,5 @@
+local fzf_bin = (vim.fn.executable("sk") == 1) and "sk" or nil
+
 return {
   {
     "ibhagwan/fzf-lua",
@@ -23,7 +25,7 @@ return {
 
       fzf.setup({
         { "ivy" },
-        fzf_bin = "sk",
+        fzf_bin = fzf_bin,
         fzf_colors = true,
         fzf_opts = {
           ["--no-scrollbar"] = true,

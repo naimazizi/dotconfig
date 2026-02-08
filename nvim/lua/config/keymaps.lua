@@ -401,7 +401,7 @@ map("n", "<leader>ft", "<cmd>lua Snacks.terminal()<CR>", { silent = true, desc =
 -- Git (gitsigns)
 map("n", "<leader>gg", function()
   Snacks.lazygit()
-end, { silent = true, desc = "lazygit (toggleterm)" })
+end, { silent = true, desc = "Lazygit" })
 
 map("n", "]h", function()
   require("gitsigns").next_hunk()
