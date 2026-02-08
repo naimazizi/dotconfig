@@ -30,6 +30,7 @@ opt.splitkeep = "screen"
 vim.o.scrolloff = 10
 vim.o.confirm = true
 vim.o.mouse = "a"
+vim.o.autoread = true
 
 -- custom global variables
 vim.g.md_ft = { "markdown", "quarto", "copilot-chat", "opencode_output", "Avante" }
