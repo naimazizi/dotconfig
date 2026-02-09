@@ -30,25 +30,6 @@ end, { silent = true, desc = "Toggle autoformat" })
 
 -- Sessions / quit (LazyVim-ish)
 map("n", "<leader>qq", "<cmd>qa<cr>", { silent = true, desc = "Quit all" })
-map("n", "<leader>qs", function()
-  require("mini.sessions").select()
-end, { silent = true, desc = "Select session" })
-map("n", "<leader>qS", function()
-  local path = vim.fn.fnamemodify(vim.fn.getcwd(), ":~")
-  path = path:gsub("^~/?", ""):gsub("/", "%%"):gsub("%%+$", "")
-  require("mini.sessions").write(path)
-end, { silent = true, desc = "Save session" })
-map("n", "<leader>ql", function()
-  require("mini.sessions").read()
-end, { silent = true, desc = "Restore session" })
-map("n", "<leader>qd", function()
-  local name = vim.v.this_session
-  if name == nil or name == "" then
-    vim.notify("No active session")
-    return
-  end
-  require("mini.sessions").delete(name, { force = true })
-end, { silent = true, desc = "Delete current session" })
 
 -- Buffers (LazyVim-ish)
 map("n", "<S-h>", "<cmd>BufferPrevious<cr>", { silent = true, desc = "Prev buffer" })

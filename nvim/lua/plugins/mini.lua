@@ -309,11 +309,6 @@ return {
       }
       ai.setup(ai_opts)
       ai_whichkey(ai_opts)
-
-      require("mini.sessions").setup({
-        autoread = false,
-        autowrite = true,
-      })
     end,
   },
 }

@@ -63,5 +63,5 @@ brew install \
   zoxide
 
 mkdir -p ~/Applications
-brew install --cask ghostty font-maple-mono-nf --appdir=~/Applications
+brew install --cask ghostty font-monaspace-nf --appdir=~/Applications
 ```

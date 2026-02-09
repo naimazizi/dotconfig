@@ -43,13 +43,13 @@
   },
   "base_keymap": "VSCode",
   "ui_font_size": 17,
-  "buffer_font_size": 14,
+  "buffer_font_size": 12,
   // Finder model width
   "file_finder": {
     "modal_max_width": "medium",
   },
   // NOTE: Change the font family to your preference
-  "buffer_font_family": "Maple Mono NF",
+  "buffer_font_family": "Monaspace Krypton NF",
   // Vim mode settings
   "vim_mode": true,
   "vim": {},
@@ -89,7 +89,7 @@
   },
   // Use zed commit editor
   "terminal": {
-    "font_family": "Maple Mono",
+    "font_family": "Monaspace Krypton NF",
     "env": {
       "EDITOR": "zed --wait",
     },
