@@ -294,4 +294,10 @@ return {
       },
     },
   },
+  {
+    "nemanjamalesija/smart-paste.nvim",
+    vscode = true,
+    event = "VeryLazy",
+    config = true,
+  },
 }
