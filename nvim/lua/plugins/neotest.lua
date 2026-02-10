@@ -14,6 +14,11 @@ return {
       output = { open_on_run = true },
       quickfix = {
         open = function()
+          local ok, trouble = pcall(require, "trouble")
+          if ok then
+            trouble.open({ mode = "quickfix" })
+            return
+          end
           vim.cmd("copen")
         end,
       },

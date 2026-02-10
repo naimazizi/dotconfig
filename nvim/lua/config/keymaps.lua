@@ -72,7 +72,6 @@ end, { silent = true, desc = "Next todo comment" })
 -- LazyVim-ish LSP/diagnostics mappings
 map("n", "<leader>cd", vim.diagnostic.open_float, { silent = true, desc = "Line diagnostics" })
 map("n", "<leader>cl", "<cmd>LspInfo<cr>", { silent = true, desc = "Lsp Info" })
-map("n", "<leader>cq", vim.diagnostic.setloclist, { silent = true, desc = "Quickfix diagnostics" })
 
 -- DAP (LazyVim-ish)
 local function with_dap(fn)
@@ -243,11 +242,6 @@ end, { silent = true, desc = "Format selection" })
 map("n", "<leader>cm", "<cmd>Mason<cr>", { silent = true, desc = "Mason" })
 
 -- Quickfix / location list (LazyVim-ish)
-map("n", "<leader>xl", fzf_lua_picker("lgrep_loclist", {}), { silent = true, desc = "Location list" })
-map("n", "<leader>xq", fzf_lua_picker("lgrep_quickfix", {}), { silent = true, desc = "Quickfix" })
-map("n", "<leader>xx", fzf_lua_picker("lsp_document_diagnostics", {}), { silent = true, desc = "Diagnostics" })
-map("n", "[q", "<cmd>cprev<cr>", { silent = true, desc = "Prev quickfix" })
-map("n", "]q", "<cmd>cnext<cr>", { silent = true, desc = "Next quickfix" })
 map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
 map("n", "]l", "<cmd>lnext<cr>", { silent = true, desc = "Next location" })
 

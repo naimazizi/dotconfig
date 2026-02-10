@@ -58,26 +58,14 @@ return {
           right = { size = 0.30 },
         },
         bottom = {
-          {
-            title = "Terminal",
-            ft = "snacks_terminal",
-            pinned = true,
-            open = function()
-              Snacks.terminal()
-            end,
-            filter = function(_, win)
-              return vim.api.nvim_win_get_config(win).relative == ""
-            end,
-          },
           { title = "Neotest Output", ft = "neotest-output-panel" },
-          { ft = "trouble", title = "Diagnostics" },
+          { ft = "trouble", title = "Trouble" },
           {
             ft = "noice",
             filter = function(_buf, win)
               return vim.api.nvim_win_get_config(win).relative == ""
             end,
           },
-          { ft = "qf", title = "QuickFix" },
           {
             ft = "help",
             -- don't open help files in edgy that we're editing
@@ -105,6 +93,17 @@ return {
           {
             title = "DB Query Result",
             ft = "dbout",
+          },
+          {
+            title = "Terminal",
+            ft = "snacks_terminal",
+            pinned = true,
+            open = function()
+              Snacks.terminal()
+            end,
+            filter = function(_, win)
+              return vim.api.nvim_win_get_config(win).relative == ""
+            end,
           },
         },
         left = {
