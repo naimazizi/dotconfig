@@ -88,7 +88,36 @@ return {
   {
     "nvim-mini/mini.nvim",
     version = false,
+    vscode = true,
     lazy = false,
+    keys = {
+      {
+        "[t",
+        function()
+          require("mini.bracketed").comment("backward")
+        end,
+        desc = "Prev todo comment",
+      },
+      {
+        "]t",
+        function()
+          require("mini.bracketed").comment("forward")
+        end,
+        desc = "Next todo comment",
+      },
+      {
+        "<leader>fn",
+        function()
+          local ok, notify = pcall(require, "mini.notify")
+          if ok and type(notify.show_history) == "function" then
+            notify.show_history()
+            return
+          end
+          vim.notify("mini.notify not available")
+        end,
+        desc = "Notifications",
+      },
+    },
     config = function()
       require("mini.notify").setup()
       vim.notify = require("mini.notify").make_notify()

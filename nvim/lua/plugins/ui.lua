@@ -144,6 +144,55 @@ return {
     end,
   },
   {
+    "folke/snacks.nvim",
+    keys = {
+      { "<C-/>", "<cmd>lua Snacks.terminal.toggle()<CR>", desc = "Toggle terminal" },
+      { "<leader>ft", "<cmd>lua Snacks.terminal()<CR>", desc = "Toggle terminal" },
+      {
+        "<leader>gg",
+        function()
+          Snacks.lazygit()
+        end,
+        desc = "Lazygit",
+      },
+      {
+        "<leader>gB",
+        function()
+          Snacks.gitbrowse()
+        end,
+        desc = "Browse",
+      },
+      {
+        "<leader>gi",
+        function()
+          Snacks.picker.gh_issue()
+        end,
+        desc = "GitHub Issues (open)",
+      },
+      {
+        "<leader>gI",
+        function()
+          Snacks.picker.gh_issue({ state = "all" })
+        end,
+        desc = "GitHub Issues (all)",
+      },
+      {
+        "<leader>gp",
+        function()
+          Snacks.picker.gh_pr()
+        end,
+        desc = "GitHub Pull Requests (open)",
+      },
+      {
+        "<leader>gP",
+        function()
+          Snacks.picker.gh_pr({ state = "all" })
+        end,
+        desc = "GitHub Pull Requests (all)",
+      },
+    },
+  },
+  {
     "petertriho/nvim-scrollbar",
     event = "BufRead",
     vscode = false,
@@ -169,6 +218,66 @@ return {
     "lewis6991/gitsigns.nvim",
     vscode = false,
     event = { "BufReadPre", "BufNewFile" },
+    keys = {
+      {
+        "]h",
+        function()
+          require("gitsigns").next_hunk()
+        end,
+        desc = "Next hunk",
+      },
+      {
+        "[h",
+        function()
+          require("gitsigns").prev_hunk()
+        end,
+        desc = "Prev hunk",
+      },
+      {
+        "<leader>gs",
+        function()
+          require("gitsigns").stage_hunk()
+        end,
+        mode = { "n", "v" },
+        desc = "Stage hunk",
+      },
+      {
+        "<leader>gr",
+        function()
+          require("gitsigns").reset_hunk()
+        end,
+        mode = { "n", "v" },
+        desc = "Reset hunk",
+      },
+      {
+        "<leader>gS",
+        function()
+          require("gitsigns").stage_buffer()
+        end,
+        desc = "Stage buffer",
+      },
+      {
+        "<leader>gR",
+        function()
+          require("gitsigns").reset_buffer()
+        end,
+        desc = "Reset buffer",
+      },
+      {
+        "<leader>gv",
+        function()
+          require("gitsigns").preview_hunk()
+        end,
+        desc = "Preview hunk",
+      },
+      {
+        "<leader>gb",
+        function()
+          require("gitsigns").toggle_current_line_blame()
+        end,
+        desc = "Toggle line blame",
+      },
+    },
     opts = {
       current_line_blame = true,
       current_line_blame_opts = {
@@ -258,7 +367,14 @@ return {
       },
     },
   },
-  { "shortcuts/no-neck-pain.nvim", event = "VeryLazy", version = "*" },
+  {
+    "shortcuts/no-neck-pain.nvim",
+    event = "VeryLazy",
+    version = "*",
+    keys = {
+      { "<leader>uz", "<cmd>NoNeckPain<cr>", desc = "Toggle zen-mode" },
+    },
+  },
   {
     "TheNoeTrevino/haunt.nvim",
     vscode = false,
@@ -326,6 +442,18 @@ return {
     event = "VimEnter",
     dependencies = {
       "lewis6991/gitsigns.nvim",
+    },
+    keys = {
+      { "<S-h>", "<cmd>BufferPrevious<cr>", desc = "Prev buffer" },
+      { "<S-l>", "<cmd>BufferNext<cr>", desc = "Next buffer" },
+      { "<leader>bd", "<cmd>BufferClose<cr>", desc = "Delete buffer" },
+      { "<leader>bD", "<cmd>BufferPickDelete<cr>", desc = "Delete buffer (pick)" },
+      { "<leader>bo", "<cmd>BufferCloseAllButCurrent<cr>", desc = "Delete other buffers" },
+      { "<leader>bh", "<cmd>BufferCloseBuffersLeft<cr>", desc = "Delete buffers to the left" },
+      { "<leader>bl", "<cmd>BufferCloseBuffersRight<cr>", desc = "Delete buffers to the right" },
+      { "<leader>bB", "<cmd>BufferPick<cr>", desc = "Pick Buffer" },
+      { "<leader>bp", "<cmd>BufferPin<cr>", desc = "Pin Buffer" },
+      { "<leader>bP", "<cmd>BufferCloseAllButPinned<cr>", desc = "Delete unpinned buffers" },
     },
     init = function()
       vim.g.barbar_auto_setup = false

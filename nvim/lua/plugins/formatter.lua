@@ -2,6 +2,31 @@ return {
   {
     "stevearc/conform.nvim",
     vscode = false,
+    keys = {
+      {
+        "<leader>uf",
+        function()
+          vim.g.autoformat = not vim.g.autoformat
+          vim.notify("Autoformat " .. (vim.g.autoformat and "enabled" or "disabled"))
+        end,
+        desc = "Toggle autoformat",
+      },
+      {
+        "<leader>cf",
+        function()
+          require("conform").format({ async = true, lsp_format = "fallback" })
+        end,
+        desc = "Format",
+      },
+      {
+        "<leader>cf",
+        function()
+          require("conform").format({ async = true, lsp_format = "fallback" })
+        end,
+        mode = "x",
+        desc = "Format selection",
+      },
+    },
     opts = function(_, opts)
       opts.formatters_by_ft = opts.formatters_by_ft or {}
       opts.formatters = opts.formatters or {}

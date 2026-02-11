@@ -1,437 +1,35 @@
 local map = vim.keymap.set
 
-local function fzf_lua_picker(fn, opts)
-  return function(...)
-    local ok, fzf = pcall(require, "fzf-lua")
-    if not ok then
-      local ok_lazy, lazy = pcall(require, "lazy")
-      if ok_lazy and type(lazy.load) == "function" then
-        lazy.load({ plugins = { "fzf-lua" } })
-      end
-      ok, fzf = pcall(require, "fzf-lua")
-      if not ok then
-        vim.notify("fzf-lua not available")
-        return
-      end
-    end
-    local merged_opts = vim.tbl_extend("force", opts or {}, select(1, ...) or {})
-    return fzf[fn](merged_opts)
-  end
-end
-
 -- LazyVim-ish
 map("n", "<Esc>", "<cmd>nohlsearch<cr><Esc>", { silent = true, desc = "Clear hlsearch" })
 
--- Toggle autoformat (LazyVim-ish)
-map("n", "<leader>uf", function()
-  vim.g.autoformat = not vim.g.autoformat
-  vim.notify("Autoformat " .. (vim.g.autoformat and "enabled" or "disabled"))
-end, { silent = true, desc = "Toggle autoformat" })
+-- Neovim general keymaps
+if not vim.g.vscode then
+  -- Sessions / quit (LazyVim-ish)
+  map("n", "<leader>qq", "<cmd>qa<cr>", { silent = true, desc = "Quit all" })
 
--- Sessions / quit (LazyVim-ish)
-map("n", "<leader>qq", "<cmd>qa<cr>", { silent = true, desc = "Quit all" })
+  -- New buffer
+  map("n", "<leader>bn", "<cmd>enew<cr>", { silent = true, desc = "New buffer" })
 
--- Buffers (LazyVim-ish)
-map("n", "<S-h>", "<cmd>BufferPrevious<cr>", { silent = true, desc = "Prev buffer" })
-map("n", "<S-l>", "<cmd>BufferNext<cr>", { silent = true, desc = "Next buffer" })
+  -- LazyVim-ish LSP/diagnostics mappings
+  map("n", "<leader>cd", vim.diagnostic.open_float, { silent = true, desc = "Line diagnostics" })
+  map("n", "<leader>cl", "<cmd>LspInfo<cr>", { silent = true, desc = "Lsp Info" })
 
--- list all buffers
-map("n", "<leader>bb", fzf_lua_picker("buffers", {}), { silent = false, desc = "List buffers" })
+  -- Quickfix / location list (LazyVim-ish)
+  map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
+  map("n", "]l", "<cmd>lnext<cr>", { silent = true, desc = "Next location" })
 
--- New buffer
-map("n", "<leader>bn", "<cmd>enew<cr>", { silent = true, desc = "New buffer" })
+  -- Split window
+  map("n", "<leader>-", "<cmd>split<cr>", { noremap = true, desc = "Split window below" })
+  map("n", "<leader>|", "<cmd>vsplit<cr>", { noremap = true, desc = "Split window right" })
 
--- Delete/close buffers
-map("n", "<leader>bd", "<cmd>BufferClose<cr>", { silent = true, desc = "Delete buffer" })
-map("n", "<leader>bD", "<cmd>BufferPickDelete<cr>", { silent = true, desc = "Delete buffer (pick)" })
-
--- Delete other buffers
-map("n", "<leader>bo", "<cmd>BufferCloseAllButCurrent<cr>", { silent = true, desc = "Delete other buffers" })
-
--- Delete buffers to the left/right
-map("n", "<leader>bh", "<cmd>BufferCloseBuffersLeft<cr>", { silent = true, desc = "Delete buffers to the left" })
-map("n", "<leader>bl", "<cmd>BufferCloseBuffersRight<cr>", { silent = true, desc = "Delete buffers to the right" })
-
--- Pick buffer
-map("n", "<leader>bB", "<cmd>BufferPick<cr>", { silent = true, desc = "Pick Buffer" })
-
--- Toggle pin buffer
-map("n", "<leader>bp", "<cmd>BufferPin<cr>", { silent = true, desc = "Pin Buffer" })
-
--- Delete all unpinned buffers
-map("n", "<leader>bP", "<cmd>BufferCloseAllButPinned<cr>", { silent = true, desc = "Delete unpinned buffers" })
-
--- TODO/NOTE/FIXME comment navigation (via mini.bracketed)
-map("n", "[t", function()
-  require("mini.bracketed").comment("backward")
-end, { silent = true, desc = "Prev todo comment" })
-map("n", "]t", function()
-  require("mini.bracketed").comment("forward")
-end, { silent = true, desc = "Next todo comment" })
-
--- LazyVim-ish LSP/diagnostics mappings
-map("n", "<leader>cd", vim.diagnostic.open_float, { silent = true, desc = "Line diagnostics" })
-map("n", "<leader>cl", "<cmd>LspInfo<cr>", { silent = true, desc = "Lsp Info" })
-
--- DAP (LazyVim-ish)
-local function with_dap(fn)
-  return function()
-    local ok, dap = pcall(require, "dap")
-    if not ok then
-      vim.notify("nvim-dap not available")
-      return
-    end
-    fn(dap)
+  -- Delete LSP keymaps
+  for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt" }) do
+    pcall(vim.keymap.del, "n", key)
   end
 end
 
-local function with_dapui(fn)
-  return function()
-    local ok, dapui = pcall(require, "dapui")
-    if not ok then
-      vim.notify("nvim-dap-ui not available")
-      return
-    end
-    fn(dapui)
-  end
-end
-
-map(
-  "n",
-  "<leader>db",
-  with_dap(function(dap)
-    dap.toggle_breakpoint()
-  end),
-  { silent = true, desc = "Toggle breakpoint" }
-)
-
-map(
-  "n",
-  "<leader>dB",
-  with_dap(function(dap)
-    dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-  end),
-  { silent = true, desc = "Breakpoint condition" }
-)
-
-map(
-  "n",
-  "<leader>dL",
-  with_dap(function(dap)
-    dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-  end),
-  { silent = true, desc = "Log point" }
-)
-
-map(
-  "n",
-  "<leader>dc",
-  with_dap(function(dap)
-    dap.continue()
-  end),
-  { silent = true, desc = "Continue" }
-)
-
-map(
-  "n",
-  "<leader>dC",
-  with_dap(function(dap)
-    dap.run_to_cursor()
-  end),
-  { silent = true, desc = "Run to cursor" }
-)
-
-map(
-  "n",
-  "<leader>dp",
-  with_dap(function(dap)
-    dap.pause()
-  end),
-  { silent = true, desc = "Pause" }
-)
-
-map(
-  "n",
-  "<leader>di",
-  with_dap(function(dap)
-    dap.step_into()
-  end),
-  { silent = true, desc = "Step into" }
-)
-
-map(
-  "n",
-  "<leader>do",
-  with_dap(function(dap)
-    dap.step_over()
-  end),
-  { silent = true, desc = "Step over" }
-)
-
-map(
-  "n",
-  "<leader>dO",
-  with_dap(function(dap)
-    dap.step_out()
-  end),
-  { silent = true, desc = "Step out" }
-)
-
-map(
-  "n",
-  "<leader>dl",
-  with_dap(function(dap)
-    dap.run_last()
-  end),
-  { silent = true, desc = "Run last" }
-)
-
-map(
-  "n",
-  "<leader>dr",
-  with_dap(function(dap)
-    dap.repl.toggle()
-  end),
-  { silent = true, desc = "Toggle REPL" }
-)
-
-map(
-  "n",
-  "<leader>dt",
-  with_dap(function(dap)
-    dap.terminate()
-  end),
-  { silent = true, desc = "Terminate" }
-)
-
-map(
-  "n",
-  "<leader>du",
-  with_dapui(function(dapui)
-    dapui.toggle()
-  end),
-  { silent = true, desc = "DAP UI" }
-)
-
-map(
-  { "n", "v" },
-  "<leader>de",
-  with_dapui(function(dapui)
-    dapui.eval()
-  end),
-  { silent = true, desc = "Eval" }
-)
-
-map("n", "<leader>dd", fzf_lua_picker("dap_commands", {}), { silent = true, desc = "DAP commands" })
-
-map("n", "<leader>dv", fzf_lua_picker("dap_variables", {}), { silent = true, desc = "DAP variables" })
-
-map("n", "<leader>dV", fzf_lua_picker("dap_breakpoints", {}), { silent = true, desc = "DAP breakpoint" })
-
-map("n", "<leader>df", fzf_lua_picker("dap_configurations", {}), { silent = true, desc = "Configuration" })
-
--- Code formatting (conform.nvim)
-map("n", "<leader>cf", function()
-  require("conform").format({ async = true, lsp_format = "fallback" })
-end, { silent = true, desc = "Format" })
-map("x", "<leader>cf", function()
-  require("conform").format({ async = true, lsp_format = "fallback" })
-end, { silent = true, desc = "Format selection" })
-
--- Mason (LazyVim-ish)
-map("n", "<leader>cm", "<cmd>Mason<cr>", { silent = true, desc = "Mason" })
-
--- Quickfix / location list (LazyVim-ish)
-map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
-map("n", "]l", "<cmd>lnext<cr>", { silent = true, desc = "Next location" })
-
--- Files / search (fzf-lua)
-map("n", "<leader>ff", fzf_lua_picker("files", {}), { silent = true, desc = "Find files" })
-
-map(
-  "n",
-  "<leader>fF",
-  fzf_lua_picker("files", { cwd = vim.fn.expand("%:p:h") }),
-  { silent = true, desc = "Find files (cwd)" }
-)
-
-map("n", "<leader>fg", fzf_lua_picker("live_grep", {}), { silent = true, desc = "Grep" })
-
--- LazyVim uses `<leader>/` for grep (root). Here we treat cwd as root.
-map("n", "<leader>/", fzf_lua_picker("live_grep", { cwd = vim.fn.getcwd() }), { silent = true, desc = "Grep (cwd)" })
-
-map("n", "<leader>sw", fzf_lua_picker("grep_cword", {}), { silent = true, desc = "Search word under cursor" })
-
-map("v", "<leader>sw", function()
-  local start_pos = vim.fn.getpos("v")
-  local end_pos = vim.fn.getpos(".")
-  local start_row, start_col = (start_pos[2] or 1) - 1, (start_pos[3] or 1) - 1
-  local end_row, end_col = (end_pos[2] or 1) - 1, (end_pos[3] or 1)
-
-  ---@cast start_row integer
-  ---@cast start_col integer
-  ---@cast end_row integer
-  ---@cast end_col integer
-
-  if start_row > end_row or (start_row == end_row and start_col > end_col) then
-    start_row, end_row = end_row, start_row
-    start_col, end_col = end_col, start_col
-  end
-
-  ---@cast start_row integer
-  ---@cast start_col integer
-  ---@cast end_row integer
-  ---@cast end_col integer
-
-  local lines = vim.api.nvim_buf_get_text(0, start_row, start_col, end_row, end_col, {})
-  local text = table.concat(lines, "\n")
-  if text == "" then
-    return
-  end
-  fzf_lua_picker("grep_cword", { search = text })()
-end, { silent = true, desc = "Search selection" })
-
--- Search/Replace (grug-far)
-map("n", "<leader>sr", function()
-  local grug = require("grug-far")
-  local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
-  grug.open({
-    transient = true,
-    prefills = {
-      filesFilter = ext and ext ~= "" and "*." .. ext or nil,
-    },
-  })
-end, { silent = true, desc = "Search/Replace (grug-far)" })
-
-map("n", "<leader>sR", fzf_lua_picker("resume", {}), { silent = true, desc = "Resume" })
-
-map("n", "<leader>sk", fzf_lua_picker("keymaps", {}), { silent = true, desc = "Keymaps" })
-
-map("n", "<leader>sm", fzf_lua_picker("marks", {}), { silent = true, desc = "Marks" })
-
-map(
-  "n",
-  "<leader>st",
-  fzf_lua_picker("grep", { search = "TODO|HACK|PERF|NOTE|FIXME", no_esc = true }),
-  { silent = true, desc = "TODO" }
-)
-
-map("n", "<leader>sd", fzf_lua_picker("diagnostics_document", {}), { silent = true, desc = "Diagnostics" })
-
-map("n", "<leader>sD", fzf_lua_picker("diagnostics_workspace", {}), { silent = true, desc = "Diagnostics Workspace" })
-
-map("n", "<leader>fr", fzf_lua_picker("oldfiles", {}), { silent = true, desc = "Recent" })
-
-map("n", "<leader>fn", function()
-  local ok, notify = pcall(require, "mini.notify")
-  if ok then
-    notify.show_history()
-    return
-  end
-  vim.notify("mini.notify not available")
-end, { silent = true, desc = "Notifications" })
-
-map("n", "<leader>fh", fzf_lua_picker("help_tags", {}), { silent = true, desc = "Help" })
-
-map("n", "<leader>fz", fzf_lua_picker("zoxide", {}), { silent = true, desc = "Zoxide" })
-
-map("n", "<leader>s/", fzf_lua_picker("command_history", {}), { silent = true, desc = "Command History" })
-
--- Alternative fast file picker
-map("n", "<leader><space>", function()
-  require("fzf-lua-enchanted-files").files()
-end, { silent = true, desc = "Find files (frecency)" })
-
--- Picker (Git)
-map("n", "<leader>gc", fzf_lua_picker("git_bcommits", {}), { silent = true, desc = "Buffer Commits" })
-
-map("n", "<leader>gC", fzf_lua_picker("git_commits", {}), { silent = true, desc = "Commits" })
-
-map("n", "<leader>gd", fzf_lua_picker("git_diff", {}), { silent = true, desc = "Diff" })
-
-map("n", "<leader>gB", function()
-  Snacks.gitbrowse()
-end, { silent = true, desc = "Browse" })
-
-map("n", "<leader>gi", function()
-  Snacks.picker.gh_issue()
-end, { silent = true, desc = "GitHub Issues (open)" })
-
-map("n", "<leader>gI", function()
-  Snacks.picker.gh_issue({ state = "all" })
-end, { silent = true, desc = "GitHub Issues (all)" })
-
-map("n", "<leader>gp", function()
-  Snacks.picker.gh_pr()
-end, { silent = true, desc = "GitHub Pull Requests (open)" })
-
-map("n", "<leader>gP", function()
-  Snacks.picker.gh_pr({ state = "all" })
-end, { silent = true, desc = "GitHub Pull Requests (all)" })
-
--- Terminal
-map("n", "<C-/>", "<cmd>lua Snacks.terminal.toggle()<CR>", { silent = true, desc = "Toggle terminal" })
-map("n", "<leader>ft", "<cmd>lua Snacks.terminal()<CR>", { silent = true, desc = "Toggle terminal" })
-
--- Git (gitsigns)
-map("n", "<leader>gg", function()
-  Snacks.lazygit()
-end, { silent = true, desc = "Lazygit" })
-
-map("n", "]h", function()
-  require("gitsigns").next_hunk()
-end, { silent = true, desc = "Next hunk" })
-
-map("n", "[h", function()
-  require("gitsigns").prev_hunk()
-end, { silent = true, desc = "Prev hunk" })
-
-map({ "n", "v" }, "<leader>gs", function()
-  require("gitsigns").stage_hunk()
-end, { silent = true, desc = "Stage hunk" })
-
-map({ "n", "v" }, "<leader>gr", function()
-  require("gitsigns").reset_hunk()
-end, { silent = true, desc = "Reset hunk" })
-
-map("n", "<leader>gS", function()
-  require("gitsigns").stage_buffer()
-end, { silent = true, desc = "Stage buffer" })
-
-map("n", "<leader>gR", function()
-  require("gitsigns").reset_buffer()
-end, { silent = true, desc = "Reset buffer" })
-
-map("n", "<leader>gp", function()
-  require("gitsigns").preview_hunk()
-end, { silent = true, desc = "Preview hunk" })
-
-map("n", "<leader>gb", function()
-  require("gitsigns").toggle_current_line_blame()
-end, { silent = true, desc = "Toggle line blame" })
-
--- Lazy manager
-map("n", "<leader>l", "<cmd>Lazy<cr>", { silent = true, desc = "Lazy" })
-
--- Fold
-map("n", "z1", "zM", { noremap = true, desc = "Fold 1" })
-map("n", "z2", "zM1zr", { noremap = true, desc = "Fold 2" })
-map("n", "z3", "zM2zr", { noremap = true, desc = "Fold 3" })
-map("n", "z4", "zM3zr", { noremap = true, desc = "Fold 4" })
-
--- Center buffer (zen-mode)
-map("n", "<leader>uz", "<cmd>NoNeckPain<cr>", { noremap = true, desc = "Toggle zen-mode" })
-
--- Split window
-map("n", "<leader>-", "<cmd>split<cr>", { noremap = true, desc = "Split window below" })
-map("n", "<leader>|", "<cmd>vsplit<cr>", { noremap = true, desc = "Split window right" })
-
--- Delete LSP keymaps
-for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt" }) do
-  pcall(vim.keymap.del, "n", key)
-end
-
--- neovide
+-- Neovide specific keymap
 if vim.g.neovide then
   map("n", "<D-s>", ":w<CR>") -- Save
   map("v", "<D-c>", '"+y') -- Copy
@@ -439,4 +37,376 @@ if vim.g.neovide then
   map("v", "<D-v>", '"+P') -- Paste visual mode
   map("c", "<D-v>", "<C-R>+") -- Paste command mode
   map("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
+end
+
+-- VScode specific keymap
+if vim.g.vscode then
+  local vscode = require("vscode")
+
+  -- VSCode-specific keymaps for search and navigation
+  map("n", "<leader><space>", "<cmd>Find<cr>")
+  map("n", "<leader>ss", function()
+    vscode.call("workbench.action.gotoSymbol")
+  end)
+
+  -- Toggle VS Code integrated terminal
+  for _, lhs in ipairs({ "<leader>ft", "<leader>fT", "<c-/>" }) do
+    map("n", lhs, function()
+      vscode.call("workbench.action.terminal.toggleTerminal")
+    end)
+  end
+
+  -- Navigate VSCode tabs like lazyvim buffers
+  map("n", "<S-h>", function()
+    vscode.call("workbench.action.previousEditor")
+  end)
+  map("n", "<S-l>", function()
+    vscode.call("workbench.action.nextEditor")
+  end)
+
+  -- Search text in files
+  map("n", "<leader>/", function()
+    vscode.call("leaderkey.ripgrep")
+  end, { noremap = true, desc = "search text in files" })
+
+  -- editor
+  map("n", "<leader>cf", function()
+    vscode.call("editor.action.formatDocument")
+  end, { noremap = true, desc = "Format Text" })
+
+  map("v", "gc", function()
+    vscode.call("editor.action.commentLine")
+  end, { noremap = true, desc = "Toggle Comment Line (Visual) -- it mimics ctrl+/" })
+
+  -- Tab Navigation
+  map("n", "<S-l>", function()
+    vscode.call("workbench.action.nextEditor")
+  end, { noremap = true, desc = "switch between editor to next" })
+
+  map("n", "<S-h>", function()
+    vscode.call("workbench.action.previousEditor")
+  end, { noremap = true, desc = "switch between editor to previous" })
+
+  -- LSP
+  map("n", "gr", function()
+    vscode.call("editor.action.referenceSearch.trigger")
+  end, { noremap = true, desc = "peek references inside vs code" })
+
+  map("n", "gd", function()
+    vscode.call("editor.action.revealDefinition")
+  end, { noremap = true, desc = "go to definition inside vs code" })
+
+  map("n", "gD", function()
+    vscode.call("editor.action.revealDeclaration")
+  end, { noremap = true, desc = "go to declaration inside vs code" })
+
+  map("n", "gI", function()
+    vscode.call("editor.action.peekImplementation")
+  end, { noremap = true, desc = "peek Implementation inside vs code" })
+
+  map("n", "gy", function()
+    vscode.call("editor.action.goToTypeDefinition")
+  end, { noremap = true, desc = "go to type definition inside vs code" })
+
+  map("n", "<leader>sd", function()
+    vscode.call("workbench.action.problems.focus")
+  end, { noremap = true, desc = "open problems and errors infos" })
+
+  -- Focus window
+  map("n", "<leader>e", function()
+    vscode.call("workbench.files.action.focusFilesExplorer")
+  end, { noremap = true, desc = "focus to file explorer" })
+
+  map("n", "<leader>fe", function()
+    vscode.call("workbench.files.action.focusFilesExplorer")
+  end, { noremap = true, desc = "focus to file explorer" })
+
+  map("n", "<leader>ff", function()
+    vscode.call("leaderkey.findFile")
+  end, { noremap = true, desc = "open files" })
+
+  -- Code Action
+  map("n", "<leader>cr", function()
+    vscode.call("editor.action.rename")
+  end, { noremap = true, desc = "rename symbol" })
+
+  map("n", "<leader>ca", function()
+    vscode.call("editor.action.quickFix")
+  end, { noremap = true, desc = "open quick fix in vs code" })
+
+  map("n", "<leader>cA", function()
+    vscode.call("editor.action.sourceAction")
+  end, { noremap = true, desc = "open source Action in vs code" })
+
+  map("n", "<leader>cp", function()
+    vscode.call("workbench.panel.markers.view.focus")
+  end, { noremap = true, desc = "open problems diagnostics" })
+
+  map("n", "<leader>cd", function()
+    vscode.call("editor.action.marker.next")
+  end, { noremap = true, desc = "open problems diagnostics" })
+
+  map("n", "<leader>co", function()
+    vscode.call("editor.action.organizeImports")
+  end, { noremap = true, desc = "organize import" })
+
+  map("n", "<leader>cs", function()
+    print("go to symbols in editor")
+    vscode.call("outline.focus")
+  end, { noremap = true, silent = true, desc = "Focus outline" })
+
+  -- Go to
+  map({ "n", "v" }, "[e", function()
+    vscode.call("editor.action.marker.prev")
+  end, { noremap = true, desc = "Go to Previous Problem (error, warning, info)" })
+
+  map({ "n", "v" }, "]e", function()
+    vscode.call("editor.action.marker.next")
+  end, { noremap = true, desc = "Go to Next Problem (error, warning, info)" })
+
+  map("n", "[n", function()
+    vscode.call("editor.action.wordHighlight.prev")
+  end, { noremap = true, desc = "Go to Prev Highlight" })
+
+  map("n", "]n", function()
+    vscode.call("editor.action.wordHighlight.next")
+  end, { noremap = true, desc = "Go to Next Highlight" })
+
+  map("n", "[h", function()
+    vscode.call("workbench.action.editor.previousChange")
+  end, { noremap = true, desc = "Go to Prev Change" })
+
+  map("n", "]h", function()
+    vscode.call("workbench.action.editor.nextChange")
+  end, { noremap = true, desc = "Go to Next Change" })
+
+  -- Harpoon Extension
+  map("n", "<leader>1", function()
+    vscode.call("vscode-harpoon.gotoEditor1")
+  end, { noremap = true, desc = "Harpoon 1" })
+
+  map("n", "<leader>2", function()
+    vscode.call("vscode-harpoon.gotoEditor2")
+  end, { noremap = true, desc = "Harpoon 2" })
+
+  map("n", "<leader>3", function()
+    vscode.call("vscode-harpoon.gotoEditor3")
+  end, { noremap = true, desc = "Harpoon 3" })
+
+  map("n", "<leader>4", function()
+    vscode.call("vscode-harpoon.gotoEditor4")
+  end, { noremap = true, desc = "Harpoon 4" })
+
+  map("n", "<leader>h", function()
+    vscode.call("vscode-harpoon.editorQuickPick")
+  end, { noremap = true, desc = "Harpoon Quick menu" })
+
+  map("n", "<leader>H", function()
+    vscode.call("vscode-harpoon.addEditor")
+  end, { noremap = true, desc = "Harpoon Add editor" })
+
+  -- Bookmark Extension
+  map("n", "<leader>sml", function()
+    vscode.call("bookmarks.list")
+  end, { noremap = true, desc = "open bookmarks list for current files" })
+
+  map("n", "<leader>smL", function()
+    vscode.call("bookmarks.listFromAllFiles")
+  end, { noremap = true, desc = "open bookmarks list for all files" })
+
+  map("n", "<leader>smm", function()
+    vscode.call("bookmarks.toggle")
+  end, { noremap = true, desc = "toggle bookmarks" })
+
+  map("n", "<leader>smd", function()
+    vscode.call("bookmarks.clear")
+  end, { noremap = true, desc = "clear bookmarks from current file" })
+
+  map("n", "<leader>smr", function()
+    vscode.call("bookmarks.clearFromAllFiles")
+  end, { noremap = true, desc = "clear bookmarks from all file" })
+
+  -- Jupyter Extension
+  map("n", "<localleader>rr", function()
+    vscode.call("jupyter.runcurrentcell")
+  end, { noremap = true, desc = "Run Jupyter - current cell" })
+
+  map("n", "<localleader>ru", function()
+    vscode.call("jupyter.runallcellsabove.palette")
+  end, { noremap = true, desc = "Run Jupyter - until cursor" })
+
+  map("n", "<localleader>re", function()
+    vscode.call("jupyter.execSelectionInteractive")
+  end, { noremap = true, desc = "Run Jupyter - Send line" })
+
+  map("n", "<localleader>r<localleader>", function()
+    vscode.call("jupyter.interruptkernel")
+  end, { noremap = true, desc = "Run Jupyter - interrupt kernel" })
+
+  -- Folding
+  map("n", "zm", function()
+    vscode.call("editor.foldAll")
+  end, { noremap = true, desc = "Fold all" })
+
+  map("n", "zR", function()
+    vscode.call("editor.unfoldAll")
+  end, { noremap = true, desc = "Unfold all" })
+
+  map("n", "zr", function()
+    vscode.call("editor.unfold")
+  end, { noremap = true, desc = "Unfold" })
+
+  map("n", "z1", function()
+    vscode.call("editor.foldLevel1")
+  end, { noremap = true, desc = "Fold level 1" })
+
+  map("n", "z2", function()
+    vscode.call("editor.foldLevel2")
+  end, { noremap = true, desc = "Fold level 2" })
+
+  map("n", "z3", function()
+    vscode.call("editor.foldLevel3")
+  end, { noremap = true, desc = "Fold level 3" })
+
+  map("n", "z4", function()
+    vscode.call("editor.foldLevel4")
+  end, { noremap = true, desc = "Fold level 4" })
+
+  map("n", "z`", function()
+    vscode.call("editor.foldAllExcept")
+  end, { noremap = true, desc = "Fold Except under cursor" })
+
+  map("n", "zc", function()
+    vscode.call("editor.foldAllBlockComments")
+  end, { noremap = true, desc = "Fold All Block Comments" })
+
+  map("n", "za", function()
+    vscode.call("editor.foldRecursively")
+  end, { noremap = true, desc = "Fold Recursively" })
+
+  map("n", "zA", function()
+    vscode.call("editor.unfoldRecursively")
+  end, { noremap = true, desc = "Unfold Recursively" })
+
+  -- Tests
+  map("n", "<leader>td", function()
+    vscode.call("testing.debugAtCursor")
+  end, { noremap = true, desc = "Debug Nearest Test" })
+
+  map("n", "<leader>tr", function()
+    vscode.call("testing.runAtCursor")
+  end, { noremap = true, desc = "Run Nearest Test" })
+
+  map("n", "<leader>tt", function()
+    vscode.call("testing.runCurrentFile")
+  end, { noremap = true, desc = "Run Test from current file" })
+
+  map("n", "<leader>tT", function()
+    vscode.call("testing.runAll")
+  end, { noremap = true, desc = "Run All Test" })
+
+  map("n", "<leader>ts", function()
+    vscode.call("workbench.view.testing.focus")
+  end, { noremap = true, desc = "Show Test Results" })
+
+  -- Source Control
+  map("n", "<leader>gg", function()
+    vscode.call("lazygit-vscode.toggle")
+  end, { noremap = true, desc = "Show Test Results" })
+
+  -- Debugging
+  map("n", "<leader>dd", function()
+    vscode.call("workbench.action.debug.start")
+  end, { noremap = true, desc = "Start Debugging" })
+
+  map("n", "<leader>dt", function()
+    vscode.call("workbench.action.debug.stop")
+  end, { noremap = true, desc = "Stop Debugging" })
+
+  map("n", "<leader>dr", function()
+    vscode.call("workbench.action.debug.restart")
+  end, { noremap = true, desc = "Restart Debugging" })
+
+  map("n", "<leader>db", function()
+    vscode.call("editor.debug.action.toggleBreakpoint")
+  end, { noremap = true, desc = "Toggle Breakpoint" })
+
+  map("n", "<leader>di", function()
+    vscode.call("workbench.action.debug.stepInto")
+  end, { noremap = true, desc = "Debug - step in" })
+
+  map("n", "<leader>do", function()
+    vscode.call("workbench.action.debug.stepOut")
+  end, { noremap = true, desc = "Debug - step out" })
+
+  map("n", "<leader>dO", function()
+    vscode.call("workbench.action.debug.stepOver")
+  end, { noremap = true, desc = "Debug - step over" })
+
+  -- Copilot
+  map("n", "<leader>aa", function()
+    vscode.call("workbench.action.chat.open")
+  end, { noremap = true, desc = "Ask Copilot" })
+
+  map("n", "<leader>at", function()
+    vscode.call("workbench.action.toggleAuxiliaryBar")
+  end, { noremap = true, desc = "Toggle Copilot chat" })
+
+  -- Http Client
+  map("n", "<leader>Rs", function()
+    vscode.call("vscode-hurl-runner.runHurl")
+  end, { noremap = true, desc = "Send HTTP request" })
+
+  map("n", "<leader>Ra", function()
+    vscode.call("vscode-hurl-runner.runHurlFile")
+  end, { noremap = true, desc = "Send HTTP all requests" })
+
+  map("n", "<leader>Rr", function()
+    vscode.call("vscode-hurl-runner.rerunLastCommand")
+  end, { noremap = true, desc = "Replay HTTP requests" })
+
+  map("n", "<leader>Rs", function()
+    vscode.call("vscode-hurl-runner.viewLastResponse")
+  end, { noremap = true, desc = "View Last Command" })
+
+  -- Harpoon
+  map("n", "<leader>h", function()
+    vscode.call("vscode-harpoon.editorQuickPick")
+  end, { noremap = true, desc = "Harpoon Quick menu" })
+
+  map("n", "<leader>H", function()
+    vscode.call("vscode-harpoon.addEditor")
+  end, { noremap = true, desc = "Harpoon Add Editor" })
+
+  map("n", "<leader>1", function()
+    vscode.call("vscode-harpoon.gotoEditor1")
+  end, { noremap = true, desc = "Harpoon Go to Editor 1" })
+
+  map("n", "<leader>2", function()
+    vscode.call("vscode-harpoon.gotoEditor2")
+  end, { noremap = true, desc = "Harpoon Go to Editor 2" })
+
+  map("n", "<leader>3", function()
+    vscode.call("vscode-harpoon.gotoEditor3")
+  end, { noremap = true, desc = "Harpoon Go to Editor 3" })
+
+  map("n", "<leader>4", function()
+    vscode.call("vscode-harpoon.gotoEditor4")
+  end, { noremap = true, desc = "Harpoon Go to Editor 4" })
+
+  -- Yazi
+  map("n", "<leader>-", function()
+    vscode.call("yazi-vscode.toggle")
+  end, { noremap = true, desc = "Toggle Yazi" })
+
+  -- Quarto
+  map("n", "]4", function()
+    vscode.call("quarto.goToNextCell")
+  end, { noremap = true, desc = "Quarto Next code block" })
+
+  map("n", "[4", function()
+    vscode.call("quarto.goToPreviousCell")
+  end, { noremap = true, desc = "Quarto Prev code block" })
+
+  print("⚡ NEOVIM " .. vim.version().major .. "." .. vim.version().minor .. "." .. vim.version().patch)
 end

@@ -16,6 +16,9 @@ return {
     "mason-org/mason.nvim",
     event = "VimEnter",
     cmd = { "Mason", "MasonUpdate", "MasonInstall", "MasonUninstall" },
+    keys = {
+      { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" },
+    },
     opts = function(_, opts)
       opts = opts or {}
       opts.install_root_dir = opts.install_root_dir or vim.fn.expand("~/.local/share/nvim/mason")

@@ -39,6 +39,7 @@ return {
   },
   {
     "RRethy/vim-illuminate",
+    vscode = true,
     event = "VeryLazy",
     opts = {
       delay = 200,
@@ -107,6 +108,12 @@ return {
         setup = true, -- modifies `h` and `l`
         hOnlyOpensOnFirstColumn = false,
       },
+    },
+    keys = {
+      { "z1", "zM", desc = "Fold 1", noremap = true },
+      { "z2", "zM1zr", desc = "Fold 2", noremap = true },
+      { "z3", "zM2zr", desc = "Fold 3", noremap = true },
+      { "z4", "zM3zr", desc = "Fold 4", noremap = true },
     },
   },
   {
@@ -291,6 +298,22 @@ return {
           opts.ensure_installed = opts.ensure_installed or {}
           vim.list_extend(opts.ensure_installed, { "ast-grep" })
         end,
+      },
+    },
+    keys = {
+      {
+        "<leader>sr",
+        function()
+          local grug = require("grug-far")
+          local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
+          grug.open({
+            transient = true,
+            prefills = {
+              filesFilter = ext and ext ~= "" and "*." .. ext or nil,
+            },
+          })
+        end,
+        desc = "Search/Replace (grug-far)",
       },
     },
   },
