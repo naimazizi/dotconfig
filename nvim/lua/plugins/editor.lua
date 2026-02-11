@@ -323,4 +323,5 @@ return {
     event = "VeryLazy",
     config = true,
   },
+  { "NMAC427/guess-indent.nvim", vscode = true, event = "VeryLazy", opts = {} },
 }

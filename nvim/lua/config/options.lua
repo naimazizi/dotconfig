@@ -1,36 +1,47 @@
 local opt = vim.opt
 
-opt.number = true
+opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus" -- Sync with system clipboard
 opt.cursorline = true
-opt.signcolumn = "yes"
-opt.termguicolors = true
-
 opt.expandtab = true
-opt.tabstop = 2
-opt.shiftwidth = 2
-opt.smartindent = true
-
+opt.fillchars = { foldopen = "", foldclose = "", fold = " ", foldsep = " ", diff = "╱", eob = " " }
+opt.foldlevel = 99
+opt.foldmethod = "indent"
+opt.foldtext = ""
+opt.grepformat = "%f:%l:%c:%m"
+opt.grepprg = "rg --vimgrep"
 opt.ignorecase = true
-opt.smartcase = true
 opt.incsearch = true
-
-opt.splitbelow = true
-opt.splitright = true
-
-opt.updatetime = 250
-opt.timeoutlen = 300 -- LazyVim-ish
-
-opt.undofile = true
-
-opt.clipboard = "unnamedplus"
-
 opt.laststatus = 0
+opt.number = true
+opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
+opt.shiftround = true -- Round indent
+opt.shiftwidth = 2
+opt.shortmess:append({ W = true, I = true, c = true, C = true })
+opt.showmode = true
+opt.signcolumn = "yes"
+opt.smartcase = true
+opt.smartindent = true
+opt.splitbelow = true
 opt.splitkeep = "screen"
+opt.splitright = true
+opt.tabstop = 2
+opt.termguicolors = true
+opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
+opt.undofile = true
+opt.updatetime = 250
+opt.wrap = true
 
+vim.o.breakindent = true
 vim.o.scrolloff = 10
 vim.o.confirm = true
 vim.o.mouse = "a"
 vim.o.autoread = true
+vim.o.autowrite = true
+vim.o.inccommand = "split"
+vim.o.cursorline = true
+
+vim.o.list = true
+opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- custom global variables
 vim.g.md_ft = { "markdown", "quarto", "copilot-chat", "opencode_output", "Avante" }

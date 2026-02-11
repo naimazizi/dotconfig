@@ -14,7 +14,7 @@ local function ai_buffer(ai_type)
   return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
 end
 
-local censor_extmark_opts = function(buf_id, match, data)
+local censor_extmark_opts = function(_buf_id, _match, _data)
   local mask = string.rep("⎯", vim.api.nvim_win_get_width(0))
   return {
     virt_text = { { mask, "SignColumn" } },
@@ -148,49 +148,6 @@ return {
             extmark_opts = censor_extmark_opts,
           },
         },
-      })
-
-      require("mini.basics").setup({
-        -- Options. Set field to `false` to disable.
-        options = {
-          -- Basic options ('number', 'ignorecase', and many more)
-          basic = true,
-
-          -- Extra UI features ('winblend', 'listchars', 'pumheight', ...)
-          extra_ui = true,
-
-          -- Presets for window borders ('single', 'double', ...)
-          -- Default 'auto' infers from 'winborder' option
-          win_borders = "auto",
-        },
-
-        -- Mappings. Set field to `false` to disable.
-        mappings = {
-          -- Basic mappings (better 'jk', save with Ctrl+S, ...)
-          basic = true,
-
-          -- Prefix for mappings that toggle common options ('wrap', 'spell', ...).
-          -- Supply empty string to not create these mappings.
-          option_toggle_prefix = "<leader>u",
-
-          -- Window navigation with <C-hjkl>, resize with <C-arrow>
-          windows = true,
-
-          -- Move cursor in Insert, Command, and Terminal mode with <M-hjkl>
-          move_with_alt = true,
-        },
-
-        -- Autocommands. Set field to `false` to disable
-        autocommands = {
-          -- Basic autocommands (highlight on yank, start Insert in terminal, ...)
-          basic = true,
-
-          -- Set 'relativenumber' only in linewise and blockwise Visual mode
-          relnum_in_visual_mode = true,
-        },
-
-        -- Whether to disable showing non-error feedback
-        silent = false,
       })
 
       require("mini.surround").setup({

@@ -58,6 +58,27 @@ else
     group = group,
   })
 
+  -- Toggle relative numbers on entering/leaving visual mode
+  vim.api.nvim_create_autocmd("ModeChanged", {
+    callback = function()
+      local mode = vim.api.nvim_get_mode().mode
+      if mode == "v" or mode == "V" or mode == "\22" then
+        vim.opt.relativenumber = true
+      else
+        vim.opt.relativenumber = false
+      end
+    end,
+    group = group,
+  })
+
+  -- Barbar: safe tabline before mksession save
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "PersistenceSavePre",
+    callback = function()
+      vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
+    end,
+  })
+
   -- Trouble: replace quickfix/location-list UI (LazyVim-ish)
   local function trouble_open(mode)
     local ok, trouble = pcall(require, "trouble")
