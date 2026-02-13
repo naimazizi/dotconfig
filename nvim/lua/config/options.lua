@@ -5,7 +5,8 @@ opt.cursorline = true
 opt.expandtab = true
 opt.fillchars = { foldopen = "", foldclose = "", fold = " ", foldsep = " ", diff = "╱", eob = " " }
 opt.foldlevel = 99
-opt.foldmethod = "indent"
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
 opt.foldtext = ""
 opt.grepformat = "%f:%l:%c:%m"
 opt.grepprg = "rg --vimgrep"

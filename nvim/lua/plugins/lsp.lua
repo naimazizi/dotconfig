@@ -50,8 +50,8 @@ local function lsp_keymaps(bufnr)
   map("n", "<leader>sS", fzf_lua_lsp("workspace_symbol"), "Symbols (workspace)")
 
   -- LSP calls
-  map("n", "<leader>ci", fzf_lua_lsp("incoming_calls"), "Symbols (document)")
-  map("n", "<leader>co", fzf_lua_lsp("outgoing_calls"), "Symbols (workspace)")
+  map("n", "<leader>ci", fzf_lua_lsp("incoming_calls"), "Incoming calls")
+  map("n", "<leader>co", fzf_lua_lsp("outgoing_calls"), "Outgoing calls")
 
   -- CodeLens (conditionally mapped; not all servers support it)
   local clients = vim.lsp.get_clients({ bufnr = bufnr })

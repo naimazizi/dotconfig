@@ -56,14 +56,6 @@ if vim.g.vscode then
     end)
   end
 
-  -- Navigate VSCode tabs like lazyvim buffers
-  map("n", "<S-h>", function()
-    vscode.call("workbench.action.previousEditor")
-  end)
-  map("n", "<S-l>", function()
-    vscode.call("workbench.action.nextEditor")
-  end)
-
   -- Search text in files
   map("n", "<leader>/", function()
     vscode.call("leaderkey.ripgrep")
@@ -365,34 +357,9 @@ if vim.g.vscode then
     vscode.call("vscode-hurl-runner.rerunLastCommand")
   end, { noremap = true, desc = "Replay HTTP requests" })
 
-  map("n", "<leader>Rs", function()
+  map("n", "<leader>Rv", function()
     vscode.call("vscode-hurl-runner.viewLastResponse")
-  end, { noremap = true, desc = "View Last Command" })
-
-  -- Harpoon
-  map("n", "<leader>h", function()
-    vscode.call("vscode-harpoon.editorQuickPick")
-  end, { noremap = true, desc = "Harpoon Quick menu" })
-
-  map("n", "<leader>H", function()
-    vscode.call("vscode-harpoon.addEditor")
-  end, { noremap = true, desc = "Harpoon Add Editor" })
-
-  map("n", "<leader>1", function()
-    vscode.call("vscode-harpoon.gotoEditor1")
-  end, { noremap = true, desc = "Harpoon Go to Editor 1" })
-
-  map("n", "<leader>2", function()
-    vscode.call("vscode-harpoon.gotoEditor2")
-  end, { noremap = true, desc = "Harpoon Go to Editor 2" })
-
-  map("n", "<leader>3", function()
-    vscode.call("vscode-harpoon.gotoEditor3")
-  end, { noremap = true, desc = "Harpoon Go to Editor 3" })
-
-  map("n", "<leader>4", function()
-    vscode.call("vscode-harpoon.gotoEditor4")
-  end, { noremap = true, desc = "Harpoon Go to Editor 4" })
+  end, { noremap = true, desc = "View Last Response" })
 
   -- Yazi
   map("n", "<leader>-", function()

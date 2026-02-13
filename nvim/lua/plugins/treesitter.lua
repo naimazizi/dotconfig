@@ -129,8 +129,15 @@ return {
           end
 
           if enabled("folds") then
-            vim.wo.foldmethod = "expr"
-            vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+            local clients = vim.lsp.get_clients({ bufnr = ev.buf })
+            local supports_folding = vim.iter(clients):any(function(client)
+              return client.supports_method("textDocument/foldingRange")
+            end)
+
+            if not supports_folding then
+              vim.wo.foldmethod = "expr"
+              vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+            end
           end
         end,
       })
@@ -144,7 +151,7 @@ return {
       move = {
         enable = true,
         set_jumps = true, -- whether to set jumps in the jumplist
-        -- LazyVim extention to create buffer-local keymaps
+        -- LazyVim extension to create buffer-local keymaps
         keys = {
           goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
           goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },

@@ -477,4 +477,12 @@ return {
     },
     config = true,
   },
+  {
+    "mvllow/modes.nvim",
+    vscode = false,
+    event = "VeryLazy",
+    config = function()
+      require("modes").setup()
+    end,
+  },
 }
