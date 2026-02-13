@@ -14,17 +14,6 @@ return {
         enabled = false,
       },
       status = { virtual_text = true },
-      output = { open_on_run = true },
-      quickfix = {
-        open = function()
-          local ok, trouble = pcall(require, "trouble")
-          if ok then
-            trouble.open({ mode = "quickfix" })
-            return
-          end
-          vim.cmd("copen")
-        end,
-      },
     },
     config = function(_, opts)
       local neotest_ns = vim.api.nvim_create_namespace("neotest")
