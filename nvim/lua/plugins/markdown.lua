@@ -8,7 +8,6 @@ return {
       render_modes = true, -- enable all modes
       file_types = vim.g.md_ft,
       code = {
-        enable = true, -- enable code block rendering
         style = "full",
         width = "full",
       },
