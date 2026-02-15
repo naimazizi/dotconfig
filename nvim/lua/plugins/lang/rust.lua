@@ -23,9 +23,9 @@ return {
           vim.keymap.set("n", "<leader>cR", function()
             vim.cmd.RustLsp("codeAction")
           end, { desc = "Code Action", buffer = bufnr })
-          vim.keymap.set("n", "<leader>dr", function()
+          vim.keymap.set("n", "<leader>dD", function()
             vim.cmd.RustLsp("debuggables")
-          end, { desc = "Rust Debuggables", buffer = bufnr })
+          end, { desc = "DAP ft-specific", buffer = bufnr })
         end,
         default_settings = {
           -- rust-analyzer language server configuration

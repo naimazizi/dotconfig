@@ -3,6 +3,9 @@ local map = vim.keymap.set
 -- LazyVim-ish
 map("n", "<Esc>", "<cmd>nohlsearch<cr><Esc>", { silent = true, desc = "Clear hlsearch" })
 
+-- Terminal escape
+map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
+
 -- Neovim general keymaps
 if not vim.g.vscode then
   -- Sessions / quit (LazyVim-ish)

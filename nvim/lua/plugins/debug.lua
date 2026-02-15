@@ -165,7 +165,7 @@ return {
         event = { "BufReadPre", "BufNewFile" },
         keys = {
           {
-            "<leader>dPt",
+            "<leader>dDt",
             function()
               require("dap-python").test_method()
             end,
@@ -173,7 +173,7 @@ return {
             ft = "python",
           },
           {
-            "<leader>dPc",
+            "<leader>dDc",
             function()
               require("dap-python").test_class()
             end,
