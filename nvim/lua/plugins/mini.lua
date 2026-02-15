@@ -105,50 +105,38 @@ return {
         end,
         desc = "Next todo comment",
       },
-      {
-        "<leader>fn",
-        function()
-          local ok, notify = pcall(require, "mini.notify")
-          if ok and type(notify.show_history) == "function" then
-            notify.show_history()
-            return
-          end
-          vim.notify("mini.notify not available")
-        end,
-        desc = "Notifications",
-      },
     },
     config = function()
-      require("mini.notify").setup()
-      vim.notify = require("mini.notify").make_notify()
-      require("mini.cmdline").setup({
-        autocomplete = { enable = false },
-        autocorrect = { enable = false },
-        autopeek = { enable = true },
-      })
+      if not vim.g.vscode then
+        require("mini.icons").setup()
+        require("mini.icons").mock_nvim_web_devicons()
 
-      require("mini.icons").setup()
-      require("mini.icons").mock_nvim_web_devicons()
-
-      local hipatterns = require("mini.hipatterns")
-      hipatterns.setup({
-        highlighters = {
-          fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-          hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-          todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-          note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
-          perf = { pattern = "%f[%w]()PERF()%f[%W]", group = "MiniHipatternsFixme" },
-          hex_color = hipatterns.gen_highlighter.hex_color(),
-          cell_marker = {
-            pattern = function(bufid)
-              local cmt_str = vim.api.nvim_get_option_value("commentstring", { buf = bufid })
-              return "^" .. string.gsub(cmt_str, [[%s]], "") .. [[*%%.*]]
-            end,
-            group = "",
-            extmark_opts = censor_extmark_opts,
+        local hipatterns = require("mini.hipatterns")
+        hipatterns.setup({
+          highlighters = {
+            fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+            hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+            todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+            note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+            perf = { pattern = "%f[%w]()PERF()%f[%W]", group = "MiniHipatternsFixme" },
+            hex_color = hipatterns.gen_highlighter.hex_color(),
+            cell_marker = {
+              pattern = function(bufid)
+                local cmt_str = vim.api.nvim_get_option_value("commentstring", { buf = bufid })
+                return "^" .. string.gsub(cmt_str, [[%s]], "") .. [[*%%.*]]
+              end,
+              group = "",
+              extmark_opts = censor_extmark_opts,
+            },
           },
-        },
-      })
+        })
+
+        require("mini.cmdline").setup({
+          autocomplete = { enable = false },
+          autocorrect = { enable = true },
+          autopeek = { enable = true },
+        })
+      end
 
       require("mini.surround").setup({
         mappings = {

@@ -446,7 +446,6 @@ return {
     keys = {
       { "<S-h>", "<cmd>BufferPrevious<cr>", desc = "Prev buffer" },
       { "<S-l>", "<cmd>BufferNext<cr>", desc = "Next buffer" },
-      { "<leader>bd", "<cmd>BufferClose<cr>", desc = "Delete buffer" },
       { "<leader>bD", "<cmd>BufferPickDelete<cr>", desc = "Delete buffer (pick)" },
       { "<leader>bo", "<cmd>BufferCloseAllButCurrent<cr>", desc = "Delete other buffers" },
       { "<leader>bh", "<cmd>BufferCloseBuffersLeft<cr>", desc = "Delete buffers to the left" },
@@ -476,13 +475,5 @@ return {
       { "<leader>w", "<cmd>lua require('nvim-window').pick()<cr>", desc = "Window Selection" },
     },
     config = true,
-  },
-  {
-    "mvllow/modes.nvim",
-    vscode = false,
-    event = "VeryLazy",
-    config = function()
-      require("modes").setup()
-    end,
   },
 }

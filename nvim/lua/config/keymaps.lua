@@ -30,6 +30,9 @@ if not vim.g.vscode then
   for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt" }) do
     pcall(vim.keymap.del, "n", key)
   end
+
+  -- Lazy
+  vim.api.nvim_set_keymap("n", "<leader>l", "<cmd>:Lazy<cr>", { noremap = true, silent = true, desc = "Lazy" })
 end
 
 -- Neovide specific keymap
