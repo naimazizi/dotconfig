@@ -1,5 +1,6 @@
 return {
   "danymat/neogen",
+  vscode = true,
   cmd = "Neogen",
   event = { "BufWritePre" },
   keys = {

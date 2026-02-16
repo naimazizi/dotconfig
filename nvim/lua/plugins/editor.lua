@@ -39,7 +39,6 @@ return {
   },
   {
     "RRethy/vim-illuminate",
-    vscode = true,
     event = "VeryLazy",
     opts = {
       delay = 200,

@@ -48,11 +48,8 @@ return {
     },
   },
   {
-    "danymat/neogen",
-    vscode = true,
-  },
-  {
     "nvim-treesitter/nvim-treesitter",
+    vscode = true,
     opts = { highlight = { enable = false } },
   },
 }
