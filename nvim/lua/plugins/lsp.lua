@@ -220,47 +220,30 @@ return {
         },
       })
 
-      -- Enabled LSP
-      vim.lsp.enable({
-        "dbt",
-        "jsonls",
-        "emmylua_ls",
-        "marksman",
-        "pyrefly",
-        "ruff",
-        "bacon_ls",
-        "typos_lsp",
-        "tinymist",
-        "copilot",
-        "harper_ls",
-      })
+       -- Enabled LSP
+       vim.lsp.enable({
+         "jsonls",
+         "emmylua_ls",
+         "marksman",
+         "pyrefly",
+         "ruff",
+         "bacon_ls",
+         "typos_lsp",
+         "tinymist",
+         "copilot",
+         "harper_ls",
+       })
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           lsp_keymaps(args.buf)
 
-          local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-          if client.server_capabilities.inlayHintProvider then
-            vim.lsp.inlay_hint.enable(true)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.server_capabilities and client.server_capabilities.inlayHintProvider then
+            vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
           end
         end,
       })
     end,
-  },
-  {
-    "mason-org/mason-lspconfig.nvim",
-    vscode = false,
-    opts = {},
-    dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-      "neovim/nvim-lspconfig",
-    },
-  },
-  {
-    "zeioth/garbage-day.nvim",
-    vscode = false,
-    dependencies = "neovim/nvim-lspconfig",
-    event = "VeryLazy",
-    opts = {},
   },
 }
