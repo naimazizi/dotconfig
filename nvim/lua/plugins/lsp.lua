@@ -63,6 +63,18 @@ local function lsp_keymaps(bufnr)
     map("n", "<leader>cc", vim.lsp.codelens.run, "CodeLens")
     map("n", "<leader>cC", vim.lsp.codelens.refresh, "Refresh CodeLens")
   end
+
+  -- Inlay hints (conditionally enabled; not all servers support it)
+  local supports_inlay_hints = vim.iter(clients):any(function(client)
+    return client.supports_method("textDocument/inlayHint")
+  end)
+
+  if supports_inlay_hints then
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    map("n", "<leader>uh", function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+    end, "Toggle Inlay Hints")
+  end
 end
 
 return {
@@ -226,6 +238,11 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           lsp_keymaps(args.buf)
+
+          local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+          if client.server_capabilities.inlayHintProvider then
+            vim.lsp.inlay_hint.enable(true)
+          end
         end,
       })
     end,
