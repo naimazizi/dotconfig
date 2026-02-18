@@ -11,6 +11,12 @@ return {
         default_global_keymaps = true,
         default_mode = "build",
         keymap_prefix = "<leader>a",
+        ui = {
+          input = {
+            min_height = 0.25,
+            max_height = 0.25,
+          },
+        },
       })
     end,
     dependencies = {

@@ -127,6 +127,22 @@ return {
           },
         },
         right = {
+          {
+            ft = "opencode_output",
+            size = { width = 60 },
+            wo = {
+              winbar = false,
+              winhighlight = "Normal:OpencodeBackground",
+            },
+          },
+          {
+            ft = "opencode",
+            size = { height = 0.15 },
+            wo = {
+              winbar = false,
+              winhighlight = "Normal:OpencodeBackground",
+            },
+          },
           { title = "Grug Far", ft = "grug-far", size = { height = 0.50 } },
           {
             title = "Overseer",
