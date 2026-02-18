@@ -51,7 +51,7 @@ return {
         local fullpath = vim.api.nvim_buf_get_name(props.buf)
         local reldir
         if fullpath == "" then
-          reldir = "[No Name]"
+          reldir = ""
         else
           reldir = vim.fn.fnamemodify(fullpath, ":~:.:h")
           if reldir == "." then
@@ -68,11 +68,13 @@ return {
 
         local result = {}
 
+        table.insert(result, { "| ", guibg = "none" }) -- left padding
+
         -- Relative path
         if reldir ~= "" then
           table.insert(result, {
-            reldir == "[No Name]" and reldir or (reldir .. "/"),
-            gui = modified and "bold,italic" or "italic",
+            reldir == "" and reldir or (reldir .. "/"),
+            gui = "italic",
           })
         end
 
@@ -105,10 +107,8 @@ return {
           table.insert(result, {
             " ",
             { gui = modified and "bold,italic" or "bold" },
-            " ",
             ft_icon and { ft_icon, " ", guibg = "none", group = ft_color } or "",
           })
-          table.insert(result, " ") -- spacing between icon and filename
         end
 
         -- FILENAME
@@ -136,12 +136,11 @@ return {
             end
           end
 
-          -- DIAGNOSTICS
           local diag_icons = {
-            error = "󰅚 ",
-            warn = "󰅚 ",
-            info = "󰅚 ",
-            hint = "󰅚 ",
+            error = " ",
+            warn = " ",
+            info = " ",
+            hint = " ",
           }
           local entries = {}
 
