@@ -56,7 +56,7 @@ local function lsp_keymaps(bufnr)
   -- CodeLens (conditionally mapped; not all servers support it)
   local clients = vim.lsp.get_clients({ bufnr = bufnr })
   local supports_codelens = vim.iter(clients):any(function(client)
-    return client.supports_method("textDocument/codeLens")
+    return client:supports_method("textDocument/codeLens")
   end)
 
   if supports_codelens then
@@ -66,7 +66,7 @@ local function lsp_keymaps(bufnr)
 
   -- Inlay hints (conditionally enabled; not all servers support it)
   local supports_inlay_hints = vim.iter(clients):any(function(client)
-    return client.supports_method("textDocument/inlayHint")
+    return client:supports_method("textDocument/inlayHint")
   end)
 
   if supports_inlay_hints then
@@ -107,10 +107,7 @@ return {
             [vim.diagnostic.severity.HINT] = " ",
           },
         },
-        virtual_text = {
-          source = "if_many",
-          spacing = 2,
-        },
+        virtual_text = false,
       })
 
       -- Lua
@@ -220,19 +217,19 @@ return {
         },
       })
 
-       -- Enabled LSP
-       vim.lsp.enable({
-         "jsonls",
-         "emmylua_ls",
-         "marksman",
-         "pyrefly",
-         "ruff",
-         "bacon_ls",
-         "typos_lsp",
-         "tinymist",
-         "copilot",
-         "harper_ls",
-       })
+      -- Enabled LSP
+      vim.lsp.enable({
+        "jsonls",
+        "emmylua_ls",
+        "marksman",
+        "pyrefly",
+        "ruff",
+        "bacon_ls",
+        "typos_lsp",
+        "tinymist",
+        "copilot",
+        "harper_ls",
+      })
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
@@ -243,6 +240,28 @@ return {
             vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
           end
         end,
+      })
+    end,
+  },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+      require("tiny-inline-diagnostic").setup({
+        preset = "modern",
+        options = {
+          show_source = {
+            if_many = true,
+          },
+          multilines = {
+            enabled = true,
+            always_show = true,
+            trim_whitespaces = true,
+            tabstop = 4,
+          },
+          use_icons_from_diagnostic = true,
+        },
       })
     end,
   },
