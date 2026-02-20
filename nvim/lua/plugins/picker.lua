@@ -40,6 +40,7 @@ return {
       },
       { "<leader>sd", fzf_lua_picker("diagnostics_document", {}), desc = "Diagnostics" },
       { "<leader>sD", fzf_lua_picker("diagnostics_workspace", {}), desc = "Diagnostics Workspace" },
+      { "<leader>sq", fzf_lua_picker("quickfix", {}), desc = "Quickfix" },
       { "<leader>fr", fzf_lua_picker("oldfiles", {}), desc = "Recent" },
       { "<leader>fh", fzf_lua_picker("help_tags", {}), desc = "Help" },
       { "<leader>fz", fzf_lua_picker("zoxide", {}), desc = "Zoxide" },

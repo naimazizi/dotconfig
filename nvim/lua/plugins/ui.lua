@@ -59,14 +59,16 @@ return {
         },
         bottom = {
           { title = "Neotest Output", ft = "neotest-output-panel" },
-          { ft = "trouble", title = "Trouble" },
           {
-            ft = "noice",
-            filter = function(_buf, win)
-              return vim.api.nvim_win_get_config(win).relative == ""
+            title = "Quickfix",
+            ft = "qf",
+            -- don't open help files in edgy that we're editing
+            filter = function(buf)
+              return vim.bo[buf].buftype == "quickfix"
             end,
           },
           {
+            title = "Help",
             ft = "help",
             -- don't open help files in edgy that we're editing
             filter = function(buf)
