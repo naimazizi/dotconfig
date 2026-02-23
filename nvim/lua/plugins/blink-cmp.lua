@@ -172,7 +172,7 @@ return {
       },
 
       keymap = {
-        preset = "super-tab",
+        preset = "enter",
       },
     },
   },
