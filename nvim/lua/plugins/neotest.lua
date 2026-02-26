@@ -1,3 +1,9 @@
+-- Disable neotest
+---@diagnostic disable-next-line: unnecessary-if
+if true then
+  return {}
+end
+
 return {
   {
     "nvim-neotest/neotest",

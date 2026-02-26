@@ -45,9 +45,120 @@ local function fzf_dap_picker(fn, opts)
   end
 end
 
+---Find the function name at current cursor using treesitter
+---@return string|nil name The function name
+local function find_function_name()
+  local ok, ts = pcall(require, "vim.treesitter")
+  if not ok then
+    return nil
+  end
+
+  local bufnr = vim.api.nvim_get_current_buf()
+  local parser = ts.get_parser(bufnr)
+  if not parser then
+    return nil
+  end
+
+  local root = parser:parse()[1]:root()
+  local cursor_row = vim.fn.line(".") - 1
+  local cursor_col = vim.fn.col(".") - 1
+
+  -- Find the function definition node at cursor
+  local function find_function(node)
+    if not node then
+      return nil
+    end
+
+    local node_type = node:type()
+    if node_type == "function_definition" or node_type == "method_definition" then
+      -- Get the function name (usually the second child in Python)
+      for child in node:iter_children() do
+        if child:type() == "identifier" then
+          return vim.treesitter.get_node_text(child, bufnr)
+        end
+      end
+    end
+
+    -- If cursor is within this node, search children
+    local start_row, start_col, end_row, end_col = node:range()
+    if start_row <= cursor_row and cursor_row <= end_row then
+      for child in node:iter_children() do
+        local result = find_function(child)
+        if result then
+          return result
+        end
+      end
+    end
+
+    return nil
+  end
+
+  return find_function(root)
+end
+
+---Debug test class for the current position
+local function debug_method()
+  local ok, dap = pcall(require, "dap")
+  if not ok then
+    vim.notify("nvim-dap not available")
+    return
+  end
+
+  local ft = vim.bo.filetype
+
+  -- Language-specific handlers
+  local handlers = {
+    python = function()
+      -- Find the function name using treesitter
+      local test_name = find_function_name()
+      if not test_name then
+        vim.notify("No function found at cursor")
+        return
+      end
+
+      -- Get the current file path
+      local file_path = vim.fn.expand("%:p")
+
+      -- Run pytest with the specific test
+      local pytest_args = { "-xvs", file_path .. "::" .. test_name }
+
+      -- Configure and start debugging
+      if type(dap.run) == "function" then
+        dap.run({
+          type = "python",
+          name = "pytest: " .. test_name,
+          request = "launch",
+          module = "pytest",
+          args = pytest_args,
+          console = "integratedTerminal",
+          justMyCode = false,
+        })
+      else
+        vim.notify("dap.run not available")
+      end
+    end,
+    rust = function()
+      vim.cmd("RustLsp debuggables")
+    end,
+  }
+
+  -- Execute language-specific handler or fallback
+  local handler = handlers[ft]
+  if handler then
+    handler()
+  else
+    -- Fallback for unsupported languages
+    vim.notify("Test class debugging not configured for " .. ft)
+    if type(dap.continue) == "function" then
+      dap.continue()
+    end
+  end
+end
+
 return {
   {
     "mfussenegger/nvim-dap",
+    vscode = false,
     event = { "BufReadPre", "BufNewFile" },
     keys = {
       {
@@ -153,6 +264,13 @@ return {
       { "<leader>dv", fzf_dap_picker("dap_variables", {}), desc = "DAP variables" },
       { "<leader>dV", fzf_dap_picker("dap_breakpoints", {}), desc = "DAP breakpoint" },
       { "<leader>df", fzf_dap_picker("dap_configurations", {}), desc = "Configuration" },
+      {
+        "<leader>dm",
+        function()
+          debug_method()
+        end,
+        desc = "Debug test method",
+      },
     },
     dependencies = {
       {
@@ -163,24 +281,6 @@ return {
         "mfussenegger/nvim-dap-python",
         ft = "python",
         event = { "BufReadPre", "BufNewFile" },
-        keys = {
-          {
-            "<leader>dDt",
-            function()
-              require("dap-python").test_method()
-            end,
-            desc = "Debug Method",
-            ft = "python",
-          },
-          {
-            "<leader>dDc",
-            function()
-              require("dap-python").test_class()
-            end,
-            desc = "Debug Class",
-            ft = "python",
-          },
-        },
         config = function()
           require("dap-python").setup("debugpy-adapter")
         end,
@@ -265,6 +365,7 @@ return {
   },
   {
     "jay-babu/mason-nvim-dap.nvim",
+    vscode = false,
     dependencies = "mason.nvim",
     cmd = { "DapInstall", "DapUninstall" },
     opts = function(_, opts)
