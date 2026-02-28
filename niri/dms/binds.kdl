@@ -35,7 +35,7 @@ binds {
         spawn "dms" "ipc" "call" "notepad" "toggle"
     }
     Mod+Shift+B hotkey-overlay-title="Browser" {
-        spawn "zen-browser"
+        spawn "waterfox"
     }
     Mod+Shift+C hotkey-overlay-title="Code" {
         spawn "neovide"
