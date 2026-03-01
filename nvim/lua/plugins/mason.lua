@@ -40,6 +40,7 @@ return {
       vim.list_extend(opts.ensure_installed, {
         "bacon",
         "bacon_ls",
+        "biome",
         "codelldb",
         "debugpy",
         "emmylua_ls",

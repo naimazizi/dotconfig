@@ -2,6 +2,7 @@
 
 ## List of configs
 
+- amethyst
 - atuin
 - fish
 - ghostty
@@ -64,4 +65,12 @@ brew install \
 
 mkdir -p ~/Applications
 brew install --cask ghostty font-monaspace-nf --appdir=~/Applications
+```
+
+## MacOS Specifcs
+
+- Amethyst
+
+```{bash}
+ln -s "~/.config/amethyst/Layouts/center_or_tall.js" "~/Library/Application Support/Amethyst/Layouts/center_or_tall.js
 ```

@@ -67,6 +67,9 @@ return {
       -- kdl formatter
       opts.formatters_by_ft["kdl"] = { "kdlfmt" }
 
+      -- js formatter
+      opts.formatters_by_ft["javascript"] = { "biome" }
+
       -- Injected formatter for code blocks in markdown-like file
       for _, ft in ipairs(vim.g.md_injected_ft or {}) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}

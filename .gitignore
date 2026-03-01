@@ -10,41 +10,43 @@
 !/skim_search.sh
 
 # Folder to not ignore
+!/amethyst/
 !/atuin/
 !/fish/
-!/wezterm/
-!/helix/
-!/nvim/
-!/vscode/
-!/television/
 !/ghostty/
-!/zellij/
 !/gitui/
-!/zed/settings.json
-!/zed/keymap.json
-!/zed/task.json
-!/yazi/
+!/helix/
+!/hypr/
+!/kitty/
 !/lazygit/
 !/neovide/
-!/vim/
-!/zsh/
-!/tmux/
-!/hypr/
-!/opencode/
-!/kitty/
 !/niri/
+!/nvim/
+!/opencode/
+!/television/
+!/tmux/
 !/tmuxinator/
+!/vim/
 !/vimclap/
+!/vscode/
+!/wezterm/
+!/yazi/
+!/zed/keymap.json
+!/zed/settings.json
+!/zed/task.json
+!/zellij/
+!/zsh/
 
+# Files to not ignore
+coc/memos.json
 fish/fish_variables
 fish/fishd.*
 nvim/lazy-lock.json
-zsh/.zcomp*
-zsh/.zsh_sessions/
-zsh/.zsh_history
-zsh/.zim/
-zsh/.zhistory
-coc/memos.json
 opencode/get-shit-done/INSTALLED_FILES.json
 opencode/get-shit-done/VERSION
+zsh/.zcomp*
+zsh/.zhistory
+zsh/.zim/
+zsh/.zsh_history
+zsh/.zsh_sessions/
 
