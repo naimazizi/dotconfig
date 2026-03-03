@@ -158,6 +158,10 @@ if vim.g.vscode then
     vscode.call("outline.focus")
   end, { noremap = true, silent = true, desc = "Focus outline" })
 
+  map("n", "<leader>cf", function()
+    vscode.call("editor.action.formatDocument")
+  end, { noremap = true, silent = true, desc = "Format Document" })
+
   -- Go to
   map({ "n", "v" }, "[e", function()
     vscode.call("editor.action.marker.prev")

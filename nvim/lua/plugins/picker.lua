@@ -23,6 +23,7 @@ return {
     event = "VeryLazy",
     dependencies = {
       "folke/snacks.nvim",
+      "elanmed/fzf-lua-frecency.nvim",
     },
     keys = {
       { "<leader>ff", fzf_lua_picker("files", {}), desc = "Find files" },
@@ -84,6 +85,16 @@ return {
         mode = "v",
         desc = "Search selection",
       },
+      {
+        "<leader><space>",
+        function()
+          require("fzf-lua-frecency").frecency({
+            cwd_only = true,
+            display_score = false,
+          })
+        end,
+        desc = "Find Files",
+      },
     },
     config = function()
       local fzf = require("fzf-lua")
@@ -108,45 +119,7 @@ return {
           ["--no-scrollbar"] = true,
           ["--algo"] = "frizbee",
         },
-        ui_select = function(fzf_opts, items)
-          return vim.tbl_deep_extend("force", fzf_opts, {
-            prompt = " ",
-            winopts = {
-              title = " " .. vim.trim((fzf_opts.prompt or "Select"):gsub("%s*:%s*$", "")) .. " ",
-              title_pos = "center",
-            },
-          }, fzf_opts.kind == "codeaction" and {
-            winopts = {
-              layout = "vertical",
-              -- height is number of items minus 15 lines for the preview, with a max of 80% screen height
-              height = math.floor(math.min(vim.o.lines * 0.8 - 16, #items + 4) + 0.5) + 16,
-              width = 0.5,
-              preview = not vim.tbl_isempty(vim.lsp.get_clients({ bufnr = 0, name = "vtsls" })) and {
-                layout = "vertical",
-                vertical = "down:15,border-top",
-                hidden = "hidden",
-              } or {
-                layout = "vertical",
-                vertical = "down:15,border-top",
-              },
-            },
-          } or {
-            winopts = {
-              width = 0.5,
-              -- height is number of items, with a max of 80% screen height
-              height = math.floor(math.min(vim.o.lines * 0.8, #items + 4) + 0.5),
-            },
-          })
-        end,
-        winopts = {
-          width = 0.8,
-          height = 0.8,
-          row = 0.5,
-          col = 0.5,
-          preview = {
-            scrollchars = { "┃", "" },
-          },
-        },
+
         files = {
           cwd_prompt = false,
           formatter = "path.filename_first",
@@ -155,6 +128,7 @@ return {
             ["alt-h"] = { actions.toggle_hidden },
           },
         },
+
         grep = {
           actions = {
             ["alt-i"] = { actions.toggle_ignore },
@@ -168,29 +142,6 @@ return {
           },
         },
       })
-      fzf.register_ui_select()
-    end,
-  },
-  {
-    "otavioschwanck/fzf-lua-enchanted-files",
-    vscode = false,
-    event = "VeryLazy",
-    dependencies = { "ibhagwan/fzf-lua" },
-    keys = {
-      {
-        "<leader><space>",
-        function()
-          require("fzf-lua-enchanted-files").files()
-        end,
-        desc = "Find files (frecency)",
-      },
-    },
-    config = function()
-      vim.g.fzf_lua_enchanted_files = {
-        max_history_per_cwd = 50,
-        auto_history = true,
-        history_file = vim.fn.stdpath("data") .. "/fzf-lua-enchanted-files-history.json",
-      }
     end,
   },
   {
@@ -302,7 +253,7 @@ return {
               icon = " ",
               key = "f",
               desc = "Find File",
-              action = ":lua require('fzf-lua-enchanted-files').files()",
+              action = ":lua FzfLua.files()",
             },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
