@@ -119,6 +119,7 @@ fi
 
 # Plugin
 eval "$(atuin init zsh)"
+eval "$(zoxide init zsh)"
 
 # Vi mode
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk

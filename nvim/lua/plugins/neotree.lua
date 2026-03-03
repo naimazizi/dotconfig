@@ -31,10 +31,10 @@ return {
           ["Y"] = {
             function(state)
               local node = state.tree:get_node()
-              local path = node:get_id()
-              vim.fn.setreg("+", path, "c")
+              local filename = node.name
+              vim.fn.setreg("+", filename, "c")
             end,
-            desc = "Copy Path to Clipboard",
+            desc = "Copy Filename to Clipboard",
           },
           ["O"] = {
             function(state)

@@ -67,7 +67,7 @@ mkdir -p ~/Applications
 brew install --cask ghostty font-monaspace-nf --appdir=~/Applications
 ```
 
-## MacOS Specifcs
+## MacOS Specifics
 
 - Amethyst
 

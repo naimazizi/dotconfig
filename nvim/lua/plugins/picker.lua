@@ -101,7 +101,7 @@ return {
       config.defaults.keymap.builtin["<c-b>"] = "preview-page-up"
 
       fzf.setup({
-        { "ivy" },
+        { "telescope" },
         fzf_bin = fzf_bin,
         fzf_colors = true,
         fzf_opts = {
