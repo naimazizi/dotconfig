@@ -41,69 +41,42 @@ alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mo
 alias ls_arch_packages="pacman -Qi | grep -E '^(Name|Installed)' | cut -f2 -d':' | paste - - | column -t | sort -nrk 2 | grep MiB | less"
 alias ss="zsh $HOME/.config/skim_search.sh"
 
-# Pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-if [[ -d "$PYENV_ROOT/bin" ]]; then
-  export PATH="$PYENV_ROOT/bin:$PATH"
-fi
-if command -v pyenv &>/dev/null; then
-  eval "$(pyenv init - zsh)"
-  eval "$(pyenv virtualenv-init -)"
-fi
+# Consolidated PATH construction for better performance
+# Build PATH array instead of repeated $PATH:$X concatenations
+typeset -U PATH_DIRS
+PATH_DIRS=(
+  "$HOME/.local/bin"
+  "/opt/google-cloud-cli/bin"
+  "$HOME/.local/share/nvim/mason/bin"
+  "$HOME/.bun/bin"
+  "$HOME/.rd/bin"
+  "$HOME/.cargo/bin"
+  "$HOME/.local/share/bob/nvim-bin"
+  "$HOME/.pyenv/bin"
+)
 
-# Homebrew
-if [[ -f "/opt/homebrew/bin/brew" ]]; then # MacOS
+for dir in "${PATH_DIRS[@]}"; do
+  [[ -d "$dir" ]] && export PATH="$dir:$PATH"
+done
+
+# Homebrew setup (prefer macOS)
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
   export HOMEBREW_PREFIX='/opt/homebrew'
   export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
   export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/homebrew"
   eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then # Linux
+elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
   export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
   export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
   export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# Bob (Nvim)
-BOB_PATH="$HOME/.local/share/bob/nvim-bin"
-if [[ -d "${BOB_PATH}" ]]; then
-  export PATH=$PATH:$BOB_PATH
-fi
-
-# Cargo (rust)
-CARGO_PATH="$HOME/.cargo/bin"
-if [[ -d "${CARGO_PATH}" ]]; then
-  export PATH=$PATH:$CARGO_PATH
-fi
-
-# Rancher Desktop
-RANCHER_PATH="$HOME/.rd/bin"
-if [[ -d "${RANCHER_PATH}" ]]; then
-  export PATH=$PATH:$RANCHER_PATH
-fi
-
-# Bun
-export BUN_PATH="$HOME/.bun/bin"
-if [[ -d "${BUN_PATH}" ]]; then
-  export PATH=$PATH:$BUN_PATH
-fi
-
-# Mason bin
-export MASON_BIN_PATH="$HOME/.local/share/nvim/mason/bin"
-if [[ -d "${MASON_BIN_PATH}" ]]; then
-  export PATH=$PATH:$MASON_BIN_PATH
-fi
-
-# gcloud bin
-export GCLOUD_BIN_PATH="/opt/google-cloud-cli/bin/"
-if [[ -d "${GCLOUD_BIN_PATH}" ]]; then
-  export PATH=$PATH:$GCLOUD_BIN_PATH
-fi
-
-# local bin
-export LOCAL_BIN_PATH="$HOME/.local/bin"
-if [[ -d "${LOCAL_BIN_PATH}" ]]; then
-  export PATH=$PATH:$LOCAL_BIN_PATH
+# Pyenv 
+export PYENV_ROOT="$HOME/.pyenv"
+if command -v pyenv &>/dev/null; then
+  eval "$(pyenv init - zsh)"
+  eval "$(pyenv virtualenv-init -)"
 fi
 
 # Environment variables
@@ -117,9 +90,19 @@ else
   export ZVM_VI_EDITOR='vim'
 fi
 
-# Plugin
-eval "$(atuin init zsh)"
+# Plugin initialization
+# Zoxide is fast enough to load normally
 eval "$(zoxide init zsh)"
+
+# Lazy load atuin - slow command history
+function _init_atuin() {
+  eval "$(atuin init zsh)"
+  # Replace function with noop after first call
+  _init_atuin() { :; }
+}
+# Intercept common history commands
+alias history='_init_atuin && history'
+alias h='_init_atuin && history'
 
 # Vi mode
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
@@ -127,7 +110,7 @@ function zvm_after_lazy_keybindings() {
   bindkey -M vicmd 'vv' edit-command-line
 }
 
-zmodload -F zsh/terminfo +p:terminfo
+zmodload -F zsh/terminfo +p:terminfo 2>/dev/null
 # Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
