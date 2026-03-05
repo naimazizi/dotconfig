@@ -91,6 +91,7 @@ return {
           require("fzf-lua-frecency").frecency({
             cwd_only = true,
             display_score = false,
+            formatter = "path.filename_first",
           })
         end,
         desc = "Find Files",
