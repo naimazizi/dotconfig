@@ -1,7 +1,7 @@
 local opt = vim.opt
 
 opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus" -- Sync with system clipboard
-opt.cursorline = true
+opt.cursorline = vim.g.vscode and false or true
 opt.expandtab = true
 opt.fillchars = { foldopen = "", foldclose = "", fold = " ", foldsep = " ", diff = "╱", eob = " " }
 opt.foldlevel = 99

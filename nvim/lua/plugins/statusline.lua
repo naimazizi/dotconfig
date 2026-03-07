@@ -1,5 +1,6 @@
 return {
   "b0o/incline.nvim",
+  vscode = false,
   event = {
     "BufReadPre",
     "BufNewFile",
@@ -7,6 +8,7 @@ return {
   dependencies = {
     {
       "SmiteshP/nvim-navic",
+      vscode = false,
       opts = {
         lsp = {
           auto_attach = true,

@@ -1,5 +1,7 @@
 if vim.g.vscode then
   local redraw_fix = vim.api.nvim_create_augroup("VSCodeRedrawFix", { clear = true })
+
+  -- Redraw on cursor hold to fix visual artifacts
   vim.api.nvim_create_autocmd("CursorHold", {
     group = redraw_fix,
     callback = function()
@@ -7,13 +9,40 @@ if vim.g.vscode then
     end,
   })
 
-  -- 2. Redraw immediately after text changes (e.g., visual delete)
+  -- Redraw immediately after text changes (e.g., visual delete)
   local redraw_group = vim.api.nvim_create_augroup("RedrawOnDelete", { clear = true })
   vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
     group = redraw_group,
     callback = function()
       if vim.fn.mode() == "n" then
         vim.cmd("silent! mode") -- refresh UI after delete/insert
+      end
+    end,
+  })
+
+  -- Redraw on visual mode exit to fix selection artifacts
+  vim.api.nvim_create_autocmd("ModeChanged", {
+    group = redraw_fix,
+    callback = function()
+      vim.cmd("silent! mode")
+    end,
+  })
+
+  -- Redraw on window operations
+  vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
+    group = redraw_fix,
+    callback = function()
+      vim.cmd("silent! mode")
+    end,
+  })
+
+  -- Aggressive redraw on cursor movement in visual mode
+  vim.api.nvim_create_autocmd("CursorMoved", {
+    group = redraw_fix,
+    callback = function()
+      local mode = vim.fn.mode()
+      if mode:match("[vV\22]") then
+        vim.cmd("silent! mode")
       end
     end,
   })
@@ -95,5 +124,4 @@ else
       end, { buffer = buf, noremap = true, silent = true })
     end,
   })
-
 end

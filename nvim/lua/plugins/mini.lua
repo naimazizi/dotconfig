@@ -1,19 +1,3 @@
-local function ai_buffer(ai_type)
-  local start_line, end_line = 1, vim.fn.line("$")
-  if ai_type == "i" then
-    -- Skip first and last blank lines for `i` textobject
-    local first_nonblank, last_nonblank = vim.fn.nextnonblank(start_line), vim.fn.prevnonblank(end_line)
-    -- Do nothing for buffer with all blanks
-    if first_nonblank == 0 or last_nonblank == 0 then
-      return { from = { line = start_line, col = 1 } }
-    end
-    start_line, end_line = first_nonblank, last_nonblank
-  end
-
-  local to_col = math.max(vim.fn.getline(end_line):len(), 1)
-  return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
-end
-
 local censor_extmark_opts = function(_buf_id, _match, _data)
   local mask = string.rep("⎯", vim.api.nvim_win_get_width(0))
   return {
@@ -46,7 +30,6 @@ local function ai_whichkey(opts)
     { "d", desc = "digit(s)" },
     { "e", desc = "CamelCase / snake_case" },
     { "f", desc = "function" },
-    { "g", desc = "entire file" },
     { "i", desc = "indent" },
     { "o", desc = "block, conditional, loop" },
     { "q", desc = "quote `\"'" },
@@ -214,7 +197,6 @@ return {
             { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
             "^().*()$",
           },
-          g = ai_buffer, -- buffer
           u = ai.gen_spec.function_call(), -- u for "Usage"
           U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
           r = function(ai_mode, _, _) -- r for "cell"
