@@ -397,7 +397,6 @@ return {
     "TheNoeTrevino/haunt.nvim",
     vscode = false,
     event = "BufReadPost",
-    ---@class HauntConfig
     opts = {
       sign = "󱙝",
       sign_hl = "DiagnosticInfo",
