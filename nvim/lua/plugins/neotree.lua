@@ -24,6 +24,7 @@ return {
         use_libuv_file_watcher = true,
       },
       window = {
+        wrap = true,
         mappings = {
           ["l"] = "open",
           ["h"] = "close_node",

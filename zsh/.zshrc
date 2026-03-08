@@ -33,7 +33,7 @@ zle -N edit-command-line
 alias ls='lsd'
 alias ll="lsd -ltr"
 alias find='fd'
-alias gg='lazygit'
+alias gg='gitui'
 alias vv='nvim'
 alias nvim_update='nvim --headless "+Lazy! sync" +qa'
 alias neovide_remote="neovide --neovim-bin ~/.config/nvim-remote.sh"

@@ -53,7 +53,7 @@ return {
           enabled = false,
         },
         options = {
-          left = { size = 0.15 },
+          left = { size = 0.20 },
           bottom = { size = 0.15 },
           right = { size = 0.30 },
         },
@@ -124,7 +124,7 @@ return {
           {
             title = "Outline",
             ft = "Outline",
-            pinned = true,
+            pinned = false,
             open = "Outline",
           },
         },
