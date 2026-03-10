@@ -1,4 +1,5 @@
 local fzf_bin = (vim.fn.executable("sk") == 1) and "sk" or nil
+local algo = (vim.fn.executable("sk") == 1) and "arinae" or "frizbee"
 
 local function fzf_lua_picker(fn, opts)
   return function(...)
@@ -122,7 +123,7 @@ return {
         fzf_colors = true,
         fzf_opts = {
           ["--no-scrollbar"] = true,
-          ["--algo"] = "frizbee",
+          ["--algo"] = algo,
         },
 
         files = {
