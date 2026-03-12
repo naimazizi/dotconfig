@@ -21,6 +21,9 @@ fi
 # Load zim
 source ${ZIM_HOME}/init.zsh
 
+# Initialize starship prompt
+eval "$(starship init zsh)"
+
 # fpath config
 fpath+=${ZDOTDIR}/.zfunc
 

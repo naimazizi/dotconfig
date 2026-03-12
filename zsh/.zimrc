@@ -16,7 +16,7 @@ zmodule utility
 zmodule jeffreytse/zsh-vi-mode
 
 # Theme
-zmodule spaceship-prompt/spaceship-prompt --name spaceship --no-submodules
+# Using starship.rs as the prompt (installed separately, not via zim)
 
 # Essential utilities
 zmodule kiesman99/zim-zoxide

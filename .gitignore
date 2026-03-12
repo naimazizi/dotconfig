@@ -8,6 +8,7 @@
 !/lima-box.yaml
 !/nvim-remote.sh
 !/skim_search.sh
+!/starship.toml
 
 # Folder to not ignore
 !/amethyst/
@@ -38,13 +39,11 @@
 !/zellij/
 !/zsh/
 
-# Files to not ignore
+# Files to ignore
 coc/memos.json
 fish/fish_variables
 fish/fishd.*
 nvim/lazy-lock.json
-opencode/get-shit-done/INSTALLED_FILES.json
-opencode/get-shit-done/VERSION
 zsh/.zcomp*
 zsh/.zhistory
 zsh/.zim/
