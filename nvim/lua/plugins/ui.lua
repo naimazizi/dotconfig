@@ -60,22 +60,6 @@ return {
         bottom = {
           { title = "Neotest Output", ft = "neotest-output-panel" },
           {
-            title = "Quickfix",
-            ft = "qf",
-            -- don't open help files in edgy that we're editing
-            filter = function(buf)
-              return vim.bo[buf].buftype == "quickfix"
-            end,
-          },
-          {
-            title = "Help",
-            ft = "help",
-            -- don't open help files in edgy that we're editing
-            filter = function(buf)
-              return vim.bo[buf].buftype == "help"
-            end,
-          },
-          {
             title = "Overseer Output",
             ft = "OverseerOutput",
           },
@@ -113,7 +97,7 @@ return {
             title = "Explorer",
             ft = "neo-tree",
             size = { height = 0.4 },
-            pinned = true,
+            pinned = false,
             open = function()
               require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
             end,
@@ -126,6 +110,33 @@ return {
             ft = "Outline",
             pinned = false,
             open = "Outline",
+            size = { height = 0.50 },
+          },
+          { title = "Grug Far", ft = "grug-far", size = { height = 0.50 } },
+          {
+            title = "Overseer",
+            ft = "OverseerList",
+            open = function()
+              require("overseer").open()
+            end,
+            size = { height = 0.4 },
+          },
+          { title = "Neotest Summary", ft = "neotest-summary" },
+          {
+            title = "Quickfix",
+            ft = "qf",
+            -- don't open help files in edgy that we're editing
+            filter = function(buf)
+              return vim.bo[buf].buftype == "quickfix"
+            end,
+          },
+          {
+            title = "Help",
+            ft = "help",
+            -- don't open help files in edgy that we're editing
+            filter = function(buf)
+              return vim.bo[buf].buftype == "help"
+            end,
           },
         },
         right = {
@@ -145,16 +156,6 @@ return {
               winhighlight = "Normal:OpencodeBackground",
             },
           },
-          { title = "Grug Far", ft = "grug-far", size = { height = 0.50 } },
-          {
-            title = "Overseer",
-            ft = "OverseerList",
-            open = function()
-              require("overseer").open()
-            end,
-            size = { height = 0.4 },
-          },
-          { title = "Neotest Summary", ft = "neotest-summary" },
         },
       }
       require("edgy").setup(opts)

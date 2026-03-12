@@ -23,7 +23,6 @@ return {
     vscode = false,
     event = "VeryLazy",
     dependencies = {
-      "folke/snacks.nvim",
       "elanmed/fzf-lua-frecency.nvim",
     },
     keys = {
