@@ -22,15 +22,10 @@ return {
     "ibhagwan/fzf-lua",
     vscode = false,
     event = "VeryLazy",
-    dependencies = {
-      "elanmed/fzf-lua-frecency.nvim",
-    },
     keys = {
       { "<leader>ff", fzf_lua_picker("files", {}), desc = "Find files" },
       { "<leader>fF", fzf_lua_picker("files", { cwd = vim.fn.expand("%:p:h") }), desc = "Find files (cwd)" },
       { "<leader>fg", fzf_lua_picker("live_grep", {}), desc = "Grep" },
-      { "<leader>/", fzf_lua_picker("live_grep", { cwd = vim.fn.getcwd() }), desc = "Grep (cwd)" },
-      { "<leader>sw", fzf_lua_picker("grep_cword", {}), desc = "Search word under cursor" },
       { "<leader>sR", fzf_lua_picker("resume", {}), desc = "Resume" },
       { "<leader>sk", fzf_lua_picker("keymaps", {}), desc = "Keymaps" },
       { "<leader>sm", fzf_lua_picker("marks", {}), desc = "Marks" },
@@ -52,50 +47,6 @@ return {
       { "<leader>gd", fzf_lua_picker("git_diff", {}), desc = "Diff" },
       { "<leader>gS", fzf_lua_picker("git_status", {}), desc = "Status" },
       { "<leader>bb", fzf_lua_picker("buffers", {}), desc = "List buffers" },
-      {
-        "<leader>sw",
-        function()
-          local start_pos = vim.fn.getpos("v")
-          local end_pos = vim.fn.getpos(".")
-          local start_row, start_col = (start_pos[2] or 1) - 1, (start_pos[3] or 1) - 1
-          local end_row, end_col = (end_pos[2] or 1) - 1, (end_pos[3] or 1)
-
-          ---@cast start_row integer
-          ---@cast start_col integer
-          ---@cast end_row integer
-          ---@cast end_col integer
-
-          if start_row > end_row or (start_row == end_row and start_col > end_col) then
-            start_row, end_row = end_row, start_row
-            start_col, end_col = end_col, start_col
-          end
-
-          ---@cast start_row integer
-          ---@cast start_col integer
-          ---@cast end_row integer
-          ---@cast end_col integer
-
-          local lines = vim.api.nvim_buf_get_text(0, start_row, start_col, end_row, end_col, {})
-          local text = table.concat(lines, "\n")
-          if text == "" then
-            return
-          end
-          fzf_lua_picker("grep_cword", { search = text })()
-        end,
-        mode = "v",
-        desc = "Search selection",
-      },
-      {
-        "<leader><space>",
-        function()
-          require("fzf-lua-frecency").frecency({
-            cwd_only = true,
-            display_score = false,
-            formatter = "path.filename_first",
-          })
-        end,
-        desc = "Find Files",
-      },
     },
     config = function()
       local fzf = require("fzf-lua")
@@ -149,6 +100,48 @@ return {
       })
       fzf.register_ui_select()
     end,
+  },
+  {
+    "dmtrKovalenko/fff.nvim",
+    build = function()
+      require("fff.download").download_or_build_binary()
+    end,
+    opts = {
+      debug = {
+        enabled = false,
+      },
+      git = {
+        status_text_color = true,
+      },
+    },
+    lazy = false,
+    keys = {
+      {
+        "<leader><leader>",
+        function()
+          require("fff").find_files()
+        end,
+        desc = "FFFind files",
+      },
+      {
+        "<leader>/",
+        function()
+          require("fff").live_grep({
+            grep = {
+              modes = { "plain", "fuzzy", "regex" },
+            },
+          })
+        end,
+        desc = "Live fffuzy grep",
+      },
+      {
+        "<leader>sw",
+        function()
+          require("fff").live_grep({ query = vim.fn.expand("<cword>") })
+        end,
+        desc = "Search current word",
+      },
+    },
   },
   {
     "folke/snacks.nvim",

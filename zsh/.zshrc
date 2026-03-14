@@ -48,6 +48,7 @@ alias ss="zsh $HOME/.config/skim_search.sh"
 # Build PATH array instead of repeated $PATH:$X concatenations
 typeset -U PATH_DIRS
 PATH_DIRS=(
+  "/usr/local/bin",
   "$HOME/.local/bin"
   "/opt/google-cloud-cli/bin"
   "$HOME/.local/share/nvim/mason/bin"
@@ -75,7 +76,7 @@ elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# Pyenv 
+# Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 if command -v pyenv &>/dev/null; then
   eval "$(pyenv init - zsh)"
