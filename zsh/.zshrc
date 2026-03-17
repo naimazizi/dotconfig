@@ -57,6 +57,7 @@ PATH_DIRS=(
   "$HOME/.cargo/bin"
   "$HOME/.local/share/bob/nvim-bin"
   "$HOME/.pyenv/bin"
+  "$HOME/.local/share/bob"
 )
 
 for dir in "${PATH_DIRS[@]}"; do

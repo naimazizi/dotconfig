@@ -131,7 +131,7 @@ return {
           if enabled("folds") then
             local clients = vim.lsp.get_clients({ bufnr = ev.buf })
             local supports_folding = vim.iter(clients):any(function(client)
-              return client.supports_method("textDocument/foldingRange")
+              return client:supports_method("textDocument/foldingRange")
             end)
 
             if not supports_folding then
