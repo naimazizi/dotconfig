@@ -56,6 +56,7 @@ brew install \
   pyenv \
   pyenv-virtualenv \
   ripgrep \
+  rtk \
   sk \
   tmuxinator \
   tree-sitter-cli \
