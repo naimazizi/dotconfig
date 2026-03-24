@@ -390,5 +390,7 @@ if vim.g.vscode then
     vscode.call("quarto.goToPreviousCell")
   end, { noremap = true, desc = "Quarto Prev code block" })
 
-  print("⚡ NEOVIM " .. vim.version().major .. "." .. vim.version().minor .. "." .. vim.version().patch)
+  ---@diagnostic disable-next-line: call-non-callable
+  local version = vim.version()
+  print("⚡ NEOVIM " .. version.major .. "." .. version.minor .. "." .. version.patch)
 end

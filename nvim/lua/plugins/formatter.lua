@@ -107,7 +107,7 @@ return {
 
       vim.g.autoformat = vim.g.autoformat ~= false
 
-      opts.format_on_save = function(bufnr)
+      opts.format_on_save = function(_bufnr)
         if vim.g.autoformat == false then
           return
         end

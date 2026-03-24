@@ -55,19 +55,26 @@ local function lsp_keymaps(bufnr)
 
   -- CodeLens (conditionally mapped; not all servers support it)
   local clients = vim.lsp.get_clients({ bufnr = bufnr })
-  local supports_codelens = vim.iter(clients):any(function(client)
-    return client:supports_method("textDocument/codeLens")
-  end)
+  local supports_codelens = false
+  for _, client in ipairs(clients) do
+    if client:supports_method("textDocument/codeLens") then
+      supports_codelens = true
+      break
+    end
+  end
 
   if supports_codelens then
     map("n", "<leader>cc", vim.lsp.codelens.run, "CodeLens")
-    map("n", "<leader>cC", vim.lsp.codelens.refresh, "Refresh CodeLens")
   end
 
   -- Inlay hints (conditionally enabled; not all servers support it)
-  local supports_inlay_hints = vim.iter(clients):any(function(client)
-    return client:supports_method("textDocument/inlayHint")
-  end)
+  local supports_inlay_hints = false
+  for _, client in ipairs(clients) do
+    if client:supports_method("textDocument/inlayHint") then
+      supports_inlay_hints = true
+      break
+    end
+  end
 
   if supports_inlay_hints then
     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })

@@ -1,6 +1,7 @@
 local function get_pytest_nodeid()
   local node = vim.treesitter.get_node()
-  local test_func, test_class
+  local test_func ---@type string | nil
+  local test_class ---@type string | nil
 
   while node do
     local t = node:type()
@@ -32,6 +33,7 @@ local function get_pytest_nodeid()
   elseif test_func then
     return string.format("%s::%s", file, test_func)
   end
+  return nil
 end
 
 return {

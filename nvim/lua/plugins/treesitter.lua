@@ -130,9 +130,13 @@ return {
 
           if enabled("folds") then
             local clients = vim.lsp.get_clients({ bufnr = ev.buf })
-            local supports_folding = vim.iter(clients):any(function(client)
-              return client:supports_method("textDocument/foldingRange")
-            end)
+            local supports_folding = false
+            for _, client in ipairs(clients) do
+              if client:supports_method("textDocument/foldingRange") then
+                supports_folding = true
+                break
+              end
+            end
 
             if not supports_folding then
               vim.wo.foldmethod = "expr"
@@ -165,7 +169,7 @@ return {
       TS.setup(opts)
 
       local function attach(buf)
-        local ft = vim.bo[buf].filetype
+        local _ft = vim.bo[buf].filetype
         if not (vim.tbl_get(opts, "move", "enable")) then
           return
         end

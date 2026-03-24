@@ -61,7 +61,6 @@ local function find_function_name()
 
   local root = parser:parse()[1]:root()
   local cursor_row = vim.fn.line(".") - 1
-  local cursor_col = vim.fn.col(".") - 1
 
   -- Find the function definition node at cursor
   local function find_function(node)
@@ -80,7 +79,7 @@ local function find_function_name()
     end
 
     -- If cursor is within this node, search children
-    local start_row, start_col, end_row, end_col = node:range()
+    local start_row, _start_col, end_row, _end_col = node:range()
     if start_row <= cursor_row and cursor_row <= end_row then
       for child in node:iter_children() do
         local result = find_function(child)
@@ -298,10 +297,8 @@ return {
       for name, icon in pairs(dap_icon) do
         if type(icon) == "table" then
           local text = icon[1]
-          if text then
-            local texthl = icon[2] or "DiagnosticInfo"
-            vim.fn.sign_define("Dap" .. name, { text = text, texthl = texthl, linehl = icon[3], numhl = icon[3] })
-          end
+          local texthl = icon[2] or "DiagnosticInfo"
+          vim.fn.sign_define("Dap" .. name, { text = text, texthl = texthl, linehl = icon[3], numhl = icon[3] })
         elseif type(icon) == "string" then
           vim.fn.sign_define("Dap" .. name, { text = icon, texthl = "DiagnosticInfo" })
         end

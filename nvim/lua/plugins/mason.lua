@@ -82,10 +82,10 @@ return {
       -- Use Mason's consolidated config list.
       local ok_settings, settings = pcall(require, "mason.settings")
       if ok_settings and type(settings.current.ensure_installed) == "table" then
-        mason_settings_tools = vim.deepcopy(settings.current.ensure_installed)
+        mason_settings_tools = vim.deepcopy(settings.current.ensure_installed) or {}
       end
 
-      local tools = vim.deepcopy(mason_settings_tools)
+      local tools = vim.deepcopy(mason_settings_tools) or {}
 
       opts.ensure_installed = uniq(tools)
       opts.run_on_start = true
