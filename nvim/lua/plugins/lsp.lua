@@ -78,9 +78,6 @@ local function lsp_keymaps(bufnr)
 
   if supports_inlay_hints then
     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-    map("n", "<leader>uh", function()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
-    end, "Toggle Inlay Hints")
   end
 end
 

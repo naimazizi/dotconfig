@@ -229,6 +229,8 @@ return {
         },
       },
 
+      toggle = { enabled = true },
+
       dashboard = {
         preset = {
           header = [[
@@ -285,9 +287,11 @@ return {
     },
     config = function(_, opts)
       require("snacks").setup(opts)
+
       -- Make Snacks the default notification system
       vim.notify = require("snacks.notifier").notify
 
+      -- LSP Progress
       ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
       local progress = vim.defaulttable()
       vim.api.nvim_create_autocmd("LspProgress", {
@@ -329,6 +333,45 @@ return {
                 or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
             end,
           })
+        end,
+      })
+
+      -- Snacks Toggle
+      vim.api.nvim_create_autocmd("User", {
+        desc = "Snacks toggle keymap",
+        pattern = "VeryLazy",
+        callback = function()
+          Snacks.toggle
+            .new({
+              id = "format_on_save",
+              name = "Format on Save (global)",
+              get = function()
+                return not vim.g.disable_autoformat
+              end,
+              set = function(state)
+                vim.g.disable_autoformat = not state
+              end,
+            })
+            :map("<leader>uf")
+
+          Snacks.toggle
+            .new({
+              id = "format_on_save_buffer",
+              name = "Format on Save (buffer)",
+              get = function()
+                return not vim.b.disable_autoformat
+              end,
+              set = function(state)
+                vim.b.disable_autoformat = not state
+              end,
+            })
+            :map("<leader>uF")
+
+          Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
+
+          Snacks.toggle.inlay_hints():map("<leader>uh")
+
+          Snacks.toggle.diagnostics():map("<leader>ud")
         end,
       })
     end,

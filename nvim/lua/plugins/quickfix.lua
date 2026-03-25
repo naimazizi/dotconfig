@@ -52,13 +52,13 @@ return {
       vim.keymap.set("n", "<leader>xq", function()
         require("quicker").toggle()
       end, {
-        desc = "Toggle quickfix",
+        desc = "quickfix",
       })
 
       vim.keymap.set("n", "<leader>xl", function()
         require("quicker").toggle({ loclist = true })
       end, {
-        desc = "Toggle loclist",
+        desc = "loclist",
       })
     end,
   },

@@ -4,14 +4,6 @@ return {
     vscode = false,
     keys = {
       {
-        "<leader>uf",
-        function()
-          vim.g.autoformat = not vim.g.autoformat
-          vim.notify("Autoformat " .. (vim.g.autoformat and "enabled" or "disabled"))
-        end,
-        desc = "Toggle autoformat",
-      },
-      {
         "<leader>cf",
         function()
           require("conform").format({ async = true, lsp_format = "fallback" })
@@ -105,16 +97,11 @@ return {
         },
       }
 
-      vim.g.autoformat = vim.g.autoformat ~= false
-
-      opts.format_on_save = function(_bufnr)
-        if vim.g.autoformat == false then
+      opts.format_on_save = function(bufnr)
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
           return
         end
-        return {
-          timeout_ms = 500,
-          lsp_format = "fallback",
-        }
+        return { timeout_ms = 500, lsp_fallback = true }
       end
 
       return opts
