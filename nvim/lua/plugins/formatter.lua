@@ -62,6 +62,12 @@ return {
       -- js formatter
       opts.formatters_by_ft["javascript"] = { "biome" }
 
+      -- yaml formatter
+      opts.formatters_by_ft["yaml"] = { "oxfmt" }
+
+      -- toml formatter
+      opts.formatters_by_ft["toml"] = { "tombi" }
+
       -- Injected formatter for code blocks in markdown-like file
       for _, ft in ipairs(vim.g.md_injected_ft or {}) do
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}

@@ -1,0 +1,112 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+# This configuration is aligned with the Neovim formatter setup at nvim/lua/plugins/formatter.lua
+repos:
+  # General file fixes and checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '\.git|\.pyc|\.egg-info'
+      - id: end-of-file-fixer
+        exclude: '\.git|\.pyc|\.egg-info'
+      - id: check-json
+      - id: check-yaml
+        args: ["--unsafe"]
+
+  # Python formatting with ruff (ruff_format)
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: Ruff format
+        entry: ruff format
+        language: system
+        types: [python]
+        pass_filenames: true
+
+  # JavaScript formatting with biome
+  - repo: local
+    hooks:
+      - id: biome-format-js
+        name: Biome format (JavaScript)
+        entry: biome format --write
+        language: system
+        types: [javascript]
+        pass_filenames: true
+
+      - id: biome-format-json
+        name: Biome format (JSON)
+        entry: biome format --write
+        language: system
+        types: [json]
+        pass_filenames: true
+
+  # Lua formatting with stylua
+  - repo: local
+    hooks:
+      - id: stylua
+        name: Stylua format
+        entry: stylua
+        language: system
+        types: [lua]
+        pass_filenames: true
+
+  # Shell script formatting with shfmt
+  - repo: local
+    hooks:
+      - id: shfmt
+        name: shfmt format
+        entry: shfmt -l -w
+        language: system
+        types: [shell]
+        pass_filenames: true
+
+  # Markdown formatting with rumdl
+  - repo: local
+    hooks:
+      - id: rumdl
+        name: rumdl format
+        entry: rumdl --fix
+        language: system
+        files: '\.(md|markdown)$'
+        pass_filenames: true
+
+  # Typst formatting with typstyle
+  - repo: local
+    hooks:
+      - id: typstyle
+        name: typstyle format
+        entry: typstyle --fmt
+        language: system
+        files: '\.typ$'
+        pass_filenames: true
+
+  # KDL formatting with kdlfmt
+  - repo: local
+    hooks:
+      - id: kdlfmt
+        name: kdlfmt format
+        entry: kdlfmt
+        language: system
+        files: '\.kdl$'
+        pass_filenames: true
+
+  # YAML formatting with oxfmt
+  - repo: local
+    hooks:
+      - id: oxfmt
+        name: oxfmt format
+        entry: oxfmt
+        language: system
+        types: [yaml]
+        pass_filenames: true
+
+  # TOML formatting with tombi
+  - repo: local
+    hooks:
+      - id: tombi
+        name: tombi format
+        entry: tombi
+        language: system
+        files: '\.toml$'
+        pass_filenames: true

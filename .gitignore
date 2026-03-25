@@ -9,6 +9,7 @@
 !/nvim-remote.sh
 !/skim_search.sh
 !/starship.toml
+!/.pre-commit-config.yaml
 
 # Folder to not ignore
 !/amethyst/
