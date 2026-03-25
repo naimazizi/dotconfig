@@ -47,7 +47,7 @@ fish/fishd.*
 nvim/lazy-lock.json
 zsh/.zcomp*
 zsh/.zhistory
-zsh/.zim/
+zsh/.zinit/
 zsh/.zsh_history
 zsh/.zsh_sessions/
 
