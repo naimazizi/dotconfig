@@ -5,6 +5,7 @@ local oxfmt_supported_ft = {
   "json",
   "jsonc",
   "svelte",
+  "toml",
   "typescript",
   "typescriptreact",
   "vue",
@@ -75,9 +76,6 @@ return {
         opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
         table.insert(opts.formatters_by_ft[ft], "oxfmt")
       end
-
-      -- toml formatter
-      opts.formatters_by_ft["toml"] = { "tombi" }
 
       -- Injected formatter for code blocks in markdown-like file
       for _, ft in ipairs(vim.g.md_injected_ft or {}) do

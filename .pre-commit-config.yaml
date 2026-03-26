@@ -51,7 +51,7 @@ repos:
         name: rumdl check
         entry: rumdl check --fix
         language: system
-        files: '\.(md|markdown)$'
+        files: '\.(md|markdown|qmd)$'
         pass_filenames: true
 
   # Markdown formatting with rumdl
@@ -84,22 +84,12 @@ repos:
         files: '\.kdl$'
         pass_filenames: true
 
-  # YAML formatting with oxfmt
+  # web-specific file type formatting with oxfmt
   - repo: local
     hooks:
       - id: oxfmt
         name: oxfmt format
         entry: oxfmt
         language: system
-        types_or: [javascript, json, yaml]
-        pass_filenames: true
-
-  # TOML formatting with tombi
-  - repo: local
-    hooks:
-      - id: tombi
-        name: tombi format
-        entry: tombi
-        language: system
-        files: '\.toml$'
+        types_or: [javascript, json, yaml, toml]
         pass_filenames: true

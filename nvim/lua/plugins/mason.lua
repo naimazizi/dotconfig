@@ -53,7 +53,6 @@ return {
         "rust-analyzer",
         "shfmt",
         "tinymist",
-        "tombi",
         "typos-lsp",
         "typstyle",
       })
