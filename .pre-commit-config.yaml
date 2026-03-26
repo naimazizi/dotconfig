@@ -44,12 +44,22 @@ repos:
         types: [shell]
         pass_filenames: true
 
+  # Markdown linter with rumdl
+  - repo: local
+    hooks:
+      - id: rumdl
+        name: rumdl check
+        entry: rumdl check --fix
+        language: system
+        files: '\.(md|markdown)$'
+        pass_filenames: true
+
   # Markdown formatting with rumdl
   - repo: local
     hooks:
       - id: rumdl
         name: rumdl format
-        entry: rumdl --fix
+        entry: rumdl fmt
         language: system
         files: '\.(md|markdown)$'
         pass_filenames: true
