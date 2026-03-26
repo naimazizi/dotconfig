@@ -24,23 +24,6 @@ repos:
         types: [python]
         pass_filenames: true
 
-  # JavaScript formatting with biome
-  - repo: local
-    hooks:
-      - id: biome-format-js
-        name: Biome format (JavaScript)
-        entry: biome format --write
-        language: system
-        types: [javascript]
-        pass_filenames: true
-
-      - id: biome-format-json
-        name: Biome format (JSON)
-        entry: biome format --write
-        language: system
-        types: [json]
-        pass_filenames: true
-
   # Lua formatting with stylua
   - repo: local
     hooks:
@@ -98,7 +81,7 @@ repos:
         name: oxfmt format
         entry: oxfmt
         language: system
-        types: [yaml]
+        types_or: [javascript, json, yaml]
         pass_filenames: true
 
   # TOML formatting with tombi

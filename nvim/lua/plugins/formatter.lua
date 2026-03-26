@@ -1,3 +1,17 @@
+local oxfmt_supported_ft = {
+  "astro",
+  "javascript",
+  "javascriptreact",
+  "json",
+  "jsonc",
+  "svelte",
+  "typescript",
+  "typescriptreact",
+  "vue",
+  "yaml",
+  "yml",
+}
+
 return {
   {
     "stevearc/conform.nvim",
@@ -53,17 +67,14 @@ return {
         opts.formatters_by_ft[ft] = { "shfmt" }
       end
 
-      -- json formatter
-      opts.formatters_by_ft["json"] = { "jq" }
-
       -- kdl formatter
       opts.formatters_by_ft["kdl"] = { "kdlfmt" }
 
-      -- js formatter
-      opts.formatters_by_ft["javascript"] = { "biome" }
-
-      -- yaml formatter
-      opts.formatters_by_ft["yaml"] = { "oxfmt" }
+      -- oxfmt for various web-related filetypes
+      for _, ft in ipairs(oxfmt_supported_ft) do
+        opts.formatters_by_ft[ft] = opts.formatters_by_ft[ft] or {}
+        table.insert(opts.formatters_by_ft[ft], "oxfmt")
+      end
 
       -- toml formatter
       opts.formatters_by_ft["toml"] = { "tombi" }
