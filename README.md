@@ -66,6 +66,7 @@ brew install \
 
 mkdir -p ~/Applications
 brew install --cask ghostty font-monaspace-nf --appdir=~/Applications
+brew install alchemmist/tap/lazy-tmux
 ```
 
 ## MacOS Specifics
