@@ -494,4 +494,14 @@ return {
     },
     config = true,
   },
+  {
+    "XXiaoA/atone.nvim",
+    vscode = false,
+    event = "VeryLazy",
+    cmd = "Atone",
+    opts = {},
+    keys = {
+      { "<leader>uu", "<cmd>Atone<cr>", desc = "Undotree" },
+    },
+  },
 }
