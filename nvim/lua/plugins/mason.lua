@@ -55,6 +55,7 @@ return {
         "tinymist",
         "typos-lsp",
         "typstyle",
+        "yamlls",
       })
     end,
   },

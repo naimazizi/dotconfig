@@ -221,6 +221,28 @@ return {
         },
       })
 
+      -- Yaml
+      vim.lsp.config("yamlls", {
+        settings = {
+          yaml = {
+            schemas = {
+              ["https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/latest/dbt_yml_files-latest.json"] = {
+                "/**/*.yml",
+                "!profiles.yml",
+                "!dbt_project.yml",
+                "!packages.yml",
+                "!selectors.yml",
+                "!profile_template.yml",
+                "!package-lock.yml",
+              },
+              ["https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/latest/dbt_project-latest.json"] = "dbt_project.yml",
+              ["https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/latest/selectors-latest.json"] = "selectors.yml",
+              ["https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/latest/packages-latest.json"] = "packages.yml",
+            },
+          },
+        },
+      })
+
       -- Enabled LSP
       vim.lsp.enable({
         "jsonls",
@@ -233,6 +255,7 @@ return {
         "tinymist",
         "copilot",
         "harper_ls",
+        "yamlls",
       })
 
       vim.api.nvim_create_autocmd("LspAttach", {
