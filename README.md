@@ -39,6 +39,7 @@ git clone https://github.com/naimazizi/dotconfig .
 
 brew install \
   atuin \
+  copilot-language-server \
   bat \
   delta \
   direnv \

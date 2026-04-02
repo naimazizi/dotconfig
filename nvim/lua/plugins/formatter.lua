@@ -45,7 +45,6 @@ return {
       end
 
       -- Typst formatters
-      -- Conform expects only formatter names in this list.
       opts.formatters_by_ft["typst"] = { "typstyle" }
 
       -- Python formatters
