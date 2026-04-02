@@ -3,6 +3,23 @@ local map = vim.keymap.set
 -- Terminal escape
 map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
 
+-- Incremental selection
+map({ "n", "x", "o" }, "<A-o>", function()
+  if vim.treesitter.get_parser(nil, nil, { error = false }) then
+    require("vim.treesitter._select").select_parent(vim.v.count1)
+  else
+    vim.lsp.buf.selection_range(vim.v.count1)
+  end
+end, { desc = "Select parent treesitter node or outer incremental lsp selections" })
+
+map({ "n", "x", "o" }, "<A-i>", function()
+  if vim.treesitter.get_parser(nil, nil, { error = false }) then
+    require("vim.treesitter._select").select_child(vim.v.count1)
+  else
+    vim.lsp.buf.selection_range(-vim.v.count1)
+  end
+end, { desc = "Select child treesitter node or inner incremental lsp selections" })
+
 -- Neovim general keymaps
 if not vim.g.vscode then
   -- Clear copilot suggestion with Esc if visible, otherwise preserve default Esc behavior
