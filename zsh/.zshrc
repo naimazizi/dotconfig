@@ -87,19 +87,14 @@ function zvm_after_lazy_keybindings() {
 
 # autosuggestions and completion
 zinit wait lucid light-mode for \
-	atinit"zicompinit; zicdreplay" \
-	zdharma-continuum/fast-syntax-highlighting \
 	atload"_zsh_autosuggest_start" \
 	zsh-users/zsh-autosuggestions \
 	blockf atpull'zinit creinstall -q .' \
 	zsh-users/zsh-completions
 
-# Atuin initialization
-zinit ice as"command" from"gh-r" bpick"atuin-*.tar.gz" \
-	mv"atuin*/atuin -> atuin" \
-	atclone"./atuin init zsh > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
-	atpull"%atclone" src"init.zsh"
-zinit light atuinsh/atuin
+# syntax highlighting
+zinit ice as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload'eval "$(zsh-patina activate)"'
+zinit light michel-kraemer/zsh-patina
 
 # Vi-mode
 zinit ice depth=1
@@ -115,9 +110,6 @@ zinit light starship/starship
 zinit ice lucid wait="0"
 zinit snippet https://github.com/ajeetdsouza/zoxide/blob/main/zoxide.plugin.zsh
 
-# fzf-tab
-zinit light Aloxaf/fzf-tab
-
 # direnv
 zinit from"gh-r" as"program" mv"direnv* -> direnv" \
 	atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' \
@@ -129,3 +121,11 @@ zinit light lgdevlop/zsh-smart-insert
 
 # SSH
 zinit light sunlei/zsh-ssh
+
+# Atuin initialization
+eval "$(atuin init zsh)"
+
+# fzf-tab
+autoload -Uz compinit
+compinit
+zinit light Aloxaf/fzf-tab
