@@ -64,6 +64,7 @@ local function lsp_keymaps(bufnr)
   end
 
   if supports_codelens then
+    vim.lsp.codelens.enable()
     map("n", "<leader>cc", vim.lsp.codelens.run, "CodeLens")
   end
 
