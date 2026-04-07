@@ -317,5 +317,20 @@ return {
       },
     },
   },
+  {
+    "gregorias/coerce.nvim",
+    vscode = false,
+    event = "VeryLazy",
+    config = function()
+      require("coerce").setup({
+        keymap_registry = require("coerce.keymap").keymap_registry(),
+        default_mode_keymap_prefixes = {
+          normal_mode = "co",
+          motion_mode = "go",
+          visual_mode = "go",
+        },
+      })
+    end,
+  },
   { "NMAC427/guess-indent.nvim", vscode = false, event = "VeryLazy", opts = {} },
 }

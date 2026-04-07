@@ -28,6 +28,7 @@ return {
         { "<localleader>s", group = "Quarto", icon = "" },
         { "<localleader>c", group = "Curl (hurl)", icon = "󱂛" },
         { "gs", group = "Surround" },
+        { "go", group = "Coerce" },
         { "<leader>dD", group = "DAP ft-specific" },
         { "<leader>h", group = "Haunting Notes", icon = "󱙝" },
       },
