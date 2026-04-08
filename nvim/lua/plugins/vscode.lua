@@ -26,10 +26,11 @@ return {
     vscode = true,
     opts = {
       delay = 100,
-      large_file_cutoff = 1500,
-      large_file_overrides = {
-        providers = { "treesitter", "regex" },
+      providers = {
+        "treesitter",
+        "regex",
       },
+      under_cursor = false,
     },
   },
   {
