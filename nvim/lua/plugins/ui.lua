@@ -455,46 +455,6 @@ return {
     end,
   },
   {
-    "romgrk/barbar.nvim",
-    vscode = false,
-    event = "VimEnter",
-    dependencies = {
-      "lewis6991/gitsigns.nvim",
-    },
-    keys = {
-      { "<S-h>", "<cmd>BufferPrevious<cr>", desc = "Prev buffer" },
-      { "<S-l>", "<cmd>BufferNext<cr>", desc = "Next buffer" },
-      { "<leader>bD", "<cmd>BufferPickDelete<cr>", desc = "Delete buffer (pick)" },
-      { "<leader>bo", "<cmd>BufferCloseAllButCurrent<cr>", desc = "Delete other buffers" },
-      { "<leader>bh", "<cmd>BufferCloseBuffersLeft<cr>", desc = "Delete buffers to the left" },
-      { "<leader>bl", "<cmd>BufferCloseBuffersRight<cr>", desc = "Delete buffers to the right" },
-      { "<leader>bB", "<cmd>BufferPick<cr>", desc = "Pick Buffer" },
-      { "<leader>bp", "<cmd>BufferPin<cr>", desc = "Pin Buffer" },
-      { "<leader>bP", "<cmd>BufferCloseAllButPinned<cr>", desc = "Delete unpinned buffers" },
-    },
-    init = function()
-      vim.g.barbar_auto_setup = false
-    end,
-    opts = {
-      insert_at_start = true,
-      icons = {
-        pinned = { button = "", filename = true },
-      },
-      sidebar_filetypes = {
-        ["neo-tree"] = true,
-      },
-    },
-  },
-  {
-    "yorickpeterse/nvim-window",
-    vscode = false,
-    event = "VeryLazy",
-    keys = {
-      { "<leader>w", "<cmd>lua require('nvim-window').pick()<cr>", desc = "Window Selection" },
-    },
-    config = true,
-  },
-  {
     "XXiaoA/atone.nvim",
     vscode = false,
     event = "VeryLazy",
@@ -502,6 +462,83 @@ return {
     opts = {},
     keys = {
       { "<leader>uu", "<cmd>Atone<cr>", desc = "Undotree" },
+    },
+  },
+  {
+    "e-sigs/winbuf.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      {
+        "<S-h>",
+        function()
+          require("winbuf").cycle(-1)
+        end,
+        desc = "Prev buffer",
+      },
+      {
+        "<S-l>",
+        function()
+          require("winbuf").cycle(1)
+        end,
+        desc = "Next buffer",
+      },
+      {
+        "[b",
+        function()
+          require("winbuf").cycle(-1)
+        end,
+        desc = "Prev buffer",
+      },
+      {
+        "]b",
+        function()
+          require("winbuf").cycle(1)
+        end,
+        desc = "Next buffer",
+      },
+      {
+        "<C-S-h>",
+        function()
+          require("winbuf").move_buf("h")
+        end,
+        desc = "Move buffer left",
+      },
+      {
+        "<C-S-l>",
+        function()
+          require("winbuf").move_buf("l")
+        end,
+        desc = "Move buffer right",
+      },
+      {
+        "<C-S-j>",
+        function()
+          require("winbuf").move_buf("j")
+        end,
+        desc = "Move buffer down",
+      },
+      {
+        "<C-S-k>",
+        function()
+          require("winbuf").move_buf("k")
+        end,
+        desc = "Move buffer up",
+      },
+      {
+        "<C-w>",
+        function()
+          require("winbuf").close_buf()
+        end,
+        desc = "Close buffer (window)",
+      },
+      {
+        "<C-S-w>",
+        function()
+          require("winbuf").close_split()
+        end,
+        desc = "Close split",
+      },
     },
   },
 }
