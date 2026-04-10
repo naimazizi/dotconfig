@@ -116,6 +116,8 @@ zinit from"gh-r" as"program" mv"direnv* -> direnv" \
 	pick"direnv" src="zhook.zsh" for \
 	direnv/direnv
 
+eval "$(direnv hook zsh)"
+
 # smart insert
 zinit light lgdevlop/zsh-smart-insert
 
