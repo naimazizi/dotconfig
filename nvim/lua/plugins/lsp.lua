@@ -31,7 +31,7 @@ local function fzf_lua_lsp(scope)
   end
 end
 
-local function lsp_keymaps(bufnr)
+local function lsp_attach(bufnr)
   local map = function(mode, lhs, rhs, desc)
     vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
   end
@@ -261,12 +261,7 @@ return {
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
-          lsp_keymaps(args.buf)
-
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-          if client and client.server_capabilities and client.server_capabilities.inlayHintProvider then
-            vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
-          end
+          lsp_attach(args.buf)
         end,
       })
     end,

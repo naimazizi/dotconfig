@@ -125,10 +125,11 @@ else
     end,
   })
 
+  local ui2 = require("vim._core.ui2")
+
   vim.api.nvim_create_autocmd("FileType", {
     pattern = "msg",
     callback = function()
-      local ui2 = require("vim._core.ui2")
       local win = ui2.wins and ui2.wins.msg
       if win and vim.api.nvim_win_is_valid(win) then
         vim.api.nvim_set_option_value(
@@ -140,7 +141,6 @@ else
     end,
   })
 
-  local ui2 = require("vim._core.ui2")
   local msgs = require("vim._core.ui2.messages")
   local orig_set_pos = msgs.set_pos
   ---@diagnostic disable-next-line: duplicate-set-field
@@ -150,7 +150,7 @@ else
       pcall(vim.api.nvim_win_set_config, ui2.wins.msg, {
         relative = "editor",
         anchor = "SE",
-        row = vim.o.lines - 1,
+        row = vim.o.lines - 3,
         col = vim.o.columns - 1,
         border = "rounded",
       })

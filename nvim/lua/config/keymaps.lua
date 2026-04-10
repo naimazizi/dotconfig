@@ -24,10 +24,7 @@ end, { desc = "Select child treesitter node or inner incremental lsp selections"
 if not vim.g.vscode then
   -- Clear copilot suggestion with Esc if visible, otherwise preserve default Esc behavior
   map("n", "<esc>", function()
-    if not require("copilot-lsp.nes").clear() then
-      -- fallback to other functionality
-      vim.cmd("nohlsearch")
-    end
+    vim.cmd("nohlsearch")
   end, { desc = "Clear" })
 
   -- Sessions / quit (LazyVim-ish)

@@ -88,6 +88,10 @@ return {
         end,
         desc = "Next todo comment",
       },
+      { "<S-h>", "<cmd>bprevious<cr>", desc = "Prev Buffer" },
+      { "<S-l>", "<cmd>bnext<cr>", desc = "Next Buffer" },
+      { "[b", "<cmd>bprevious<cr>", desc = "Prev Buffer" },
+      { "]b", "<cmd>bnext<cr>", desc = "Next Buffer" },
     },
     config = function()
       require("mini.surround").setup({
@@ -104,7 +108,7 @@ return {
 
       require("mini.move").setup({
         mappings = {
-          -- Move visual selection in Visual mode. 
+          -- Move visual selection in Visual mode.
           left = "<C-M-h>",
           right = "<C-M-l>",
           down = "<C-M-j>",
@@ -251,6 +255,8 @@ return {
       if not vim.g.vscode then
         require("mini.icons").setup()
         require("mini.icons").mock_nvim_web_devicons()
+
+        require("mini.tabline").setup()
 
         local hipatterns = require("mini.hipatterns")
         hipatterns.setup({
