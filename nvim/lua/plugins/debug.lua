@@ -18,17 +18,6 @@ local function with_dap(fn)
   end
 end
 
-local function with_dapui(fn)
-  return function()
-    local ok, dapui = pcall(require, "dapui")
-    if not ok then
-      vim.notify("nvim-dap-ui not available")
-      return
-    end
-    fn(dapui)
-  end
-end
-
 local function fzf_dap_picker(fn, opts)
   return function(...)
     local ok, fzf = pcall(require, "fzf-lua")
@@ -246,18 +235,10 @@ return {
       },
       {
         "<leader>du",
-        with_dapui(function(dapui)
-          dapui.toggle()
-        end),
+        function()
+          require("dap-view").toggle()
+        end,
         desc = "DAP UI",
-      },
-      {
-        "<leader>de",
-        with_dapui(function(dapui)
-          dapui.eval()
-        end),
-        mode = { "n", "v" },
-        desc = "Eval",
       },
       { "<leader>dd", fzf_dap_picker("dap_commands", {}), desc = "DAP commands" },
       { "<leader>dv", fzf_dap_picker("dap_variables", {}), desc = "DAP variables" },
@@ -272,10 +253,9 @@ return {
       },
     },
     dependencies = {
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        opts = {},
-      },
+      "igorlfs/nvim-dap-view",
+      "stevearc/overseer.nvim",
+      { "nvim-lua/plenary.nvim", lazy = true },
       {
         "mfussenegger/nvim-dap-python",
         ft = "python",
@@ -343,6 +323,9 @@ return {
               end
             end
           end,
+        },
+        virtual_text = {
+          enabled = true,
         },
       })
 
