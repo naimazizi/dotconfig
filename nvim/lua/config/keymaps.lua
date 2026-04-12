@@ -95,6 +95,15 @@ if vim.g.vscode then
     vscode.call("editor.action.commentLine")
   end, { noremap = true, desc = "Toggle Comment Line (Visual) -- it mimics ctrl+/" })
 
+  -- Go to Highlighted word (not working)
+  -- map("n", "[[", function()
+  --   vscode.call("editor.action.wordHighlight.prev")
+  -- end, { noremap = true, desc = "Previous Highlighted word" })
+  --
+  -- map("n", "]]", function()
+  --   vscode.call("editor.action.wordHighlight.next")
+  -- end, { noremap = true, desc = "Next Highlighted word" })
+
   -- Tab Navigation
   map("n", "<S-l>", function()
     vscode.call("workbench.action.nextEditor")
@@ -265,17 +274,49 @@ if vim.g.vscode then
   end, { noremap = true, desc = "Run Jupyter - interrupt kernel" })
 
   -- Folding
-  map("n", "zm", function()
-    vscode.call("editor.foldAll")
-  end, { noremap = true, desc = "Fold all" })
+  map("n", "za", function()
+    vscode.call("editor.toggleFold")
+  end, { noremap = true, desc = "Toggle Fold" })
 
-  map("n", "zR", function()
-    vscode.call("editor.unfoldAll")
-  end, { noremap = true, desc = "Unfold all" })
+  map("n", "zA", function()
+    vscode.call("editor.toggleFoldRecursively")
+  end, { noremap = true, desc = "Toggle All Fold Recursively" })
+
+  map("n", "zc", function()
+    vscode.call("editor.fold")
+  end, { noremap = true, desc = "Fold" })
+
+  map("n", "zC", function()
+    vscode.call("editor.foldRecursively")
+  end, { noremap = true, desc = "Fold All Recursively" })
+
+  map("n", "zm", function()
+    vscode.call("editor.foldAllExcept")
+  end, { noremap = true, desc = "Fold All Except this region" })
+
+  map("n", "zM", function()
+    vscode.call("editor.unfoldAllExcept")
+  end, { noremap = true, desc = "Unfold All Except this region" })
+
+  map("n", "zo", function()
+    vscode.call("editor.unfold")
+  end, { noremap = true, desc = "Open Fold" })
+
+  map("n", "zo", function()
+    vscode.call("editor.unfoldRecursively")
+  end, { noremap = true, desc = "Open Fold Recursively" })
 
   map("n", "zr", function()
     vscode.call("editor.unfold")
-  end, { noremap = true, desc = "Unfold" })
+  end, { noremap = true, desc = "Open Fold" })
+
+  map("n", "zR", function()
+    vscode.call("editor.unfoldAll")
+  end, { noremap = true, desc = "Open Fold all" })
+
+  map("n", "z/", function()
+    vscode.call("editor.foldAllBlockComments")
+  end, { noremap = true, desc = "Fold all block comments" })
 
   map("n", "z1", function()
     vscode.call("editor.foldLevel1")
@@ -293,21 +334,9 @@ if vim.g.vscode then
     vscode.call("editor.foldLevel4")
   end, { noremap = true, desc = "Fold level 4" })
 
-  map("n", "z`", function()
-    vscode.call("editor.foldAllExcept")
-  end, { noremap = true, desc = "Fold Except under cursor" })
-
-  map("n", "zc", function()
-    vscode.call("editor.foldAllBlockComments")
-  end, { noremap = true, desc = "Fold All Block Comments" })
-
-  map("n", "za", function()
-    vscode.call("editor.foldRecursively")
-  end, { noremap = true, desc = "Fold Recursively" })
-
-  map("n", "zA", function()
-    vscode.call("editor.unfoldRecursively")
-  end, { noremap = true, desc = "Unfold Recursively" })
+  map("n", "z5", function()
+    vscode.call("editor.foldLevel5")
+  end, { noremap = true, desc = "Fold level 5" })
 
   -- Tests
   map("n", "<leader>td", function()
