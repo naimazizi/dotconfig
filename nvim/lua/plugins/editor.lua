@@ -321,6 +321,7 @@ return {
     "gregorias/coerce.nvim",
     vscode = false,
     event = "VeryLazy",
+    dependencies = "gregorias/coop.nvim",
     config = function()
       require("coerce").setup({
         keymap_registry = require("coerce.keymap").keymap_registry(),
