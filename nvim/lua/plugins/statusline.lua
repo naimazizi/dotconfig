@@ -75,7 +75,14 @@ return {
           },
         },
         render = function(props)
+          local function sep()
+            return {
+              "| ",
+            }
+          end
+
           local result = {}
+          table.insert(result, sep())
 
           local fullpath = vim.api.nvim_buf_get_name(props.buf)
           local reldir
@@ -103,12 +110,13 @@ return {
             { filename, gui = modified and "bold,italic" or "bold" },
             " ",
             ft_icon and {
-              ft_icon,
+              ft_icon .. " ",
               guibg = ft_color,
               guifg = ft_color,
-            } or "",
+            } or " ",
           }
           table.insert(result, buffer)
+          table.insert(result, sep())
 
           local function get_gitsigns_diff()
             local dict = vim.b[props.buf].gitsigns_status_dict
@@ -117,16 +125,16 @@ return {
             end
 
             local items = {
-              { key = "added", icon = " ", group = "GitSignsAdd" },
-              { key = "changed", icon = " ", group = "GitSignsChange" },
-              { key = "removed", icon = " ", group = "GitSignsDelete" },
+              { key = "added", icon = "", group = "GitSignsAdd" },
+              { key = "changed", icon = "", group = "GitSignsChange" },
+              { key = "removed", icon = "", group = "GitSignsDelete" },
             }
 
             local labels = {}
             for _, item in ipairs(items) do
               local n = tonumber(dict[item.key]) or 0
               if n > 0 then
-                table.insert(labels, { " ", item.icon .. n, group = item.group })
+                table.insert(labels, { " ", item.icon .. " " .. n, group = item.group })
               end
             end
 
@@ -135,34 +143,30 @@ return {
 
           vim.list_extend(result, get_gitsigns_diff())
 
-          local diag_icons = {
-            error = " ",
-            warn = " ",
-            info = " ",
-            hint = " ",
-          }
-          local entries = {}
+          local function get_diagnostics()
+            local diag_icons = {
+              error = "",
+              warn = "",
+              info = "",
+              hint = "",
+            }
+            local entries = {}
 
-          for severity, icon in pairs(diag_icons) do
-            local count = #vim.diagnostic.get(props.buf, {
-              severity = vim.diagnostic.severity[string.upper(severity)],
-            })
-            if count > 0 then
-              table.insert(entries, {
-                icon .. " " .. count,
-                group = "DiagnosticSign" .. severity,
+            for severity, icon in pairs(diag_icons) do
+              local count = #vim.diagnostic.get(props.buf, {
+                severity = vim.diagnostic.severity[string.upper(severity)],
               })
-            end
-          end
-
-          if #entries > 0 then
-            for i, item in ipairs(entries) do
-              table.insert(result, item)
-              if i < #entries then
-                table.insert(result, " ") -- space after all but last
+              if count > 0 then
+                table.insert(entries, {
+                  " " .. icon .. " " .. count,
+                  group = "DiagnosticSign" .. severity,
+                })
               end
             end
+
+            return entries
           end
+          vim.list_extend(result, get_diagnostics())
 
           return result
         end,
