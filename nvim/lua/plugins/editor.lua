@@ -261,23 +261,6 @@ return {
     end,
   },
   {
-    "chrisgrieser/nvim-rip-substitute",
-    vscode = false,
-    event = "BufRead",
-    cmd = "RipSubstitute",
-    opts = {},
-    keys = {
-      {
-        "<leader>fs",
-        function()
-          require("rip-substitute").sub()
-        end,
-        mode = { "n", "x" },
-        desc = " rip substitute",
-      },
-    },
-  },
-  {
     "otavioschwanck/arrow.nvim",
     vscode = false,
     event = "VeryLazy",

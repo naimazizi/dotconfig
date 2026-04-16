@@ -52,6 +52,20 @@ if not vim.g.vscode then
 
   -- Lazy
   vim.api.nvim_set_keymap("n", "<leader>l", "<cmd>:Lazy<cr>", { noremap = true, silent = true, desc = "Lazy" })
+
+  -- Lsp
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>cC",
+    "<cmd>:checkhealth vim.lsp<cr>",
+    { noremap = true, silent = true, desc = "LSP Info" }
+  )
+
+  -- Search and replace in line
+  map("n", "<leader>fs", ":%s/", { noremap = true, silent = true, desc = "Search and replace" })
+
+  -- Search only in visual selection using the %V atom
+  map("v", "<leader>fs", ":s/\\%V", { noremap = true, silent = true, desc = "Search and replace in selection" })
 end
 
 -- Neovide specific keymap

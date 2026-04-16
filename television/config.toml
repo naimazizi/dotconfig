@@ -53,9 +53,3 @@ theme = "catppuccin"
 # Bulitin syntax highlighting uses the same syntax highlighting engine as bat.
 # To get a list of your currently available themes, run `bat --list-themes`
 theme = "Coldark-Dark"
-
-[keybindings]
-# Quit the application
-quit = ["esc", "ctrl-c"]
-# Scrolling through entries
-toggle_preview = "ctrl-o"
