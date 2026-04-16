@@ -1,0 +1,7 @@
+[default]
+
+[default.extend-words]
+enew = "enew"
+
+[files]
+extend-exclude = ["*.json"]

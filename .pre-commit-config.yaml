@@ -93,3 +93,9 @@ repos:
         language: system
         types_or: [javascript, json, yaml, toml]
         pass_filenames: true
+
+  # Typos checking
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.45.1
+    hooks:
+      - id: typos

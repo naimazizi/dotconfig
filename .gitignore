@@ -10,6 +10,7 @@
 !/skim_search.sh
 !/starship.toml
 !/.pre-commit-config.yaml
+!/.typos.toml
 
 # Folder to not ignore
 !/amethyst/
