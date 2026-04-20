@@ -86,7 +86,6 @@ local function lsp_attach(bufnr)
   vim.lsp.buf.hover = function()
     return hover({
       border = "single",
-      -- max_width = 100,
       max_width = math.floor(vim.o.columns * 0.4),
       max_height = math.floor(vim.o.lines * 0.4),
     })
@@ -99,7 +98,6 @@ local function lsp_attach(bufnr)
       title = "Signature help",
       border = "single",
       title_pos = "left",
-      -- max_width = 100,
       max_width = math.floor(vim.o.columns * 0.4),
       max_height = math.floor(vim.o.lines * 0.4),
     })

@@ -123,14 +123,6 @@ return {
           },
           { title = "Neotest Summary", ft = "neotest-summary" },
           {
-            title = "Quickfix",
-            ft = "qf",
-            -- don't open help files in edgy that we're editing
-            filter = function(buf)
-              return vim.bo[buf].buftype == "quickfix"
-            end,
-          },
-          {
             title = "Help",
             ft = "help",
             -- don't open help files in edgy that we're editing

@@ -46,7 +46,7 @@ if not vim.g.vscode then
   map("n", "<leader>|", "<cmd>vsplit<cr>", { noremap = true, desc = "Split window right" })
 
   -- Delete LSP keymaps
-  for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt" }) do
+  for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt", "gO" }) do
     pcall(vim.keymap.del, "n", key)
   end
 

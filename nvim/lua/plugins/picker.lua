@@ -51,7 +51,6 @@ return {
       },
       { "<leader>sd", fzf_lua_picker("diagnostics_document", {}), desc = "Diagnostics" },
       { "<leader>sD", fzf_lua_picker("diagnostics_workspace", {}), desc = "Diagnostics Workspace" },
-      { "<leader>xx", fzf_lua_picker("diagnostics_workspace", {}), desc = "Diagnostics Workspace" },
       { "<leader>sq", fzf_lua_picker("quickfix", {}), desc = "Quickfix" },
       { "<leader>fr", fzf_lua_picker("oldfiles", {}), desc = "Recent" },
       { "<leader>fh", fzf_lua_picker("help_tags", {}), desc = "Help" },
@@ -126,6 +125,13 @@ return {
         "<leader>bd",
         function()
           Snacks.bufdelete()
+        end,
+        desc = "Delete Buffer",
+      },
+      {
+        "<leader>si",
+        function()
+          Snacks.picker.icons()
         end,
         desc = "Delete Buffer",
       },
