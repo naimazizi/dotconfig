@@ -80,6 +80,30 @@ local function lsp_attach(bufnr)
   if supports_inlay_hints then
     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end
+
+  local hover = vim.lsp.buf.hover
+  ---@diagnostic disable-next-line: duplicate-set-field
+  vim.lsp.buf.hover = function()
+    return hover({
+      border = "single",
+      -- max_width = 100,
+      max_width = math.floor(vim.o.columns * 0.4),
+      max_height = math.floor(vim.o.lines * 0.4),
+    })
+  end
+
+  local signature_help = vim.lsp.buf.signature_help
+  ---@diagnostic disable-next-line: duplicate-set-field
+  vim.lsp.buf.signature_help = function()
+    return signature_help({
+      title = "Signature help",
+      border = "single",
+      title_pos = "left",
+      -- max_width = 100,
+      max_width = math.floor(vim.o.columns * 0.4),
+      max_height = math.floor(vim.o.lines * 0.4),
+    })
+  end
 end
 
 return {
