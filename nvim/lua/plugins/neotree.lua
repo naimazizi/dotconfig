@@ -1,18 +1,18 @@
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
-    enabled = false,
+    enabled = true,
     vscode = false,
+    lazy = false,
     cmd = "Neotree",
     keys = {
       {
-        "<leader>fe",
+        "<leader>e",
         function()
           require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
         end,
         desc = "Explorer NeoTree (Root Dir)",
       },
-      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree", remap = true },
     },
     deactivate = function()
       vim.cmd([[Neotree close]])

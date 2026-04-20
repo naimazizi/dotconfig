@@ -9,13 +9,13 @@ return {
     },
     keys = {
       {
-        "<leader>E",
+        "<leader>fE",
         mode = { "n", "v" },
         "<cmd>Yazi<cr>",
         desc = "Open yazi at the current file",
       },
       {
-        "<leader>e",
+        "<leader>fe",
         "<cmd>Yazi toggle<cr>",
         desc = "Resume the last yazi session",
       },
