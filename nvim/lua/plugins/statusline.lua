@@ -13,21 +13,18 @@ return {
           lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
           lualine_b = {
             "branch",
-            {
-              function()
-                return vim.fn.getcwd()
-              end,
-            },
-            "encoding",
-            "fileformat",
-            "filetype",
             "navic",
           },
           lualine_c = {
             "%=",
           },
           lualine_x = { "overseer", "quickfix" },
-          lualine_y = { "lsp_status" },
+          lualine_y = {
+            "filetype",
+            "fileformat",
+            "encoding",
+            "lsp_status",
+          },
           lualine_z = {
             "filesize",
             "progress",
