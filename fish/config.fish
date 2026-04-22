@@ -111,6 +111,9 @@ set -g fish_pager_color_prefix $cyan
 set -g fish_pager_color_completion $foreground
 set -g fish_pager_color_description $comment
 
+# Hardcode TERM
+set -gx TERM xterm-256color
+
 # Created by `pipx` on 2024-12-03 14:54:48
 set PATH $PATH ~/.local/bin
 
