@@ -109,14 +109,14 @@ if vim.g.vscode then
     vscode.call("editor.action.commentLine")
   end, { noremap = true, desc = "Toggle Comment Line (Visual) -- it mimics ctrl+/" })
 
-  -- Go to Highlighted word (not working)
-  -- map("n", "[[", function()
-  --   vscode.call("editor.action.wordHighlight.prev")
-  -- end, { noremap = true, desc = "Previous Highlighted word" })
-  --
-  -- map("n", "]]", function()
-  --   vscode.call("editor.action.wordHighlight.next")
-  -- end, { noremap = true, desc = "Next Highlighted word" })
+  -- Go to Highlighted word
+  map("n", "[w", function()
+    vscode.call("editor.action.wordHighlight.prev")
+  end, { noremap = true, desc = "Previous Highlighted word" })
+
+  map("n", "]w", function()
+    vscode.call("editor.action.wordHighlight.next")
+  end, { noremap = true, desc = "Next Highlighted word" })
 
   -- Tab Navigation
   map("n", "<S-l>", function()
@@ -208,20 +208,20 @@ if vim.g.vscode then
     vscode.call("editor.action.marker.next")
   end, { noremap = true, desc = "Go to Next Problem (error, warning, info)" })
 
-  map("n", "[n", function()
-    vscode.call("editor.action.wordHighlight.prev")
-  end, { noremap = true, desc = "Go to Prev Highlight" })
-
-  map("n", "]n", function()
-    vscode.call("editor.action.wordHighlight.next")
-  end, { noremap = true, desc = "Go to Next Highlight" })
-
   map("n", "[h", function()
     vscode.call("workbench.action.editor.previousChange")
   end, { noremap = true, desc = "Go to Prev Change" })
 
   map("n", "]h", function()
     vscode.call("workbench.action.editor.nextChange")
+  end, { noremap = true, desc = "Go to Next Change" })
+
+  map("n", "[t", function()
+    vscode.call("todo-tree.goToPrevious")
+  end, { noremap = true, desc = "Go to Prev Change" })
+
+  map("n", "]t", function()
+    vscode.call("todo-tree.goToNext")
   end, { noremap = true, desc = "Go to Next Change" })
 
   -- Harpoon Extension

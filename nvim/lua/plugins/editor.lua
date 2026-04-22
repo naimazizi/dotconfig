@@ -317,4 +317,27 @@ return {
     end,
   },
   { "NMAC427/guess-indent.nvim", vscode = false, event = "VeryLazy", opts = {} },
+  {
+    "folke/todo-comments.nvim",
+    vscode = false,
+    event = "BufRead",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {},
+    keys = {
+      {
+        "]t",
+        function()
+          require("todo-comments").jump_next()
+        end,
+        desc = "Next todo comment",
+      },
+      {
+        "[t",
+        function()
+          require("todo-comments").jump_prev()
+        end,
+        desc = "Next todo comment",
+      },
+    },
+  },
 }

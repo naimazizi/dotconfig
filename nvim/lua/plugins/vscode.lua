@@ -2,12 +2,23 @@ if not vim.g.vscode then
   return {}
 end
 
+local enabled = {
+  "lazy.nvim",
+  "mini.ai",
+  "mini.comment",
+  "mini.move",
+  "mini.surround",
+  "nvim-treesitter",
+  "nvim-treesitter-textobjects",
+}
+
 local Config = require("lazy.core.config")
 Config.options.checker.enabled = false
 Config.options.change_detection.enabled = false
 Config.options.defaults.cond = function(plugin)
-  return plugin.vscode
+  return vim.tbl_contains(enabled, plugin.name) or plugin.vscode
 end
+vim.g.snacks_animate = false
 
 return {
   {
@@ -22,42 +33,8 @@ return {
     },
   },
   {
-    "RRethy/vim-illuminate",
-    vscode = true,
-    opts = {
-      delay = 100,
-      providers = {
-        "treesitter",
-        "regex",
-      },
-      under_cursor = false,
-    },
-  },
-  {
     "nvim-treesitter/nvim-treesitter",
     vscode = true,
     opts = { highlight = { enable = false } },
-  },
-  {
-    "saghen/blink.pairs",
-    vscode = true,
-    event = "BufRead",
-    version = "*",
-    dependencies = "saghen/blink.download",
-    --- @module 'blink.pairs'
-    --- @type blink.pairs.Config
-    opts = {
-      mappings = {
-        enabled = true,
-        cmdline = true,
-        disabled_filetypes = {},
-        pairs = {},
-      },
-      highlights = {
-        enabled = false,
-        cmdline = false,
-      },
-      debug = false,
-    },
   },
 }

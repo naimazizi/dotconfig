@@ -1,14 +1,3 @@
-local censor_extmark_opts = function(_buf_id, _match, _data)
-  local mask = string.rep("⎯", vim.api.nvim_win_get_width(0))
-  return {
-    virt_text = { { mask, "SignColumn" } },
-    virt_text_pos = "overlay",
-    virt_text_hide = true,
-    priority = 200,
-    right_gravity = false,
-  }
-end
-
 local function ai_whichkey(opts)
   local objects = {
     { " ", desc = "whitespace" },
@@ -75,18 +64,18 @@ return {
     lazy = false,
     keys = {
       {
-        "[t",
+        "[T",
         function()
           require("mini.bracketed").comment("backward")
         end,
-        desc = "Prev todo comment",
+        desc = "Prev comment",
       },
       {
-        "]t",
+        "]T",
         function()
           require("mini.bracketed").comment("forward")
         end,
-        desc = "Next todo comment",
+        desc = "Next comment",
       },
       { "<S-h>", "<cmd>bprevious<cr>", desc = "Prev Buffer" },
       { "<S-l>", "<cmd>bnext<cr>", desc = "Next Buffer" },
@@ -257,32 +246,6 @@ return {
         require("mini.icons").mock_nvim_web_devicons()
 
         require("mini.tabline").setup()
-
-        local hipatterns = require("mini.hipatterns")
-        hipatterns.setup({
-          highlighters = {
-            fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-            hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-            todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-            note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
-            perf = { pattern = "%f[%w]()PERF()%f[%W]", group = "MiniHipatternsFixme" },
-            hex_color = hipatterns.gen_highlighter.hex_color(),
-            cell_marker = {
-              pattern = function(bufid)
-                local cmt_str = vim.api.nvim_get_option_value("commentstring", { buf = bufid })
-                return "^" .. string.gsub(cmt_str, [[%s]], "") .. [[*%%.*]]
-              end,
-              group = "",
-              extmark_opts = censor_extmark_opts,
-            },
-          },
-        })
-
-        require("mini.cmdline").setup({
-          autocomplete = { enable = false },
-          autocorrect = { enable = true },
-          autopeek = { enable = true },
-        })
 
         ai_whichkey(ai_opts)
       end
