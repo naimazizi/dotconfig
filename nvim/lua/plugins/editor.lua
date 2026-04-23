@@ -299,6 +299,13 @@ return {
         desc = "Search/Replace (grug-far)",
       },
     },
+    config = function()
+      require("grug-far").setup({
+        showCompactInputs = true,
+        showInputsTopPadding = true,
+        showInputsBottomPadding = true,
+      })
+    end,
   },
   {
     "gregorias/coerce.nvim",
