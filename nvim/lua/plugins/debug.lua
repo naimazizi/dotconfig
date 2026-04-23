@@ -57,19 +57,33 @@ local function find_function_name()
       return nil
     end
 
+    local start_row, _start_col, end_row, _end_col = node:range()
+
+    -- Check if cursor is within this node's range
+    if not (start_row <= cursor_row and cursor_row <= end_row) then
+      return nil
+    end
+
     local node_type = node:type()
+
+    -- If this is a function/method, check children first for inner functions
     if node_type == "function_definition" or node_type == "method_definition" then
-      -- Get the function name (usually the second child in Python)
+      -- Search children for a more specific (inner) function
+      for child in node:iter_children() do
+        local result = find_function(child)
+        if result then
+          return result
+        end
+      end
+
+      -- No inner function found, this is the target - get its name
       for child in node:iter_children() do
         if child:type() == "identifier" then
           return vim.treesitter.get_node_text(child, bufnr)
         end
       end
-    end
-
-    -- If cursor is within this node, search children
-    local start_row, _start_col, end_row, _end_col = node:range()
-    if start_row <= cursor_row and cursor_row <= end_row then
+    else
+      -- Not a function node, search children
       for child in node:iter_children() do
         local result = find_function(child)
         if result then

@@ -106,6 +106,17 @@ return {
             end,
           },
           {
+            title = "File Explorer",
+            ft = "snacks_layout_box",
+            pinned = true,
+            open = function()
+              Snacks.explorer()
+            end,
+            filter = function(buf, win)
+              return vim.api.nvim_win_get_config(win).relative == ""
+            end,
+          },
+          {
             title = "Outline",
             ft = "Outline",
             pinned = false,

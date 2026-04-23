@@ -77,10 +77,6 @@ return {
         end,
         desc = "Next comment",
       },
-      { "<S-h>", "<cmd>bprevious<cr>", desc = "Prev Buffer" },
-      { "<S-l>", "<cmd>bnext<cr>", desc = "Next Buffer" },
-      { "[b", "<cmd>bprevious<cr>", desc = "Prev Buffer" },
-      { "]b", "<cmd>bnext<cr>", desc = "Next Buffer" },
     },
     config = function()
       require("mini.surround").setup({

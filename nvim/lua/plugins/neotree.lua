@@ -1,7 +1,7 @@
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
-    enabled = true,
+    enabled = false,
     vscode = false,
     lazy = false,
     cmd = "Neotree",

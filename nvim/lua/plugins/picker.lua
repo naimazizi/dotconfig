@@ -135,6 +135,13 @@ return {
         end,
         desc = "Delete Buffer",
       },
+      {
+        "<leader>e",
+        function()
+          Snacks.explorer()
+        end,
+        desc = "File Explorer",
+      },
     },
     ---@type snacks.Config
     opts = {
@@ -155,6 +162,11 @@ return {
       lazygit = { enabled = true },
 
       scroll = { enabled = true },
+
+      explorer = {
+        replace_netrw = true,
+        trash = true,
+      },
 
       indent = {
         indent = {
