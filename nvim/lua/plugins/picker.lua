@@ -1,118 +1,300 @@
-local fzf_bin = (vim.fn.executable("sk") == 1) and "sk" or nil
-local algo = (vim.fn.executable("sk") == 1) and "arinae" or "frizbee"
-
-local function fzf_lua_picker(fn, opts)
-  return function(...)
-    local ok, fzf = pcall(require, "fzf-lua")
-    if not ok then
-      vim.notify("fzf-lua not available")
-      return
-    end
-    if type(fzf[fn]) ~= "function" then
-      vim.notify("fzf-lua picker not available")
-      return
-    end
-    local merged_opts = vim.tbl_extend("force", opts or {}, select(1, ...) or {})
-    return fzf[fn](merged_opts)
-  end
-end
+local theme = require("telescope.themes").get_ivy
 
 return {
   {
-    "ibhagwan/fzf-lua",
+    "nvim-telescope/telescope.nvim",
     vscode = false,
     event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope-frecency.nvim",
+      "nvim-telescope/telescope-file-browser.nvim",
+      "nvim-telescope/telescope-live-grep-args.nvim",
+      "nvim-telescope/telescope-dap.nvim",
+      "jvgrootveld/telescope-zoxide",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release --target install",
+      },
+    },
     keys = {
       {
         "<leader><leader>",
-        fzf_lua_picker("files", {}),
+        function()
+          require("telescope").extensions.frecency.frecency(theme({
+            workspace = "CWD",
+          }))
+        end,
         desc = "Find files",
       },
       {
         "<leader>/",
-        fzf_lua_picker("live_grep", {}),
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args(theme())
+        end,
         desc = "Live Grep",
       },
       {
         "<leader>sw",
-        fzf_lua_picker("grep_cword", {}),
+        function()
+          require("telescope.builtin").grep_string(theme())
+        end,
         desc = "Search current word",
       },
-      { "<leader>ff", fzf_lua_picker("files", {}), desc = "Find files" },
-      { "<leader>fF", fzf_lua_picker("files", { cwd = vim.fn.expand("%:p:h") }), desc = "Find files (cwd)" },
-      { "<leader>fg", fzf_lua_picker("live_grep", {}), desc = "Live Grep" },
-      { "<leader>sR", fzf_lua_picker("resume", {}), desc = "Resume" },
-      { "<leader>sk", fzf_lua_picker("keymaps", {}), desc = "Keymaps" },
-      { "<leader>sm", fzf_lua_picker("marks", {}), desc = "Marks" },
+      {
+        "<leader>ff",
+        function()
+          require("telescope.builtin").find_files(theme())
+        end,
+        desc = "Find files",
+      },
+      {
+        "<leader>fF",
+        function()
+          require("telescope.builtin").find_files(theme({ cwd = vim.fn.expand("%:p:h") }))
+        end,
+        desc = "Find files (cwd)",
+      },
+      {
+        "<leader>fg",
+        function()
+          require("telescope").extensions.live_grep_args.live_grep_args(theme())
+        end,
+        desc = "Live Grep",
+      },
+      {
+        "<leader>sR",
+        function()
+          require("telescope.builtin").resume(theme())
+        end,
+        desc = "Resume",
+      },
+      {
+        "<leader>sk",
+        function()
+          require("telescope.builtin").keymaps(theme())
+        end,
+        desc = "Keymaps",
+      },
+      {
+        "<leader>sm",
+        function()
+          require("telescope.builtin").marks(theme())
+        end,
+        desc = "Marks",
+      },
       {
         "<leader>st",
-        fzf_lua_picker("grep", { search = "TODO|HACK|PERF|NOTE|FIXME", no_esc = true }),
+        function()
+          require("telescope.builtin").grep_string(theme({ search = "TODO|HACK|PERF|NOTE|FIXME" }))
+        end,
         desc = "TODO",
       },
-      { "<leader>sd", fzf_lua_picker("diagnostics_document", {}), desc = "Diagnostics" },
-      { "<leader>sD", fzf_lua_picker("diagnostics_workspace", {}), desc = "Diagnostics Workspace" },
-      { "<leader>sq", fzf_lua_picker("quickfix", {}), desc = "Quickfix" },
-      { "<leader>fr", fzf_lua_picker("oldfiles", {}), desc = "Recent" },
-      { "<leader>fh", fzf_lua_picker("help_tags", {}), desc = "Help" },
-      { "<leader>fz", fzf_lua_picker("zoxide", {}), desc = "Zoxide" },
-      { "<leader>s/", fzf_lua_picker("command_history", {}), desc = "Command History" },
-      { "<leader>gc", fzf_lua_picker("git_bcommits", {}), desc = "Buffer Commits" },
-      { "<leader>gC", fzf_lua_picker("git_commits", {}), desc = "Commits" },
-      { "<leader>gd", fzf_lua_picker("git_diff", {}), desc = "Diff" },
-      { "<leader>gS", fzf_lua_picker("git_status", {}), desc = "Status" },
-      { "<leader>bb", fzf_lua_picker("buffers", {}), desc = "List buffers" },
+      {
+        "<leader>sd",
+        function()
+          require("telescope.builtin").diagnostics(theme({ bufnr = 0 }))
+        end,
+        desc = "Diagnostics",
+      },
+      {
+        "<leader>sD",
+        function()
+          require("telescope.builtin").diagnostics(theme())
+        end,
+        desc = "Diagnostics Workspace",
+      },
+      {
+        "<leader>sq",
+        function()
+          require("telescope.builtin").quickfix(theme())
+        end,
+        desc = "Quickfix",
+      },
+      {
+        "<leader>fr",
+        function()
+          require("telescope").extensions.frecency.frecency(theme())
+        end,
+        desc = "Recent",
+      },
+      {
+        "<leader>fh",
+        function()
+          require("telescope.builtin").help_tags(theme())
+        end,
+        desc = "Help",
+      },
+      {
+        "<leader>fz",
+        function()
+          require("telescope").extensions.zoxide.list(theme())
+        end,
+        desc = "Zoxide",
+      },
+      {
+        "<leader>s/",
+        function()
+          require("telescope.builtin").command_history(theme())
+        end,
+        desc = "Command History",
+      },
+      {
+        "<leader>gc",
+        function()
+          require("telescope.builtin").git_bcommits(theme())
+        end,
+        desc = "Buffer Commits",
+      },
+      {
+        "<leader>gC",
+        function()
+          require("telescope.builtin").git_commits(theme())
+        end,
+        desc = "Commits",
+      },
+      {
+        "<leader>gd",
+        function()
+          require("telescope.builtin").git_diff(theme())
+        end,
+        desc = "Diff",
+      },
+      {
+        "<leader>gS",
+        function()
+          require("telescope.builtin").git_status(theme())
+        end,
+        desc = "Status",
+      },
+      {
+        "<leader>bb",
+        function()
+          require("telescope.builtin").buffers(theme())
+        end,
+        desc = "List buffers",
+      },
+      {
+        "<leader>dd",
+        function()
+          require("telescope").extensions.dap.commands(theme())
+        end,
+        desc = "DAP commands",
+      },
+      {
+        "<leader>dV",
+        function()
+          require("telescope").extensions.dap.variables(theme())
+        end,
+        desc = "DAP variables",
+      },
+      {
+        "<leader>dv",
+        function()
+          require("telescope").extensions.dap.list_breakpoints(theme())
+        end,
+        desc = "DAP breakpoint",
+      },
+      {
+        "<leader>df",
+        function()
+          require("telescope").extensions.dap.configurations(theme())
+        end,
+        desc = "Configuration",
+      },
     },
     config = function()
-      local fzf = require("fzf-lua")
-      local config = fzf.config
-      local actions = fzf.actions
+      local telescope = require("telescope")
+      local actions = require("telescope.actions")
+      local lga_actions = require("telescope-live-grep-args.actions")
 
-      if not config or not config.defaults or not config.defaults.keymap then
-        return
-      end
-
-      -- Quickfix
-      config.defaults.keymap.fzf["ctrl-q"] = "select-all+accept"
-      config.defaults.keymap.fzf["ctrl-u"] = "half-page-up"
-      config.defaults.keymap.fzf["ctrl-d"] = "half-page-down"
-      config.defaults.keymap.fzf["ctrl-x"] = "jump"
-      config.defaults.keymap.fzf["ctrl-f"] = "preview-page-down"
-      config.defaults.keymap.fzf["ctrl-b"] = "preview-page-up"
-      config.defaults.keymap.builtin["<c-f>"] = "preview-page-down"
-      config.defaults.keymap.builtin["<c-b>"] = "preview-page-up"
-
-      fzf.setup({
-        { "telescope" },
-        fzf_bin = fzf_bin,
-        fzf_colors = true,
-        fzf_opts = {
-          ["--no-scrollbar"] = true,
-          ["--algo"] = algo,
+      telescope.setup({
+        defaults = {
+          sorting_strategy = "ascending",
+          preview = {
+            check_mime_type = false,
+            timeout = 500,
+          },
+          mappings = {
+            i = {
+              ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+              ["<C-u>"] = actions.preview_scrolling_up,
+              ["<C-d>"] = actions.preview_scrolling_down,
+              ["<C-f>"] = actions.preview_scrolling_down,
+              ["<C-b>"] = actions.preview_scrolling_up,
+              ["<C-k>"] = lga_actions.quote_prompt(),
+              ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+              ["<C-space>"] = lga_actions.to_fuzzy_refine,
+            },
+            n = {
+              ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+              ["<C-u>"] = actions.preview_scrolling_up,
+              ["<C-d>"] = actions.preview_scrolling_down,
+              ["<C-f>"] = actions.preview_scrolling_down,
+              ["<C-b>"] = actions.preview_scrolling_up,
+              ["q"] = actions.close,
+            },
+          },
         },
-
-        files = {
-          cwd_prompt = false,
-          formatter = "path.filename_first",
-          actions = actions and {
-            ["alt-i"] = { actions.toggle_ignore },
-            ["alt-h"] = { actions.toggle_hidden },
-          } or nil,
+        pickers = {
+          find_files = {
+            find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
+            hidden = false,
+          },
+          live_grep = {
+            additional_args = function()
+              return { "--hidden", "--glob", "!.git" }
+            end,
+          },
+          oldfiles = {
+            sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+          },
+          diagnostics = {
+            severity_bound = vim.diagnostic.severity.HINT,
+          },
+          buffers = {
+            sort_mru = true,
+            ignore_current_buffer = false,
+          },
+          git_commits = {
+            layout_strategy = "vertical",
+          },
+          git_bcommits = {
+            layout_strategy = "vertical",
+          },
         },
-
-        grep = {
-          actions = actions and {
-            ["alt-i"] = { actions.toggle_ignore },
-            ["alt-h"] = { actions.toggle_hidden },
-          } or nil,
-          multiline = 2,
-        },
-        lsp = {
-          symbols = {
-            symbol_style = 2,
+        extensions = {
+          fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "smart_case",
+          },
+          frecency = {
+            workspace_scan_cmd = nil,
+            show_scores = false,
+            show_unindexed = true,
+            ignore_patterns = { "*.git/*", "*/tmp/*" },
+            workspaces = {},
+          },
+          file_browser = {
+            grouped = true,
+            depth = true,
+          },
+          live_grep_args = {
+            auto_quoting = true,
+            default_text = "",
           },
         },
       })
-      fzf.register_ui_select()
+
+      -- Load extensions
+      telescope.load_extension("fzf")
+      telescope.load_extension("frecency")
+      telescope.load_extension("file_browser")
+      telescope.load_extension("live_grep_args")
+      telescope.load_extension("zoxide")
+      telescope.load_extension("dap")
     end,
   },
   {
@@ -171,36 +353,33 @@ return {
       indent = {
         indent = {
           priority = 1,
-          enabled = true, -- enable indent guides
+          enabled = true,
           char = "╎",
-          only_scope = false, -- only show indent guides of the scope
-          only_current = false, -- only show indent guides in the current window
+          only_scope = false,
+          only_current = false,
           hl = "SnacksIndent",
         },
         animate = {
           style = "out",
           easing = "linear",
           duration = {
-            step = 20, -- ms per step
-            total = 500, -- maximum duration
+            step = 20,
+            total = 500,
           },
         },
         scope = {
-          enabled = true, -- enable highlighting the current scope
+          enabled = true,
           priority = 200,
           char = "│",
-          underline = false, -- underline the start of the scope
-          only_current = true, -- only show scope in the current window
-          hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
+          underline = false,
+          only_current = true,
+          hl = "SnacksIndentScope",
         },
         chunk = {
-          -- when enabled, scopes will be rendered as chunks, except for the
-          -- top-level scope which will be rendered as a scope.
           enabled = true,
-          -- only show chunk scopes in the current window
           only_current = true,
           priority = 200,
-          hl = "SnacksIndentChunk", ---@type string|string[] hl group for chunk scopes
+          hl = "SnacksIndentChunk",
           char = {
             corner_top = "╭",
             corner_bottom = "╰",
@@ -236,7 +415,7 @@ return {
               icon = " ",
               key = "f",
               desc = "Find File",
-              action = ":lua FzfLua.files()",
+              action = ":Telescope frecency workspace=CWD",
             },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
@@ -270,7 +449,6 @@ return {
     config = function(_, opts)
       require("snacks").setup(opts)
 
-      -- Snacks Toggle
       vim.api.nvim_create_autocmd("User", {
         desc = "Snacks toggle keymap",
         pattern = "VeryLazy",

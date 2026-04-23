@@ -18,22 +18,6 @@ local function with_dap(fn)
   end
 end
 
-local function fzf_dap_picker(fn, opts)
-  return function(...)
-    local ok, fzf = pcall(require, "fzf-lua")
-    if not ok then
-      vim.notify("fzf-lua not available")
-      return
-    end
-    if type(fzf[fn]) ~= "function" then
-      vim.notify("fzf-lua picker not available")
-      return
-    end
-    local merged_opts = vim.tbl_extend("force", opts or {}, select(1, ...) or {})
-    return fzf[fn](merged_opts)
-  end
-end
-
 ---Find the function name at current cursor using treesitter
 ---@return string|nil name The function name
 local function find_function_name()
@@ -254,10 +238,6 @@ return {
         end,
         desc = "DAP UI",
       },
-      { "<leader>dd", fzf_dap_picker("dap_commands", {}), desc = "DAP commands" },
-      { "<leader>dv", fzf_dap_picker("dap_variables", {}), desc = "DAP variables" },
-      { "<leader>dV", fzf_dap_picker("dap_breakpoints", {}), desc = "DAP breakpoint" },
-      { "<leader>df", fzf_dap_picker("dap_configurations", {}), desc = "Configuration" },
       {
         "<leader>dm",
         function()
