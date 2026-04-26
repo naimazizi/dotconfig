@@ -11,6 +11,7 @@ autoload -Uz fzg
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export EDITOR='nvim'
+export VISUAL='nvim'
 
 # Aliases
 alias ls='lsd'
