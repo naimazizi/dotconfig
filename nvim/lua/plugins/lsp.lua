@@ -1,5 +1,5 @@
 -- Telescope LSP pickers for the given scope
----@param scope "definition" | "references" | "implementation" | "type_definition" | "document_symbol" | "workspace_symbol" | "incoming_calls" | "outgoing_calls" | "code_action"
+---@param scope "definition" | "references" | "implementation" | "type_definition" | "document_symbol" | "workspace_symbol" | "incoming_calls" | "outgoing_calls" 
 local function telescope_lsp(scope)
   return function()
     local telescope = require("telescope.builtin")
@@ -14,7 +14,6 @@ local function telescope_lsp(scope)
       workspace_symbol = telescope.lsp_workspace_symbols,
       incoming_calls = telescope.lsp_incoming_calls,
       outgoing_calls = telescope.lsp_outgoing_calls,
-      code_action = telescope.lsp_code_actions,
     }
 
     local picker_fn = lsp_mappings[scope]
@@ -38,7 +37,7 @@ local function lsp_attach(bufnr)
   map("n", "gy", telescope_lsp("type_definition"), "Goto type definition")
 
   map("n", "<leader>cr", vim.lsp.buf.rename, "Rename")
-  map({ "n", "x" }, "<leader>ca", telescope_lsp("code_action"), "Code action")
+  map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
 
   -- Workspace symbols / document symbols
   map("n", "<leader>ss", telescope_lsp("document_symbol"), "Symbols (document)")

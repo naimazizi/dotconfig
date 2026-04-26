@@ -13,6 +13,7 @@ return {
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
       "nvim-telescope/telescope-dap.nvim",
+      "nvim-telescope/telescope-ui-select.nvim",
       "jvgrootveld/telescope-zoxide",
       {
         "nvim-telescope/telescope-fzf-native.nvim",
@@ -287,6 +288,9 @@ return {
             auto_quoting = true,
             default_text = "",
           },
+          ["ui-select"] = {
+            theme(),
+          },
         },
       })
 
@@ -297,6 +301,7 @@ return {
       telescope.load_extension("live_grep_args")
       telescope.load_extension("zoxide")
       telescope.load_extension("dap")
+      telescope.load_extension("ui-select")
     end,
   },
   {
