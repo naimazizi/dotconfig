@@ -3,6 +3,7 @@
 local function telescope_lsp(scope)
   return function()
     local telescope = require("telescope.builtin")
+    local theme = require("telescope.themes").get_ivy
 
     local lsp_mappings = {
       definition = telescope.lsp_definitions,
@@ -18,7 +19,7 @@ local function telescope_lsp(scope)
 
     local picker_fn = lsp_mappings[scope]
     if picker_fn then
-      picker_fn()
+      picker_fn(theme())
     else
       vim.notify("Telescope LSP picker not found for scope: " .. scope, vim.log.levels.WARN)
     end

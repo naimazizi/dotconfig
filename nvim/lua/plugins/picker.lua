@@ -1,4 +1,6 @@
-local theme = require("telescope.themes").get_ivy
+local function theme(opts)
+  return require("telescope.themes").get_ivy(opts)
+end
 
 return {
   {

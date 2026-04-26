@@ -8,7 +8,9 @@ fpath+=${ZDOTDIR}/.zfunc
 autoload -Uz fzg
 
 # Additional Config
-ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+export EDITOR='nvim'
 
 # Aliases
 alias ls='lsd'
@@ -18,7 +20,6 @@ alias gg='lazygit'
 alias vv='nvim'
 alias nvim_update='nvim --headless "+Lazy! sync" +qa'
 alias neovide_remote="neovide --neovim-bin ~/.config/nvim-remote.sh"
-alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 alias ls_arch_packages="pacman -Qi | grep -E '^(Name|Installed)' | cut -f2 -d':' | paste - - | column -t | sort -nrk 2 | grep MiB | less"
 alias ss="zsh $HOME/.config/skim_search.sh"
 alias zz="zoxide query -i"
@@ -64,26 +65,9 @@ if command -v pyenv &>/dev/null; then
 	eval "$(pyenv virtualenv-init -)"
 fi
 
-# Environment variables
-if command -v nvim &>/dev/null; then
-	export EDITOR='nvim'
-	export VISUAL='nvim'
-	export ZVM_VI_EDITOR='nvim'
-else
-	export EDITOR='vim'
-	export VISUAL='vim'
-	export ZVM_VI_EDITOR='vim'
-fi
-
 # Smart insert prefix options (fzf menu)
 export ZSH_SMART_INSERT_PREFIXES="nvim:bat:code"
 export ZSH_SMART_INSERT_IGNOREDIRS=".git/*:node_modules/:dist/:.venv/"
-
-# Vi mode keybindings
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
-function zvm_after_lazy_keybindings() {
-	bindkey -M vicmd 'vv' edit-command-line
-}
 
 # autosuggestions and completion
 zinit wait lucid light-mode for \
@@ -95,10 +79,6 @@ zinit wait lucid light-mode for \
 # syntax highlighting
 zinit ice as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload'eval "$(zsh-patina activate)"'
 zinit light michel-kraemer/zsh-patina
-
-# Vi-mode
-zinit ice depth=1
-zinit light jeffreytse/zsh-vi-mode
 
 # starship
 zinit ice as"command" from"gh-r" \
