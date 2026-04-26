@@ -347,4 +347,17 @@ return {
       },
     },
   },
+  {
+    "error311/wayfinder.nvim",
+    vscode = false,
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      {
+        "gj",
+        "<Plug>(WayfinderOpen)",
+        desc = "LSP wayfinder",
+      },
+    },
+  },
 }
