@@ -38,7 +38,6 @@ return {
     dependencies = {
       "jmbuhr/otter.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "MeanderingProgrammer/render-markdown.nvim",
     },
   },
   { -- directly open ipynb files as quarto documents

@@ -15,10 +15,7 @@ return {
       "nvim-telescope/telescope-dap.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
       "jvgrootveld/telescope-zoxide",
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release --target install",
-      },
+      "natecraddock/telescope-zf-native.nvim",
     },
     keys = {
       {
@@ -213,10 +210,12 @@ return {
 
       telescope.setup({
         defaults = {
+          path_display = { "smart" },
           sorting_strategy = "ascending",
           preview = {
             check_mime_type = false,
             timeout = 500,
+            filesize_limit = 0.3, -- MB
           },
           mappings = {
             i = {
@@ -267,13 +266,45 @@ return {
           },
         },
         extensions = {
-          fzf = {
-            fuzzy = true,
-            override_generic_sorter = true,
-            override_file_sorter = true,
-            case_mode = "smart_case",
+          ["zf-native"] = {
+            -- options for sorting file-like items
+            file = {
+              -- override default telescope file sorter
+              enable = true,
+
+              -- highlight matching text in results
+              highlight_results = true,
+
+              -- enable zf filename match priority
+              match_filename = true,
+
+              -- optional function to define a sort order when the query is empty
+              initial_sort = nil,
+
+              -- set to false to enable case sensitive matching
+              smart_case = true,
+            },
+
+            -- options for sorting all other items
+            generic = {
+              -- override default telescope generic item sorter
+              enable = true,
+
+              -- highlight matching text in results
+              highlight_results = true,
+
+              -- disable zf filename match priority
+              match_filename = false,
+
+              -- optional function to define a sort order when the query is empty
+              initial_sort = nil,
+
+              -- set to false to enable case sensitive matching
+              smart_case = true,
+            },
           },
           frecency = {
+            path_display = { "smart" },
             workspace_scan_cmd = nil,
             show_scores = false,
             show_unindexed = true,
@@ -295,7 +326,7 @@ return {
       })
 
       -- Load extensions
-      telescope.load_extension("fzf")
+      telescope.load_extension("zf-native")
       telescope.load_extension("frecency")
       telescope.load_extension("file_browser")
       telescope.load_extension("live_grep_args")
