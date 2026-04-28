@@ -104,13 +104,6 @@ return {
         ghost_text = {
           enabled = true,
         },
-        list = {
-          selection = {
-            preselect = function()
-              return not require("blink.cmp").snippet_active({ direction = 1 })
-            end,
-          },
-        },
       },
 
       fuzzy = {

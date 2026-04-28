@@ -3,11 +3,11 @@ function layout() {
     name: "Center or Tall",
     getFrameAssignments: (windows, screenFrame) => {
       if (windows.length === 1) {
-        // Single window: centered on screen at 95% of screen dimensions
-        const windowWidth = screenFrame.width * 0.95;
-        const windowHeight = screenFrame.height * 0.95;
-        const offsetX = screenFrame.x + (screenFrame.width - windowWidth) / 2;
-        const offsetY = screenFrame.y + (screenFrame.height - windowHeight) / 2;
+        // Single window: fills entire screen
+        const windowWidth = screenFrame.width;
+        const windowHeight = screenFrame.height;
+        const offsetX = screenFrame.x;
+        const offsetY = screenFrame.y;
 
         const frame = {
           x: offsetX,
