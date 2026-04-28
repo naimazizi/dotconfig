@@ -96,14 +96,14 @@ return {
       {
         "<leader>sd",
         function()
-          require("telescope.builtin").diagnostics(theme({ bufnr = 0 }))
+          require("telescope.builtin").diagnostics(theme({ bufnr = 0, severity_bound = 0 }))
         end,
         desc = "Diagnostics",
       },
       {
         "<leader>sD",
         function()
-          require("telescope.builtin").diagnostics(theme())
+          require("telescope.builtin").diagnostics(theme({ severity_bound = 0 }))
         end,
         desc = "Diagnostics Workspace",
       },
