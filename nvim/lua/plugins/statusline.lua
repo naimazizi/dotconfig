@@ -1,6 +1,7 @@
 return {
   {
     "nvim-lualine/lualine.nvim",
+    vscode = false,
     lazy = false,
     dependencies = { "SmiteshP/nvim-navic" },
     config = function()
@@ -26,6 +27,11 @@ return {
             "lsp_status",
           },
           lualine_z = {
+            {
+              "searchcount",
+              maxcount = 999,
+              timeout = 500,
+            },
             "filesize",
             "progress",
             { "location", separator = { right = "" }, left_padding = 2 },
@@ -168,6 +174,15 @@ return {
           return result
         end,
       })
+    end,
+  },
+  {
+    "rachartier/tiny-cmdline.nvim",
+    vscode = false,
+    lazy = false,
+    config = function()
+      vim.o.cmdheight = 0
+      require("tiny-cmdline").setup({ on_reposition = require("tiny-cmdline").adapters.blink })
     end,
   },
 }

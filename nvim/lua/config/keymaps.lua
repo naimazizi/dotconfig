@@ -20,6 +20,8 @@ map({ "n", "x", "o" }, "<A-i>", function()
   end
 end, { desc = "Select child treesitter node or inner incremental lsp selections" })
 
+vim.cmd("cnoreabbrev w silent! w")
+
 -- Neovim general keymaps
 if not vim.g.vscode then
   -- Clear copilot suggestion with Esc if visible, otherwise preserve default Esc behavior

@@ -286,10 +286,13 @@ return {
     keys = {
       {
         "<leader>sr",
+        mode = { "n" },
         function()
           local grug = require("grug-far")
           local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
-          grug.open({
+          grug.toggle_instance({
+            instanceName = "grugfar_instance",
+            staticTitle = "Find and Replace",
             transient = true,
             prefills = {
               filesFilter = ext and ext ~= "" and "*." .. ext or nil,
@@ -297,6 +300,20 @@ return {
           })
         end,
         desc = "Search/Replace (grug-far)",
+      },
+      {
+        "<leader>sr",
+        mode = { "v" },
+        function()
+          local grug = require("grug-far")
+          grug.toggle_instance({
+            instanceName = "grugfar_within_instance",
+            staticTitle = "Find and Replace",
+            transient = true,
+            visualSelectionUsage = "operate-within-range",
+          })
+        end,
+        desc = "Search/Replace Within (grug-far)",
       },
     },
     config = function()

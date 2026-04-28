@@ -13,97 +13,138 @@ vim.g.slime_bracketed_paste = 1
 vim.g.disable_autoformat = true
 
 if not vim.g.vscode then
-  opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus" -- Sync with system clipboard
-  opt.cursorline = vim.g.vscode and false or true
-  opt.expandtab = true
-  opt.fillchars = { foldopen = "", foldclose = "", fold = " ", foldsep = " ", diff = "╱", eob = " " }
-  opt.foldlevel = 99
+  -- File handling
+  opt.backup = false -- Don't create backup files
+  opt.writebackup = false -- Don't create backup before writing
+  opt.swapfile = false -- Don't create swap files
+  opt.undofile = true -- Persistent undo
+  opt.undolevels = 10000
+  opt.undodir = vim.fn.expand("~/.vim/undodir") -- Undo directory
+
+  opt.number = true -- Line numbers
+  opt.relativenumber = true -- Relative line numbers
+  opt.cursorline = true -- Highlight current line
+  opt.wrap = false -- Don't wrap lines
+  opt.scrolloff = 10 -- Keep 10 lines above/below cursor
+  opt.sidescrolloff = 8 -- Keep 8 columns left/right of cursor
+
+  -- Indentation
+  opt.tabstop = 2 -- Tab width
+  opt.shiftwidth = 2 -- Indent width
+  opt.softtabstop = 2 -- Soft tab stop
+  opt.expandtab = true -- Use spaces instead of tabs
+  opt.smartindent = true -- Smart auto-indenting
+  opt.autoindent = true -- Copy indent from current line
+
+  -- Search settings
+  opt.ignorecase = true -- Case insensitive search
+  opt.smartcase = true -- Case sensitive if uppercase in search
+  opt.hlsearch = false -- Don't highlight search results
+  opt.incsearch = true -- Show matches as you type
+
+  -- Visual settings
+  opt.termguicolors = true -- Enable 24-bit colors
+  opt.signcolumn = "yes" -- Always show sign column
+  opt.showmatch = true -- Highlight matching brackets
+  opt.cmdheight = 1 -- Command line height
+  opt.showmode = false -- Don't show mode in command line
+  opt.pumheight = 10 -- Popup menu height
+  opt.pumblend = 10 -- Popup menu transparency
+  opt.pummaxwidth = 60 -- cap completion popup width
+  opt.winblend = 0 -- Floating window transparency
+  opt.completeopt = "menu,menuone,noselect,popup" -- popup shows completionItem/resolve preview
+  opt.conceallevel = 2 -- Hide * markup for bold and italic, but not markers with substitutions
+  opt.confirm = true -- Confirm to save changes before exiting modified buffer
+  opt.concealcursor = "" -- Don't hide cursor line markup
+  opt.synmaxcol = 300 -- Syntax highlighting limit
+  opt.ruler = false -- Disable the default ruler
+  opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
+  opt.winminwidth = 5 -- Minimum window width
+
+  -- File handling
+  opt.backup = false -- Don't create backup files
+  opt.writebackup = false -- Don't create backup before writing
+  opt.swapfile = false -- Don't create swap files
+  opt.undofile = true -- Persistent undo
+  opt.undolevels = 10000
+  opt.undodir = vim.fn.expand("~/.vim/undodir") -- Undo directory
+
+  opt.updatetime = 500
+  opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
+  opt.ttimeoutlen = 0 -- Key code timeout
+  opt.autoread = true -- Auto reload files changed outside vim
+  opt.autowrite = true -- Auto save
+
+  -- Behavior settings
+  opt.hidden = true -- Allow hidden buffers
+  opt.errorbells = false -- No error bells
+  opt.backspace = "indent,eol,start" -- Better backspace behavior
+  opt.autochdir = false -- Don't auto change directory
+
+  opt.path:append("**") -- include subdirectories in search
+  opt.selection = "exclusive" -- Selection behavior
+  opt.mouse = "a" -- Enable mouse support
+  opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
+  opt.modifiable = true -- Allow buffer modifications
+  opt.encoding = "UTF-8" -- Set encoding
+
+  -- Folding settings
+  opt.smoothscroll = false
+  opt.foldlevel = 99 -- Start with all folds open
   opt.foldmethod = "expr"
   opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
-  opt.foldtext = ""
+  opt.formatoptions = "jcroqlnt" -- tcqj
+  opt.nrformats = "unsigned"
   opt.grepformat = "%f:%l:%c:%m"
-  opt.grepprg = "rg --vimgrep"
-  opt.ignorecase = true
-  opt.incsearch = true
-  opt.laststatus = 3
-  opt.number = true
-  opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
-  opt.shiftround = true -- Round indent
-  opt.shiftwidth = 2
-  opt.shortmess:append({ W = true, I = true, c = true, C = true })
-  opt.showmode = true
-  opt.signcolumn = "yes"
-  opt.smartcase = true
-  opt.smartindent = true
-  opt.splitbelow = true
+  opt.grepprg = "rg --vimgrep --no-heading --smart-case"
+
+  -- Split behavior
+  opt.splitbelow = true -- Horizontal splits go below
+  opt.splitright = true -- Vertical splits go right
   opt.splitkeep = "screen"
-  opt.splitright = true
-  opt.tabstop = 2
-  opt.termguicolors = true
-  opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
-  opt.undofile = true
-  opt.updatetime = 250
-  opt.wrap = true
 
-  vim.o.breakindent = true
-  vim.o.scrolloff = 10
-  vim.o.confirm = true
-  vim.o.mouse = "a"
-  vim.o.autoread = true
-  vim.o.autowrite = true
-  vim.o.inccommand = "split"
-  vim.o.cursorline = true
+  -- Command-line completion
+  opt.wildmenu = true
+  opt.wildmode = "longest:full,full"
+  opt.wildignore:append({ "*.o", "*.obj", "*.pyc", "*.class", "*.jar" })
 
-  vim.o.list = true
+  -- Better diff options (indent-heuristic + inline:char are now defaults, linematch stays custom)
+  opt.diffopt:append("linematch:60,indent-heuristic,inline:char")
+
+  -- Performance improvements
+  opt.redrawtime = 10000
+  opt.maxmempattern = 20000
+
+  -- Create undo directory if it doesn't exist
+  local undodir = vim.fn.expand("~/.vim/undodir")
+  if vim.fn.isdirectory(undodir) == 0 then
+    vim.fn.mkdir(undodir, "p")
+  end
+
+  -- global floating window border (all vim.lsp, vim.diagnostic, etc.)
+  opt.winborder = "rounded"
+  -- completion popup menu border
+  opt.pumborder = "rounded"
+  opt.messagesopt = "hit-enter,history:500,progress:c"
+  opt.fillchars = {
+    foldopen = "",
+    foldclose = "",
+    fold = " ",
+    foldsep = " ",
+    diff = "╱",
+    eob = " ",
+  }
   opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+  opt.jumpoptions = "view"
+  opt.laststatus = 3 -- global statusline
+  opt.linebreak = true -- Wrap lines at convenient points
+  opt.list = false -- Show some invisible characters (tabs...)
+  opt.shiftround = true -- Round indent
+  opt.shiftwidth = 2 -- Size of an indent
+  opt.shortmess:append({ W = true, I = true, c = true, C = true })
 
-  vim.o.cmdheight = 1
-  require("vim._core.ui2").enable({
-    enable = true,
-    msg = {
-      targets = {
-        [""] = "msg",
-        empty = "cmd",
-        bufwrite = "msg",
-        confirm = "cmd",
-        emsg = "pager",
-        echo = "msg",
-        echomsg = "msg",
-        echoerr = "pager",
-        completion = "cmd",
-        list_cmd = "pager",
-        lua_error = "pager",
-        lua_print = "msg",
-        progress = "pager",
-        rpc_error = "pager",
-        quickfix = "msg",
-        search_cmd = "cmd",
-        search_count = "cmd",
-        shell_cmd = "pager",
-        shell_err = "pager",
-        shell_out = "pager",
-        shell_ret = "msg",
-        undo = "msg",
-        verbose = "pager",
-        wildlist = "cmd",
-        wmsg = "msg",
-        typed_cmd = "cmd",
-      },
-      cmd = {
-        height = 0.5,
-      },
-      dialog = {
-        height = 0.5,
-      },
-      msg = {
-        height = 0.3,
-        timeout = 5000,
-      },
-      pager = {
-        height = 0.5,
-      },
-    },
-  })
+  -- session options
+  opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 end
 
 if vim.g.neovide then
