@@ -55,6 +55,14 @@ return {
           canvas = { brightness = 0, saturation = 0 },
         },
 
+        overrides = function(c)
+          return {
+            LspInlayHint = { fg = c.theme.syn.comment, bg = "NONE", italic = true },
+            ["@string.documentation"] = { fg = c.theme.syn.comment, italic = true },
+            ["@comment"] = { fg = c.theme.syn.comment, italic = true },
+          }
+        end,
+
         -- uses lazy.nvim, if installed, to automatically enable needed plugins
         auto_plugins = true,
       })
