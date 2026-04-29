@@ -241,8 +241,6 @@ return {
         require("mini.icons").setup()
         require("mini.icons").mock_nvim_web_devicons()
 
-        require("mini.tabline").setup()
-
         ai_whichkey(ai_opts)
       end
     end,

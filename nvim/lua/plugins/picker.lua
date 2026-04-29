@@ -328,27 +328,6 @@ return {
         desc = "Delete All Buffers",
       },
       {
-        "<leader>bo",
-        function()
-          Snacks.bufdelete.other()
-        end,
-        desc = "Delete All Other Buffers",
-      },
-      {
-        "<leader>b[",
-        function()
-          Snacks.bufdelete.left()
-        end,
-        desc = "Delete Buffer to the Left",
-      },
-      {
-        "<leader>b]",
-        function()
-          Snacks.bufdelete.right()
-        end,
-        desc = "Delete Buffer to the Right",
-      },
-      {
         "<leader>si",
         function()
           Snacks.picker.icons()
