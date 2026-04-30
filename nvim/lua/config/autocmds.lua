@@ -191,6 +191,7 @@ else
       "neotest-output",
       "neotest-output-panel",
       "neotest-summary",
+      "gitsigns-blame",
     },
     callback = function(event)
       vim.bo[event.buf].buflisted = false
