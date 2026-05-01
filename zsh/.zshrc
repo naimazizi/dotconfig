@@ -3,6 +3,11 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
+# Force Emacs style inside neovim terminal
+if [[ -n $NVIM ]]; then
+	bindkey -e
+fi
+
 # fpath config - load early for plugin functions
 fpath+=${ZDOTDIR}/.zfunc
 autoload -Uz fzg
@@ -98,9 +103,6 @@ zinit from"gh-r" as"program" mv"direnv* -> direnv" \
 	direnv/direnv
 
 eval "$(direnv hook zsh)"
-
-# smart insert
-zinit light lgdevlop/zsh-smart-insert
 
 # SSH
 zinit light sunlei/zsh-ssh
