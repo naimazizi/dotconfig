@@ -181,17 +181,18 @@ else
   vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = {
-      "grug-far",
       "Outline",
-      "opencode",
-      "opencode_output",
-      "help",
-      "qf",
+      "OverseerOutput",
       "dap-float",
+      "gitsigns-blame",
+      "grug-far",
+      "help",
       "neotest-output",
       "neotest-output-panel",
       "neotest-summary",
-      "gitsigns-blame",
+      "opencode",
+      "opencode_output",
+      "qf",
     },
     callback = function(event)
       vim.bo[event.buf].buflisted = false
