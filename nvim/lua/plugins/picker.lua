@@ -266,7 +266,7 @@ return {
       telescope.setup({
         defaults = {
           path_display = { "smart" },
-          sorting_strategy = "ascending",
+          sorting_strategy = "descending",
           preview = {
             check_mime_type = false,
             timeout = 500,

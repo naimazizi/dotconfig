@@ -43,6 +43,7 @@ return {
   { -- directly open ipynb files as quarto documents
     -- and convert back behind the scenes
     "GCBallesteros/jupytext.nvim",
+    enabled = true,
     vscode = false,
     event = "BufRead *.ipynb",
     opts = {

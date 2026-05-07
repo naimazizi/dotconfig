@@ -97,23 +97,6 @@ else
     end,
   })
 
-  -- Quicker.nvim: configure behavior on quickfix open
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = "qf",
-    group = group,
-    callback = function(args)
-      local buf = args.buf
-      -- Prevent quickfix from changing the window layout
-      vim.bo[buf].buflisted = false
-      -- Ensure it doesn't create new windows/buffers when opening items
-      vim.keymap.set("n", "<CR>", function()
-        -- Use the quicker API to open the item in the current window
-        vim.api.nvim_win_close(vim.api.nvim_get_current_win(), false)
-        vim.cmd("execute 'cc ' . line('.')")
-      end, { buffer = buf, noremap = true, silent = true })
-    end,
-  })
-
   local ui2 = require("vim._core.ui2")
 
   vim.api.nvim_create_autocmd("FileType", {
