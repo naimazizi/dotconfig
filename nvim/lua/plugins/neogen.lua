@@ -12,12 +12,10 @@ return {
       desc = "Generate Annotations (Neogen)",
     },
   },
-  opts = function(_, opts)
-    if not vim.g.vscode then
-      opts.snippet_engine = "luasnip"
-    end
+  config = function()
     require("neogen").setup({
       enabled = true,
+      snippet_engine = "luasnip" and not vim.g.vscode or nil,
       languages = {
         lua = {
           template = {

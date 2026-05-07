@@ -73,7 +73,7 @@ return {
           [vim.diagnostic.severity.HINT] = { enabled = true, icon = " " },
         },
       },
-      animation = "false",
+      animation = false,
     },
   },
 }

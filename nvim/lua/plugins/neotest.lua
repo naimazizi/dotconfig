@@ -1,12 +1,7 @@
--- Disable neotest
----@diagnostic disable-next-line: unnecessary-if
-if true then
-  return {}
-end
-
 return {
   {
     "nvim-neotest/neotest",
+    enabled = false,
     dependencies = { "nvim-neotest/nvim-nio", "nvim-neotest/neotest-python", "mrcjkb/rustaceanvim" },
     opts = {
       adapters = {

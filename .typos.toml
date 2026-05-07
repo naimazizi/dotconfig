@@ -3,6 +3,7 @@
 [default.extend-words]
 enew = "enew"
 ba = "ba"
+ot = "ot"
 
 [files]
 extend-exclude = ["*.json"]

@@ -14,7 +14,6 @@ end
 return {
   {
     "mason-org/mason.nvim",
-    event = "VimEnter",
     cmd = { "Mason", "MasonUpdate", "MasonInstall", "MasonUninstall" },
     keys = {
       { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" },

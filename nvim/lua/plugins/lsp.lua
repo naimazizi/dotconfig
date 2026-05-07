@@ -1,53 +1,5 @@
--- Telescope LSP pickers for the given scope
----@param scope "definition" | "references" | "implementation" | "type_definition" | "document_symbol" | "workspace_symbol" | "incoming_calls" | "outgoing_calls" 
-local function telescope_lsp(scope)
-  return function()
-    local telescope = require("telescope.builtin")
-    local theme = require("telescope.themes").get_ivy
-
-    local lsp_mappings = {
-      definition = telescope.lsp_definitions,
-      references = telescope.lsp_references,
-      implementation = telescope.lsp_implementations,
-      type_definition = telescope.lsp_type_definitions,
-      document_symbol = telescope.lsp_document_symbols,
-      workspace_symbol = telescope.lsp_workspace_symbols,
-      incoming_calls = telescope.lsp_incoming_calls,
-      outgoing_calls = telescope.lsp_outgoing_calls,
-    }
-
-    local picker_fn = lsp_mappings[scope]
-    if picker_fn then
-      picker_fn(theme())
-    else
-      vim.notify("Telescope LSP picker not found for scope: " .. scope, vim.log.levels.WARN)
-    end
-  end
-end
-
 local function lsp_attach(bufnr)
-  local map = function(mode, lhs, rhs, desc)
-    vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
-  end
-
-  -- Telescope LSP pickers for navigation and refactoring
-  map("n", "gd", telescope_lsp("definition"), "Goto definition")
-  map("n", "gr", telescope_lsp("references"), "References")
-  map("n", "gi", telescope_lsp("implementation"), "Goto implementation")
-  map("n", "gy", telescope_lsp("type_definition"), "Goto type definition")
-
-  map("n", "<leader>cr", vim.lsp.buf.rename, "Rename")
-  map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
-
-  -- Workspace symbols / document symbols
-  map("n", "<leader>ss", telescope_lsp("document_symbol"), "Symbols (document)")
-  map("n", "<leader>sS", telescope_lsp("workspace_symbol"), "Symbols (workspace)")
-
-  -- LSP calls
-  map("n", "<leader>ci", telescope_lsp("incoming_calls"), "Incoming calls")
-  map("n", "<leader>co", telescope_lsp("outgoing_calls"), "Outgoing calls")
-
-  -- CodeLens (conditionally mapped; not all servers support it)
+  -- CodeLens
   local clients = vim.lsp.get_clients({ bufnr = bufnr })
   local supports_codelens = false
   for _, client in ipairs(clients) do
@@ -59,7 +11,6 @@ local function lsp_attach(bufnr)
 
   if supports_codelens then
     vim.lsp.codelens.enable()
-    map("n", "<leader>cc", vim.lsp.codelens.run, "CodeLens")
   end
 
   -- Inlay hints (conditionally enabled; not all servers support it)
@@ -149,23 +100,7 @@ return {
 
       -- Python
       vim.lsp.config("pyrefly", {})
-      vim.lsp.config("ruff", {
-        on_attach = function(client, bufnr)
-          if client.name ~= "ruff" then
-            return
-          end
-
-          vim.keymap.set("n", "<leader>co", function()
-            vim.lsp.buf.code_action({
-              context = {
-                only = { "source.organizeImports" },
-                diagnostics = {},
-              },
-              apply = true,
-            })
-          end, { buffer = bufnr, silent = true, desc = "Organize Imports" })
-        end,
-      })
+      vim.lsp.config("ruff", {})
 
       -- Rust
       vim.lsp.config("bacon_ls", {

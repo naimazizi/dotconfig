@@ -41,9 +41,9 @@ if not vim.g.vscode then
   map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
   map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 
-  -- LazyVim-ish LSP/diagnostics mappings
+  -- LSP/diagnostics mappings
   map("n", "<leader>cd", vim.diagnostic.open_float, { silent = true, desc = "Line diagnostics" })
-  map("n", "<leader>cl", "<cmd>LspInfo<cr>", { silent = true, desc = "Lsp Info" })
+  map("n", "<leader>cl", "<cmd>:checkhealth vim.lsp<cr>", { silent = true, desc = "Lsp Info" })
 
   -- Quickfix / location list (LazyVim-ish)
   map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
@@ -60,14 +60,6 @@ if not vim.g.vscode then
 
   -- Lazy
   vim.api.nvim_set_keymap("n", "<leader>l", "<cmd>:Lazy<cr>", { noremap = true, silent = true, desc = "Lazy" })
-
-  -- Lsp
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>cC",
-    "<cmd>:checkhealth vim.lsp<cr>",
-    { noremap = true, silent = true, desc = "LSP Info" }
-  )
 
   -- Search and replace in line
   map("n", "<leader>fs", ":%s/", { noremap = true, silent = true, desc = "Search and replace" })
@@ -324,7 +316,7 @@ if vim.g.vscode then
     vscode.call("editor.unfold")
   end, { noremap = true, desc = "Open Fold" })
 
-  map("n", "zo", function()
+  map("n", "zO", function()
     vscode.call("editor.unfoldRecursively")
   end, { noremap = true, desc = "Open Fold Recursively" })
 

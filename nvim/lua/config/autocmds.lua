@@ -35,17 +35,6 @@ if vim.g.vscode then
       vim.cmd("silent! mode")
     end,
   })
-
-  -- Aggressive redraw on cursor movement in visual mode
-  vim.api.nvim_create_autocmd("CursorMoved", {
-    group = redraw_fix,
-    callback = function()
-      local mode = vim.fn.mode()
-      if mode:match("[vV\22]") then
-        vim.cmd("silent! mode")
-      end
-    end,
-  })
 else
   local group = vim.api.nvim_create_augroup("nvim_minimax", { clear = true })
 

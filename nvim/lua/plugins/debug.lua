@@ -145,7 +145,7 @@ return {
   {
     "mfussenegger/nvim-dap",
     vscode = false,
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = true,
     keys = {
       {
         "<leader>db",
@@ -253,7 +253,6 @@ return {
       {
         "mfussenegger/nvim-dap-python",
         ft = "python",
-        event = { "BufReadPre", "BufNewFile" },
         config = function()
           require("dap-python").setup("debugpy-adapter")
         end,
@@ -288,7 +287,7 @@ return {
   {
     "igorlfs/nvim-dap-view",
     vscode = false,
-    event = { "BufReadPre" },
+    lazy = true,
     ---@module 'dap-view'
     ---@type dapview.Config
     config = function()

@@ -61,16 +61,8 @@ if not vim.g.vscode then
   opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
   opt.winminwidth = 5 -- Minimum window width
 
-  -- File handling
-  opt.backup = false -- Don't create backup files
-  opt.writebackup = false -- Don't create backup before writing
-  opt.swapfile = false -- Don't create swap files
-  opt.undofile = true -- Persistent undo
-  opt.undolevels = 10000
-  opt.undodir = vim.fn.expand("~/.vim/undodir") -- Undo directory
-
   opt.updatetime = 500
-  opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
+  opt.timeoutlen = 300 -- Lower than default (1000) to quickly trigger which-key
   opt.ttimeoutlen = 0 -- Key code timeout
   opt.autoread = true -- Auto reload files changed outside vim
   opt.autowrite = true -- Auto save

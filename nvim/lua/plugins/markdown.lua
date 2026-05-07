@@ -1,22 +1,16 @@
 return {
   {
-    "OXY2DEV/markview.nvim",
-    lazy = false,
-    dependencies = { "saghen/blink.cmp" },
-    config = function()
-      local presets = require("markview.presets").block_quotes
-
-      require("markview").setup({
-        markdown = {
-          block_quotes = presets.obsidian,
-          enable = true,
-        },
-        preview = {
-          modes = { "n", "no", "c", "i" },
-          hybrid_modes = { "i" },
-          linewise_hybrid_mode = true,
-        },
-      })
-    end,
+    "MeanderingProgrammer/render-markdown.nvim",
+    vscode = false,
+    event = "VeryLazy",
+    ft = vim.g.md_ft,
+    opts = {
+      render_modes = true, -- enable all modes
+      file_types = vim.g.md_ft,
+      code = {
+        style = "full",
+        width = "full",
+      },
+    },
   },
 }
