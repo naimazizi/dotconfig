@@ -6,7 +6,7 @@ return {
     dependencies = { "MunifTanjim/nui.nvim" },
     cmd = "CodeDiff",
     keys = {
-      { "<leader>gD", "<cmd>CodeDiff<cr>", desc = "Open VSCode Diff View" },
+      { "<leader>gd", "<cmd>CodeDiff<cr>", desc = "Open VSCode Diff View" },
     },
     config = function()
       require("codediff").setup({

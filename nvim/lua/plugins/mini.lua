@@ -1,60 +1,5 @@
-local function ai_whichkey(opts)
-  local objects = {
-    { " ", desc = "whitespace" },
-    { '"', desc = '" string' },
-    { "'", desc = "' string" },
-    { "(", desc = "() block" },
-    { ")", desc = "() block with ws" },
-    { "<", desc = "<> block" },
-    { ">", desc = "<> block with ws" },
-    { "?", desc = "user prompt" },
-    { "U", desc = "use/call without dot" },
-    { "[", desc = "[] block" },
-    { "]", desc = "[] block with ws" },
-    { "_", desc = "underscore" },
-    { "`", desc = "` string" },
-    { "a", desc = "argument" },
-    { "b", desc = ")]} block" },
-    { "c", desc = "class" },
-    { "d", desc = "digit(s)" },
-    { "e", desc = "CamelCase / snake_case" },
-    { "f", desc = "function" },
-    { "i", desc = "indent" },
-    { "o", desc = "block, conditional, loop" },
-    { "q", desc = "quote `\"'" },
-    { "t", desc = "tag" },
-    { "u", desc = "use/call" },
-    { "{", desc = "{} block" },
-    { "}", desc = "{} with ws" },
-  }
-
-  ---@type table
-  local ret = { mode = { "o", "x" } }
-  ---@type table<string, string>
-  local mappings = vim.tbl_extend("force", {}, {
-    around = "a",
-    inside = "i",
-    around_next = "an",
-    inside_next = "in",
-    around_last = "al",
-    inside_last = "il",
-  }, opts.mappings or {})
-  mappings.goto_left = nil
-  mappings.goto_right = nil
-
-  for name, prefix in pairs(mappings) do
-    name = name:gsub("^around_", ""):gsub("^inside_", "")
-    ret[#ret + 1] = { prefix, group = name }
-    for _, obj in ipairs(objects) do
-      local desc = obj.desc
-      if prefix:sub(1, 1) == "i" then
-        desc = desc:gsub(" with ws", "")
-      end
-      ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
-    end
-  end
-  require("which-key").add(ret, { notify = false })
-end
+local pick_utils = require("utils.pick")
+local clue_utils = require("utils.clue")
 
 return {
   {
@@ -62,6 +7,7 @@ return {
     version = false,
     vscode = true,
     lazy = false,
+
     keys = {
       {
         "[T",
@@ -76,6 +22,140 @@ return {
           require("mini.bracketed").comment("forward")
         end,
         desc = "Next comment",
+      },
+      -- mini.pick keymaps
+      {
+        "<leader><leader>",
+        function()
+          require("mini.pick").builtin.files()
+        end,
+        desc = "Find files",
+      },
+      {
+        "<leader>/",
+        function()
+          require("mini.pick").builtin.grep_live()
+        end,
+        desc = "Live Grep",
+      },
+      {
+        "<leader>sw",
+        function()
+          require("mini.pick").builtin.grep({ pattern = vim.fn.expand("<cword>") })
+        end,
+        desc = "Search current word",
+      },
+      {
+        "<leader>ff",
+        function()
+          require("mini.pick").builtin.files()
+        end,
+        desc = "Find files",
+      },
+      {
+        "<leader>fF",
+        function()
+          require("mini.pick").builtin.files(nil, { source = { cwd = vim.fn.expand("%:p:h") } })
+        end,
+        desc = "Find files (cwd)",
+      },
+      {
+        "<leader>fg",
+        function()
+          require("mini.pick").builtin.grep_live()
+        end,
+        desc = "Live Grep",
+      },
+      {
+        "<leader>sR",
+        function()
+          require("mini.pick").builtin.resume()
+        end,
+        desc = "Resume",
+      },
+      {
+        "<leader>sk",
+        function()
+          require("mini.extra").pickers.keymaps()
+        end,
+        desc = "Keymaps",
+      },
+      {
+        "<leader>sm",
+        function()
+          require("mini.extra").pickers.marks()
+        end,
+        desc = "Marks",
+      },
+      {
+        "<leader>st",
+        function()
+          require("mini.pick").builtin.grep({ pattern = "TODO:|HACK:|PERF:|NOTE:|FIXME:" })
+        end,
+        desc = "TODO",
+      },
+      {
+        "<leader>sd",
+        function()
+          require("mini.extra").pickers.diagnostic({ scope = "current" })
+        end,
+        desc = "Diagnostics",
+      },
+      {
+        "<leader>sD",
+        function()
+          require("mini.extra").pickers.diagnostic({ scope = "all" })
+        end,
+        desc = "Diagnostics Workspace",
+      },
+      {
+        "<leader>sq",
+        function()
+          require("mini.extra").pickers.list({ scope = "quickfix" })
+        end,
+        desc = "Quickfix",
+      },
+      {
+        "<leader>fr",
+        function()
+          require("mini.extra").pickers.oldfiles()
+        end,
+        desc = "Recent",
+      },
+      {
+        "<leader>fh",
+        function()
+          require("mini.pick").builtin.help()
+        end,
+        desc = "Help",
+      },
+      {
+        "<leader>s/",
+        function()
+          require("mini.extra").pickers.history({ scope = ":" })
+        end,
+        desc = "Command History",
+      },
+      {
+        "<leader>gc",
+        function()
+          require("mini.extra").pickers.git_commits({ path = vim.fn.expand("%") })
+        end,
+        desc = "Buffer Commits",
+      },
+      {
+        "<leader>gC",
+        function()
+          require("mini.extra").pickers.git_commits()
+        end,
+        desc = "Commits",
+      },
+      {
+        "<leader>bb",
+        function()
+          require("mini.pick").builtin.buffers()
+        end,
+        desc = "List buffers",
       },
     },
     config = function()
@@ -238,10 +318,97 @@ return {
       ai.setup(ai_opts)
 
       if not vim.g.vscode then
+        local pick_total_width = 0.8
+        local pick_split = 0.6
+
+        local pick = require("mini.pick")
+
+        pick.setup({
+          source = {
+            show = pick_utils.short_show,
+          },
+          mappings = {
+            send_to_qflist = {
+              char = "<C-q>",
+              func = pick_utils.send_to_qflist,
+            },
+            caret_left = "<Left>",
+            caret_right = "<Right>",
+
+            choose = "<CR>",
+            choose_in_split = "<C-s>",
+            choose_in_tabpage = "<C-t>",
+            choose_in_vsplit = "<C-v>",
+            choose_marked = "<C-CR>",
+
+            delete_char = "<BS>",
+            delete_char_right = "<S-BS>",
+            delete_left = "<A-BS>",
+            delete_word = "<C-w>",
+
+            mark = "<C-x>",
+            mark_all = "<C-a>",
+
+            move_start = "<C-g>",
+            move_down = "<C-n>",
+            move_up = "<C-p>",
+
+            paste = "<C-r>",
+            sys_paste = {
+              char = "<A-p>",
+              func = function()
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-r>+", true, true, true), "n", true)
+              end,
+            },
+
+            refine = "<C-Space>",
+            refine_marked = "<M-Space>",
+
+            scroll_up = "<C-u>",
+            scroll_down = "<C-d>",
+            scroll_left = "<C-h>",
+            scroll_right = "<C-l>",
+
+            stop = "<Esc>",
+
+            toggle_info = "<S-Tab>",
+            toggle_preview = "<Tab>",
+          },
+          options = {
+            use_cache = true,
+          },
+          window = {
+            config = function()
+              local height = math.floor(0.4 * vim.o.lines)
+              local total_w = math.floor(pick_total_width * vim.o.columns)
+              local results_w = math.floor(pick_split * total_w)
+              return {
+                anchor = "SE",
+                col = vim.o.columns,
+                height = height,
+                row = vim.o.lines,
+                width = results_w,
+                border = "single",
+              }
+            end,
+          },
+        })
+
+        require("mini.extra").setup()
+
+        pick_utils.setup_grep_trim(pick)
+        pick_utils.setup_preview(pick, pick_total_width, pick_split)
+
+        vim.api.nvim_create_autocmd("LspAttach", {
+          callback = function(args)
+            pick_utils.lsp_keymaps(args.buf)
+          end,
+        })
+
         require("mini.icons").setup()
         require("mini.icons").mock_nvim_web_devicons()
 
-        ai_whichkey(ai_opts)
+        clue_utils.ai_whichkey()
       end
     end,
   },
