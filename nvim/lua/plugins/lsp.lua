@@ -99,7 +99,7 @@ return {
       vim.lsp.config("marksman", {})
 
       -- Python
-      vim.lsp.config("pyrefly", {})
+      vim.lsp.config("ty", {})
       vim.lsp.config("ruff", {})
 
       -- Rust
@@ -192,7 +192,7 @@ return {
         "jsonls",
         "emmylua_ls",
         "marksman",
-        "pyrefly",
+        "ty",
         "ruff",
         "bacon_ls",
         "typos_lsp",

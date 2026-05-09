@@ -46,7 +46,7 @@ return {
         "jsonls",
         "marksman",
         "oxfmt",
-        "pyrefly",
+        "ty",
         "ruff",
         "rumdl",
         "rust-analyzer",
