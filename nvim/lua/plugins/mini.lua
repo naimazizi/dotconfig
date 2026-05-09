@@ -397,7 +397,7 @@ return {
         require("mini.extra").setup()
 
         pick_utils.setup_grep_trim(pick)
-        pick_utils.setup_preview(pick, pick_total_width, pick_split)
+        pick_utils.setup_preview(pick_total_width, pick_split)
 
         vim.api.nvim_create_autocmd("LspAttach", {
           callback = function(args)

@@ -275,7 +275,7 @@ function M.setup_grep_trim(pick)
 end
 
 -- Setup preview window that appears alongside mini.pick
-function M.setup_preview(pick, pick_total_width, pick_split)
+function M.setup_preview(pick_total_width, pick_split)
   local preview_win = nil
   local preview_buf = nil
   local preview_timer = nil
