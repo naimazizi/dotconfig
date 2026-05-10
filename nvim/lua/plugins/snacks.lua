@@ -1,3 +1,5 @@
+local layout = require("utils.pick").layout
+
 return {
   {
     "folke/snacks.nvim",
@@ -6,9 +8,145 @@ return {
     lazy = false,
     keys = {
       {
+        "<leader><leader>",
+        function()
+          Snacks.picker.files({ layout = layout })
+        end,
+        desc = "Find files",
+      },
+      {
+        "<leader>/",
+        function()
+          Snacks.picker.grep({
+            layout = layout,
+          })
+        end,
+        desc = "Live Grep",
+      },
+      {
+        "<leader>sw",
+        function()
+          Snacks.picker.grep_word({ layout = layout })
+        end,
+        desc = "Search current word",
+        mode = { "n", "x" },
+      },
+      {
+        "<leader>ff",
+        function()
+          Snacks.picker.files({ layout = layout })
+        end,
+        desc = "Find files",
+      },
+      {
+        "<leader>fF",
+        function()
+          Snacks.picker.files({ cwd = vim.fn.expand("%:p:h"), layout = layout })
+        end,
+        desc = "Find files (cwd)",
+      },
+      {
+        "<leader>fg",
+        function()
+          Snacks.picker.grep({ layout = layout })
+        end,
+        desc = "Live Grep",
+      },
+      {
+        "<leader>sR",
+        function()
+          Snacks.picker.resume()
+        end,
+        desc = "Resume",
+      },
+      {
+        "<leader>sk",
+        function()
+          Snacks.picker.keymaps({ layout = layout })
+        end,
+        desc = "Keymaps",
+      },
+      {
+        "<leader>sm",
+        function()
+          Snacks.picker.marks({ layout = layout })
+        end,
+        desc = "Marks",
+      },
+      {
+        "<leader>sd",
+        function()
+          Snacks.picker.diagnostics_buffer({ layout = layout })
+        end,
+        desc = "Diagnostics",
+      },
+      {
+        "<leader>sD",
+        function()
+          Snacks.picker.diagnostics({ layout = layout })
+        end,
+        desc = "Diagnostics Workspace",
+      },
+      {
+        "<leader>sq",
+        function()
+          Snacks.picker.qflist({ layout = layout })
+        end,
+        desc = "Quickfix",
+      },
+      {
+        "<leader>sl",
+        function()
+          Snacks.picker.loclist({ layout = layout })
+        end,
+        desc = "Loclist",
+      },
+      {
+        "<leader>fr",
+        function()
+          Snacks.picker.recent({ layout = layout })
+        end,
+        desc = "Recent",
+      },
+      {
+        "<leader>fh",
+        function()
+          Snacks.picker.help({ layout = layout })
+        end,
+        desc = "Help",
+      },
+      {
+        "<leader>s/",
+        function()
+          Snacks.picker.command_history({ layout = layout })
+        end,
+        desc = "Command History",
+      },
+      {
+        "<leader>gc",
+        function()
+          Snacks.picker.git_log_file({ layout = layout })
+        end,
+        desc = "Buffer Commits",
+      },
+      {
+        "<leader>gC",
+        function()
+          Snacks.picker.git_log({ layout = layout })
+        end,
+        desc = "Commits",
+      },
+      {
+        "<leader>bb",
+        function()
+          Snacks.picker.buffers({ layout = layout })
+        end,
+        desc = "List buffers",
+      },
+      {
         "<leader>si",
         function()
-          Snacks.picker.icons()
+          Snacks.picker.icons({ layout = layout })
         end,
         desc = "Icon picker",
       },
@@ -19,6 +157,57 @@ return {
         end,
         desc = "File Explorer",
       },
+      {
+        "<leader>su",
+        function()
+          Snacks.picker.undo()
+        end,
+        desc = "Undotree",
+      },
+      { "<C-/>", "<cmd>lua Snacks.terminal.toggle()<CR>", desc = "Toggle terminal" },
+      { "<leader>ft", "<cmd>lua Snacks.terminal()<CR>", desc = "Toggle terminal" },
+      {
+        "<leader>gg",
+        function()
+          Snacks.lazygit()
+        end,
+        desc = "Lazygit",
+      },
+      {
+        "<leader>gB",
+        function()
+          Snacks.gitbrowse()
+        end,
+        desc = "Browse",
+      },
+      {
+        "<leader>gi",
+        function()
+          Snacks.picker.gh_issue()
+        end,
+        desc = "GitHub Issues (open)",
+      },
+      {
+        "<leader>gI",
+        function()
+          Snacks.picker.gh_issue({ state = "all" })
+        end,
+        desc = "GitHub Issues (all)",
+      },
+      {
+        "<leader>gp",
+        function()
+          Snacks.picker.gh_pr()
+        end,
+        desc = "GitHub Pull Requests (open)",
+      },
+      {
+        "<leader>gP",
+        function()
+          Snacks.picker.gh_pr({ state = "all" })
+        end,
+        desc = "GitHub Pull Requests (all)",
+      },
     },
     ---@type snacks.Config
     opts = {
@@ -28,6 +217,30 @@ return {
 
       picker = {
         ui_select = true,
+        sources = {
+          lsp_definitions = { jump = { unique = true } },
+          lsp_type_definitions = { jump = { unique = true } },
+          lsp_implementations = { jump = { unique = true } },
+        },
+        matcher = {
+          fuzzy = true, -- use fuzzy matching
+          smartcase = true, -- use smartcase
+          ignorecase = true, -- use ignorecase
+          sort_empty = true, -- sort results when the search string is empty
+          filename_bonus = true, -- give bonus for matching file names (last part of the path)
+          file_pos = true, -- support patterns like `file:line:col` and `file:line`
+          cwd_bonus = true, -- give bonus for matching files in the cwd
+          frecency = true, -- frecency bonus
+          history_bonus = true, -- give more weight to chronological order
+        },
+        formatters = {
+          file = {
+            filename_first = true, -- display filename before the file path
+            ---@type "left"|"center"|"right"
+            truncate = "center",
+            min_width = 40, -- minimum length of the truncated path
+          },
+        },
       },
 
       quickfile = { enabled = true },
@@ -114,7 +327,7 @@ return {
               icon = " ",
               key = "f",
               desc = "Find File",
-              action = ":lua MiniPick.builtin.files()",
+              action = ":lua Snacks.picker.files()",
             },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
@@ -147,6 +360,13 @@ return {
     },
     config = function(_, opts)
       require("snacks").setup(opts)
+
+      local pick_utils = require("utils.pick")
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          pick_utils.lsp_keymaps(args.buf)
+        end,
+      })
 
       vim.api.nvim_create_autocmd("User", {
         desc = "Snacks toggle keymap",
@@ -186,5 +406,41 @@ return {
         end,
       })
     end,
+  },
+  {
+    "folke/todo-comments.nvim",
+    event = "VeryLazy",
+    vscode = false,
+    opts = {},
+    keys = {
+      {
+        "<leader>st",
+        function()
+          Snacks.picker.todo_comments()
+        end,
+        desc = "Todo",
+      },
+      {
+        "<leader>sT",
+        function()
+          Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME", "NOTE", "HACK" } })
+        end,
+        desc = "Todo/Fix/Fixme/Note/Hack",
+      },
+      {
+        "]t",
+        function()
+          require("todo-comments").jump_next()
+        end,
+        desc = "Next todo comment",
+      },
+      {
+        "[t",
+        function()
+          require("todo-comments").jump_prev()
+        end,
+        desc = "Next todo comment",
+      },
+    },
   },
 }

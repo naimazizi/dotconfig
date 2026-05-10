@@ -1,53 +1,5 @@
 return {
-  {
-    "folke/snacks.nvim",
-    keys = {
-      { "<C-/>", "<cmd>lua Snacks.terminal.toggle()<CR>", desc = "Toggle terminal" },
-      { "<leader>ft", "<cmd>lua Snacks.terminal()<CR>", desc = "Toggle terminal" },
-      {
-        "<leader>gg",
-        function()
-          Snacks.lazygit()
-        end,
-        desc = "Lazygit",
-      },
-      {
-        "<leader>gB",
-        function()
-          Snacks.gitbrowse()
-        end,
-        desc = "Browse",
-      },
-      {
-        "<leader>gi",
-        function()
-          Snacks.picker.gh_issue()
-        end,
-        desc = "GitHub Issues (open)",
-      },
-      {
-        "<leader>gI",
-        function()
-          Snacks.picker.gh_issue({ state = "all" })
-        end,
-        desc = "GitHub Issues (all)",
-      },
-      {
-        "<leader>gp",
-        function()
-          Snacks.picker.gh_pr()
-        end,
-        desc = "GitHub Pull Requests (open)",
-      },
-      {
-        "<leader>gP",
-        function()
-          Snacks.picker.gh_pr({ state = "all" })
-        end,
-        desc = "GitHub Pull Requests (all)",
-      },
-    },
-  },
+  { "nvim-tree/nvim-web-devicons", vscode = false, opts = {} },
   {
     "petertriho/nvim-scrollbar",
     event = "BufRead",
@@ -137,15 +89,5 @@ return {
         haunt_picker.show()
       end, { desc = "Show Picker" })
     end,
-  },
-  {
-    "XXiaoA/atone.nvim",
-    vscode = false,
-    event = "VeryLazy",
-    cmd = "Atone",
-    opts = {},
-    keys = {
-      { "<leader>uu", "<cmd>Atone<cr>", desc = "Undotree" },
-    },
   },
 }

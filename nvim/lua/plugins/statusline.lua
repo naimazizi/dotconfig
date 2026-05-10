@@ -3,7 +3,7 @@ return {
     "nvim-lualine/lualine.nvim",
     vscode = false,
     lazy = false,
-    dependencies = { "SmiteshP/nvim-navic" },
+    dependencies = { "SmiteshP/nvim-navic", "nvim-tree/nvim-web-devicons" },
     config = function()
       require("lualine").setup({
         options = {
@@ -63,6 +63,7 @@ return {
   {
     "b0o/incline.nvim",
     event = "VeryLazy",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("incline").setup({
         window = {
@@ -78,14 +79,10 @@ return {
           },
         },
         render = function(props)
-          local function sep()
-            return {
-              "| ",
-            }
-          end
+          local helpers = require("incline.helpers")
+          local devicons = require("nvim-web-devicons")
 
           local result = {}
-          table.insert(result, sep())
 
           local fullpath = vim.api.nvim_buf_get_name(props.buf)
           local reldir
@@ -98,11 +95,23 @@ return {
             end
           end
           local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-          local ft_icon, ft_color = require("mini.icons").get("file", filename)
+          ---@diagnostic disable-next-line: call-non-callable
+          local ft_icon, ft_color = devicons.get_icon_color(filename)
           local modified = vim.bo[props.buf].modified
+
+          table.insert(result, ft_icon and {
+            " ",
+            ft_icon,
+            " ",
+            guifg = helpers.contrast_color(ft_color),
+            guibg = ft_color,
+          })
 
           -- Relative path
           if reldir ~= "" then
+            table.insert(result, {
+              " ",
+            })
             table.insert(result, {
               reldir == "" and reldir or (reldir .. "/"),
               gui = "italic",
@@ -111,15 +120,8 @@ return {
 
           local buffer = {
             { filename, gui = modified and "bold,italic" or "bold" },
-            " ",
-            ft_icon and {
-              ft_icon .. " ",
-              guibg = ft_color,
-              guifg = ft_color,
-            } or " ",
           }
           table.insert(result, buffer)
-          table.insert(result, sep())
 
           local function get_gitsigns_diff()
             local dict = vim.b[props.buf].gitsigns_status_dict
