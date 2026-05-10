@@ -10,7 +10,7 @@ return {
       {
         "<leader><leader>",
         function()
-          Snacks.picker.files({ layout = layout })
+          Snacks.picker.smart({ layout = layout })
         end,
         desc = "Find files",
       },
@@ -107,6 +107,20 @@ return {
           Snacks.picker.recent({ layout = layout })
         end,
         desc = "Recent",
+      },
+      {
+        "<leader>fz",
+        function()
+          Snacks.picker.zoxide({ layout = layout })
+        end,
+        desc = "Zoxide",
+      },
+      {
+        "<leader>fp",
+        function()
+          Snacks.picker.projects({ layout = layout })
+        end,
+        desc = "Project",
       },
       {
         "<leader>fh",
@@ -208,6 +222,13 @@ return {
         end,
         desc = "GitHub Pull Requests (all)",
       },
+      {
+        "<leader>uc",
+        function()
+          Snacks.picker.colorschemes({ state = "all" })
+        end,
+        desc = "Colorschemes",
+      },
     },
     ---@type snacks.Config
     opts = {
@@ -302,6 +323,10 @@ return {
         },
       },
 
+      words = {
+        enabled = true,
+      },
+
       toggle = { enabled = true },
 
       dashboard = {
@@ -365,6 +390,17 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           pick_utils.lsp_keymaps(args.buf)
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(ev)
+          vim.keymap.set("n", "[[", function()
+            Snacks.words.jump(-1, false)
+          end, { buffer = ev.buf, desc = "Prev words" })
+          vim.keymap.set("n", "]]", function()
+            Snacks.words.jump(1, false)
+          end, { buffer = ev.buf, desc = "Next words" })
         end,
       })
 
