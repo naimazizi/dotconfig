@@ -19,9 +19,13 @@ return {
           lualine_c = {
             "%=",
           },
-          lualine_x = { "overseer", "quickfix" },
+          lualine_x = {
+            "overseer",
+            "quickfix",
+          },
           lualine_y = {
-            "filetype",
+            { require("recorder").displaySlots },
+            { require("recorder").recordingStatus },
             "fileformat",
             "encoding",
             "lsp_status",
@@ -176,15 +180,6 @@ return {
           return result
         end,
       })
-    end,
-  },
-  {
-    "rachartier/tiny-cmdline.nvim",
-    vscode = false,
-    lazy = false,
-    config = function()
-      vim.o.cmdheight = 0
-      require("tiny-cmdline").setup({ on_reposition = require("tiny-cmdline").adapters.blink })
     end,
   },
 }

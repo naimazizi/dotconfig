@@ -75,6 +75,24 @@ return {
         haunt.clear_all()
       end, { desc = "Delete all bookmarks" })
 
+      -- quickfix
+      map("n", prefix .. "q", function()
+        haunt.to_quickfix()
+      end, { desc = "Send Hauntings to QF Lix (buffer)" })
+
+      map("n", prefix .. "Q", function()
+        haunt.to_quickfix({ current_buffer = true })
+      end, { desc = "Send Hauntings to QF Lix (all)" })
+
+      -- yank
+      map("n", prefix .. "y", function()
+        haunt.yank_locations({ current_buffer = true })
+      end, { desc = "Send Hauntings to Clipboard (buffer)" })
+
+      map("n", prefix .. "Y", function()
+        haunt.yank_locations()
+      end, { desc = "Send Hauntings to Clipboard (all)" })
+
       -- move
       map("n", prefix .. "p", function()
         haunt.prev()
@@ -85,8 +103,8 @@ return {
       end, { desc = "Next bookmark" })
 
       -- picker
-      map("n", prefix .. "l", function()
-        haunt_picker.show()
+      map("n", prefix .. "h", function()
+        haunt_picker.show({ layout = require("utils.pick").layout })
       end, { desc = "Show Picker" })
     end,
   },

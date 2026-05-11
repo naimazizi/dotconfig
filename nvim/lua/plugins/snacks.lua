@@ -174,7 +174,7 @@ return {
       {
         "<leader>su",
         function()
-          Snacks.picker.undo()
+          Snacks.picker.undo({ layout = layout })
         end,
         desc = "Undotree",
       },
@@ -197,37 +197,44 @@ return {
       {
         "<leader>gi",
         function()
-          Snacks.picker.gh_issue()
+          Snacks.picker.gh_issue({ layout = layout })
         end,
         desc = "GitHub Issues (open)",
       },
       {
         "<leader>gI",
         function()
-          Snacks.picker.gh_issue({ state = "all" })
+          Snacks.picker.gh_issue({ state = "all", layout = layout })
         end,
         desc = "GitHub Issues (all)",
       },
       {
         "<leader>gp",
         function()
-          Snacks.picker.gh_pr()
+          Snacks.picker.gh_pr({ layout = layout })
         end,
         desc = "GitHub Pull Requests (open)",
       },
       {
         "<leader>gP",
         function()
-          Snacks.picker.gh_pr({ state = "all" })
+          Snacks.picker.gh_pr({ state = "all", layout = layout })
         end,
         desc = "GitHub Pull Requests (all)",
       },
       {
         "<leader>uc",
         function()
-          Snacks.picker.colorschemes({ state = "all" })
+          Snacks.picker.colorschemes({ state = "all", layout = layout })
         end,
         desc = "Colorschemes",
+      },
+      {
+        "<leader>n",
+        function()
+          Snacks.picker.notifications({ state = "all", layout = layout })
+        end,
+        desc = "Notifications",
       },
     },
     ---@type snacks.Config
@@ -283,6 +290,12 @@ return {
         trash = true,
       },
 
+      notifier = {
+        enabled = true,
+        style = "fancy",
+        top_down = false,
+      },
+
       indent = {
         indent = {
           priority = 1,
@@ -321,10 +334,6 @@ return {
             arrow = ">",
           },
         },
-      },
-
-      words = {
-        enabled = true,
       },
 
       toggle = { enabled = true },
@@ -393,17 +402,6 @@ return {
         end,
       })
 
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(ev)
-          vim.keymap.set("n", "[[", function()
-            Snacks.words.jump(-1, false)
-          end, { buffer = ev.buf, desc = "Prev words" })
-          vim.keymap.set("n", "]]", function()
-            Snacks.words.jump(1, false)
-          end, { buffer = ev.buf, desc = "Next words" })
-        end,
-      })
-
       vim.api.nvim_create_autocmd("User", {
         desc = "Snacks toggle keymap",
         pattern = "VeryLazy",
@@ -439,6 +437,53 @@ return {
           Snacks.toggle.inlay_hints():map("<leader>uh")
 
           Snacks.toggle.diagnostics():map("<leader>ud")
+
+          ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+          local progress = vim.defaulttable()
+          vim.api.nvim_create_autocmd("LspProgress", {
+            ---@diagnostic disable-next-line: assign-type-mismatch
+            ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+            callback = function(ev)
+              local client = vim.lsp.get_client_by_id(ev.data.client_id)
+              local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+              if not client or type(value) ~= "table" then
+                return
+              end
+              local p = progress[client.id]
+
+              for i = 1, #p + 1 do
+                ---@diagnostic disable-next-line: need-check-nil
+                if i == #p + 1 or p[i].token == ev.data.params.token then
+                  p[i] = {
+                    token = ev.data.params.token,
+                    msg = ("[%3d%%] %s%s"):format(
+                      value.kind == "end" and 100 or value.percentage or 100,
+                      value.title or "",
+                      value.message and (" **%s**"):format(value.message) or ""
+                    ),
+                    done = value.kind == "end",
+                  }
+                  break
+                end
+              end
+
+              local msg = {} ---@type string[]
+              progress[client.id] = vim.tbl_filter(function(v)
+                return table.insert(msg, v.msg) or not v.done
+              end, p)
+
+              local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+              ---@diagnostic disable-next-line: param-type-mismatch
+              vim.notify(table.concat(msg, "\n"), "info", {
+                id = "lsp_progress",
+                title = client.name,
+                opts = function(notif)
+                  notif.icon = #progress[client.id] == 0 and " "
+                    or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+                end,
+              })
+            end,
+          })
         end,
       })
     end,

@@ -93,7 +93,11 @@ return {
       vim.lsp.config("marksman", {})
 
       -- Python
-      vim.lsp.config("ty", {})
+      vim.lsp.config("ty", { settings = {
+        ty = {
+          diagnosticMode = "workspace",
+        },
+      } })
       vim.lsp.config("ruff", {})
 
       -- Rust
