@@ -13,9 +13,14 @@ return {
     },
   },
   config = function()
+    local engine = "luasnip"
+    if vim.g.vscode then
+      engine = "nvim"
+    end
+
     require("neogen").setup({
       enabled = true,
-      snippet_engine = "luasnip" and not vim.g.vscode or nil,
+      snippet_engine = engine,
       languages = {
         lua = {
           template = {
