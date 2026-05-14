@@ -128,6 +128,7 @@ return {
         },
         per_filetype = {
           ["dap-repl"] = { "dap" },
+          ["pi-chat-prompt"] = { "pi" },
         },
         providers = {
           references = {
@@ -144,6 +145,7 @@ return {
             name = "dap",
             module = "blink-cmp-dap",
           },
+          pi = { name = "Pi", module = "pi.completion.blink" },
         },
       },
 

@@ -93,11 +93,7 @@ return {
       vim.lsp.config("marksman", {})
 
       -- Python
-      vim.lsp.config("ty", { settings = {
-        ty = {
-          diagnosticMode = "workspace",
-        },
-      } })
+      vim.lsp.config("pyrefly", {})
       vim.lsp.config("ruff", {})
 
       -- Rust
@@ -190,7 +186,7 @@ return {
         "jsonls",
         "emmylua_ls",
         "marksman",
-        "ty",
+        "pyrefly",
         "ruff",
         "bacon_ls",
         "typos_lsp",
