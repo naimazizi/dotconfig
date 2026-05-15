@@ -7,4 +7,18 @@
     "envsitter-guard@latest",
     "@tarquinen/opencode-dcp@latest",
   ],
+  "provider": {
+    "litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM",
+      "options": {
+        "baseURL": "https://litellm.tvlk.cloud/",
+      },
+      "models": {
+        "claude-opus-4.7": {
+          "name": "claude-opus-4.7",
+        },
+      },
+    },
+  },
 }
