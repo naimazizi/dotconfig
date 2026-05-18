@@ -1,13 +1,13 @@
 return {
   {
     "sudo-tee/opencode.nvim",
-    enabled = false,
+    enabled = true,
     event = "VeryLazy",
     vscode = false,
     cmd = "Opencode",
     config = function()
       require("opencode").setup({
-        preferred_picker = "select",
+        preferred_picker = "snacks",
         preferred_completion = "blink",
         default_global_keymaps = true,
         default_mode = "build",
@@ -27,6 +27,7 @@ return {
   },
   {
     "alex35mil/pi.nvim",
+    enabled = false,
     event = "VeryLazy",
     vscode = false,
     keys = {

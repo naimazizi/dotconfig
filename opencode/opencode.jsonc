@@ -2,10 +2,10 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
   "plugin": [
-    "superpowers@git+https://github.com/obra/superpowers.git",
     "cc-safety-net",
     "envsitter-guard@latest",
     "@tarquinen/opencode-dcp@latest",
+    "@plannotator/opencode@latest",
   ],
   "provider": {
     "litellm": {
@@ -15,10 +15,17 @@
         "baseURL": "https://litellm.tvlk.cloud/",
       },
       "models": {
-        "claude-opus-4.7": {
-          "name": "claude-opus-4.7",
+        "claude-sonnet-4.6": {
+          "name": "claude-sonnet-4.6",
         },
       },
+    },
+  },
+  "mcp": {
+    "sequential-thinking": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "enabled": true,
     },
   },
 }
