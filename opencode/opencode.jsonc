@@ -8,15 +8,27 @@
     "@plannotator/opencode@latest",
   ],
   "provider": {
-    "litellm": {
+    "litellm_tvlk": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "LiteLLM",
+      "name": "LiteLLM TVLK",
       "options": {
-        "baseURL": "https://litellm.tvlk.cloud/",
+        "baseURL": "https://litellm.tvlk.cloud/v1",
       },
       "models": {
+        "claude-opus-4.7": {
+          "name": "claude-opus-4.7",
+          "attachment": true,
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+        },
         "claude-sonnet-4.6": {
           "name": "claude-sonnet-4.6",
+          "attachment": true,
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+        },
+        "claude-haiku-4.5": {
+          "name": "claude-haiku-4.5",
+          "attachment": true,
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
         },
       },
     },
