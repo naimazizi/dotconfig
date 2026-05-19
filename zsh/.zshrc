@@ -67,8 +67,8 @@ fi
 # Pyenv - lazy init only if used
 if command -v pyenv &>/dev/null; then
 	export PYENV_ROOT="$HOME/.pyenv"
-	eval "$(pyenv init - zsh)"
-	eval "$(pyenv virtualenv-init -)"
+	eval "$(pyenv init - --no-rehash zsh)"
+	eval "$(pyenv virtualenv-init - --no-rehash zsh)"
 fi
 
 # Smart insert prefix options (fzf menu)
@@ -102,8 +102,6 @@ zinit from"gh-r" as"program" mv"direnv* -> direnv" \
 	pick"direnv" src="zhook.zsh" for \
 	direnv/direnv
 
-eval "$(direnv hook zsh)"
-
 # SSH
 zinit light sunlei/zsh-ssh
 
@@ -112,5 +110,9 @@ eval "$(atuin init zsh)"
 
 # fzf-tab
 autoload -Uz compinit
-compinit
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+	compinit
+else
+	compinit -C
+fi
 zinit light Aloxaf/fzf-tab
