@@ -330,13 +330,12 @@ return {
     event = "VeryLazy",
     dependencies = "gregorias/coop.nvim",
     config = function()
-      require("coerce").setup({
-        keymap_registry = require("coerce.keymap").keymap_registry(),
-        default_mode_keymap_prefixes = {
-          normal_mode = "co",
-          motion_mode = "go",
-          visual_mode = "go",
-        },
+      require("coerce").setup({})
+      local wke = require("coerce.keymaps").which_key_expand
+      require("which-key").add({
+        { "co", group = "+Coerce word", expand = wke.normal_mode, mode = "n" },
+        { "go", group = "+Coerce motion", expand = wke.motion_mode, mode = "n" },
+        { "go", group = "+Coerce visual", expand = wke.visual_mode, mode = "x" },
       })
     end,
   },
