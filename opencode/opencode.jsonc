@@ -6,6 +6,7 @@
     "envsitter-guard@latest",
     "@tarquinen/opencode-dcp@latest",
     "@plannotator/opencode@latest",
+    "opencode-claude-auth@latest",
   ],
   "provider": {
     "litellm_tvlk": {
