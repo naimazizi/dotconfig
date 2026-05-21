@@ -34,10 +34,24 @@
     },
   },
   "mcp": {
+    "bigquery": {
+      "type": "local",
+      "command": ["uvx", "mcp-server-bigquery"],
+      "env": {
+        "BIGQUERY_PROJECT": "${BIGQUERY_PROJECT}",
+        "BIGQUERY_LOCATION": "${BIGQUERY_LOCATION}",
+      },
+      "enabled": true,
+      "timeout": 30000,
+    },
     "sequential-thinking": {
       "type": "local",
       "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
       "enabled": true,
+    },
+    "gh_grep": {
+      "type": "remote",
+      "url": "https://mcp.grep.app",
     },
   },
 }
