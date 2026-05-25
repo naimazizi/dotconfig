@@ -158,7 +158,7 @@ return {
   },
   {
     "jake-stewart/multicursor.nvim",
-    vscode = true,
+    vscode = false,
     event = "BufRead",
     config = function()
       local mc = require("multicursor-nvim")
@@ -229,7 +229,7 @@ return {
   },
   {
     "zaucy/mcos.nvim",
-    vscode = true,
+    vscode = false,
     event = "BufRead",
     dependencies = {
       "jake-stewart/multicursor.nvim",
