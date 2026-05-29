@@ -179,6 +179,7 @@ return {
         desc = "Undotree",
       },
       { "<C-/>", "<cmd>lua Snacks.terminal.toggle()<CR>", desc = "Toggle terminal" },
+      { "<C-`>", "<cmd>lua Snacks.terminal.toggle()<CR>", desc = "Toggle terminal" },
       { "<leader>ft", "<cmd>lua Snacks.terminal()<CR>", desc = "Toggle terminal" },
       {
         "<leader>gg",

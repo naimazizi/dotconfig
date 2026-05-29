@@ -5,6 +5,14 @@ return {
     event = "VeryLazy",
     vscode = false,
     cmd = "Opencode",
+    keys = {
+      {
+        "<C-.>",
+        mode = { "n", "v" },
+        "<cmd>Opencode toggle<cr>",
+        desc = "Opencode toggle",
+      },
+    },
     config = function()
       require("opencode").setup({
         preferred_picker = "snacks",
