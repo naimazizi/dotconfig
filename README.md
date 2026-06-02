@@ -21,7 +21,6 @@
 - vim
 - vscode (theme)
 - wezterm
-- yazi
 - zed
 - zellij
 - zsh
@@ -32,7 +31,7 @@
 
 ## Installation
 
-```{bash}
+```text {bash}
 mkdir -p ~/.config
 cd ~/.config
 git clone https://github.com/naimazizi/dotconfig .
@@ -61,6 +60,7 @@ brew install \
   sk \
   tmuxinator \
   tree-sitter-cli \
+  yazi \
   z \
   zellij \
   zoxide
@@ -74,6 +74,6 @@ brew install alchemmist/tap/lazy-tmux
 
 - Amethyst
 
-```{bash}
+```text {bash}
 ln -s "~/.config/amethyst/Layouts/center_or_tall.js" "~/Library/Application Support/Amethyst/Layouts/center_or_tall.js
 ```
