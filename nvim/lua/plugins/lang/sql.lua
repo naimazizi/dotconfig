@@ -2,7 +2,7 @@ return {
   {
     "EloiSanchez/dbt.nvim",
     cond = function()
-      return vim.fn.filereadable(vim.fn.getcwd() .. "/dbt_project.yml") == 1
+      return vim.fn.filereadable(vim.fn.getcwd() .. "/dbt_project.yml") == 1 and not vim.g.vscode
     end,
     ft = "sql",
     dependencies = {

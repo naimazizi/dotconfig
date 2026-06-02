@@ -2,8 +2,8 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     vscode = false,
-    lazy = false,
-    dependencies = { "SmiteshP/nvim-navic", "nvim-tree/nvim-web-devicons" },
+    event = "VimEnter",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("lualine").setup({
         options = {
@@ -14,18 +14,64 @@ return {
           lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
           lualine_b = {
             "branch",
-            "navic",
+            {
+              function()
+                return require("nvim-navic").get_location()
+              end,
+              cond = function()
+                return package.loaded["nvim-navic"] ~= nil and require("nvim-navic").is_available()
+              end,
+            },
           },
           lualine_c = {
             "%=",
           },
           lualine_x = {
-            "overseer",
+            {
+              function()
+                local task_list = require("overseer.task_list")
+                local util = require("overseer.util")
+                local constants = require("overseer.constants")
+                local STATUS = constants.STATUS
+                local tasks = task_list.list_tasks({ unique = true })
+                local tasks_by_status = util.tbl_group_by(tasks, "status")
+                local pieces = {}
+                local icons = {
+                  [STATUS.RUNNING] = "󰑮 ",
+                  [STATUS.FAILURE] = "󰅚 ",
+                  [STATUS.CANCELED] = " ",
+                  [STATUS.SUCCESS] = "󰄴 ",
+                }
+                for _, status in ipairs(STATUS.values) do
+                  if icons[status] and tasks_by_status[status] then
+                    table.insert(pieces, icons[status] .. #tasks_by_status[status])
+                  end
+                end
+                return table.concat(pieces, " ")
+              end,
+              cond = function()
+                return package.loaded["overseer"] ~= nil
+              end,
+            },
             "quickfix",
           },
           lualine_y = {
-            { require("recorder").displaySlots },
-            { require("recorder").recordingStatus },
+            {
+              function()
+                return require("recorder").displaySlots()
+              end,
+              cond = function()
+                return package.loaded["recorder"] ~= nil
+              end,
+            },
+            {
+              function()
+                return require("recorder").recordingStatus()
+              end,
+              cond = function()
+                return package.loaded["recorder"] ~= nil
+              end,
+            },
             "fileformat",
             "encoding",
             "lsp_status",
@@ -50,7 +96,7 @@ return {
           lualine_z = { "location" },
         },
         tabline = {},
-        extensions = { "overseer", "quickfix" },
+        extensions = { "quickfix" },
       })
     end,
   },
@@ -66,7 +112,7 @@ return {
   },
   {
     "b0o/incline.nvim",
-    event = "VeryLazy",
+    event = "BufWinEnter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("incline").setup({

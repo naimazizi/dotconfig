@@ -2,6 +2,7 @@ return {
   {
     "minigian/juan-logs.nvim",
     vscode = false,
+    ft = { "log", "txt", "csv", "json", "tsv" },
     build = function(plugin)
       local path = plugin.dir .. "/build.lua"
       if vim.fn.filereadable(path) == 1 then

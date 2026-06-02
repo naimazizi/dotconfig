@@ -1,4 +1,7 @@
 local function lsp_attach(bufnr)
+  -- Set LSP keymaps via pick utils
+  require("utils.pick").lsp_keymaps(bufnr)
+
   -- CodeLens
   local clients = vim.lsp.get_clients({ bufnr = bufnr })
   local supports_codelens = false
@@ -25,28 +28,6 @@ local function lsp_attach(bufnr)
   if supports_inlay_hints then
     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end
-
-  local hover = vim.lsp.buf.hover
-  ---@diagnostic disable-next-line: duplicate-set-field
-  vim.lsp.buf.hover = function()
-    return hover({
-      border = "single",
-      max_width = math.floor(vim.o.columns * 0.4),
-      max_height = math.floor(vim.o.lines * 0.4),
-    })
-  end
-
-  local signature_help = vim.lsp.buf.signature_help
-  ---@diagnostic disable-next-line: duplicate-set-field
-  vim.lsp.buf.signature_help = function()
-    return signature_help({
-      title = "Signature help",
-      border = "single",
-      title_pos = "left",
-      max_width = math.floor(vim.o.columns * 0.4),
-      max_height = math.floor(vim.o.lines * 0.4),
-    })
-  end
 end
 
 return {
@@ -61,12 +42,6 @@ return {
       servers = {},
     },
     config = function()
-      local ok_blink, blink = pcall(require, "blink.cmp")
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      if ok_blink and type(blink.get_lsp_capabilities) == "function" then
-        capabilities = blink.get_lsp_capabilities(capabilities)
-      end
-
       vim.diagnostic.config({
         severity_sort = true,
         float = { border = "rounded", source = "if_many" },
@@ -205,7 +180,7 @@ return {
   },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
-    event = "VeryLazy",
+    event = "LspAttach",
     priority = 1000,
     config = function()
       require("tiny-inline-diagnostic").setup({

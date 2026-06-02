@@ -1,7 +1,6 @@
 return {
   {
     "jellydn/hurl.nvim",
-    event = "BufRead *.hurl",
     vscode = false,
     dependencies = {
       "MunifTanjim/nui.nvim",

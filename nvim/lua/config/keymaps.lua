@@ -34,14 +34,9 @@ if not vim.g.vscode then
   map("n", "<leader>bn", "<cmd>enew<cr>", { silent = true, desc = "New buffer" })
 
   -- Switch buffers
-  map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
-  map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-  map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
-  map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-
   -- LSP/diagnostics mappings
   map("n", "<leader>cd", vim.diagnostic.open_float, { silent = true, desc = "Line diagnostics" })
-  map("n", "<leader>cl", "<cmd>:checkhealth vim.lsp<cr>", { silent = true, desc = "Lsp Info" })
+  map("n", "<leader>cl", "<cmd>checkhealth vim.lsp<cr>", { silent = true, desc = "Lsp Info" })
 
   -- Quickfix / location list (LazyVim-ish)
   map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
@@ -57,7 +52,7 @@ if not vim.g.vscode then
   end
 
   -- Lazy
-  vim.api.nvim_set_keymap("n", "<leader>l", "<cmd>:Lazy<cr>", { noremap = true, silent = true, desc = "Lazy" })
+  map("n", "<leader>l", "<cmd>Lazy<cr>", { noremap = true, silent = true, desc = "Lazy" })
 
   -- Search and replace in line
   map("n", "<leader>fs", ":%s/", { noremap = true, silent = true, desc = "Search and replace" })
@@ -444,8 +439,4 @@ if vim.g.vscode then
   map("n", "[4", function()
     vscode.call("quarto.goToPreviousCell")
   end, { noremap = true, desc = "Quarto Prev code block" })
-
-  ---@diagnostic disable-next-line: call-non-callable
-  local version = vim.version()
-  print("⚡ NEOVIM " .. version.major .. "." .. version.minor .. "." .. version.patch)
 end

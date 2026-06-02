@@ -17,21 +17,15 @@ return {
   {
     "stevearc/conform.nvim",
     vscode = false,
+    event = "BufWritePre",
     keys = {
       {
         "<leader>cf",
         function()
           require("conform").format({ async = true, lsp_format = "fallback" })
         end,
+        mode = { "n", "x" },
         desc = "Format",
-      },
-      {
-        "<leader>cf",
-        function()
-          require("conform").format({ async = true, lsp_format = "fallback" })
-        end,
-        mode = "x",
-        desc = "Format selection",
       },
     },
     opts = function(_, opts)
@@ -115,7 +109,7 @@ return {
         if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
           return
         end
-        return { timeout_ms = 500, lsp_fallback = true }
+        return { timeout_ms = 500, lsp_format = "fallback" }
       end
 
       return opts

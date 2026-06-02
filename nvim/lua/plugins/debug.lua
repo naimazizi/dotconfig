@@ -350,18 +350,7 @@ return {
       -- Manage them explicitly here so they reliably auto-install.
       opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, { "debugpy", "codelldb" })
-
-      -- Keep the list stable & unique.
-      local seen = {}
-      local out = {}
-      for _, item in ipairs(opts.ensure_installed) do
-        if type(item) == "string" and item ~= "" and not seen[item] then
-          seen[item] = true
-          table.insert(out, item)
-        end
-      end
-      table.sort(out)
-      opts.ensure_installed = out
+      opts.ensure_installed = require("utils.table").uniq(opts.ensure_installed)
 
       return opts
     end,

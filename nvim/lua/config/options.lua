@@ -19,7 +19,7 @@ if not vim.g.vscode then
   opt.swapfile = false -- Don't create swap files
   opt.undofile = true -- Persistent undo
   opt.undolevels = 10000
-  opt.undodir = vim.fn.expand("~/.vim/undodir") -- Undo directory
+  opt.undodir = vim.fn.stdpath("data") .. "/undo" -- Undo directory
 
   opt.number = true -- Line numbers
   opt.relativenumber = true -- Relative line numbers
@@ -68,7 +68,6 @@ if not vim.g.vscode then
   opt.autowrite = true -- Auto save
 
   -- Behavior settings
-  opt.hidden = true -- Allow hidden buffers
   opt.errorbells = false -- No error bells
   opt.backspace = "indent,eol,start" -- Better backspace behavior
   opt.autochdir = false -- Don't auto change directory
@@ -78,13 +77,9 @@ if not vim.g.vscode then
   opt.mouse = "a" -- Enable mouse support
   opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
   opt.modifiable = true -- Allow buffer modifications
-  opt.encoding = "UTF-8" -- Set encoding
 
-  -- Folding settings
+  -- Folding settings (foldlevel/foldexpr managed by nvim-origami)
   opt.smoothscroll = false
-  opt.foldlevel = 99 -- Start with all folds open
-  opt.foldmethod = "expr"
-  opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
   opt.formatoptions = "jcroqlnt" -- tcqj
   opt.nrformats = "unsigned"
   opt.grepformat = "%f:%l:%c:%m"
@@ -108,7 +103,7 @@ if not vim.g.vscode then
   opt.maxmempattern = 20000
 
   -- Create undo directory if it doesn't exist
-  local undodir = vim.fn.expand("~/.vim/undodir")
+  local undodir = vim.fn.stdpath("data") .. "/undo"
   if vim.fn.isdirectory(undodir) == 0 then
     vim.fn.mkdir(undodir, "p")
   end
@@ -132,7 +127,6 @@ if not vim.g.vscode then
   opt.linebreak = true -- Wrap lines at convenient points
   opt.list = false -- Show some invisible characters (tabs...)
   opt.shiftround = true -- Round indent
-  opt.shiftwidth = 2 -- Size of an indent
   opt.shortmess:append({ W = true, I = true, c = true, C = true })
 
   -- session options

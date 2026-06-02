@@ -2,7 +2,7 @@ return {
   {
     "chomosuke/typst-preview.nvim",
     vscode = false,
-    event = "VeryLazy",
+    ft = "typst",
     cmd = { "TypstPreview", "TypstPreviewToggle", "TypstPreviewUpdate" },
     keys = {
       {

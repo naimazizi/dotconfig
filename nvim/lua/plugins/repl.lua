@@ -21,7 +21,7 @@ return {
     "jpalardy/vim-slime",
     enabled = true,
     vscode = false,
-    event = "BufRead *.py",
+    ft = "python",
     init = function()
       vim.g.slime_no_mappings = 1
     end,

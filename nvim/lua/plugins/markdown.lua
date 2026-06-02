@@ -2,7 +2,6 @@ return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     vscode = false,
-    event = "VeryLazy",
     ft = vim.g.md_ft,
     opts = {
       render_modes = true, -- enable all modes

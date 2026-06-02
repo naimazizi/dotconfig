@@ -40,7 +40,7 @@ return {
   {
     "RRethy/vim-illuminate",
     vscode = false,
-    event = "VeryLazy",
+    event = "BufReadPost",
     opts = {
       delay = 200,
       large_file_cutoff = 2000,
@@ -151,7 +151,7 @@ return {
   {
     "sQVe/sort.nvim",
     vscode = true,
-    event = "BufWrite",
+    cmd = { "Sort" },
     config = function()
       require("sort").setup({})
     end,
@@ -251,7 +251,7 @@ return {
     "andymass/vim-matchup",
     vscode = false,
     event = "BufRead",
-    init = function()
+    config = function()
       ---@diagnostic disable-next-line: param-type-not-match, param-type-mismatch
       require("match-up").setup({
         treesitter = {
@@ -263,7 +263,10 @@ return {
   {
     "otavioschwanck/arrow.nvim",
     vscode = false,
-    event = "VeryLazy",
+    keys = {
+      { ";", desc = "Arrow menu" },
+      { "m", desc = "Arrow buffer" },
+    },
     opts = {
       show_icons = true,
       leader_key = ";", -- Recommended to be a single key
@@ -273,7 +276,6 @@ return {
   {
     "MagicDuck/grug-far.nvim",
     vscode = false,
-    event = "VeryLazy",
     dependencies = {
       {
         "mason-org/mason.nvim",
@@ -327,8 +329,12 @@ return {
   {
     "gregorias/coerce.nvim",
     vscode = false,
-    event = "VeryLazy",
     dependencies = "gregorias/coop.nvim",
+    keys = {
+      { "co", "<Plug>(coerce-normal)", mode = "n", desc = "Coerce word" },
+      { "go", "<Plug>(coerce-motion)", mode = "n", desc = "Coerce motion" },
+      { "go", "<Plug>(coerce-visual)", mode = "x", desc = "Coerce selection" },
+    },
     config = function()
       require("coerce").setup({})
       local wke = require("coerce.keymaps").which_key_expand
@@ -350,7 +356,6 @@ return {
   {
     "error311/wayfinder.nvim",
     vscode = false,
-    event = "VeryLazy",
     opts = {},
     keys = {
       {

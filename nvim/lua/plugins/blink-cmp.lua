@@ -2,7 +2,7 @@ return {
   { -- Autocompletion
     "saghen/blink.cmp",
     vscode = false,
-    event = "VimEnter",
+    event = "InsertEnter",
     version = "1.*",
     dependencies = {
       -- Snippet Engine
@@ -22,7 +22,10 @@ return {
             "rafamadriz/friendly-snippets",
             config = function()
               require("luasnip.loaders.from_vscode").lazy_load()
-              require("luasnip.loaders.from_vscode").lazy_load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
+              local snippets_path = vim.fn.stdpath("config") .. "/snippets"
+              if vim.fn.isdirectory(snippets_path) == 1 then
+                require("luasnip.loaders.from_vscode").lazy_load({ paths = { snippets_path } })
+              end
             end,
           },
         },
@@ -50,117 +53,123 @@ return {
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
-    opts = {
-      enabled = function()
-        return (vim.bo.buftype ~= "prompt" or vim.bo.filetype == "dap-repl") and vim.b.completion ~= false
-      end,
+    opts = function()
+      -- Local state for tracking completion menu direction across keystrokes.
+      -- Using a local variable avoids repeated vim.g reads/writes on every keypress.
+      local blink_cmp_upwards_ctx_id = nil
 
-      snippets = {
-        preset = "luasnip",
-        expand = function(snippet)
-          return require("luasnip").lsp_expand(snippet)
+      return {
+        enabled = function()
+          return (vim.bo.buftype ~= "prompt" or vim.bo.filetype == "dap-repl") and vim.b.completion ~= false
         end,
-      },
 
-      appearance = {
-        use_nvim_cmp_as_default = false,
-        -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- adjusts spacing to ensure icons are aligned
-        nerd_font_variant = "mono",
-      },
-      completion = {
-        accept = {
-          -- experimental auto-brackets support
-          auto_brackets = {
+        snippets = {
+          preset = "luasnip",
+          expand = function(snippet)
+            return require("luasnip").lsp_expand(snippet)
+          end,
+        },
+
+        appearance = {
+          use_nvim_cmp_as_default = false,
+          -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+          -- adjusts spacing to ensure icons are aligned
+          nerd_font_variant = "mono",
+        },
+        completion = {
+          accept = {
+            -- experimental auto-brackets support
+            auto_brackets = {
+              enabled = true,
+            },
+          },
+          menu = {
+            -- Fix multiline ghost_text overlapping the cmp menu
+            direction_priority = function()
+              local ctx = require("blink.cmp").get_context()
+              local item = require("blink.cmp").get_selected_item()
+              if ctx == nil or item == nil then
+                return { "s", "n" }
+              end
+
+              local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
+              local is_multi_line = item_text:find("\n") ~= nil
+
+              -- after showing the menu upwards, we want to maintain that direction
+              -- until we re-open the menu, so store the context id in a global variable
+              if is_multi_line or blink_cmp_upwards_ctx_id == ctx.id then
+                blink_cmp_upwards_ctx_id = ctx.id
+                return { "n", "s" }
+              end
+              return { "s", "n" }
+            end,
+            border = "rounded",
+          },
+          documentation = {
+            auto_show = true,
+            window = { border = "rounded" },
+          },
+          ghost_text = {
             enabled = true,
           },
         },
-        menu = {
-          -- Fix multiline ghost_text overlapping the cmp menu
-          direction_priority = function()
-            local ctx = require("blink.cmp").get_context()
-            local item = require("blink.cmp").get_selected_item()
-            if ctx == nil or item == nil then
-              return { "s", "n" }
-            end
 
-            local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
-            local is_multi_line = item_text:find("\n") ~= nil
+        fuzzy = {
+          implementation = "rust",
+          sorts = {
+            "exact",
+            -- defaults
+            "score",
+            "sort_text",
+          },
+        },
+        -- experimental signature help support
+        signature = { enabled = true, trigger = { show_on_accept = true }, window = { border = "rounded" } },
 
-            -- after showing the menu upwards, we want to maintain that direction
-            -- until we re-open the menu, so store the context id in a global variable
-            if is_multi_line or vim.g.blink_cmp_upwards_ctx_id == ctx.id then
-              vim.g.blink_cmp_upwards_ctx_id = ctx.id
-              return { "n", "s" }
-            end
-            return { "s", "n" }
-          end,
-          border = "rounded",
+        sources = {
+          default = {
+            "lsp",
+            "snippets",
+            "buffer",
+            "references",
+            "copilot",
+          },
+          per_filetype = {
+            ["dap-repl"] = { "dap" },
+            ["pi-chat-prompt"] = { "pi" },
+          },
+          providers = {
+            references = {
+              name = "pandoc_references",
+              module = "cmp-pandoc-references.blink",
+            },
+            copilot = {
+              name = "copilot",
+              module = "blink-copilot",
+              score_offset = 100,
+              async = true,
+            },
+            dap = {
+              name = "dap",
+              module = "blink-cmp-dap",
+            },
+            pi = { name = "Pi", module = "pi.completion.blink" },
+          },
         },
-        documentation = {
-          auto_show = true,
-          window = { border = "rounded" },
-        },
-        ghost_text = {
+
+        cmdline = {
           enabled = true,
         },
-      },
 
-      fuzzy = {
-        implementation = "rust",
-        sorts = {
-          "exact",
-          -- defaults
-          "score",
-          "sort_text",
+        term = {
+          enabled = false,
+          keymap = { preset = "inherit" },
         },
-      },
-      -- experimental signature help support
-      signature = { enabled = true, trigger = { show_on_accept = true }, window = { border = "rounded" } },
 
-      sources = {
-        default = {
-          "lsp",
-          "snippets",
-          "buffer",
-          "references",
-          "copilot",
+        keymap = {
+          preset = "super-tab",
         },
-        per_filetype = {
-          ["dap-repl"] = { "dap" },
-          ["pi-chat-prompt"] = { "pi" },
-        },
-        providers = {
-          references = {
-            name = "pandoc_references",
-            module = "cmp-pandoc-references.blink",
-          },
-          copilot = {
-            name = "copilot",
-            module = "blink-copilot",
-            score_offset = 100,
-            async = true,
-          },
-          dap = {
-            name = "dap",
-            module = "blink-cmp-dap",
-          },
-          pi = { name = "Pi", module = "pi.completion.blink" },
-        },
-      },
-
-      cmdline = {
-        enabled = true,
-      },
-
-      term = {
-        enabled = false,
-        keymap = { preset = "inherit" },
-      },
-
-      keymap = {
-        preset = "super-tab",
-      },
-    },
+      }
+    end,
   },
 }

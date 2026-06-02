@@ -2,7 +2,6 @@ return {
   {
     "esmuellert/codediff.nvim",
     vscode = false,
-    event = "VeryLazy",
     dependencies = { "MunifTanjim/nui.nvim" },
     cmd = "CodeDiff",
     keys = {

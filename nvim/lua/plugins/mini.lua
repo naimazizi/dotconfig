@@ -5,7 +5,7 @@ return {
     "nvim-mini/mini.nvim",
     version = false,
     vscode = true,
-    lazy = false,
+    event = "BufReadPre",
     config = function()
       require("mini.surround").setup({
         mappings = {

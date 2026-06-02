@@ -3,7 +3,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     build = ":TSUpdate",
-    event = { "BufReadPre", "BufNewFile", "VeryLazy" },
+    event = { "BufReadPre", "BufNewFile" },
     cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
     opts = {
       indent = { enable = true },
@@ -50,6 +50,9 @@ return {
       local ts_install = require("nvim-treesitter.install")
       local ts_parsers = require("nvim-treesitter.parsers")
 
+      -- Local state for deduplicating background parser installs within a session.
+      local ts_install_queue = {}
+
       ---Install one or more parsers (best-effort).
       ---@param languages string[]
       local function install_parsers(languages)
@@ -71,13 +74,10 @@ return {
         end
 
         -- Install in the background; avoid repeated scheduling.
-        vim.g.__nvim_minimax_ts_install_queue = vim.g.__nvim_minimax_ts_install_queue or {}
-        local queue = vim.g.__nvim_minimax_ts_install_queue
-
         local scheduled = false
         for _, lang in ipairs(to_install) do
-          if not queue[lang] then
-            queue[lang] = true
+          if not ts_install_queue[lang] then
+            ts_install_queue[lang] = true
             scheduled = true
           end
         end
@@ -88,10 +88,10 @@ return {
 
         vim.schedule(function()
           local langs = {}
-          for lang, _ in pairs(queue) do
+          for lang, _ in pairs(ts_install_queue) do
             table.insert(langs, lang)
           end
-          vim.g.__nvim_minimax_ts_install_queue = {}
+          ts_install_queue = {}
 
           if #langs > 0 then
             pcall(ts_install.install, langs, { silent = true })
@@ -150,7 +150,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main",
-    event = "VeryLazy",
+    event = "BufReadPost",
     opts = {
       move = {
         enable = true,

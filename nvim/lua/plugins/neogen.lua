@@ -2,7 +2,6 @@ return {
   "danymat/neogen",
   vscode = true,
   cmd = "Neogen",
-  event = { "BufWritePre" },
   keys = {
     {
       "<leader>cn",
@@ -29,7 +28,7 @@ return {
         },
         python = {
           template = {
-            annotation_conventions = "google_docstrings",
+            annotation_convention = "google_docstrings",
           },
         },
       },

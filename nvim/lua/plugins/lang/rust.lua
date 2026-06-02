@@ -2,7 +2,7 @@ return {
   -- LSP for Cargo.toml
   {
     "Saecki/crates.nvim",
-    event = { "BufRead Cargo.toml" },
+    event = { { event = "BufReadPre", pattern = "Cargo.toml" } },
     opts = {
       completion = {
         crates = {
@@ -68,7 +68,7 @@ return {
     },
     config = function(_, opts)
       local codelldb = vim.fn.exepath("codelldb")
-      local codelldb_lib_ext = io.popen("uname"):read("*l") == "Linux" and ".so" or ".dylib"
+      local codelldb_lib_ext = jit.os == "Linux" and ".so" or ".dylib"
       local library_path = vim.fn.expand("$MASON/opt/lldb/lib/liblldb" .. codelldb_lib_ext)
       opts.dap = {
         adapter = require("rustaceanvim.config").get_codelldb_adapter(codelldb, library_path),

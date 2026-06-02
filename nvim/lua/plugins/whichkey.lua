@@ -20,8 +20,6 @@ return {
         { "<leader>q", group = "quit/session" },
         { "<leader>t", group = "test" },
         { "<leader>u", group = "ui" },
-        { "<leader>x", group = "diagnostic" },
-        { "<leader>w", group = "windows" },
         { "<leader>o", group = "overseer" },
         -- additional plugin
         { "<localleader>r", group = "REPL", icon = "" },

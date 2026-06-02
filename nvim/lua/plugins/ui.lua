@@ -24,8 +24,8 @@ return {
   },
   {
     "shortcuts/no-neck-pain.nvim",
-    event = "VeryLazy",
     version = "*",
+    cmd = "NoNeckPain",
     keys = {
       { "<leader>uz", "<cmd>NoNeckPain<cr>", desc = "Toggle zen-mode" },
     },
@@ -48,63 +48,62 @@ return {
       },
     },
     -- recommended keymaps, with a helpful prefix alias
-    init = function()
-      local haunt = require("haunt.api")
-      local haunt_picker = require("haunt.picker")
+    config = function(_, opts)
+      require("haunt").setup(opts)
       local map = vim.keymap.set
       local prefix = "<leader>h"
 
       -- annotations
       map("n", prefix .. "a", function()
-        haunt.annotate()
+        require("haunt.api").annotate()
       end, { desc = "Annotate" })
 
       map("n", prefix .. "t", function()
-        haunt.toggle_annotation()
+        require("haunt.api").toggle_annotation()
       end, { desc = "Toggle annotation" })
 
       map("n", prefix .. "T", function()
-        haunt.toggle_all_lines()
+        require("haunt.api").toggle_all_lines()
       end, { desc = "Toggle all annotations" })
 
       map("n", prefix .. "d", function()
-        haunt.delete()
+        require("haunt.api").delete()
       end, { desc = "Delete bookmark" })
 
       map("n", prefix .. "C", function()
-        haunt.clear_all()
+        require("haunt.api").clear_all()
       end, { desc = "Delete all bookmarks" })
 
       -- quickfix
       map("n", prefix .. "q", function()
-        haunt.to_quickfix()
+        require("haunt.api").to_quickfix()
       end, { desc = "Send Hauntings to QF Lix (buffer)" })
 
       map("n", prefix .. "Q", function()
-        haunt.to_quickfix({ current_buffer = true })
+        require("haunt.api").to_quickfix({ current_buffer = true })
       end, { desc = "Send Hauntings to QF Lix (all)" })
 
       -- yank
       map("n", prefix .. "y", function()
-        haunt.yank_locations({ current_buffer = true })
+        require("haunt.api").yank_locations({ current_buffer = true })
       end, { desc = "Send Hauntings to Clipboard (buffer)" })
 
       map("n", prefix .. "Y", function()
-        haunt.yank_locations()
+        require("haunt.api").yank_locations()
       end, { desc = "Send Hauntings to Clipboard (all)" })
 
       -- move
       map("n", prefix .. "p", function()
-        haunt.prev()
+        require("haunt.api").prev()
       end, { desc = "Previous bookmark" })
 
       map("n", prefix .. "n", function()
-        haunt.next()
+        require("haunt.api").next()
       end, { desc = "Next bookmark" })
 
       -- picker
       map("n", prefix .. "h", function()
-        haunt_picker.show({ layout = require("utils.pick").layout })
+        require("haunt.picker").show({ layout = require("utils.pick").layout })
       end, { desc = "Show Picker" })
     end,
   },

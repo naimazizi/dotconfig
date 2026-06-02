@@ -2,7 +2,6 @@ return {
   {
     "sudo-tee/opencode.nvim",
     enabled = true,
-    event = "VeryLazy",
     vscode = false,
     cmd = "Opencode",
     keys = {

@@ -396,13 +396,6 @@ return {
     config = function(_, opts)
       require("snacks").setup(opts)
 
-      local pick_utils = require("utils.pick")
-      vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function(args)
-          pick_utils.lsp_keymaps(args.buf)
-        end,
-      })
-
       vim.api.nvim_create_autocmd("User", {
         desc = "Snacks toggle keymap",
         pattern = "VeryLazy",
@@ -491,7 +484,6 @@ return {
   },
   {
     "folke/todo-comments.nvim",
-    event = "VeryLazy",
     vscode = false,
     opts = {},
     keys = {

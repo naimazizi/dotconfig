@@ -3,7 +3,7 @@ return {
     "mikavilpas/yazi.nvim",
     vscode = false,
     version = "*",
-    event = "VeryLazy",
+    cmd = "Yazi",
     dependencies = {
       { "nvim-lua/plenary.nvim", lazy = true },
     },

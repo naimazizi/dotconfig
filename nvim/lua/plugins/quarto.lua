@@ -45,7 +45,8 @@ return {
     "GCBallesteros/jupytext.nvim",
     enabled = true,
     vscode = false,
-    event = "BufRead *.ipynb",
+    event = "BufReadPre",
+    ft = "ipynb",
     opts = {
       custom_language_formatting = {
         python = {

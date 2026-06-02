@@ -76,14 +76,16 @@ else
     group = group,
   })
 
-  -- Toggle relative numbers on entering/leaving visual mode
+  -- Toggle relative numbers: on in normal/visual mode, off in insert mode
   vim.api.nvim_create_autocmd("ModeChanged", {
     callback = function()
-      local mode = vim.api.nvim_get_mode().mode
-      if mode == "v" or mode == "V" or mode == "\22" then
-        vim.opt.relativenumber = true
-      else
-        vim.opt.relativenumber = false
+      local mode = vim.fn.mode()
+      local in_visual = mode:find("^[vV\22]") ~= nil
+      local in_insert = mode:find("^[iR]") ~= nil
+      if in_insert then
+        vim.opt_local.relativenumber = false
+      elseif in_visual or mode == "n" then
+        vim.opt_local.relativenumber = true
       end
     end,
     group = group,
@@ -91,6 +93,7 @@ else
 
   -- Barbar: safe tabline before mksession save
   vim.api.nvim_create_autocmd("User", {
+    group = group,
     pattern = "PersistenceSavePre",
     callback = function()
       vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })

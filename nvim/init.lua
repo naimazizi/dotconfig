@@ -8,4 +8,5 @@ require("config.autocmds")
 
 require("lazy").setup({
   { import = "plugins" },
+  { import = "plugins.lang" },
 }, require("config.lazy_opts"))
