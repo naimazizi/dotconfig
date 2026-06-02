@@ -1,6 +1,33 @@
 return {
   { "nvim-tree/nvim-web-devicons", vscode = false, opts = {} },
   {
+    "folke/noice.nvim",
+    vscode = false,
+    event = "VeryLazy",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    keys = {
+      { "<leader>n", "<cmd>Noice<cr>", desc = "Notification" },
+    },
+    opts = {
+      lsp = {
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
+      },
+      messages = {
+        view_search = false,
+      },
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        lsp_doc_border = true,
+      },
+    },
+  },
+  {
     "petertriho/nvim-scrollbar",
     event = "BufRead",
     vscode = false,

@@ -4,6 +4,7 @@
 enew = "enew"
 ba = "ba"
 ot = "ot"
+Noice = "Noice"
 
 [files]
 extend-exclude = ["*.json"]
