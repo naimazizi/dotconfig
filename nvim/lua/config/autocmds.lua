@@ -76,16 +76,14 @@ else
     group = group,
   })
 
-  -- Toggle relative numbers: on in normal/visual mode, off in insert mode
+  -- Toggle relative numbers on entering/leaving visual mode
   vim.api.nvim_create_autocmd("ModeChanged", {
     callback = function()
-      local mode = vim.fn.mode()
-      local in_visual = mode:find("^[vV\22]") ~= nil
-      local in_insert = mode:find("^[iR]") ~= nil
-      if in_insert then
-        vim.opt_local.relativenumber = false
-      elseif in_visual or mode == "n" then
-        vim.opt_local.relativenumber = true
+      local mode = vim.api.nvim_get_mode().mode
+      if mode == "v" or mode == "V" or mode == "\22" then
+        vim.opt.relativenumber = true
+      else
+        vim.opt.relativenumber = false
       end
     end,
     group = group,

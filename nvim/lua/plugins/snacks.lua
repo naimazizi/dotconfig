@@ -53,6 +53,13 @@ return {
         desc = "Live Grep",
       },
       {
+        "<leader>bi",
+        function()
+          Snacks.bufdelete.invisible({ layout = layout })
+        end,
+        desc = "Delete Invisible Buffers",
+      },
+      {
         "<leader>sR",
         function()
           Snacks.picker.resume()
