@@ -39,14 +39,14 @@ if not vim.g.vscode then
   -- Search settings
   opt.ignorecase = true -- Case insensitive search
   opt.smartcase = true -- Case sensitive if uppercase in search
-  opt.hlsearch = false -- Don't highlight search results
+  opt.hlsearch = true -- Don't highlight search results
   opt.incsearch = true -- Show matches as you type
 
   -- Visual settings
   opt.termguicolors = true -- Enable 24-bit colors
   opt.signcolumn = "yes" -- Always show sign column
   opt.showmatch = true -- Highlight matching brackets
-  opt.cmdheight = 1 -- Command line height
+  opt.cmdheight = 0 -- Hide command line when not in use
   opt.showmode = false -- Don't show mode in command line
   opt.pumheight = 10 -- Popup menu height
   opt.pumblend = 10 -- Popup menu transparency
