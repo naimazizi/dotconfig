@@ -6,10 +6,26 @@ return {
     cmd = "Opencode",
     keys = {
       {
+        "<leader>a",
+        desc = "+AI",
+      },
+      {
         "<C-.>",
         mode = { "n", "v" },
         "<cmd>Opencode toggle<cr>",
         desc = "Opencode toggle",
+      },
+      {
+        "<leader>ag",
+        mode = { "n", "v" },
+        "<cmd>Opencode toggle<cr>",
+        desc = "Toggle Opencode window",
+      },
+      {
+        "<leader>ai",
+        mode = { "n", "v" },
+        "<cmd>Opencode toggle<cr>",
+        desc = "Open input window",
       },
     },
     config = function()

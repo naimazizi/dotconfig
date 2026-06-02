@@ -22,7 +22,7 @@ if not vim.g.vscode then
   opt.undodir = vim.fn.stdpath("data") .. "/undo" -- Undo directory
 
   opt.number = true -- Line numbers
-  opt.relativenumber = true -- Relative line numbers
+  opt.relativenumber = false -- Relative line numbers
   opt.cursorline = true -- Highlight current line
   opt.wrap = false -- Don't wrap lines
   opt.scrolloff = 10 -- Keep 10 lines above/below cursor
