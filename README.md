@@ -49,12 +49,11 @@ brew install \
   just \
   lazygit \
   lsd \
+  micromamba \
   neovide \
   neovim \
   node \
   opencode \
-  pyenv \
-  pyenv-virtualenv \
   ripgrep \
   rtk \
   sk \

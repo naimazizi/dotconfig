@@ -1,0 +1,9 @@
+changeps1: false
+
+channels:
+  - conda-forge
+
+channel_priority: strict
+
+# Explicitly prevent Anaconda default channels (requires a paid license in enterprise)
+# Do NOT add 'defaults', 'anaconda', 'r', or 'msys2' channels

@@ -12,6 +12,7 @@
 !/.pre-commit-config.yaml
 !/.typos.toml
 !/install.sh
+!/.condarc
 
 # Folder to not ignore
 !/amethyst/

@@ -42,7 +42,6 @@ PATH_DIRS=(
 	"$HOME/.rd/bin"
 	"$HOME/.cargo/bin"
 	"$HOME/.local/share/bob/nvim-bin"
-	"$HOME/.pyenv/bin"
 	"$HOME/.local/share/bob"
 )
 
@@ -64,11 +63,11 @@ elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
 	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# Pyenv - lazy init only if used
-if command -v pyenv &>/dev/null; then
-	export PYENV_ROOT="$HOME/.pyenv"
-	eval "$(pyenv init - --no-rehash zsh)"
-	eval "$(pyenv virtualenv-init - --no-rehash zsh)"
+# Mamba
+if command -v mamba &>/dev/null; then
+	eval "$(mamba shell hook --shell zsh)"
+	# Use .condarc from .config (for dotfiles repo tracking)
+	export CONDARC="$HOME/.config/.condarc"
 fi
 
 # Smart insert prefix options (fzf menu)

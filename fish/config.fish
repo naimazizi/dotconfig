@@ -41,11 +41,6 @@ if type -q micromamba
     eval "$(micromamba shell hook --shell fish)"
 end
 
-if type -q pyenv
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-end
-
 alias ls='lsd'
 alias ll="lsd -ltr"
 alias find='fd'
