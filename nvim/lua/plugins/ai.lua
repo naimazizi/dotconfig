@@ -1,5 +1,80 @@
 return {
   {
+    "milanglacier/minuet-ai.nvim",
+    enabled = false,
+    event = "InsertEnter",
+    vscode = false,
+    keys = {
+      {
+        "<A-z>",
+        mode = "i",
+        "<cmd>Minuet duet predict<cr>",
+        desc = "Minuet duet predict",
+      },
+      {
+        "<A-a>",
+        mode = "i",
+        "<cmd>Minuet duet apply<cr>",
+        desc = "Minuet duet apply",
+      },
+      {
+        "<A-x>",
+        mode = "i",
+        "<cmd>Minuet duet dismiss<cr>",
+        desc = "Minuet duet dismiss",
+      },
+    },
+    config = function()
+      require("minuet").setup({
+        provider = "openai_compatible",
+        request_timeout = 2,
+        throttle = 500,
+        debounce = 400,
+        n_completions = 1,
+        notify = "warn",
+        blink = {
+          enable_auto_complete = false,
+        },
+        provider_options = {
+          openai_compatible = {
+            name = "LiteLLM",
+            end_point = vim.env.LITELLM_API_ENDPOINT .. "/chat/completions",
+            api_key = "LITELLM_API_KEY",
+            model = "claude-haiku-4.5",
+            stream = true,
+            optional = {
+              max_tokens = 128,
+              top_p = 0.9,
+            },
+          },
+        },
+        virtualtext = {
+          auto_trigger_ft = {},
+          keymap = {
+            accept = "<A-A>",
+            accept_line = "<A-a>",
+            next = "<A-]>",
+            prev = "<A-[>",
+            dismiss = "<A-e>",
+          },
+        },
+        duet = {
+          provider = "openai_compatible",
+          request_timeout = 15,
+          provider_options = {
+            openai_compatible = {
+              name = "LiteLLM",
+              end_point = vim.env.LITELLM_API_ENDPOINT .. "/chat/completions",
+              api_key = "LITELLM_API_KEY",
+              model = "claude-haiku-4.5",
+              optional = {},
+            },
+          },
+        },
+      })
+    end,
+  },
+  {
     "sudo-tee/opencode.nvim",
     enabled = true,
     vscode = false,
@@ -46,41 +121,6 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "saghen/blink.cmp",
-    },
-  },
-  {
-    "alex35mil/pi.nvim",
-    enabled = false,
-    event = "VeryLazy",
-    vscode = false,
-    keys = {
-      {
-        "<leader>aa",
-        mode = { "n", "v" },
-        function()
-          vim.cmd("Pi layout=side")
-        end,
-        desc = "Pi side",
-      },
-      { "<leader>ac", mode = { "n", "v" }, "<Cmd>PiContinue<CR>", desc = "Pi continue last session" },
-      { "<leader>ar", mode = { "n", "v" }, "<Cmd>PiResume<CR>", desc = "Pi resume past session" },
-      { "<leader>af", mode = { "n", "v" }, "<Cmd>PiSendMention<CR>", desc = "Pi mention file/selection" },
-      {
-        "<leader>an",
-        mode = { "n", "v" },
-        "<Cmd>PiAttention<CR>",
-        desc = "Pi open next attention request",
-      },
-    },
-    opts = {
-      diff = {
-        keys = {
-          accept = "<leader>aw",
-          reject = "<leader>aq",
-          expand_context = "<leader>ae",
-          shrink_context = "<leader>as",
-        },
-      },
     },
   },
 }

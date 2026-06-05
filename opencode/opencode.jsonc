@@ -13,7 +13,7 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "LiteLLM TVLK",
       "options": {
-        "baseURL": "https://litellm.tvlk.cloud/v1",
+        "baseURL": "${LITELLM_API_ENDPOINT}",
       },
       "models": {
         "claude-opus-4.7": {

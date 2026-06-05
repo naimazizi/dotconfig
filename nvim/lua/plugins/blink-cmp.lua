@@ -136,7 +136,6 @@ return {
           },
           per_filetype = {
             ["dap-repl"] = { "dap" },
-            ["pi-chat-prompt"] = { "pi" },
           },
           providers = {
             references = {
@@ -153,7 +152,13 @@ return {
               name = "dap",
               module = "blink-cmp-dap",
             },
-            pi = { name = "Pi", module = "pi.completion.blink" },
+            minuet = {
+              name = "minuet",
+              module = "minuet.blink",
+              score_offset = 100,
+              async = true,
+              timeout_ms = 3000,
+            },
           },
         },
 
