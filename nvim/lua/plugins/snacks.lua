@@ -431,6 +431,7 @@ return {
   },
   {
     "folke/todo-comments.nvim",
+    event = "BufReadPost",
     vscode = false,
     opts = {},
     keys = {

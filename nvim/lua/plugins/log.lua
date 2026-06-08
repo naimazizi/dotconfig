@@ -9,15 +9,14 @@ return {
         dofile(path)
       end
     end,
-    config = function()
-      require("juanlog").setup({
-        threshold_size = 1024 * 1024 * 10, -- 10MB
-        mode = "dynamic",
-        lazy = true,
-        patterns = { "*.log", "*.txt", "*.csv", "*.json", "*.tsv" },
-        enable_custom_statuscol = true,
-        syntax = true, -- set to true to enable native vim syntax (can be slow on huge files)
-      })
-    end,
+    main = "juanlog",
+    opts = {
+      threshold_size = 1024 * 1024 * 10, -- 10MB
+      mode = "dynamic",
+      lazy = true,
+      patterns = { "*.log", "*.txt", "*.csv", "*.json", "*.tsv" },
+      enable_custom_statuscol = true,
+      syntax = true, -- set to true to enable native vim syntax (can be slow on huge files)
+    },
   },
 }

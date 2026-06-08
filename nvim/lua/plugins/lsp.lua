@@ -62,6 +62,11 @@ return {
         cmd = { "emmylua_ls" },
         filetypes = { "lua" },
         root_markers = { ".emmyrc.json", ".luarc.json", ".git" },
+        settings = {
+          runtime = {
+            version = "LuaJIT",
+          },
+        },
       })
 
       -- Markdown
@@ -182,22 +187,20 @@ return {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "LspAttach",
     priority = 1000,
-    config = function()
-      require("tiny-inline-diagnostic").setup({
-        preset = "modern",
-        options = {
-          show_source = {
-            if_many = true,
-          },
-          multilines = {
-            enabled = true,
-            always_show = true,
-            trim_whitespaces = true,
-            tabstop = 4,
-          },
-          use_icons_from_diagnostic = true,
+    opts = {
+      preset = "modern",
+      options = {
+        show_source = {
+          if_many = true,
         },
-      })
-    end,
+        multilines = {
+          enabled = true,
+          always_show = true,
+          trim_whitespaces = true,
+          tabstop = 4,
+        },
+        use_icons_from_diagnostic = true,
+      },
+    },
   },
 }

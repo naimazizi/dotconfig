@@ -78,11 +78,6 @@ return {
     "chrisgrieser/nvim-origami",
     vscode = false,
     event = "BufRead",
-    -- recommended: disable vim's auto-folding
-    init = function()
-      vim.opt.foldlevel = 99
-      vim.opt.foldlevelstart = 99
-    end,
     opts = {
       useLspFoldsWithTreesitterFallback = {
         enabled = true,
@@ -106,7 +101,7 @@ return {
       pauseFoldsOnSearch = true,
       foldKeymaps = {
         setup = true, -- modifies `h` and `l`
-        hOnlyOpensOnFirstColumn = false,
+        hOnlyOpensOnFirstColumn = true,
       },
     },
     keys = {
@@ -130,31 +125,27 @@ return {
     "nvim-treesitter/nvim-treesitter-context",
     vscode = false,
     event = "BufRead",
-    config = function()
-      require("treesitter-context").setup({
-        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-        multiwindow = false, -- Enable multiwindow support.
-        max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-        min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-        line_numbers = true,
-        multiline_threshold = 20, -- Maximum number of lines to show for a single context
-        trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-        mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
-        -- Separator between context and content. Should be a single character string, like '-'.
-        -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-        separator = "-",
-        zindex = 20, -- The Z-index of the context window
-        on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-      })
-    end,
+    opts = {
+      enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+      multiwindow = false, -- Enable multiwindow support.
+      max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+      min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+      line_numbers = true,
+      multiline_threshold = 20, -- Maximum number of lines to show for a single context
+      trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+      mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
+      -- Separator between context and content. Should be a single character string, like '-'.
+      -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+      separator = "-",
+      zindex = 20, -- The Z-index of the context window
+      on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+    },
   },
   {
     "sQVe/sort.nvim",
     vscode = true,
     cmd = { "Sort" },
-    config = function()
-      require("sort").setup({})
-    end,
+    opts = {},
   },
   {
     "jake-stewart/multicursor.nvim",
@@ -251,14 +242,12 @@ return {
     "andymass/vim-matchup",
     vscode = false,
     event = "BufRead",
-    config = function()
-      ---@diagnostic disable-next-line: param-type-not-match, param-type-mismatch
-      require("match-up").setup({
-        treesitter = {
-          stopline = 500,
-        },
-      })
-    end,
+    main = "match-up",
+    opts = {
+      treesitter = {
+        stopline = 500,
+      },
+    },
   },
   {
     "otavioschwanck/arrow.nvim",
@@ -318,13 +307,11 @@ return {
         desc = "Search/Replace Within (grug-far)",
       },
     },
-    config = function()
-      require("grug-far").setup({
-        showCompactInputs = true,
-        showInputsTopPadding = true,
-        showInputsBottomPadding = true,
-      })
-    end,
+    opts = {
+      showCompactInputs = true,
+      showInputsTopPadding = true,
+      showInputsBottomPadding = true,
+    },
   },
   {
     "gregorias/coerce.nvim",
@@ -349,9 +336,7 @@ return {
     "NMAC427/guess-indent.nvim",
     vscode = false,
     event = "BufRead",
-    config = function()
-      require("guess-indent").setup()
-    end,
+    opts = {},
   },
   {
     "error311/wayfinder.nvim",

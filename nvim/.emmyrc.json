@@ -34,7 +34,7 @@
   },
   "diagnostics": {
     "disable": ["missing-fields", "undefined-field", "unresolved-require"],
-    "globals": ["vim", "MiniPick"]
+    "globals": ["vim", "MiniPick", "Snacks"]
   },
   "runtime": {
     "requirePattern": ["lua/?.lua", "lua/?/init.lua", "?/lua/?.lua", "?/lua/?/init.lua"],
@@ -42,7 +42,7 @@
   },
   "workspace": {
     "ignoreGlobs": ["**/*_spec.lua"],
-    "library": ["$VIMRUNTIME", "$LLS_Addons/luvit", "$HOME/.local/share/nvim/lazy"]
+    "library": ["$VIMRUNTIME", "$LLS_Addons/luvit"]
   },
   "semanticTokens": {
     "enable": true

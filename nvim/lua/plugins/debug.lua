@@ -355,6 +355,5 @@ return {
       return opts
     end,
     -- mason-nvim-dap is loaded when nvim-dap loads
-    config = function() end,
   },
 }

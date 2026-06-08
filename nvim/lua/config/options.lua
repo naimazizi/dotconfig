@@ -78,7 +78,11 @@ if not vim.g.vscode then
   opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
   opt.modifiable = true -- Allow buffer modifications
 
-  -- Folding settings (foldlevel/foldexpr managed by nvim-origami)
+  -- Folding settings (foldexpr/foldlevel overridden by nvim-origami when loaded)
+  opt.foldmethod = "expr"
+  opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+  opt.foldlevel = 99
+  opt.foldlevelstart = 99
   opt.smoothscroll = false
   opt.formatoptions = "jcroqlnt" -- tcqj
   opt.nrformats = "unsigned"

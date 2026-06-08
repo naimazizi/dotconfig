@@ -5,10 +5,9 @@ return {
     vscode = false,
     lazy = false,
     priority = 1000,
-    config = function()
-      local colors = require("kanagawa-paper.colors")
-      local palette_colors = colors.palette
-      require("kanagawa-paper").setup({
+    opts = function()
+      local palette_colors = require("kanagawa-paper.colors").palette
+      return {
         -- enable undercurls for underlined text
         undercurl = true,
         -- transparent background
@@ -20,7 +19,7 @@ return {
         -- dim inactive windows. Disabled when transparent
         dim_inactive = false,
         -- set colors for terminal buffers
-        terminal_colors = true,
+        terminal_colors = false,
         -- cache highlights and colors for faster startup.
         -- see Cache section for more details.
         cache = true,
@@ -65,8 +64,10 @@ return {
 
         -- uses lazy.nvim, if installed, to automatically enable needed plugins
         auto_plugins = true,
-      })
-
+      }
+    end,
+    config = function(_, opts)
+      require("kanagawa-paper").setup(opts)
       vim.cmd.colorscheme("kanagawa-paper")
     end,
   },
@@ -77,44 +78,45 @@ return {
     vscode = false,
     lazy = false,
     priority = 1000,
-    config = function()
-      require("evergarden").setup({
-        editor = {
-          transparent_background = true,
+    opts = {
+      editor = {
+        transparent_background = true,
+      },
+      integrations = {
+        blink_cmp = true,
+        gitsigns = true,
+        mini = {
+          enable = true,
+          animate = true,
+          clue = true,
+          completion = true,
+          cursorword = true,
+          deps = true,
+          diff = true,
+          files = true,
+          hipatterns = true,
+          icons = true,
+          indentscope = true,
+          jump = true,
+          jump2d = true,
+          map = true,
+          notify = true,
+          operators = true,
+          pick = true,
+          starters = true,
+          statusline = true,
+          surround = true,
+          tabline = true,
+          test = true,
+          trailspace = true,
         },
-        integrations = {
-          blink_cmp = true,
-          gitsigns = true,
-          mini = {
-            enable = true,
-            animate = true,
-            clue = true,
-            completion = true,
-            cursorword = true,
-            deps = true,
-            diff = true,
-            files = true,
-            hipatterns = true,
-            icons = true,
-            indentscope = true,
-            jump = true,
-            jump2d = true,
-            map = true,
-            notify = true,
-            operators = true,
-            pick = true,
-            starters = true,
-            statusline = true,
-            surround = true,
-            tabline = true,
-            test = true,
-            trailspace = true,
-          },
-          rainbow_delimiters = true,
-          symbols_outline = true,
-          which_key = true,
-        },
-      })
+        rainbow_delimiters = true,
+        symbols_outline = true,
+        which_key = true,
+      },
+    },
+    config = function(_, opts)
+      require("evergarden").setup(opts)
       vim.cmd.colorscheme("evergarden")
     end,
   },

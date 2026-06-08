@@ -11,15 +11,10 @@ return {
       desc = "Generate Annotations (Neogen)",
     },
   },
-  config = function()
-    local engine = "luasnip"
-    if vim.g.vscode then
-      engine = "nvim"
-    end
-
-    require("neogen").setup({
+  opts = function()
+    return {
       enabled = true,
-      snippet_engine = engine,
+      snippet_engine = vim.g.vscode and "nvim" or "luasnip",
       languages = {
         lua = {
           template = {
@@ -32,6 +27,6 @@ return {
           },
         },
       },
-    })
+    }
   end,
 }
