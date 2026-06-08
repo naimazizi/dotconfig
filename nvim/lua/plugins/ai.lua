@@ -1,5 +1,24 @@
 return {
   {
+    "yetone/avante.nvim",
+    enabled = true,
+    vscode = false,
+    event = "VeryLazy",
+    build = "make",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "folke/snacks.nvim",
+    },
+    opts = {
+      provider = "opencode",
+      opencode = {},
+      input = {
+        provider = "snacks",
+      },
+    },
+  },
+  {
     "milanglacier/minuet-ai.nvim",
     enabled = false,
     event = "InsertEnter",
@@ -24,59 +43,57 @@ return {
         desc = "Minuet duet dismiss",
       },
     },
-    config = function()
-      require("minuet").setup({
-        provider = "openai_compatible",
-        request_timeout = 2,
-        throttle = 500,
-        debounce = 400,
-        n_completions = 1,
-        notify = "warn",
-        blink = {
-          enable_auto_complete = false,
+    opts = {
+      provider = "openai_compatible",
+      request_timeout = 2,
+      throttle = 500,
+      debounce = 400,
+      n_completions = 1,
+      notify = "warn",
+      blink = {
+        enable_auto_complete = false,
+      },
+      provider_options = {
+        openai_compatible = {
+          name = "LiteLLM",
+          end_point = vim.env.LITELLM_API_ENDPOINT .. "/chat/completions",
+          api_key = "LITELLM_API_KEY",
+          model = "claude-haiku-4.5",
+          stream = true,
+          optional = {
+            max_tokens = 128,
+            top_p = 0.9,
+          },
         },
+      },
+      virtualtext = {
+        auto_trigger_ft = {},
+        keymap = {
+          accept = "<A-A>",
+          accept_line = "<A-a>",
+          next = "<A-]>",
+          prev = "<A-[>",
+          dismiss = "<A-e>",
+        },
+      },
+      duet = {
+        provider = "openai_compatible",
+        request_timeout = 15,
         provider_options = {
           openai_compatible = {
             name = "LiteLLM",
             end_point = vim.env.LITELLM_API_ENDPOINT .. "/chat/completions",
             api_key = "LITELLM_API_KEY",
             model = "claude-haiku-4.5",
-            stream = true,
-            optional = {
-              max_tokens = 128,
-              top_p = 0.9,
-            },
+            optional = {},
           },
         },
-        virtualtext = {
-          auto_trigger_ft = {},
-          keymap = {
-            accept = "<A-A>",
-            accept_line = "<A-a>",
-            next = "<A-]>",
-            prev = "<A-[>",
-            dismiss = "<A-e>",
-          },
-        },
-        duet = {
-          provider = "openai_compatible",
-          request_timeout = 15,
-          provider_options = {
-            openai_compatible = {
-              name = "LiteLLM",
-              end_point = vim.env.LITELLM_API_ENDPOINT .. "/chat/completions",
-              api_key = "LITELLM_API_KEY",
-              model = "claude-haiku-4.5",
-              optional = {},
-            },
-          },
-        },
-      })
-    end,
+      },
+    },
   },
   {
     "sudo-tee/opencode.nvim",
-    enabled = true,
+    enabled = false,
     vscode = false,
     cmd = "Opencode",
     keys = {
@@ -103,21 +120,19 @@ return {
         desc = "Open input window",
       },
     },
-    config = function()
-      require("opencode").setup({
-        preferred_picker = "snacks",
-        preferred_completion = "blink",
-        default_global_keymaps = true,
-        default_mode = "build",
-        keymap_prefix = "<leader>a",
-        ui = {
-          input = {
-            min_height = 0.25,
-            max_height = 0.25,
-          },
+    opts = {
+      preferred_picker = "snacks",
+      preferred_completion = "blink",
+      default_global_keymaps = true,
+      default_mode = "build",
+      keymap_prefix = "<leader>a",
+      ui = {
+        input = {
+          min_height = 0.25,
+          max_height = 0.25,
         },
-      })
-    end,
+      },
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "saghen/blink.cmp",
