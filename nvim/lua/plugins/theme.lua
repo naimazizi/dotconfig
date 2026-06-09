@@ -19,7 +19,7 @@ return {
         -- dim inactive windows. Disabled when transparent
         dim_inactive = false,
         -- set colors for terminal buffers
-        terminal_colors = false,
+        terminal_colors = true,
         -- cache highlights and colors for faster startup.
         -- see Cache section for more details.
         cache = true,
@@ -69,55 +69,6 @@ return {
     config = function(_, opts)
       require("kanagawa-paper").setup(opts)
       vim.cmd.colorscheme("kanagawa-paper")
-    end,
-  },
-  {
-    "everviolet/nvim",
-    name = "evergarden",
-    enabled = false,
-    vscode = false,
-    lazy = false,
-    priority = 1000,
-    opts = {
-      editor = {
-        transparent_background = true,
-      },
-      integrations = {
-        blink_cmp = true,
-        gitsigns = true,
-        mini = {
-          enable = true,
-          animate = true,
-          clue = true,
-          completion = true,
-          cursorword = true,
-          deps = true,
-          diff = true,
-          files = true,
-          hipatterns = true,
-          icons = true,
-          indentscope = true,
-          jump = true,
-          jump2d = true,
-          map = true,
-          notify = true,
-          operators = true,
-          pick = true,
-          starters = true,
-          statusline = true,
-          surround = true,
-          tabline = true,
-          test = true,
-          trailspace = true,
-        },
-        rainbow_delimiters = true,
-        symbols_outline = true,
-        which_key = true,
-      },
-    },
-    config = function(_, opts)
-      require("evergarden").setup(opts)
-      vim.cmd.colorscheme("evergarden")
     end,
   },
 }

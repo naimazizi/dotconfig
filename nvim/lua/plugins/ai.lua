@@ -3,16 +3,20 @@ return {
     "yetone/avante.nvim",
     enabled = true,
     vscode = false,
-    event = "VeryLazy",
+    cmd = { "AvanteAsk", "AvanteBuild", "AvanteChat", "AvanteToggle" },
     build = "make",
+    version = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       "folke/snacks.nvim",
+      "nvim-tree/nvim-web-devicons",
     },
     opts = {
       provider = "opencode",
-      opencode = {},
+      opencode = {
+        model = "anthropic/claude-sonnet-4-6",
+      },
       input = {
         provider = "snacks",
       },
