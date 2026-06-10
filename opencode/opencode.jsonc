@@ -8,6 +8,7 @@
     "@plannotator/opencode@latest",
     "opencode-claude-auth@latest",
   ],
+  "model": "anthropic/claude-sonnet-4-6",
   "provider": {
     "litellm_tvlk": {
       "npm": "@ai-sdk/openai-compatible",

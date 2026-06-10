@@ -1,9 +1,9 @@
 return {
   {
     "yetone/avante.nvim",
-    enabled = true,
+    enabled = false,
     vscode = false,
-    cmd = { "AvanteAsk", "AvanteBuild", "AvanteChat", "AvanteToggle" },
+    cmd = { "AvanteToggle" },
     build = "make",
     version = false,
     dependencies = {
@@ -97,7 +97,7 @@ return {
   },
   {
     "sudo-tee/opencode.nvim",
-    enabled = false,
+    enabled = true,
     vscode = false,
     cmd = "Opencode",
     keys = {
