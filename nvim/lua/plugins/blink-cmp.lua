@@ -50,7 +50,7 @@ return {
         },
       },
       "mayromr/blink-cmp-dap",
-      "Kaiser-Yang/blink-cmp-avante",
+      -- "Kaiser-Yang/blink-cmp-avante",
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -134,7 +134,7 @@ return {
             "buffer",
             "references",
             "copilot",
-            "avante",
+            -- "avante",
           },
           per_filetype = {
             ["dap-repl"] = { "dap" },
@@ -161,11 +161,11 @@ return {
               async = true,
               timeout_ms = 3000,
             },
-            avante = {
-              module = "blink-cmp-avante",
-              name = "Avante",
-              opts = {},
-            },
+            -- avante = {
+            --   module = "blink-cmp-avante",
+            --   name = "Avante",
+            --   opts = {},
+            -- },
           },
         },
 
