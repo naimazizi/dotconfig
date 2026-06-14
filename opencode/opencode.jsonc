@@ -1,20 +1,21 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
+  "model": "anthropic/claude-sonnet-4-6",
   "plugin": [
+    "./plugins/caveman/plugin.js",
     "cc-safety-net",
     "envsitter-guard@latest",
     "@tarquinen/opencode-dcp@latest",
     "@plannotator/opencode@latest",
     "opencode-claude-auth@latest",
   ],
-  "model": "anthropic/claude-sonnet-4-6",
   "provider": {
     "litellm_tvlk": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "LiteLLM TVLK",
       "options": {
-        "baseURL": "${LITELLM_API_ENDPOINT}",
+        "baseURL": "{env:LITELLM_API_ENDPOINT}",
       },
       "models": {
         "claude-opus-4.7": {
@@ -40,8 +41,8 @@
       "type": "local",
       "command": ["uvx", "mcp-server-bigquery"],
       "env": {
-        "BIGQUERY_PROJECT": "${BIGQUERY_PROJECT}",
-        "BIGQUERY_LOCATION": "${BIGQUERY_LOCATION}",
+        "BIGQUERY_PROJECT": "{env:BIGQUERY_PROJECT}",
+        "BIGQUERY_LOCATION": "{env:BIGQUERY_LOCATION}",
       },
       "enabled": true,
       "timeout": 30000,
