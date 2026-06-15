@@ -39,11 +39,11 @@
   "mcp": {
     "bigquery": {
       "type": "local",
-      "command": ["uvx", "mcp-server-bigquery"],
-      "env": {
-        "BIGQUERY_PROJECT": "{env:BIGQUERY_PROJECT}",
-        "BIGQUERY_LOCATION": "{env:BIGQUERY_LOCATION}",
-      },
+      "command": [
+        "uvx", "mcp-server-bigquery",
+        "--project", "{env:BIGQUERY_PROJECT}",
+        "--location", "{env:BIGQUERY_LOCATION}",
+      ],
       "enabled": true,
       "timeout": 30000,
     },
