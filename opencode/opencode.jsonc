@@ -1,9 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
-  "model": "anthropic/claude-sonnet-4-6",
+  "model": "litellm_tvlk/claude-sonnet-4-6",
   "plugin": [
-    "./plugins/caveman/plugin.js",
+    "@dietrichgebert/ponytail",
     "cc-safety-net",
     "envsitter-guard@latest",
     "@tarquinen/opencode-dcp@latest",
@@ -40,9 +40,12 @@
     "bigquery": {
       "type": "local",
       "command": [
-        "uvx", "mcp-server-bigquery",
-        "--project", "{env:BIGQUERY_PROJECT}",
-        "--location", "{env:BIGQUERY_LOCATION}",
+        "uvx",
+        "mcp-server-bigquery",
+        "--project",
+        "{env:BIGQUERY_PROJECT}",
+        "--location",
+        "{env:BIGQUERY_LOCATION}",
       ],
       "enabled": true,
       "timeout": 30000,
@@ -55,6 +58,16 @@
     "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app",
+    },
+    "jupyter": {
+      "type": "local",
+      "command": ["uvx", "jupyter-mcp-server@latest"],
+      "env": {
+        "JUPYTER_URL": "{env:JUPYTER_URL}",
+        "JUPYTER_TOKEN": "{env:JUPYTER_TOKEN}",
+        "ALLOW_IMG_OUTPUT": "true",
+      },
+      "enabled": true,
     },
   },
 }
