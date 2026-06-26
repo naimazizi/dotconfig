@@ -56,3 +56,4 @@ zsh/.zshenv
 
 foot/dank-colors.ini
 /opencode/package-lock.json
+/opencode/.*-active
