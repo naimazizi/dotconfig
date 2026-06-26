@@ -145,13 +145,12 @@ return {
           yaml = {
             schemas = {
               ["https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/latest/dbt_yml_files-latest.json"] = {
-                "/**/*.yml",
-                "!profiles.yml",
-                "!dbt_project.yml",
-                "!packages.yml",
-                "!selectors.yml",
-                "!profile_template.yml",
-                "!package-lock.yml",
+                "/**/models/**/*.yml",
+                "/**/seeds/**/*.yml",
+                "/**/snapshots/**/*.yml",
+                "/**/analyses/**/*.yml",
+                "/**/macros/**/*.yml",
+                "/**/tests/**/*.yml",
               },
               ["https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/latest/dbt_project-latest.json"] = "dbt_project.yml",
               ["https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/latest/selectors-latest.json"] = "selectors.yml",
