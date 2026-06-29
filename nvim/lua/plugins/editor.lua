@@ -341,15 +341,9 @@ return {
     opts = {},
   },
   {
-    "error311/wayfinder.nvim",
+    "nemanjamalesija/smart-paste.nvim",
     vscode = false,
-    opts = {},
-    keys = {
-      {
-        "gj",
-        "<Plug>(WayfinderOpen)",
-        desc = "LSP wayfinder",
-      },
-    },
+    event = "VeryLazy",
+    config = true,
   },
 }
