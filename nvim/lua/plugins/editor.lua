@@ -1,45 +1,5 @@
 return {
   {
-    "saghen/blink.pairs",
-    vscode = false,
-    version = "*",
-    dependencies = "saghen/blink.download",
-    build = function()
-      require("blink.pairs").download():pwait(60000)
-    end,
-    --- @module 'blink.pairs'
-    --- @type blink.pairs.Config
-    opts = {
-      mappings = {
-        enabled = true,
-        cmdline = true,
-        disabled_filetypes = {},
-        pairs = {},
-      },
-      highlights = {
-        enabled = true,
-        cmdline = true,
-        groups = {
-          "BlinkPairsOrange",
-          "BlinkPairsPurple",
-          "BlinkPairsBlue",
-        },
-        unmatched_group = "BlinkPairsUnmatched",
-        -- highlights matching pairs under the cursor
-        matchparen = {
-          enabled = true,
-          -- known issue where typing won't update matchparen highlight, disabled by default
-          cmdline = false,
-          -- also include pairs not on top of the cursor, but surrounding the cursor
-          include_surrounding = false,
-          group = "BlinkPairsMatchParen",
-          priority = 250,
-        },
-      },
-      debug = false,
-    },
-  },
-  {
     "RRethy/vim-illuminate",
     vscode = false,
     event = "BufReadPost",

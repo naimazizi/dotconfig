@@ -7,6 +7,8 @@ return {
     vscode = true,
     event = "BufReadPre",
     config = function()
+      require("mini.pairs").setup()
+
       require("mini.surround").setup({
         mappings = {
           add = "gsa", -- Add surrounding in Normal and Visual modes

@@ -59,10 +59,10 @@ Plug 'brooth/far.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'inkarkat/vim-AdvancedSorters' " advanced sorting of text.
-Plug 'inkarkat/vim-ingo-library' 
+Plug 'inkarkat/vim-ingo-library'
 Plug 'jdhao/better-escape.vim'
 Plug 'kshenoy/vim-signature'
-Plug 'vim-test/vim-test' 
+Plug 'vim-test/vim-test'
 Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
 
 if isdirectory('/usr/local/opt/fzf')
@@ -757,5 +757,3 @@ nnoremap <silent><nowait> <leader>cs  :<C-u>CocList symbols<cr>
 nnoremap <silent><nowait> <leader>cj  :<C-u>CocNext<CR>
 " Do default action for previous item
 nnoremap <silent><nowait> <leader>ck  :<C-u>CocPrev<CR>
-
-

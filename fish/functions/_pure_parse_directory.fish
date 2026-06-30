@@ -6,7 +6,7 @@ function _pure_parse_directory \
 
     if test -n "$max_path_length"
         if test (string length $folder) -gt $max_path_length
-            # If path exceeds maximum symbol limit, force fish path formating function to use 1 character
+            # If path exceeds maximum symbol limit, force fish path formatting function to use 1 character
             set folder (fish_prompt_pwd_dir_length=1 prompt_pwd)
         end
     end

@@ -1,173 +1,173 @@
-local wezterm = require('wezterm')
-local platform = require('utils.platform')()
+local wezterm = require("wezterm")
+local platform = require("utils.platform")()
 local act = wezterm.action
 
 local mod = {}
 
 if platform.is_mac then
-   mod.SUPER = 'CMD'
-   mod.SUPER_REV = 'CMD|SHIFT'
+  mod.SUPER = "CMD"
+  mod.SUPER_REV = "CMD|SHIFT"
 elseif platform.is_win then
-   mod.SUPER = 'CTRL|ALT'
-   mod.SUPER_REV = 'CTRL|SUPER'
+  mod.SUPER = "CTRL|ALT"
+  mod.SUPER_REV = "CTRL|SUPER"
 elseif platform.is_linux then
-   mod.SUPER = 'CTRL|ALT' -- to not conflict with Windows key shortcuts
-   mod.SUPER_REV = 'CTRL|SHIFT'
+  mod.SUPER = "CTRL|ALT" -- to not conflict with Windows key shortcuts
+  mod.SUPER_REV = "CTRL|SHIFT"
 end
 
 local keys = {
-   -- misc/useful --
-   { key = 'F5', mods = 'NONE', action = 'ActivateCopyMode' },
-   { key = 'F6', mods = 'NONE', action = act.ActivateCommandPalette },
-   { key = 'F12', mods = 'NONE', action = act.ShowLauncher },
-   { key = 'F8', mods = 'NONE', action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
-   {
-      key = 'F7',
-      mods = 'NONE',
-      action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }),
-   },
-   { key = 'F11', mods = 'NONE', action = act.ToggleFullScreen },
-   -- { key = 'F12', mods = 'NONE',    action = act.ShowDebugOverlay },
-   { key = 'f', mods = mod.SUPER, action = act.Search({ CaseInSensitiveString = '' }) },
-   {
-      key = 'u',
-      mods = mod.SUPER,
-      action = wezterm.action.QuickSelectArgs({
-         label = 'open url',
-         patterns = {
-            '\\((https?://\\S+)\\)',
-            '\\[(https?://\\S+)\\]',
-            '\\{(https?://\\S+)\\}',
-            '<(https?://\\S+)>',
-            '\\bhttps?://\\S+[)/a-zA-Z0-9-]+',
-         },
-         action = wezterm.action_callback(function(window, pane)
-            local url = window:get_selection_text_for_pane(pane)
-            wezterm.log_info('opening: ' .. url)
-            wezterm.open_with(url)
-         end),
-      }),
-   },
+  -- misc/useful --
+  { key = "F5", mods = "NONE", action = "ActivateCopyMode" },
+  { key = "F6", mods = "NONE", action = act.ActivateCommandPalette },
+  { key = "F12", mods = "NONE", action = act.ShowLauncher },
+  { key = "F8", mods = "NONE", action = act.ShowLauncherArgs({ flags = "FUZZY|TABS" }) },
+  {
+    key = "F7",
+    mods = "NONE",
+    action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }),
+  },
+  { key = "F11", mods = "NONE", action = act.ToggleFullScreen },
+  -- { key = 'F12', mods = 'NONE',    action = act.ShowDebugOverlay },
+  { key = "f", mods = mod.SUPER, action = act.Search({ CaseInSensitiveString = "" }) },
+  {
+    key = "u",
+    mods = mod.SUPER,
+    action = wezterm.action.QuickSelectArgs({
+      label = "open url",
+      patterns = {
+        "\\((https?://\\S+)\\)",
+        "\\[(https?://\\S+)\\]",
+        "\\{(https?://\\S+)\\}",
+        "<(https?://\\S+)>",
+        "\\bhttps?://\\S+[)/a-zA-Z0-9-]+",
+      },
+      action = wezterm.action_callback(function(window, pane)
+        local url = window:get_selection_text_for_pane(pane)
+        wezterm.log_info("opening: " .. url)
+        wezterm.open_with(url)
+      end),
+    }),
+  },
 
-   -- cursor movement --
-   { key = 'LeftArrow', mods = mod.SUPER, action = act.SendString('\x1bOH') },
-   { key = 'RightArrow', mods = mod.SUPER, action = act.SendString('\x1bOF') },
-   { key = 'Backspace', mods = mod.SUPER, action = act.SendString('\x15') },
+  -- cursor movement --
+  { key = "LeftArrow", mods = mod.SUPER, action = act.SendString("\x1bOH") },
+  { key = "RightArrow", mods = mod.SUPER, action = act.SendString("\x1bOF") },
+  { key = "Backspace", mods = mod.SUPER, action = act.SendString("\x15") },
 
-   -- copy/paste --
-   { key = 'c', mods = mod.SUPER, action = act.CopyTo('Clipboard') },
-   { key = 'v', mods = mod.SUPER, action = act.PasteFrom('Clipboard') },
+  -- copy/paste --
+  { key = "c", mods = mod.SUPER, action = act.CopyTo("Clipboard") },
+  { key = "v", mods = mod.SUPER, action = act.PasteFrom("Clipboard") },
 
-   -- tabs --
-   -- tabs: spawn+close
-   { key = 't', mods = mod.SUPER, action = act.SpawnTab('DefaultDomain') },
-   { key = 'w', mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
+  -- tabs --
+  -- tabs: spawn+close
+  { key = "t", mods = mod.SUPER, action = act.SpawnTab("DefaultDomain") },
+  { key = "w", mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
-   -- tabs: navigation
-   { key = '[', mods = mod.SUPER, action = act.ActivateTabRelative(-1) },
-   { key = ']', mods = mod.SUPER, action = act.ActivateTabRelative(1) },
-   { key = '[', mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
-   { key = ']', mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
+  -- tabs: navigation
+  { key = "[", mods = mod.SUPER, action = act.ActivateTabRelative(-1) },
+  { key = "]", mods = mod.SUPER, action = act.ActivateTabRelative(1) },
+  { key = "[", mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
+  { key = "]", mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
 
-   -- window --
-   -- spawn windows
-   { key = 'n', mods = mod.SUPER, action = act.SpawnWindow },
+  -- window --
+  -- spawn windows
+  { key = "n", mods = mod.SUPER, action = act.SpawnWindow },
 
-   -- panes --
-   -- panes: split panes
-   {
-      key = [[\]],
-      mods = mod.SUPER,
-      action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
-   },
-   {
-      key = [[\]],
-      mods = mod.SUPER_REV,
-      action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }),
-   },
+  -- panes --
+  -- panes: split panes
+  {
+    key = [[\]],
+    mods = mod.SUPER,
+    action = act.SplitVertical({ domain = "CurrentPaneDomain" }),
+  },
+  {
+    key = [[\]],
+    mods = mod.SUPER_REV,
+    action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+  },
 
-   -- panes: zoom+close pane
-   { key = 'Enter', mods = mod.SUPER, action = act.TogglePaneZoomState },
-   { key = 'w', mods = mod.SUPER, action = act.CloseCurrentPane({ confirm = false }) },
+  -- panes: zoom+close pane
+  { key = "Enter", mods = mod.SUPER, action = act.TogglePaneZoomState },
+  { key = "w", mods = mod.SUPER, action = act.CloseCurrentPane({ confirm = false }) },
 
-   -- panes: navigation
-   { key = 'k', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Up') },
-   { key = 'j', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Down') },
-   { key = 'h', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Left') },
-   { key = 'l', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Right') },
-   {
-      key = 'p',
-      mods = mod.SUPER_REV,
-      action = act.PaneSelect({ alphabet = '1234567890', mode = 'SwapWithActiveKeepFocus' }),
-   },
+  -- panes: navigation
+  { key = "k", mods = mod.SUPER_REV, action = act.ActivatePaneDirection("Up") },
+  { key = "j", mods = mod.SUPER_REV, action = act.ActivatePaneDirection("Down") },
+  { key = "h", mods = mod.SUPER_REV, action = act.ActivatePaneDirection("Left") },
+  { key = "l", mods = mod.SUPER_REV, action = act.ActivatePaneDirection("Right") },
+  {
+    key = "p",
+    mods = mod.SUPER_REV,
+    action = act.PaneSelect({ alphabet = "1234567890", mode = "SwapWithActiveKeepFocus" }),
+  },
 
-   -- key-tables --
-   -- resizes fonts
-   {
-      key = 'f',
-      mods = 'LEADER',
-      action = act.ActivateKeyTable({
-         name = 'resize_font',
-         one_shot = false,
-         timeout_milliseconds = 1000,
-      }),
-   },
-   -- resize panes
-   {
-      key = 'p',
-      mods = 'LEADER',
-      action = act.ActivateKeyTable({
-         name = 'resize_pane',
-         one_shot = false,
-         timeout_milliseconds = 1000,
-      }),
-   },
-   -- Tabs
-   {
-      key = '1',
-      mods = mod.SUPER,
-      action = act.ActivateTab(0),
-   },
-   {
-      key = '2',
-      mods = mod.SUPER,
-      action = act.ActivateTab(1),
-   },
-   {
-      key = '3',
-      mods = mod.SUPER,
-      action = act.ActivateTab(2),
-   },
-   {
-      key = '4',
-      mods = mod.SUPER,
-      action = act.ActivateTab(3),
-   },
-   {
-      key = '5',
-      mods = mod.SUPER,
-      action = act.ActivateTab(4),
-   },
-   {
-      key = '6',
-      mods = mod.SUPER,
-      action = act.ActivateTab(5),
-   },
-   {
-      key = '7',
-      mods = mod.SUPER,
-      action = act.ActivateTab(6),
-   },
-   {
-      key = '8',
-      mods = mod.SUPER,
-      action = act.ActivateTab(7),
-   },
-   {
-      key = '9',
-      mods = mod.SUPER,
-      action = act.ActivateTab(8),
-   },
+  -- key-tables --
+  -- resizes fonts
+  {
+    key = "f",
+    mods = "LEADER",
+    action = act.ActivateKeyTable({
+      name = "resize_font",
+      one_shot = false,
+      timeout_milliseconds = 1000,
+    }),
+  },
+  -- resize panes
+  {
+    key = "p",
+    mods = "LEADER",
+    action = act.ActivateKeyTable({
+      name = "resize_pane",
+      one_shot = false,
+      timeout_milliseconds = 1000,
+    }),
+  },
+  -- Tabs
+  {
+    key = "1",
+    mods = mod.SUPER,
+    action = act.ActivateTab(0),
+  },
+  {
+    key = "2",
+    mods = mod.SUPER,
+    action = act.ActivateTab(1),
+  },
+  {
+    key = "3",
+    mods = mod.SUPER,
+    action = act.ActivateTab(2),
+  },
+  {
+    key = "4",
+    mods = mod.SUPER,
+    action = act.ActivateTab(3),
+  },
+  {
+    key = "5",
+    mods = mod.SUPER,
+    action = act.ActivateTab(4),
+  },
+  {
+    key = "6",
+    mods = mod.SUPER,
+    action = act.ActivateTab(5),
+  },
+  {
+    key = "7",
+    mods = mod.SUPER,
+    action = act.ActivateTab(6),
+  },
+  {
+    key = "8",
+    mods = mod.SUPER,
+    action = act.ActivateTab(7),
+  },
+  {
+    key = "9",
+    mods = mod.SUPER,
+    action = act.ActivateTab(8),
+  },
 }
 
 -- stylua: ignore
@@ -190,18 +190,18 @@ local key_tables = {
 }
 
 local mouse_bindings = {
-   -- Ctrl-click will open the link under the mouse cursor
-   {
-      event = { Up = { streak = 1, button = 'Left' } },
-      mods = 'CTRL',
-      action = act.OpenLinkAtMouseCursor,
-   },
+  -- Ctrl-click will open the link under the mouse cursor
+  {
+    event = { Up = { streak = 1, button = "Left" } },
+    mods = "CTRL",
+    action = act.OpenLinkAtMouseCursor,
+  },
 }
 
 return {
-   disable_default_key_bindings = true,
-   leader = { key = 'Space', mods = mod.SUPER_REV },
-   keys = keys,
-   key_tables = key_tables,
-   mouse_bindings = mouse_bindings,
+  disable_default_key_bindings = true,
+  leader = { key = "Space", mods = mod.SUPER_REV },
+  keys = keys,
+  key_tables = key_tables,
+  mouse_bindings = mouse_bindings,
 }

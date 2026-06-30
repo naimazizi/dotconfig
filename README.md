@@ -8,7 +8,6 @@
 - ghostty
 - gitui
 - helix
-- hypr (abandoned)
 - kitty
 - lazygit
 - neovide

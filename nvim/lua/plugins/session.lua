@@ -4,9 +4,9 @@ return {
     vscode = false,
     event = "BufReadPre",
     opts = {
-      dir = vim.fn.stdpath("state") .. "/sessions/", 
+      dir = vim.fn.stdpath("state") .. "/sessions/",
       need = 1,
-      branch = true, 
+      branch = true,
     },
     keys = {
       {

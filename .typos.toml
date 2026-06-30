@@ -5,6 +5,8 @@ enew = "enew"
 ba = "ba"
 ot = "ot"
 Noice = "Noice"
+sme = "sme"
+cpy = "cpy"
 
 [files]
 extend-exclude = ["*.json"]

@@ -1,26 +1,8 @@
 [colors]
-ansi = [
-  "#2C2C30",
-  "#A97070",
-  "#778C73",
-  "#CC9166",
-  "#6C7F93",
-  "#B894AF",
-  "#8EA4A2",
-  "#AFA79D"
-]
+ansi = ["#2C2C30", "#A97070", "#778C73", "#CC9166", "#6C7F93", "#B894AF", "#8EA4A2", "#AFA79D"]
 foreground = "#AEA79C"
 background = "#25222A"
-brights = [
-  "#2C2C30",
-  "#BC8F8F",
-  "#778C73",
-  "#D9AC8C",
-  "#8A99A8",
-  "#CCB3C6",
-  "#8FA4A2",
-  "#C6C0B9"
-]
+brights = ["#2C2C30", "#BC8F8F", "#778C73", "#D9AC8C", "#8A99A8", "#CCB3C6", "#8FA4A2", "#C6C0B9"]
 
 compose_cursor = "#CC9166"
 cursor_bg = "#C6C0B9"

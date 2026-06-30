@@ -9,8 +9,9 @@ repos:
       - id: trailing-whitespace
         exclude: '\.git|\.pyc|\.egg-info'
       - id: end-of-file-fixer
-        exclude: '\.git|\.pyc|\.egg-info'
+        exclude: '\.git|\.pyc|\.egg-info|niri/dms/'
       - id: check-json
+        exclude: "^zed/"
       - id: check-yaml
         args: ["--unsafe"]
 
@@ -44,25 +45,12 @@ repos:
         types: [shell]
         pass_filenames: true
 
-  # Markdown linter with rumdl
-  - repo: local
+  # Markdown linter & formatting with panache
+  - repo: https://github.com/jolars/panache-pre-commit
+    rev: v2.59.0
     hooks:
-      - id: rumdl
-        name: rumdl check
-        entry: rumdl check --fix
-        language: system
-        files: '\.(md|markdown|qmd)$'
-        pass_filenames: true
-
-  # Markdown formatting with rumdl
-  - repo: local
-    hooks:
-      - id: rumdl
-        name: rumdl format
-        entry: rumdl fmt
-        language: system
-        files: '\.(md|markdown)$'
-        pass_filenames: true
+      - id: panache-format
+      - id: panache-lint
 
   # Typst formatting with typstyle
   - repo: local
@@ -75,14 +63,11 @@ repos:
         pass_filenames: true
 
   # KDL formatting with kdlfmt
-  - repo: local
+  - repo: https://github.com/hougesen/kdlfmt
+    rev: main
     hooks:
-      - id: kdlfmt
-        name: kdlfmt format
-        entry: kdlfmt
-        language: system
-        files: '\.kdl$'
-        pass_filenames: true
+      - id: kdlfmt-format
+        exclude: "niri/dms/"
 
   # web-specific file type formatting with oxfmt
   - repo: local

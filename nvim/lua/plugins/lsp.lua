@@ -70,7 +70,7 @@ return {
       })
 
       -- Markdown
-      vim.lsp.config("marksman", {})
+      vim.lsp.config("panache", {})
 
       -- Python
       vim.lsp.config("pyrefly", {})
@@ -164,7 +164,7 @@ return {
       vim.lsp.enable({
         "jsonls",
         "emmylua_ls",
-        "marksman",
+        "panache",
         "pyrefly",
         "ruff",
         "bacon_ls",

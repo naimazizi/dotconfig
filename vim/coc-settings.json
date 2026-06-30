@@ -1,8 +1,10 @@
-{"languageserver": {
-  "pyrefly": {
-    "command": "pyrefly",
-    "args": ["lsp"],
-    "filetypes": ["python"],
-    "rootPatterns": ["pyrefly.toml", "pyproject.toml", ".git"]
+{
+  "languageserver": {
+    "pyrefly": {
+      "command": "pyrefly",
+      "args": ["lsp"],
+      "filetypes": ["python"],
+      "rootPatterns": ["pyrefly.toml", "pyproject.toml", ".git"]
+    }
   }
-}}
+}

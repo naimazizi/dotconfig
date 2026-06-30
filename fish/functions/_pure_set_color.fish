@@ -3,7 +3,7 @@ function _pure_set_color \
     --argument-names var
 
     set --local color $var
-    # Backwards compatibility for colors defined as control sequencies instead of fish colors
+    # Backwards compatibility for colors defined as control sequences instead of fish colors
     if not string match --quiet --all --regex '\e\[[^m]*m' $color[1]
         and set -q $color
             set color $$var
