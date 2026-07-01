@@ -69,5 +69,10 @@
       },
       "enabled": true,
     },
+    "sqz": {
+      "type": "local",
+      "command": ["sqz-mcp", "--transport", "stdio"],
+      "enabled": true,
+    },
   },
 }
