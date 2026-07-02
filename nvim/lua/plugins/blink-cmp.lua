@@ -34,21 +34,7 @@ return {
           delete_check_events = "TextChanged",
         },
       },
-      {
-        "saghen/blink.compat",
-        version = "*",
-        lazy = true,
-        opts = {},
-      },
       "jmbuhr/cmp-pandoc-references",
-      {
-        "fang2hou/blink-copilot",
-        opts = {
-          max_completions = 2,
-          kind_name = "Copilot", ---@type string | false
-          kind_icon = " ", ---@type string | false
-        },
-      },
       "mayromr/blink-cmp-dap",
       -- "Kaiser-Yang/blink-cmp-avante",
     },
@@ -133,7 +119,7 @@ return {
             "snippets",
             "buffer",
             "references",
-            "copilot",
+            -- "minuet",
             -- "avante",
           },
           per_filetype = {
@@ -144,23 +130,17 @@ return {
               name = "pandoc_references",
               module = "cmp-pandoc-references.blink",
             },
-            copilot = {
-              name = "copilot",
-              module = "blink-copilot",
-              score_offset = 100,
-              async = true,
-            },
             dap = {
               name = "dap",
               module = "blink-cmp-dap",
             },
-            minuet = {
-              name = "minuet",
-              module = "minuet.blink",
-              score_offset = 100,
-              async = true,
-              timeout_ms = 3000,
-            },
+            -- minuet = {
+            --   name = "minuet",
+            --   module = "minuet.blink",
+            --   score_offset = 100,
+            --   async = true,
+            --   timeout_ms = 3000,
+            -- },
             -- avante = {
             --   module = "blink-cmp-avante",
             --   name = "Avante",

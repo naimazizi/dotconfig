@@ -24,25 +24,24 @@ return {
   },
   {
     "milanglacier/minuet-ai.nvim",
-    enabled = false,
     event = "InsertEnter",
     vscode = false,
     keys = {
       {
         "<A-z>",
-        mode = "i",
+        mode = { "i", "n" },
         "<cmd>Minuet duet predict<cr>",
         desc = "Minuet duet predict",
       },
       {
         "<A-a>",
-        mode = "i",
+        mode = { "i", "n" },
         "<cmd>Minuet duet apply<cr>",
         desc = "Minuet duet apply",
       },
       {
-        "<A-x>",
-        mode = "i",
+        "<A-Z>",
+        mode = { "i", "n" },
         "<cmd>Minuet duet dismiss<cr>",
         desc = "Minuet duet dismiss",
       },
@@ -68,16 +67,6 @@ return {
             max_tokens = 128,
             top_p = 0.9,
           },
-        },
-      },
-      virtualtext = {
-        auto_trigger_ft = {},
-        keymap = {
-          accept = "<A-A>",
-          accept_line = "<A-a>",
-          next = "<A-]>",
-          prev = "<A-[>",
-          dismiss = "<A-e>",
         },
       },
       duet = {

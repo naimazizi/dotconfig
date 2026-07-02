@@ -44,7 +44,6 @@ end
 alias ls='lsd'
 alias ll="lsd -ltr"
 alias find='fd'
-alias ai='gh copilot'
 alias dev="limactl shell lima-box fish"
 alias nvim_remote="limactl shell lima-box nvim"
 alias nvim_update='nvim --headless "+Lazy! sync" +qa'

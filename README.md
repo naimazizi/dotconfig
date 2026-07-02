@@ -35,9 +35,10 @@ mkdir -p ~/.config
 cd ~/.config
 git clone https://github.com/naimazizi/dotconfig .
 
+brew tap ojuschugh1/sqz
+
 brew install \
   atuin \
-  copilot-language-server \
   bat \
   delta \
   direnv \
@@ -54,8 +55,8 @@ brew install \
   node \
   opencode \
   ripgrep \
-  rtk \
   sk \
+  sqz \
   tmuxinator \
   tree-sitter-cli \
   yazi \

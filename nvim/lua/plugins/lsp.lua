@@ -100,9 +100,6 @@ return {
         },
       })
 
-      -- Copilot
-      vim.lsp.config("copilot", {})
-
       -- Harper
       vim.lsp.config("harper_ls", {
         filetypes = {
@@ -170,7 +167,6 @@ return {
         "bacon_ls",
         "typos_lsp",
         "tinymist",
-        "copilot",
         "harper_ls",
         "yamlls",
       })
