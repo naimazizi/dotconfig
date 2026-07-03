@@ -33,6 +33,11 @@
           "attachment": true,
           "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
         },
+        "claude-sonnet-5": {
+          "name": "claude-sonnet-5",
+          "attachment": true,
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+        },
       },
     },
   },
