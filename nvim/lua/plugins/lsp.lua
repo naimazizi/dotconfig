@@ -167,7 +167,6 @@ return {
         "bacon_ls",
         "typos_lsp",
         "tinymist",
-        "harper_ls",
         "yamlls",
       })
 
