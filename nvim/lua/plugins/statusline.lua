@@ -7,21 +7,13 @@ return {
     opts = {
       options = {
         component_separators = "",
-        section_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
         globalstatus = true,
       },
       sections = {
-        lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
+        lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
         lualine_b = {
           "branch",
-          {
-            function()
-              return require("nvim-navic").get_location()
-            end,
-            cond = function()
-              return package.loaded["nvim-navic"] ~= nil and require("nvim-navic").is_available()
-            end,
-          },
         },
         lualine_c = {
           "%=",
@@ -84,7 +76,7 @@ return {
           },
           "filesize",
           "progress",
-          { "location", separator = { right = "" }, left_padding = 2 },
+          { "location", separator = { right = "" }, left_padding = 2 },
         },
       },
       inactive_sections = {
@@ -100,35 +92,31 @@ return {
     },
   },
   {
-    "SmiteshP/nvim-navic",
-    event = "LspAttach",
-    config = function()
-      vim.g.navic_silence = true
-      Snacks.util.lsp.on({ method = "textDocument/documentSymbol" }, function(buffer, client)
-        require("nvim-navic").attach(client, buffer)
-      end)
-    end,
-  },
-  {
     "b0o/incline.nvim",
     event = "BufWinEnter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       window = {
         padding = 0,
-        margin = { horizontal = 0, vertical = 0 },
+        margin = { horizontal = 1, vertical = 1 },
         winhighlight = {
           active = {
             Normal = "StatusLine",
           },
           inactive = {
-            Normal = "StatusLine",
+            Normal = "StatusLineNC",
           },
         },
       },
       render = function(props)
         local helpers = require("incline.helpers")
         local devicons = require("nvim-web-devicons")
+
+        local function hl_color(name, attr)
+          local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
+          local val = hl[attr]
+          return val and string.format("#%06x", val) or nil
+        end
 
         local result = {}
 
@@ -144,30 +132,52 @@ return {
         end
         local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
         ---@diagnostic disable-next-line: call-non-callable
-        local ft_icon, ft_color = devicons.get_icon_color(filename)
+        local ft_icon, _ = devicons.get_icon(filename)
         local modified = vim.bo[props.buf].modified
 
+        local bg_color
+        local fg_color = hl_color("Normal", "fg")
+        if props.focused then
+          bg_color = hl_color("StatusLineNC", "fg")
+        else
+          bg_color = helpers.contrast_color(hl_color("StatusLine", "fg"))
+        end
+
+        table.insert(result, {
+          "",
+          guibg = hl_color("StatusLine", "bg"),
+          guifg = bg_color,
+        })
+
         table.insert(result, ft_icon and {
-          " ",
           ft_icon,
           " ",
-          guifg = helpers.contrast_color(ft_color),
-          guibg = ft_color,
+          guibg = bg_color,
+          guifg = fg_color,
         })
 
         -- Relative path
         if reldir ~= "" then
           table.insert(result, {
             " ",
+            guibg = bg_color,
+            guifg = fg_color,
           })
           table.insert(result, {
             reldir == "" and reldir or (reldir .. "/"),
             gui = "italic",
+            guibg = bg_color,
+            guifg = fg_color,
           })
         end
 
         local buffer = {
-          { filename, gui = modified and "bold,italic" or "bold" },
+          {
+            filename,
+            gui = modified and "bold,italic" or "bold",
+            guibg = bg_color,
+            guifg = fg_color,
+          },
         }
         table.insert(result, buffer)
 
@@ -178,16 +188,21 @@ return {
           end
 
           local items = {
-            { key = "added", icon = "", group = "GitSignsAdd" },
-            { key = "changed", icon = "", group = "GitSignsChange" },
-            { key = "removed", icon = "", group = "GitSignsDelete" },
+            { key = "added", icon = "", group = "GitSignsAdd" },
+            { key = "changed", icon = "", group = "GitSignsChange" },
+            { key = "removed", icon = "", group = "GitSignsDelete" },
           }
 
           local labels = {}
           for _, item in ipairs(items) do
             local n = tonumber(dict[item.key]) or 0
             if n > 0 then
-              table.insert(labels, { " ", item.icon .. " " .. n, group = item.group })
+              table.insert(labels, {
+                " ",
+                item.icon .. " " .. n,
+                guibg = bg_color,
+                guifg = hl_color(item.group, "fg"),
+              })
             end
           end
 
@@ -198,10 +213,10 @@ return {
 
         local function get_diagnostics()
           local diag_icons = {
-            error = "",
-            warn = "",
-            info = "",
-            hint = "",
+            error = "",
+            warn = "",
+            info = "",
+            hint = "",
           }
           local entries = {}
 
@@ -212,17 +227,68 @@ return {
             if count > 0 then
               table.insert(entries, {
                 " " .. icon .. " " .. count,
-                group = "DiagnosticSign" .. severity,
+                -- group = "DiagnosticSign" .. severity,
+                guibg = bg_color,
+                guifg = hl_color("DiagnosticSign" .. severity, "fg"),
               })
             end
           end
-
           return entries
         end
         vim.list_extend(result, get_diagnostics())
+        table.insert(result, {
+          "",
+          guibg = hl_color("StatusLine", "bg"),
+          guifg = bg_color,
+        })
 
         return result
       end,
+    },
+  },
+  {
+    "Bekaboo/dropbar.nvim",
+    vscode = false,
+    event = "BufWinEnter",
+    opts = {
+      bar = {
+        sources = function(buf, _)
+          local sources = require("dropbar.sources")
+          local utils = require("dropbar.utils")
+          if vim.bo[buf].ft == "markdown" then
+            return { sources.path, sources.markdown }
+          end
+          if vim.bo[buf].buftype == "terminal" then
+            return { sources.terminal }
+          end
+          return {
+            utils.source.fallback({ sources.lsp, sources.treesitter }),
+          }
+        end,
+      },
+    },
+    keys = {
+      {
+        "<leader>;",
+        function()
+          require("dropbar.api").pick()
+        end,
+        desc = "Pick symbols in winbar",
+      },
+      {
+        "[;",
+        function()
+          require("dropbar.api").goto_context_start()
+        end,
+        desc = "Go to start of current context",
+      },
+      {
+        "];",
+        function()
+          require("dropbar.api").select_next_context()
+        end,
+        desc = "Select next context",
+      },
     },
   },
 }
