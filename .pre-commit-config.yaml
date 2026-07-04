@@ -67,7 +67,6 @@ repos:
     rev: main
     hooks:
       - id: kdlfmt-format
-        exclude: "niri/dms/"
 
   # web-specific file type formatting with oxfmt
   - repo: local

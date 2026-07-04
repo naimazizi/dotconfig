@@ -55,6 +55,7 @@ zsh/.zinit/
 zsh/.zsh_history
 zsh/.zsh_sessions/
 zsh/.zshenv
+niri/dms/
 
 foot/dank-colors.ini
 /opencode/package-lock.json
