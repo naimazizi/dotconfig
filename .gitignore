@@ -1,6 +1,7 @@
 # Ignore everything in repository root
 /*
 **/node_modules/
+claude/**
 
 # Files to not ignore
 !/.gitignore
@@ -16,10 +17,13 @@
 !/.condarc
 !/.oxfmtrc.json
 !/.styleua.toml
+!claude/settings.json
+!claude/README.md
 
 # Folder to not ignore
 !/amethyst/
 !/atuin/
+!/claude/
 !/fish/
 !/foot/
 !/ghostty/

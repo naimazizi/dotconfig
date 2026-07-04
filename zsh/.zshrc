@@ -17,6 +17,7 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export EDITOR='nvim'
 export VISUAL='nvim'
+export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 
 # Aliases
 alias ls='lsd'

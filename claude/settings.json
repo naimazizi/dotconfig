@@ -1,0 +1,36 @@
+{
+  "enabledPlugins": {
+    "plannotator@plannotator": true,
+    "ponytail@ponytail": true,
+    "pyrefly-lsp@pyrefly-lsp-claude-plugin": true,
+    "claude-coat@claude-coat": true
+  },
+  "extraKnownMarketplaces": {
+    "plannotator": {
+      "source": {
+        "source": "github",
+        "repo": "backnotprop/plannotator"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "dietrichgebert/ponytail"
+      }
+    },
+    "pyrefly-lsp-claude-plugin": {
+      "source": {
+        "source": "github",
+        "repo": "lolpack/pyrefly-lsp-claude-plugin"
+      }
+    },
+    "claude-coat": {
+      "source": {
+        "source": "github",
+        "repo": "efebolukbasi/claude-coat"
+      }
+    }
+  },
+  "effortLevel": "medium",
+  "theme": "custom:claude-coat:kanagawa-wave"
+}

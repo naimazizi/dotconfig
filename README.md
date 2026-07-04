@@ -4,6 +4,7 @@
 
 - amethyst
 - atuin
+- claude
 - fish
 - ghostty
 - gitui
