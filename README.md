@@ -15,7 +15,6 @@
 - neovim
 - niri
 - opencode
-- television
 - tmux
 - tmuxinator
 - vim
