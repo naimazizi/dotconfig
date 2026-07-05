@@ -110,8 +110,9 @@ return {
             "sort_text",
           },
         },
+
         -- experimental signature help support
-        signature = { enabled = true, trigger = { show_on_accept = true }, window = { border = "rounded" } },
+        -- signature = { enabled = false, trigger = { show_on_accept = true }, window = { border = "rounded" } },
 
         sources = {
           default = {
