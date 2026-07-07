@@ -1,0 +1,24 @@
+{
+  "theme": "dark",
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "transport": "auto",
+  "defaultProjectTrust": "ask",
+  "enableInstallTelemetry": false,
+  "treeFilterMode": "default",
+  "warnings": {
+    "anthropicExtraUsage": true
+  },
+  "packages": [
+    "npm:pi-provider-litellm",
+    "npm:@dietrichgebert/ponytail",
+    "npm:pi-lean-ctx",
+    "npm:pi-mcp-adapter",
+    "npm:@plannotator/pi-extension"
+  ],
+  "lastChangelogVersion": "0.80.3",
+  "compaction": {
+    "enabled": true
+  }
+}

@@ -1,36 +1,133 @@
 {
+  "effortLevel": "medium",
   "enabledPlugins": {
+    "claude-coat@claude-coat": true,
     "plannotator@plannotator": true,
     "ponytail@ponytail": true,
-    "pyrefly-lsp@pyrefly-lsp-claude-plugin": true,
-    "claude-coat@claude-coat": true
+    "pyrefly-lsp@pyrefly-lsp-claude-plugin": true
   },
   "extraKnownMarketplaces": {
+    "claude-coat": {
+      "source": {
+        "repo": "efebolukbasi/claude-coat",
+        "source": "github"
+      }
+    },
     "plannotator": {
       "source": {
-        "source": "github",
-        "repo": "backnotprop/plannotator"
+        "repo": "backnotprop/plannotator",
+        "source": "github"
       }
     },
     "ponytail": {
       "source": {
-        "source": "github",
-        "repo": "dietrichgebert/ponytail"
+        "repo": "dietrichgebert/ponytail",
+        "source": "github"
       }
     },
     "pyrefly-lsp-claude-plugin": {
       "source": {
-        "source": "github",
-        "repo": "lolpack/pyrefly-lsp-claude-plugin"
-      }
-    },
-    "claude-coat": {
-      "source": {
-        "source": "github",
-        "repo": "efebolukbasi/claude-coat"
+        "repo": "lolpack/pyrefly-lsp-claude-plugin",
+        "source": "github"
       }
     }
   },
-  "effortLevel": "medium",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "type": "command"
+          }
+        ],
+        "matcher": ".*"
+      },
+      {
+        "hooks": [
+          {
+            "command": "/opt/homebrew/bin/lean-ctx hook read-dedup",
+            "type": "command"
+          }
+        ],
+        "matcher": "Read"
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "type": "command"
+          }
+        ],
+        "matcher": ".*"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "/opt/homebrew/bin/lean-ctx hook rewrite",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash|bash"
+      },
+      {
+        "hooks": [
+          {
+            "command": "/opt/homebrew/bin/lean-ctx hook redirect",
+            "type": "command"
+          }
+        ],
+        "matcher": "Read|read|ReadFile|read_file|View|view|Grep|grep|Search|search|ListFiles|list_files|ListDirectory|list_directory|Glob|glob"
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "type": "command"
+          }
+        ],
+        "matcher": ".*"
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "type": "command"
+          }
+        ],
+        "matcher": ".*"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "type": "command"
+          }
+        ],
+        "matcher": ".*"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "type": "command"
+          }
+        ],
+        "matcher": ".*"
+      }
+    ]
+  },
   "theme": "custom:claude-coat:kanagawa-wave"
 }

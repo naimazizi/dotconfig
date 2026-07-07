@@ -2,6 +2,7 @@
 /*
 **/node_modules/
 claude/**
+pi/**
 
 # Files to not ignore
 !/.gitignore
@@ -19,6 +20,8 @@ claude/**
 !/.styleua.toml
 !claude/settings.json
 !claude/README.md
+!pi/settings.json
+!mcp/mcp.json
 
 # Folder to not ignore
 !/amethyst/
@@ -32,10 +35,12 @@ claude/**
 !/hypr/
 !/kitty/
 !/lazygit/
+!/mcp/
 !/neovide/
 !/niri/
 !/nvim/
 !/opencode/
+!/pi
 !/tmux/
 !/tmuxinator/
 !/vim/

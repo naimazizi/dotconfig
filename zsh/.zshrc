@@ -18,6 +18,7 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 export EDITOR='nvim'
 export VISUAL='nvim'
 export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
+export PI_CODING_AGENT_DIR="$HOME/.config/pi"
 
 # Aliases
 alias ls='lsd'
