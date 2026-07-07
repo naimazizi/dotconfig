@@ -64,55 +64,58 @@ elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
 	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# Mamba
-if command -v mamba &>/dev/null; then
-	eval "$(mamba shell hook --shell zsh)"
-	# Use .condarc from .config (for dotfiles repo tracking)
+# micromamba
+if command -v micromamba &>/dev/null; then
+	export MAMBA_ROOT_PREFIX="$HOME/micromamba"
+	export MAMBA_EXE="$(command -v micromamba)"
 	export CONDARC="$HOME/.config/.condarc"
+	eval "$(micromamba shell hook --shell zsh)"
 fi
 
 # Smart insert prefix options (fzf menu)
 export ZSH_SMART_INSERT_PREFIXES="nvim:bat:code"
 export ZSH_SMART_INSERT_IGNOREDIRS=".git/*:node_modules/:dist/:.venv/"
 
-# autosuggestions and completion
+# === Synchronous: prompt only ===
+# starship (must be sync)
+zinit ice as"command" from"gh-r" \
+	atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+	atpull"%atclone" src"init.zsh"
+zinit light starship/starship
+
+# === Deferred: everything else, loaded after prompt appears ===
+# autosuggestions + completions
 zinit wait lucid light-mode for \
 	atload"_zsh_autosuggest_start" \
 	zsh-users/zsh-autosuggestions \
 	blockf atpull'zinit creinstall -q .' \
 	zsh-users/zsh-completions
 
-# syntax highlighting
-zinit ice as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload'eval "$(zsh-patina activate)"'
+# syntax highlighting (patina)
+zinit ice wait lucid as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload'eval "$(zsh-patina activate)"'
 zinit light michel-kraemer/zsh-patina
-
-# starship
-zinit ice as"command" from"gh-r" \
-	atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
-	atpull"%atclone" src"init.zsh"
-zinit light starship/starship
 
 # zoxide
 zinit ice lucid wait="0"
 zinit snippet https://github.com/ajeetdsouza/zoxide/blob/main/zoxide.plugin.zsh
 
 # direnv
-zinit from"gh-r" as"program" mv"direnv* -> direnv" \
+zinit ice wait lucid from"gh-r" as"program" mv"direnv* -> direnv" \
 	atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' \
-	pick"direnv" src="zhook.zsh" for \
-	direnv/direnv
+	pick"direnv" src="zhook.zsh"
+zinit light direnv/direnv
 
 # SSH
+zinit ice wait lucid
 zinit light sunlei/zsh-ssh
 
-# Atuin initialization
-eval "$(atuin init zsh)"
+# Atuin (defer: shell-hooked, safe to load after prompt)
+zinit ice wait lucid atload'eval "$(atuin init zsh)"'
+zinit light zdharma-continuum/null
 
-# fzf-tab
-autoload -Uz compinit
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-	compinit
-else
-	compinit -C
-fi
+# fzf-tab (defer, will re-run compinit itself)
+zinit ice wait lucid atinit'
+	autoload -Uz compinit
+	if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then compinit -u; else compinit -C -u; fi
+'
 zinit light Aloxaf/fzf-tab
