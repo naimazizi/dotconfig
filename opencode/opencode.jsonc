@@ -4,11 +4,9 @@
   "model": "litellm_tvlk/claude-sonnet-4-6",
   "plugin": [
     "@dietrichgebert/ponytail",
-    "cc-safety-net",
-    "envsitter-guard@latest",
     "@tarquinen/opencode-dcp@latest",
     "@plannotator/opencode@latest",
-    "opencode-claude-auth@latest",
+    // "opencode-claude-auth@latest",
   ],
   "provider": {
     "litellm_tvlk": {
@@ -78,6 +76,11 @@
       "type": "local",
       "command": ["sqz-mcp", "--transport", "stdio"],
       "enabled": true,
+    },
+    "lean-ctx": {
+      "command": ["/opt/homebrew/bin/lean-ctx"],
+      "enabled": true,
+      "type": "local",
     },
   },
 }

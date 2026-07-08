@@ -20,5 +20,7 @@
   "lastChangelogVersion": "0.80.3",
   "compaction": {
     "enabled": true
-  }
+  },
+  "defaultProvider": "litellm",
+  "defaultModel": "claude-sonnet-4.6"
 }

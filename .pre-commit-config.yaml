@@ -7,13 +7,14 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
-        exclude: '\.git|\.pyc|\.egg-info'
+        exclude: '\.git|\.pyc|\.egg-info|^opencode/'
       - id: end-of-file-fixer
-        exclude: '\.git|\.pyc|\.egg-info|niri/dms/'
+        exclude: '\.git|\.pyc|\.egg-info|niri/dms/|^opencode/'
       - id: check-json
-        exclude: "^zed/"
+        exclude: "^zed/|^opencode/"
       - id: check-yaml
         args: ["--unsafe"]
+        exclude: "^opencode/"
 
   # Python formatting with ruff (ruff_format)
   - repo: local
@@ -50,7 +51,9 @@ repos:
     rev: v2.59.0
     hooks:
       - id: panache-format
+        exclude: "^opencode/"
       - id: panache-lint
+        exclude: "^opencode/"
 
   # Typst formatting with typstyle
   - repo: local
