@@ -36,7 +36,7 @@ return {
       provider_options = {
         openai_compatible = {
           name = "LiteLLM",
-          end_point = vim.env.LITELLM_API_ENDPOINT .. "/chat/completions",
+          end_point = (vim.env.LITELLM_API_ENDPOINT or "") .. "/chat/completions",
           api_key = "LITELLM_API_KEY",
           model = "claude-haiku-4.5",
           stream = true,
@@ -52,7 +52,7 @@ return {
         provider_options = {
           openai_compatible = {
             name = "LiteLLM",
-            end_point = vim.env.LITELLM_API_ENDPOINT .. "/chat/completions",
+            end_point = (vim.env.LITELLM_API_ENDPOINT or "") .. "/chat/completions",
             api_key = "LITELLM_API_KEY",
             model = "claude-haiku-4.5",
             optional = {},
