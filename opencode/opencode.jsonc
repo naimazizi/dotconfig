@@ -78,7 +78,7 @@
       "enabled": true,
     },
     "lean-ctx": {
-      "command": ["/opt/homebrew/bin/lean-ctx"],
+      "command": ["lean-ctx"],
       "enabled": true,
       "type": "local",
     },

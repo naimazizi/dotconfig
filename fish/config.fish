@@ -115,3 +115,9 @@ set PATH $PATH ~/.local/bin
 if test -d "~./rd/bin"
     set --export --prepend PATH "~/.rd/bin"
 end
+
+# >>> lean-ctx proxy env >>>
+# ANTHROPIC_BASE_URL omitted: Claude Pro/Max subscription authenticates against api.anthropic.com directly (set ANTHROPIC_API_KEY to route Claude through the proxy)
+set -gx OPENAI_BASE_URL "http://127.0.0.1:4444/v1"
+set -gx GEMINI_API_BASE_URL "http://127.0.0.1:4444"
+# <<< lean-ctx proxy env <<<

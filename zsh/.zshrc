@@ -120,3 +120,22 @@ zinit ice wait lucid atinit'
 	if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then compinit -u; else compinit -C -u; fi
 '
 zinit light Aloxaf/fzf-tab
+
+# lean-ctx shell hook — begin
+if [ -f "$HOME/.config/lean-ctx/shell-hook.zsh" ]; then
+	. "$HOME/.config/lean-ctx/shell-hook.zsh"
+fi
+# lean-ctx shell hook — end
+
+# >>> lean-ctx agent aliases >>>
+alias claude='LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.bashenv" claude'
+alias codebuddy='LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.bashenv" codebuddy'
+alias codex='LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.bashenv" codex'
+alias gemini='LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.bashenv" gemini'
+# <<< lean-ctx agent aliases <<<
+
+# >>> lean-ctx proxy env >>>
+# ANTHROPIC_BASE_URL omitted: Claude Pro/Max subscription authenticates against api.anthropic.com directly (set ANTHROPIC_API_KEY to route Claude through the proxy)
+export OPENAI_BASE_URL="http://127.0.0.1:4444/v1"
+export GEMINI_API_BASE_URL="http://127.0.0.1:4444"
+# <<< lean-ctx proxy env <<<

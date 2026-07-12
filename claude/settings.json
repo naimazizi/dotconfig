@@ -37,7 +37,7 @@
       {
         "hooks": [
           {
-            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "command": "lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -46,7 +46,7 @@
       {
         "hooks": [
           {
-            "command": "/opt/homebrew/bin/lean-ctx hook read-dedup",
+            "command": "lean-ctx hook read-dedup",
             "type": "command"
           }
         ],
@@ -57,7 +57,7 @@
       {
         "hooks": [
           {
-            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "command": "lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -68,7 +68,7 @@
       {
         "hooks": [
           {
-            "command": "/opt/homebrew/bin/lean-ctx hook rewrite",
+            "command": "lean-ctx hook rewrite",
             "type": "command"
           }
         ],
@@ -77,7 +77,7 @@
       {
         "hooks": [
           {
-            "command": "/opt/homebrew/bin/lean-ctx hook redirect",
+            "command": "lean-ctx hook redirect",
             "type": "command"
           }
         ],
@@ -88,7 +88,7 @@
       {
         "hooks": [
           {
-            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "command": "lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -99,7 +99,7 @@
       {
         "hooks": [
           {
-            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "command": "lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -110,7 +110,7 @@
       {
         "hooks": [
           {
-            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "command": "lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -121,7 +121,7 @@
       {
         "hooks": [
           {
-            "command": "/opt/homebrew/bin/lean-ctx hook observe",
+            "command": "lean-ctx hook observe",
             "type": "command"
           }
         ],
