@@ -34,24 +34,6 @@ alias zz="zoxide query -i"
 
 # Consolidated PATH construction for better performance
 # Build PATH array with deduplication instead of repeated concatenations
-typeset -U PATH_DIRS
-PATH_DIRS=(
-	"/usr/local/bin"
-	"$HOME/.local/bin"
-	"/opt/google-cloud-cli/bin"
-	"$HOME/.local/share/nvim/mason/bin"
-	"$HOME/.bun/bin"
-	"$HOME/.rd/bin"
-	"$HOME/.cargo/bin"
-	"$HOME/.local/share/bob/nvim-bin"
-	"$HOME/.local/share/bob"
-)
-
-for dir in "${PATH_DIRS[@]}"; do
-	[[ -d "$dir" ]] && PATH="$dir:$PATH"
-done
-export PATH # Single export instead of per-loop exports
-
 # Homebrew setup (prefer macOS)
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
 	export HOMEBREW_PREFIX='/opt/homebrew'
@@ -64,6 +46,25 @@ elif [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
 	export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
 	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
+
+typeset -U PATH_DIRS
+PATH_DIRS=(
+	"/usr/local/bin"
+	"$HOME/.local/bin"
+	"/opt/google-cloud-cli/bin"
+	"$HOME/.local/share/nvim/mason/bin"
+	"$HOME/.bun/bin"
+	"$HOME/.rd/bin"
+	"$HOME/.cargo/bin"
+	"$HOME/.local/share/bob/nvim-bin"
+	"$HOME/.local/share/bob"
+	"$(brew --prefix rustup)/bin"
+)
+
+for dir in "${PATH_DIRS[@]}"; do
+	[[ -d "$dir" ]] && PATH="$dir:$PATH"
+done
+export PATH # Single export instead of per-loop exports
 
 # micromamba
 if command -v micromamba &>/dev/null; then
@@ -113,13 +114,6 @@ zinit light sunlei/zsh-ssh
 # Atuin (defer: shell-hooked, safe to load after prompt)
 zinit ice wait lucid atload'eval "$(atuin init zsh)"'
 zinit light zdharma-continuum/null
-
-# fzf-tab (defer, will re-run compinit itself)
-zinit ice wait lucid atinit'
-	autoload -Uz compinit
-	if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then compinit -u; else compinit -C -u; fi
-'
-zinit light Aloxaf/fzf-tab
 
 # lean-ctx shell hook — begin
 if [ -f "$HOME/.config/lean-ctx/shell-hook.zsh" ]; then
