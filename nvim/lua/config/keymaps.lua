@@ -59,6 +59,10 @@ if not vim.g.vscode then
 
   -- Search only in visual selection using the %V atom
   map("v", "<leader>fs", ":s/\\%V", { noremap = true, silent = true, desc = "Search and replace in selection" })
+
+  -- Quickfix & Loclist
+  map("n", "<leader>bq", "<cmd>copen<cr>", { noremap = true, silent = true, desc = "Quickfix" })
+  map("n", "<leader>bl", "<cmd>lopen<cr>", { noremap = true, silent = true, desc = "Loclist" })
 end
 
 -- Neovide specific keymap
