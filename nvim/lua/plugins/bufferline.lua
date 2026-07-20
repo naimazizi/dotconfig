@@ -1,6 +1,97 @@
 return {
   {
+    "e-sigs/winbuf.nvim",
+    event = "BufReadPre",
+    vscode = false,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("winbuf").setup({
+        style = "padded_slant",
+        indicator = {
+          style = "bar", -- "bar", "underline", "none"
+        },
+        diagnostics = "nvim_lsp",
+        buf_delete = function(buf)
+          Snacks.bufdelete(buf)
+        end,
+      })
+    end,
+    keys = {
+      {
+        "<S-h>",
+        function()
+          require("winbuf").cycle(-1)
+        end,
+        desc = "Buffer Previous",
+      },
+      {
+        "<S-l>",
+        function()
+          require("winbuf").cycle(1)
+        end,
+        desc = "Buffer Next",
+      },
+      {
+        "[b",
+        function()
+          require("winbuf").cycle(-1)
+        end,
+        desc = "Buffer Previous",
+      },
+      {
+        "]b",
+        function()
+          require("winbuf").cycle(1)
+        end,
+        desc = "Buffer Next",
+      },
+      {
+        "<A-h>",
+        function()
+          require("winbuf").move_buf("h")
+        end,
+        desc = "Buffer Move Left",
+      },
+      {
+        "<A-l>",
+        function()
+          require("winbuf").move_buf("l")
+        end,
+        desc = "Buffer Move Right",
+      },
+      {
+        "<A-j>",
+        function()
+          require("winbuf").move_buf("j")
+        end,
+        desc = "Buffer Move Down",
+      },
+      {
+        "<A-k>",
+        function()
+          require("winbuf").move_buf("k")
+        end,
+        desc = "Buffer Move Up",
+      },
+      {
+        "<leader>bd",
+        function()
+          require("winbuf").close_buf()
+        end,
+        desc = "Buffer Close",
+      },
+      {
+        "<leader>bx",
+        function()
+          require("winbuf").close_split()
+        end,
+        desc = "Close Split",
+      },
+    },
+  },
+  {
     "romgrk/barbar.nvim",
+    enabled = false,
     vscode = false,
     event = "BufReadPre",
     dependencies = {

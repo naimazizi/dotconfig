@@ -148,6 +148,21 @@ return {
             DropBarKindMarkdownH4 = { fg = c.theme.syn.type },
             DropBarKindMarkdownH5 = { fg = c.theme.syn.string },
             DropBarKindMarkdownH6 = { fg = c.theme.syn.identifier },
+            -- WinBuf (winbuf.nvim) — per-window buffer tabs
+            WinBufActive = { fg = c.theme.ui.fg, bg = c.theme.ui.bg_p2, bold = true },
+            WinBufActiveSep = { fg = c.theme.ui.special, bg = c.theme.ui.bg_p2 },
+            WinBufInactive = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg_p1 },
+            WinBufInactiveSep = { fg = c.theme.ui.bg_p2, bg = c.theme.ui.bg_p1 },
+            WinBufActiveClose = { fg = c.theme.syn.special1, bg = c.theme.ui.bg_p2 },
+            WinBufInactiveClose = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg_p1 },
+            WinBufActiveModified = { fg = c.theme.syn.string, bg = c.theme.ui.bg_p2 },
+            WinBufInactiveModified = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg_p1 },
+            WinBufActiveDiagError = { fg = c.theme.diag.error, bg = c.theme.ui.bg_p2, bold = true },
+            WinBufActiveDiagWarn = { fg = c.theme.diag.warning, bg = c.theme.ui.bg_p2 },
+            WinBufInactiveDiagError = { fg = c.theme.diag.error, bg = c.theme.ui.bg_p1 },
+            WinBufInactiveDiagWarn = { fg = c.theme.diag.warning, bg = c.theme.ui.bg_p1 },
+            WinBufFill = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg },
+            WinBufActiveUnderline = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg },
           }
         end,
 

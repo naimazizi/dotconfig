@@ -12,6 +12,8 @@ vim.g.slime_bracketed_paste = 1
 
 vim.g.disable_autoformat = true
 
+opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
+
 if not vim.g.vscode then
   -- File handling
   opt.backup = false -- Don't create backup files
@@ -75,7 +77,6 @@ if not vim.g.vscode then
   opt.path:append("**") -- include subdirectories in search
   opt.selection = "exclusive" -- Selection behavior
   opt.mouse = "a" -- Enable mouse support
-  opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
   opt.modifiable = true -- Allow buffer modifications
 
   -- Folding settings (foldexpr/foldlevel overridden by nvim-origami when loaded)

@@ -5,7 +5,8 @@ return {
     "nvim-mini/mini.nvim",
     version = false,
     vscode = true,
-    event = "BufReadPre",
+    lazy = not vim.g.vscode,
+    event = vim.g.vscode and nil or "BufReadPre",
     config = function()
       require("mini.pairs").setup()
 

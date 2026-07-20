@@ -16,6 +16,16 @@ return {
           "branch",
         },
         lualine_c = {
+          {
+            "filename",
+            path = 4,
+            symbols = {
+              modified = "[+]",
+              readonly = "[-]",
+              unnamed = "[No Name]",
+              newfile = "[New]",
+            },
+          },
           "%=",
         },
         lualine_x = {
@@ -93,12 +103,13 @@ return {
   },
   {
     "b0o/incline.nvim",
+    enabled = false,
     event = "BufWinEnter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       window = {
         padding = 0,
-        margin = { horizontal = 1, vertical = 1 },
+        margin = { horizontal = 1, vertical = 0 },
         winhighlight = {
           active = {
             Normal = "StatusLine",

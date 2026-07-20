@@ -24,6 +24,8 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     vscode = true,
+    lazy = false,
+    event = nil,
     opts = { highlight = { enable = false } },
   },
 }
