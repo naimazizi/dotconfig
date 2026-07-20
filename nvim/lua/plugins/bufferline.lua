@@ -3,13 +3,11 @@ return {
     "e-sigs/winbuf.nvim",
     event = "BufReadPre",
     vscode = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("winbuf").setup({
-        style = "padded_slant",
-        indicator = {
-          style = "bar", -- "bar", "underline", "none"
-        },
+        style = "thick",
+        icons = { enabled = false },
+        padding = 1,
         diagnostics = "nvim_lsp",
         buf_delete = function(buf)
           Snacks.bufdelete(buf)

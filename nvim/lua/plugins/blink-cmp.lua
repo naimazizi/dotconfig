@@ -123,7 +123,6 @@ return {
           },
           per_filetype = {
             ["dap-repl"] = { "dap" },
-            AgenticInput = { "agentic_slash", "agentic_at" },
           },
           providers = {
             references = {
@@ -133,57 +132,6 @@ return {
             dap = {
               name = "dap",
               module = "blink-cmp-dap",
-            },
-            agentic_slash = {
-              module = "blink.cmp.sources.complete_func",
-              name = "AgenticSlash",
-              -- Detect / at the start of the prompt input to trigger slash command completions
-              enabled = function()
-                local cursor = vim.api.nvim_win_get_cursor(0)
-                if cursor[1] ~= 1 then
-                  return false
-                end
-                local before = vim.api.nvim_get_current_line():sub(1, cursor[2])
-                return before:match("^/[^%s]*$") ~= nil
-              end,
-              opts = {
-                complete_func = function()
-                  return "v:lua.require'agentic.acp.slash_commands'.complete_func"
-                end,
-              },
-              -- Fix output by removing / added in label details
-              transform_items = function(_, items)
-                for _, item in ipairs(items) do
-                  if item.labelDetails then
-                    item.labelDetails.detail = nil
-                  end
-                end
-                return items
-              end,
-            },
-            agentic_at = {
-              module = "blink.cmp.sources.complete_func",
-              -- Detect @ is before the cursor to trigger file picker completions
-              name = "AgenticAt",
-              enabled = function()
-                local col = vim.api.nvim_win_get_cursor(0)[2]
-                local before = vim.api.nvim_get_current_line():sub(1, col)
-                return (before:match("^@[^%s]*$") or before:match("[%s]@[^%s]*$")) ~= nil
-              end,
-              opts = {
-                complete_func = function()
-                  return "v:lua.require'agentic.ui.file_picker'.complete_func"
-                end,
-              },
-              -- Fix output by removing @ added in label details
-              transform_items = function(_, items)
-                for _, item in ipairs(items) do
-                  if item.labelDetails then
-                    item.labelDetails.detail = nil
-                  end
-                end
-                return items
-              end,
             },
             -- minuet = {
             --   name = "minuet",

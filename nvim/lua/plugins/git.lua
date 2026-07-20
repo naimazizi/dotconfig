@@ -70,5 +70,9 @@ return {
         delay = 500,
       },
     },
+    config = function(_, opts)
+      require("gitsigns").setup(opts)
+      vim.keymap.set({ "o", "x" }, "ih", "<Cmd>Gitsigns select_hunk<CR>")
+    end,
   },
 }
