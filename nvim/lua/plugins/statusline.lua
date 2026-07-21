@@ -3,7 +3,7 @@ return {
     "nvim-lualine/lualine.nvim",
     vscode = false,
     event = "VimEnter",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "SmiteshP/nvim-navic" },
     opts = {
       options = {
         component_separators = "",
@@ -14,8 +14,6 @@ return {
         lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
         lualine_b = {
           "branch",
-        },
-        lualine_c = {
           {
             "filename",
             path = 4,
@@ -25,6 +23,12 @@ return {
               unnamed = "[No Name]",
               newfile = "[New]",
             },
+          },
+        },
+        lualine_c = {
+          {
+            "navic",
+            color_correction = "dynamic",
           },
           "%=",
         },
@@ -258,48 +262,18 @@ return {
     },
   },
   {
-    "Bekaboo/dropbar.nvim",
-    vscode = false,
-    event = "BufWinEnter",
-    opts = {
-      bar = {
-        sources = function(buf, _)
-          local sources = require("dropbar.sources")
-          local utils = require("dropbar.utils")
-          if vim.bo[buf].ft == "markdown" then
-            return { sources.path, sources.markdown }
+    "SmiteshP/nvim-navic",
+    event = "LspAttach",
+    config = function()
+      vim.g.navic_silence = true
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.server_capabilities and client.server_capabilities.documentSymbolProvider then
+            require("nvim-navic").attach(client, args.buf)
           end
-          if vim.bo[buf].buftype == "terminal" then
-            return { sources.terminal }
-          end
-          return {
-            utils.source.fallback({ sources.lsp, sources.treesitter }),
-          }
         end,
-      },
-    },
-    keys = {
-      {
-        "<leader>;",
-        function()
-          require("dropbar.api").pick()
-        end,
-        desc = "Pick symbols in winbar",
-      },
-      {
-        "[;",
-        function()
-          require("dropbar.api").goto_context_start()
-        end,
-        desc = "Go to start of current context",
-      },
-      {
-        "];",
-        function()
-          require("dropbar.api").select_next_context()
-        end,
-        desc = "Select next context",
-      },
-    },
+      })
+    end,
   },
 }
