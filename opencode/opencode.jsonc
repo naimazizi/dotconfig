@@ -82,5 +82,10 @@
       "enabled": true,
       "type": "local",
     },
+    "lark-cli": {
+      "type": "local",
+      "command": ["node", "{env:HOME}/.local/lib/lark-cli-mcp/index.js"],
+      "enabled": true,
+    },
   },
 }
