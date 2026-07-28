@@ -13,7 +13,14 @@ return {
       },
     },
   },
-  { "noisesfromspace/touchup.nvim", vscode = false, ft = vim.g.md_ft, opts = {} },
+  {
+    "noisesfromspace/touchup.nvim",
+    vscode = false,
+    ft = vim.g.md_ft,
+    opts = {
+      filetypes = vim.g.md_ft,
+    },
+  },
   {
     "kevalin/mermaid.nvim",
     event = "VeryLazy",
