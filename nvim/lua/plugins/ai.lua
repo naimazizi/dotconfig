@@ -63,7 +63,8 @@ return {
   },
   {
     "sudo-tee/opencode.nvim",
-    enabled = true,
+    name = "opencode_tui",
+    enabled = false,
     vscode = false,
     cmd = "Opencode",
     keys = {
@@ -102,6 +103,63 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "saghen/blink.cmp",
+    },
+  },
+  {
+    "nickjvandyke/opencode.nvim",
+    name = "opencode_gui",
+    version = "*",
+    keys = {
+      {
+        "<leader>aa",
+        function()
+          require("opencode").ask("@this: ")
+        end,
+        mode = { "n", "x" },
+        desc = "Ask OpenCode…",
+      },
+      {
+        "<leader>as",
+        function()
+          require("opencode").select()
+        end,
+        mode = { "n", "x" },
+        desc = "Select OpenCode…",
+      },
+      {
+        "<leader>aw",
+        function()
+          return require("opencode").operator("@this ")
+        end,
+        mode = { "x" },
+        expr = true,
+        desc = "Append range to OpenCode",
+      },
+      {
+        "<leader>aw",
+        function()
+          return require("opencode").operator("@this ") .. "_"
+        end,
+        mode = "n",
+        expr = true,
+        desc = "Append line to OpenCode",
+      },
+      {
+        "<S-C-u>",
+        function()
+          require("opencode").command("session.half.page.up")
+        end,
+        mode = "n",
+        desc = "Scroll OpenCode up",
+      },
+      {
+        "<S-C-d>",
+        function()
+          require("opencode").command("session.half.page.down")
+        end,
+        mode = "n",
+        desc = "Scroll OpenCode down",
+      },
     },
   },
 }

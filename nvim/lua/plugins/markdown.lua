@@ -1,6 +1,7 @@
 return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
+    enabled = false,
     vscode = false,
     ft = vim.g.md_ft,
     opts = {
@@ -12,6 +13,7 @@ return {
       },
     },
   },
+  { "noisesfromspace/touchup.nvim", vscode = false, ft = vim.g.md_ft, opts = {} },
   {
     "kevalin/mermaid.nvim",
     event = "VeryLazy",

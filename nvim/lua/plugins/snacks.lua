@@ -270,6 +270,23 @@ return {
             min_width = 40, -- minimum length of the truncated path
           },
         },
+        win = {
+          input = {
+            keys = {
+              ["<a-o>"] = { "opencode_send", mode = { "n", "i" } },
+            },
+          },
+        },
+        actions = {
+          opencode_send = function(picker)
+            local items = vim.tbl_map(function(item)
+              return item.file and require("opencode").format({ path = item.file, from = item.pos, to = item.end_pos })
+                or item.text
+            end, picker:selected({ fallback = true }))
+
+            require("opencode").prompt(table.concat(items, ", ") .. " ")
+          end,
+        },
       },
 
       quickfile = { enabled = true },

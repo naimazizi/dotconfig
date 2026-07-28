@@ -81,6 +81,7 @@ return {
           "fileformat",
           "encoding",
           "lsp_status",
+          require("opencode").statusline,
         },
         lualine_z = {
           {

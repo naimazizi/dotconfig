@@ -45,10 +45,6 @@ return {
       local blink_cmp_upwards_ctx_id = nil
 
       return {
-        enabled = function()
-          return (vim.bo.buftype ~= "prompt" or vim.bo.filetype == "dap-repl") and vim.b.completion ~= false
-        end,
-
         snippets = {
           preset = "luasnip",
           expand = function(snippet)
@@ -57,7 +53,6 @@ return {
         },
 
         appearance = {
-          use_nvim_cmp_as_default = false,
           -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
           -- adjusts spacing to ensure icons are aligned
           nerd_font_variant = "mono",
@@ -123,8 +118,10 @@ return {
           },
           per_filetype = {
             ["dap-repl"] = { "dap" },
+            ["opencode_ask"] = { "lsp", "buffer" },
           },
           providers = {
+            lsp = { fallbacks = {} },
             references = {
               name = "pandoc_references",
               module = "cmp-pandoc-references.blink",
