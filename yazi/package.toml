@@ -1,0 +1,49 @@
+[[plugin.deps]]
+use = "wylie102/duckdb"
+rev = "3f8c863"
+hash = "87b9233a74325e95011670ed20bbd0d4"
+
+[[plugin.deps]]
+use = "passion0102/mermaid"
+rev = "90e4756"
+hash = "465917273513ba3d8e9a226954c5945c"
+
+[[plugin.deps]]
+use = "AnirudhG07/nbpreview"
+rev = "b504594"
+hash = "b83919985400521dee78e1c352b5d9db"
+
+[[plugin.deps]]
+use = "ndtoan96/ouch"
+rev = "406ce6c"
+hash = "f5afc904d5106ee368c8aa2ded43bd74"
+
+[[plugin.deps]]
+use = "dimi1357/pickle"
+rev = "7f5b75c"
+hash = "2e1cff0ff812795bae4be4584da220aa"
+
+[[plugin.deps]]
+use = "KKV9/compress"
+rev = "e60e122"
+hash = "fbaf0adc8efc59555b748d36aab62d40"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:chmod"
+rev = "4c63ed3"
+hash = "5b1c276b75cae91cbbdbe7863f39a540"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-filter"
+rev = "4c63ed3"
+hash = "d6f7351ea25a43c9b5f4315fa1e23935"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:git"
+rev = "4c63ed3"
+hash = "88e56a64b7ce7c4314427452343fef17"
+
+[[flavor.deps]]
+use = "melindachang/kanagawa-paper"
+rev = "7f3cd1d"
+hash = "3f84eceb475a9d1c1ea911d93a1d1898"
