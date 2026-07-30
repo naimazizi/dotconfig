@@ -35,8 +35,6 @@ mkdir -p ~/.config
 cd ~/.config
 git clone https://github.com/naimazizi/dotconfig .
 
-brew tap ojuschugh1/sqz
-
 brew install \
   atuin \
   bat \
@@ -56,7 +54,6 @@ brew install \
   opencode \
   ripgrep \
   sk \
-  sqz \
   tmuxinator \
   tree-sitter-cli \
   yazi \

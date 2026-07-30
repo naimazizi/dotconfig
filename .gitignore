@@ -46,6 +46,7 @@ pi/**
 !/vim/
 !/vimclap/
 !/wezterm/
+!/yazi
 !/zed/keymap.json
 !/zed/settings.json
 !/zed/task.json
@@ -64,6 +65,8 @@ zsh/.zsh_history
 zsh/.zsh_sessions/
 zsh/.zshenv
 niri/dms/
+yazi/flavors/
+yazi/plugins/
 
 foot/dank-colors.ini
 /opencode/package-lock.json
