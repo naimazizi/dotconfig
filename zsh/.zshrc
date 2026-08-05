@@ -19,6 +19,7 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 export PI_CODING_AGENT_DIR="$HOME/.config/pi"
+export HEADROOM_OUTPUT_SHAPER=1
 
 # Aliases
 alias ls='lsd'

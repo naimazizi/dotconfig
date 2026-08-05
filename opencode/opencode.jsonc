@@ -4,7 +4,6 @@
   "model": "anthropic/claude-sonnet-5",
   "plugin": [
     "@dietrichgebert/ponytail",
-    "@tarquinen/opencode-dcp@latest",
     "@plannotator/opencode@latest",
     "opencode-claude-auth@latest",
   ],
@@ -44,6 +43,8 @@
       "type": "local",
       "command": [
         "uvx",
+        "--with",
+        "mcp<1.10",
         "mcp-server-bigquery",
         "--project",
         "{env:BIGQUERY_PROJECT}",
@@ -70,12 +71,37 @@
         "JUPYTER_TOKEN": "{env:JUPYTER_TOKEN}",
         "ALLOW_IMG_OUTPUT": "true",
       },
+      "enabled": false,
+    },
+    "serena": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--project-from-cwd",
+        "--context",
+        "agent",
+        "--open-web-dashboard",
+        "False",
+      ],
       "enabled": true,
     },
-    "lean-ctx": {
-      "command": ["lean-ctx"],
-      "enabled": true,
+    "headroom": {
       "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "headroom-ai[mcp]",
+        "headroom",
+        "mcp",
+        "serve",
+        "--proxy-url",
+        "http://127.0.0.1:8787",
+      ],
+      "enabled": true,
     },
     "lark-cli": {
       "type": "local",
