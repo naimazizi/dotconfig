@@ -38,6 +38,12 @@
       },
     },
   },
+  "permission": {
+    "bash": "deny",
+    "glob": "deny",
+    "grep": "deny",
+    "read": "deny",
+  },
   "mcp": {
     "bigquery": {
       "type": "local",
@@ -89,19 +95,10 @@
       ],
       "enabled": true,
     },
-    "headroom": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "--from",
-        "headroom-ai[mcp]",
-        "headroom",
-        "mcp",
-        "serve",
-        "--proxy-url",
-        "http://127.0.0.1:8787",
-      ],
+    "lean-ctx": {
+      "command": ["lean-ctx"],
       "enabled": true,
+      "type": "local",
     },
     "lark-cli": {
       "type": "local",
