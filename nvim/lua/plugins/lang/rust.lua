@@ -76,4 +76,14 @@ return {
       vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
     end,
   },
+  {
+    "nvim-neotest/neotest",
+    optional = true,
+    dependencies = { "mrcjkb/rustaceanvim" },
+    opts = {
+      adapters = {
+        ["rustaceanvim.neotest"] = {},
+      },
+    },
+  },
 }

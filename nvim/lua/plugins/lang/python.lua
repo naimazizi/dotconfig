@@ -26,4 +26,14 @@ return {
     ft = "python",
     keys = { { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv", ft = "python" } },
   },
+  {
+    "nvim-neotest/neotest",
+    optional = true,
+    dependencies = { "nvim-neotest/neotest-python" },
+    opts = {
+      adapters = {
+        ["neotest-python"] = {},
+      },
+    },
+  },
 }

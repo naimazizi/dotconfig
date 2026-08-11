@@ -33,35 +33,8 @@ return {
           "%=",
         },
         lualine_x = {
-          {
-            function()
-              local task_list = require("overseer.task_list")
-              local util = require("overseer.util")
-              local constants = require("overseer.constants")
-              local STATUS = constants.STATUS
-              local tasks = task_list.list_tasks({ unique = true })
-              local tasks_by_status = util.tbl_group_by(tasks, "status")
-              local pieces = {}
-              local icons = {
-                [STATUS.RUNNING] = "󰑮 ",
-                [STATUS.FAILURE] = "󰅚 ",
-                [STATUS.CANCELED] = " ",
-                [STATUS.SUCCESS] = "󰄴 ",
-              }
-              for _, status in ipairs(STATUS.values) do
-                if icons[status] and tasks_by_status[status] then
-                  table.insert(pieces, icons[status] .. #tasks_by_status[status])
-                end
-              end
-              return table.concat(pieces, " ")
-            end,
-            cond = function()
-              return package.loaded["overseer"] ~= nil
-            end,
-          },
+          "overseer",
           "quickfix",
-        },
-        lualine_y = {
           {
             function()
               return require("recorder").displaySlots()
@@ -78,6 +51,8 @@ return {
               return package.loaded["recorder"] ~= nil
             end,
           },
+        },
+        lualine_y = {
           "fileformat",
           "encoding",
           "lsp_status",

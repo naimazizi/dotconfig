@@ -18,232 +18,31 @@ local function with_dap(fn)
   end
 end
 
----Find the function name at current cursor using treesitter
----@return string|nil name The function name
-local function find_function_name()
-  local ok, ts = pcall(require, "vim.treesitter")
-  if not ok then
-    return nil
-  end
-
-  local bufnr = vim.api.nvim_get_current_buf()
-  local parser = ts.get_parser(bufnr)
-  if not parser then
-    return nil
-  end
-
-  local root = parser:parse()[1]:root()
-  local cursor_row = vim.fn.line(".") - 1
-
-  -- Find the function definition node at cursor
-  local function find_function(node)
-    if not node then
-      return nil
-    end
-
-    local start_row, _start_col, end_row, _end_col = node:range()
-
-    -- Check if cursor is within this node's range
-    if not (start_row <= cursor_row and cursor_row <= end_row) then
-      return nil
-    end
-
-    local node_type = node:type()
-
-    -- If this is a function/method, check children first for inner functions
-    if node_type == "function_definition" or node_type == "method_definition" then
-      -- Search children for a more specific (inner) function
-      for child in node:iter_children() do
-        local result = find_function(child)
-        if result then
-          return result
-        end
-      end
-
-      -- No inner function found, this is the target - get its name
-      for child in node:iter_children() do
-        if child:type() == "identifier" then
-          return vim.treesitter.get_node_text(child, bufnr)
-        end
-      end
-    else
-      -- Not a function node, search children
-      for child in node:iter_children() do
-        local result = find_function(child)
-        if result then
-          return result
-        end
-      end
-    end
-
-    return nil
-  end
-
-  return find_function(root)
-end
-
----Debug test class for the current position
-local function debug_method()
-  local ok, dap = pcall(require, "dap")
-  if not ok then
-    vim.notify("nvim-dap not available")
-    return
-  end
-
-  local ft = vim.bo.filetype
-
-  -- Language-specific handlers
-  local handlers = {
-    python = function()
-      -- Find the function name using treesitter
-      local test_name = find_function_name()
-      if not test_name then
-        vim.notify("No function found at cursor")
-        return
-      end
-
-      -- Get the current file path
-      local file_path = vim.fn.expand("%:p")
-
-      -- Run pytest with the specific test
-      local pytest_args = { "-xvs", file_path .. "::" .. test_name }
-
-      -- Configure and start debugging
-      if type(dap.run) == "function" then
-        dap.run({
-          type = "python",
-          name = "pytest: " .. test_name,
-          request = "launch",
-          module = "pytest",
-          args = pytest_args,
-          console = "integratedTerminal",
-          justMyCode = false,
-        })
-      else
-        vim.notify("dap.run not available")
-      end
-    end,
-    rust = function()
-      vim.cmd("RustLsp debuggables")
-    end,
-  }
-
-  -- Execute language-specific handler or fallback
-  local handler = handlers[ft]
-  if handler then
-    handler()
-  else
-    -- Fallback for unsupported languages
-    vim.notify("Test class debugging not configured for " .. ft)
-    if type(dap.continue) == "function" then
-      dap.continue()
-    end
-  end
-end
-
 return {
   {
     "mfussenegger/nvim-dap",
     vscode = false,
     lazy = true,
     keys = {
+      { "<leader>db", "<cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
+      { "<leader>dB", "<cmd>DapBreakpointCondition<CR>", desc = "Breakpoint condition" },
+      { "<leader>dL", "<cmd>DapLogPoint<CR>", desc = "Log point" },
+      { "<leader>dc", "<cmd>DapContinue<CR>", desc = "Continue" },
+      { "<leader>dC", "<cmd>DapRunToCursor<CR>", desc = "Run to cursor" },
+      { "<leader>dp", "<cmd>DapPause<CR>", desc = "Pause" },
+      { "<leader>di", "<cmd>DapStepInto<CR>", desc = "Step into" },
+      { "<leader>do", "<cmd>DapStepOver<CR>", desc = "Step over" },
+      { "<leader>dO", "<cmd>DapStepOut<CR>", desc = "Step out" },
+      { "<leader>dl", "<cmd>DapRunLast<CR>", desc = "Run last" },
+      { "<leader>dr", "<cmd>DapReplToggle<CR>", desc = "Toggle REPL" },
+      { "<leader>dt", "<cmd>DapTerminate<CR>", desc = "Terminate" },
+      { "<leader>du", "<cmd>DapUiToggle<CR>", desc = "DAP UI" },
       {
-        "<leader>db",
-        with_dap(function(dap)
-          dap.toggle_breakpoint()
-        end),
-        desc = "Toggle breakpoint",
-      },
-      {
-        "<leader>dB",
-        with_dap(function(dap)
-          dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-        end),
-        desc = "Breakpoint condition",
-      },
-      {
-        "<leader>dL",
-        with_dap(function(dap)
-          dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-        end),
-        desc = "Log point",
-      },
-      {
-        "<leader>dc",
-        with_dap(function(dap)
-          dap.continue()
-        end),
-        desc = "Continue",
-      },
-      {
-        "<leader>dC",
-        with_dap(function(dap)
-          dap.run_to_cursor()
-        end),
-        desc = "Run to cursor",
-      },
-      {
-        "<leader>dp",
-        with_dap(function(dap)
-          dap.pause()
-        end),
-        desc = "Pause",
-      },
-      {
-        "<leader>di",
-        with_dap(function(dap)
-          dap.step_into()
-        end),
-        desc = "Step into",
-      },
-      {
-        "<leader>do",
-        with_dap(function(dap)
-          dap.step_over()
-        end),
-        desc = "Step over",
-      },
-      {
-        "<leader>dO",
-        with_dap(function(dap)
-          dap.step_out()
-        end),
-        desc = "Step out",
-      },
-      {
-        "<leader>dl",
-        with_dap(function(dap)
-          dap.run_last()
-        end),
-        desc = "Run last",
-      },
-      {
-        "<leader>dr",
-        with_dap(function(dap)
-          dap.repl.toggle()
-        end),
-        desc = "Toggle REPL",
-      },
-      {
-        "<leader>dt",
-        with_dap(function(dap)
-          dap.terminate()
-        end),
-        desc = "Terminate",
-      },
-      {
-        "<leader>du",
+        "<leader>td",
         function()
-          require("dap-view").toggle()
+          require("neotest").run.run({ strategy = "dap" })
         end,
-        desc = "DAP UI",
-      },
-      {
-        "<leader>dm",
-        function()
-          debug_method()
-        end,
-        desc = "Debug test method",
+        desc = "Debug Nearest",
       },
     },
     dependencies = {
@@ -257,8 +56,54 @@ return {
           require("dap-python").setup("debugpy-adapter")
         end,
       },
+      "nvim-neotest/neotest",
     },
     config = function()
+      local commands = {
+        DapToggleBreakpoint = with_dap(function(dap)
+          dap.toggle_breakpoint()
+        end),
+        DapBreakpointCondition = with_dap(function(dap)
+          dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+        end),
+        DapLogPoint = with_dap(function(dap)
+          dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+        end),
+        DapContinue = with_dap(function(dap)
+          dap.continue()
+        end),
+        DapRunToCursor = with_dap(function(dap)
+          dap.run_to_cursor()
+        end),
+        DapPause = with_dap(function(dap)
+          dap.pause()
+        end),
+        DapStepInto = with_dap(function(dap)
+          dap.step_into()
+        end),
+        DapStepOver = with_dap(function(dap)
+          dap.step_over()
+        end),
+        DapStepOut = with_dap(function(dap)
+          dap.step_out()
+        end),
+        DapRunLast = with_dap(function(dap)
+          dap.run_last()
+        end),
+        DapReplToggle = with_dap(function(dap)
+          dap.repl.toggle()
+        end),
+        DapTerminate = with_dap(function(dap)
+          dap.terminate()
+        end),
+        DapUiToggle = function()
+          require("dap-view").toggle()
+        end,
+      }
+      for name, fn in pairs(commands) do
+        vim.api.nvim_create_user_command(name, fn, {})
+      end
+
       require("mason-nvim-dap").setup({ handlers = {
         python = function() end,
       } })

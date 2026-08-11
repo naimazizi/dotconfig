@@ -1,6 +1,7 @@
 return {
   {
     "e-sigs/winbuf.nvim",
+    enabled = false,
     event = "BufReadPre",
     vscode = false,
     config = function()
@@ -89,7 +90,7 @@ return {
   },
   {
     "romgrk/barbar.nvim",
-    enabled = false,
+    enabled = true,
     vscode = false,
     event = "BufReadPre",
     dependencies = {
