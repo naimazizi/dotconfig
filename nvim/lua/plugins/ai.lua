@@ -1,67 +1,5 @@
 return {
   {
-    "milanglacier/minuet-ai.nvim",
-    event = "InsertEnter",
-    vscode = false,
-    keys = {
-      {
-        "<A-z>",
-        mode = { "i", "n" },
-        "<cmd>Minuet duet predict<cr>",
-        desc = "Minuet duet predict",
-      },
-      {
-        "<A-a>",
-        mode = { "i", "n" },
-        "<cmd>Minuet duet apply<cr>",
-        desc = "Minuet duet apply",
-      },
-      {
-        "<A-Z>",
-        mode = { "i", "n" },
-        "<cmd>Minuet duet dismiss<cr>",
-        desc = "Minuet duet dismiss",
-      },
-    },
-    opts = {
-      provider = "openai_compatible",
-      request_timeout = 2,
-      throttle = 500,
-      debounce = 400,
-      n_completions = 1,
-      notify = "warn",
-      blink = {
-        enable_auto_complete = false,
-      },
-      provider_options = {
-        openai_compatible = {
-          name = "LiteLLM",
-          end_point = (vim.env.LITELLM_API_ENDPOINT or "") .. "/chat/completions",
-          api_key = "LITELLM_API_KEY",
-          model = "claude-haiku-4.5",
-          stream = true,
-          optional = {
-            max_tokens = 128,
-            top_p = 0.9,
-          },
-        },
-      },
-      duet = {
-        provider = "openai_compatible",
-        request_timeout = 15,
-        provider_options = {
-          openai_compatible = {
-            name = "LiteLLM",
-            end_point = (vim.env.LITELLM_API_ENDPOINT or "") .. "/chat/completions",
-            api_key = "LITELLM_API_KEY",
-            model = "claude-haiku-4.5",
-            optional = {},
-          },
-        },
-      },
-    },
-  },
-  {
     "sudo-tee/opencode.nvim",
     name = "opencode_tui",
     enabled = false,
@@ -161,5 +99,29 @@ return {
         desc = "Scroll OpenCode down",
       },
     },
+  },
+  {
+    "cursortab/cursortab.nvim",
+    vscode = false,
+    lazy = false, -- The server is already lazy loaded
+    build = "cd server && go build",
+    config = function()
+      require("cursortab").setup({
+        keymaps = {
+          accept = false, -- <Tab> is driven by blink's keymap instead
+          partial_accept = false, -- <S-Tab> is driven by blink's keymap instead
+        },
+        provider = {
+          -- Qwen3.5-0.8B (fastest local, defaults to "inline")
+          url = "http://localhost:8000",
+          model = "mlx-community/Qwen3.5-0.8B-MLX-4bit",
+
+          -- sweep-next-edit-0.5B/1.5B (fastest local)
+          -- type = "sweep",
+          -- url = "http://localhost:8000",
+          -- model = "Chris-Kode/sweep-next-edit-1.5b-mlx",
+        },
+      })
+    end,
   },
 }

@@ -36,6 +36,7 @@ return {
       },
       "jmbuhr/cmp-pandoc-references",
       "mayromr/blink-cmp-dap",
+      "cursortab/cursortab.nvim",
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -150,7 +151,29 @@ return {
         },
 
         keymap = {
-          preset = "super-tab",
+          preset = "enter",
+          ["<Tab>"] = {
+            function()
+              return require("cursortab").accept()
+            end,
+            "snippet_forward",
+            "fallback",
+          },
+          ["<S-Tab>"] = {
+            -- ponytail: no public partial_accept() API on cursortab, so this
+            -- calls the same internal primitives its own <S-Tab> handler
+            -- uses (ui.has_completion + daemon.send_event). Upgrade if
+            -- cursortab.nvim adds a public partial_accept().
+            function()
+              if require("cursortab.ui").has_completion() then
+                require("cursortab.daemon").send_event("partial_accept")
+                return true
+              end
+              return false
+            end,
+            "snippet_backward",
+            "fallback",
+          },
         },
       }
     end,
