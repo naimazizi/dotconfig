@@ -60,24 +60,20 @@
       "enabled": true,
       "timeout": 30000,
     },
-    "sequential-thinking": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
-      "enabled": true,
-    },
     "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app",
     },
     "jupyter": {
       "type": "local",
+      "timeout": 5000,
       "command": ["uvx", "jupyter-mcp-server@latest"],
       "env": {
         "JUPYTER_URL": "{env:JUPYTER_URL}",
         "JUPYTER_TOKEN": "{env:JUPYTER_TOKEN}",
         "ALLOW_IMG_OUTPUT": "true",
       },
-      "enabled": false,
+      "enabled": true,
     },
     "serena": {
       "type": "local",
