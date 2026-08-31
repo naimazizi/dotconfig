@@ -1,4 +1,6 @@
-local layout = require("utils.pick").layout
+local function toggle_terminal()
+  Snacks.terminal.toggle(nil, {})
+end
 
 return {
   {
@@ -8,59 +10,42 @@ return {
     lazy = false,
     keys = {
       {
-        "<leader><leader>",
-        function()
-          Snacks.picker.smart({ layout = layout })
-        end,
-        desc = "Find files",
-      },
-      {
-        "<leader>/",
-        function()
-          Snacks.picker.grep({
-            layout = layout,
-          })
-        end,
-        desc = "Live Grep",
-      },
-      {
-        "<leader>sw",
-        function()
-          Snacks.picker.grep_word({ layout = layout })
-        end,
-        desc = "Search current word",
-        mode = { "n", "x" },
-      },
-      {
-        "<leader>ff",
-        function()
-          Snacks.picker.files({ layout = layout })
-        end,
-        desc = "Find files",
-      },
-      {
-        "<leader>fF",
-        function()
-          Snacks.picker.files({ cwd = vim.fn.expand("%:p:h"), layout = layout })
-        end,
-        desc = "Find files (cwd)",
-      },
-      {
-        "<leader>fg",
-        function()
-          Snacks.picker.grep({ layout = layout })
-        end,
-        desc = "Live Grep",
-      },
-      {
         "<leader>bi",
         function()
-          Snacks.bufdelete.invisible({ layout = layout })
+          Snacks.bufdelete.invisible()
         end,
         desc = "Delete Invisible Buffers",
       },
       {
-        "<leader>sR",
+        "<leader>fz",
+        function()
+          Snacks.picker.zoxide()
+        end,
+        desc = "Zoxide",
+      },
+      {
+        "<leader>fp",
+        function()
+          Snacks.picker.projects()
+        end,
+        desc = "Project",
+      },
+      {
+        "<leader>si",
+        function()
+          Snacks.picker.icons()
+        end,
+        desc = "Icon picker",
+      },
+      {
+        "<leader>su",
+        function()
+          Snacks.picker.undo()
+        end,
+        desc = "Undotree",
+      },
+      {
+        "<leader>sr",
         function()
           Snacks.picker.resume()
         end,
@@ -69,125 +54,89 @@ return {
       {
         "<leader>sk",
         function()
-          Snacks.picker.keymaps({ layout = layout })
+          Snacks.picker.keymaps()
         end,
         desc = "Keymaps",
       },
       {
         "<leader>sm",
         function()
-          Snacks.picker.marks({ layout = layout })
+          Snacks.picker.marks()
         end,
         desc = "Marks",
       },
       {
         "<leader>sd",
         function()
-          Snacks.picker.diagnostics_buffer({ layout = layout })
+          Snacks.picker.diagnostics_buffer()
         end,
         desc = "Diagnostics",
       },
       {
         "<leader>sD",
         function()
-          Snacks.picker.diagnostics({ layout = layout })
+          Snacks.picker.diagnostics()
         end,
         desc = "Diagnostics Workspace",
       },
       {
         "<leader>sq",
         function()
-          Snacks.picker.qflist({ layout = layout })
+          Snacks.picker.qflist()
         end,
         desc = "Quickfix",
       },
       {
         "<leader>sl",
         function()
-          Snacks.picker.loclist({ layout = layout })
+          Snacks.picker.loclist()
         end,
         desc = "Loclist",
       },
       {
-        "<leader>fr",
-        function()
-          Snacks.picker.recent({ layout = layout })
-        end,
-        desc = "Recent",
-      },
-      {
-        "<leader>fz",
-        function()
-          Snacks.picker.zoxide({ layout = layout })
-        end,
-        desc = "Zoxide",
-      },
-      {
-        "<leader>fp",
-        function()
-          Snacks.picker.projects({ layout = layout })
-        end,
-        desc = "Project",
-      },
-      {
         "<leader>fh",
         function()
-          Snacks.picker.help({ layout = layout })
+          Snacks.picker.help()
         end,
         desc = "Help",
       },
       {
         "<leader>s/",
         function()
-          Snacks.picker.command_history({ layout = layout })
+          Snacks.picker.command_history()
         end,
         desc = "Command History",
       },
       {
         "<leader>gc",
         function()
-          Snacks.picker.git_log_file({ layout = layout })
+          Snacks.picker.git_log_file()
         end,
         desc = "Buffer Commits",
       },
       {
         "<leader>gC",
         function()
-          Snacks.picker.git_log({ layout = layout })
+          Snacks.picker.git_log()
         end,
         desc = "Commits",
       },
       {
         "<leader>bb",
         function()
-          Snacks.picker.buffers({ layout = layout })
+          Snacks.picker.buffers()
         end,
         desc = "List buffers",
       },
       {
-        "<leader>si",
+        "<leader>uc",
         function()
-          Snacks.picker.icons({ layout = layout })
+          Snacks.picker.colorschemes()
         end,
-        desc = "Icon picker",
+        desc = "Colorschemes",
       },
-      {
-        "<leader>e",
-        function()
-          Snacks.explorer()
-        end,
-        desc = "File Explorer",
-      },
-      {
-        "<leader>su",
-        function()
-          Snacks.picker.undo({ layout = layout })
-        end,
-        desc = "Undotree",
-      },
-      { "<C-/>", "<cmd>lua Snacks.terminal.toggle()<CR>", desc = "Toggle terminal" },
-      { "<C-`>", "<cmd>lua Snacks.terminal.toggle()<CR>", desc = "Toggle terminal" },
-      { "<leader>ft", "<cmd>lua Snacks.terminal()<CR>", desc = "Toggle terminal" },
+      { "<C-/>", toggle_terminal, mode = { "n", "t" }, desc = "Toggle terminal" },
+      { "<C-`>", toggle_terminal, mode = { "n", "t" }, desc = "Toggle terminal" },
       {
         "<leader>gg",
         function()
@@ -205,37 +154,30 @@ return {
       {
         "<leader>gi",
         function()
-          Snacks.picker.gh_issue({ layout = layout })
+          Snacks.picker.gh_issue()
         end,
         desc = "GitHub Issues (open)",
       },
       {
         "<leader>gI",
         function()
-          Snacks.picker.gh_issue({ state = "all", layout = layout })
+          Snacks.picker.gh_issue({ state = "all" })
         end,
         desc = "GitHub Issues (all)",
       },
       {
         "<leader>gp",
         function()
-          Snacks.picker.gh_pr({ layout = layout })
+          Snacks.picker.gh_pr()
         end,
         desc = "GitHub Pull Requests (open)",
       },
       {
         "<leader>gP",
         function()
-          Snacks.picker.gh_pr({ state = "all", layout = layout })
+          Snacks.picker.gh_pr()
         end,
         desc = "GitHub Pull Requests (all)",
-      },
-      {
-        "<leader>uc",
-        function()
-          Snacks.picker.colorschemes({ state = "all", layout = layout })
-        end,
-        desc = "Colorschemes",
       },
     },
     ---@type snacks.Config
@@ -246,6 +188,7 @@ return {
 
       picker = {
         ui_select = true,
+        layout = require("utils.pick").layout,
         sources = {
           lsp_definitions = { jump = { unique = true } },
           lsp_type_definitions = { jump = { unique = true } },
@@ -255,7 +198,7 @@ return {
           fuzzy = true, -- use fuzzy matching
           smartcase = true, -- use smartcase
           ignorecase = true, -- use ignorecase
-          sort_empty = true, -- sort results when the search string is empty
+          sort_empty = false, -- sort results when the search string is empty
           filename_bonus = true, -- give bonus for matching file names (last part of the path)
           file_pos = true, -- support patterns like `file:line:col` and `file:line`
           cwd_bonus = true, -- give bonus for matching files in the cwd
@@ -299,14 +242,21 @@ return {
 
       gh = { enabled = true },
 
-      lazygit = { enabled = true },
+      lazygit = {
+        enabled = true,
+        config = {
+          os = {
+            -- override the `nvim-remote` preset's `e` (edit) command to open in the
+            -- current window (--remote) instead of a new tab (--remote-tab).
+            -- No "outside nvim" fallback needed: lazygit only ever runs inside
+            -- our own Snacks terminal, so $NVIM is always set.
+            edit = 'nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}}',
+            editAtLine = 'nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"',
+          },
+        },
+      },
 
       scroll = { enabled = true },
-
-      explorer = {
-        replace_netrw = true,
-        trash = true,
-      },
 
       indent = {
         indent = {
@@ -373,14 +323,14 @@ return {
               icon = " ",
               key = "f",
               desc = "Find File",
-              action = ":lua Snacks.picker.files()",
+              action = ":lua require('fff').find_files()",
             },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             {
               icon = " ",
               key = "g",
               desc = "Find Text",
-              action = ":lua Snacks.dashboard.pick('live_grep')",
+              action = ":lua require('fff').live_grep()",
             },
             {
               icon = " ",
@@ -398,7 +348,7 @@ return {
               icon = " ",
               key = "c",
               desc = "Config",
-              action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+              action = ":lua require('fff').find_files_in_dir(vim.fn.stdpath('config'))",
             },
             { icon = " ", key = "s", desc = "Restore Session", section = "session" },
             { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },

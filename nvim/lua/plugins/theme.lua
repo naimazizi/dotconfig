@@ -15,11 +15,11 @@ return {
         -- highlight background for the left gutter
         gutter = false,
         -- background for diagnostic virtual text
-        diag_background = true,
+        diag_background = false,
         -- dim inactive windows. Disabled when transparent
         dim_inactive = false,
         -- set colors for terminal buffers
-        terminal_colors = true,
+        terminal_colors = false,
         -- cache highlights and colors for faster startup.
         -- see Cache section for more details.
         cache = true,

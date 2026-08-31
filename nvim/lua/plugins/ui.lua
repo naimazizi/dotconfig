@@ -1,4 +1,113 @@
 return {
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    vscode = false,
+    keys = {
+      {
+        "<leader>uE",
+        function()
+          require("edgy").toggle()
+        end,
+        desc = "Edgy Toggle",
+      },
+      {
+        "<A-w>",
+        function()
+          require("edgy").select()
+        end,
+        desc = "Edgy Select Window",
+      },
+    },
+    opts = {
+      animate = { enabled = false },
+      options = {
+        left = { size = 0.20 },
+        bottom = { size = 0.15 },
+        right = { size = 0.30 },
+      },
+      keys = {
+        -- increase width
+        ["<c-Right>"] = function(win)
+          win:resize("width", 2)
+        end,
+        -- decrease width
+        ["<c-Left>"] = function(win)
+          win:resize("width", -2)
+        end,
+        -- increase height
+        ["<c-Up>"] = function(win)
+          win:resize("height", 2)
+        end,
+        -- decrease height
+        ["<c-Down>"] = function(win)
+          win:resize("height", -2)
+        end,
+      },
+      bottom = {
+        { title = "Neotest Output", ft = "neotest-output-panel" },
+        { title = "Overseer Output", ft = "OverseerOutput" },
+        { title = "DAP", ft = "dap-view" },
+        { title = "DAP", ft = "dap-repl" },
+        { title = "DAP Term", ft = "dap-view-term" },
+        {
+          title = "Terminal",
+          ft = "snacks_terminal",
+          pinned = true,
+          open = function()
+            Snacks.terminal()
+          end,
+          filter = function(_, win)
+            return vim.api.nvim_win_get_config(win).relative == ""
+          end,
+        },
+        {
+          title = "Quickfix",
+          ft = "qf",
+        },
+      },
+      left = {
+        {
+          title = "Explorer",
+          ft = "neo-tree",
+          size = { height = 0.4 },
+          pinned = false,
+          open = function()
+            require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
+          end,
+          filter = function(buf)
+            return vim.b[buf].neo_tree_source == "filesystem"
+          end,
+        },
+        {
+          title = "Outline",
+          ft = "Outline",
+          pinned = false,
+          open = "Outline",
+          size = { height = 0.50 },
+        },
+        {
+          title = "Overseer",
+          ft = "OverseerList",
+          open = function()
+            require("overseer").open()
+          end,
+          size = { height = 0.4 },
+        },
+        { title = "Neotest Summary", ft = "neotest-summary" },
+        {
+          title = "Help",
+          ft = "help",
+          filter = function(buf)
+            return vim.bo[buf].buftype == "help"
+          end,
+        },
+      },
+      right = {
+        { title = "Grug Far", ft = "grug-far", size = { width = 0.30 } },
+      },
+    },
+  },
   { "nvim-tree/nvim-web-devicons", vscode = false, opts = {} },
   {
     "folke/noice.nvim",
@@ -40,7 +149,7 @@ return {
     vscode = false,
     keys = { { "<leader>cs", "<cmd>Outline<cr>", desc = "Toggle Outline" } },
     opts = {
-      outline_window = { position = "right", auto_jump = true, wrap = false },
+      outline_window = { position = "left", auto_jump = true, wrap = false },
       keymaps = {
         down_and_jump = {},
         up_and_jump = {},
@@ -128,7 +237,7 @@ return {
 
       -- picker
       map("n", prefix .. "h", function()
-        require("haunt.picker").show({ layout = require("utils.pick").layout })
+        require("haunt.picker").show()
       end, { desc = "Show Picker" })
     end,
   },

@@ -3,6 +3,13 @@ local map = vim.keymap.set
 -- Terminal escape
 map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
 
+-- Move to other windows from terminal mode (leaves terminal-normal mode first)
+map("t", "<C-w>", "<C-\\><C-n><C-w>", { silent = true, desc = "Window commands" })
+map("t", "<C-h>", "<C-\\><C-n><C-w>h", { silent = true, desc = "Move to left window" })
+map("t", "<C-j>", "<C-\\><C-n><C-w>j", { silent = true, desc = "Move to below window" })
+map("t", "<C-k>", "<C-\\><C-n><C-w>k", { silent = true, desc = "Move to above window" })
+map("t", "<C-l>", "<C-\\><C-n><C-w>l", { silent = true, desc = "Move to right window" })
+
 -- Incremental selection
 map({ "n", "x", "o" }, "<A-o>", function()
   if vim.treesitter.get_parser(nil, nil, { error = false }) then

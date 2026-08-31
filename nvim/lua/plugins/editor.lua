@@ -127,7 +127,7 @@ return {
     },
     keys = {
       {
-        "<leader>sr",
+        "<leader>fr",
         mode = { "n" },
         function()
           local grug = require("grug-far")

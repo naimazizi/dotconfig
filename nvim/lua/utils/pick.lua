@@ -35,10 +35,9 @@ local function lsp_with_fallback(snacks_fn, fallback, opts)
     fallback()
     return
   end
-  local options = opts or {}
-  options.layout = options.layout or M.layout
-
-  local ok = pcall(snacks_fn, options)
+  -- No need to pass `layout` here: it's set as the global default in
+  -- `Snacks.setup({ picker = { layout = M.layout } })`.
+  local ok = pcall(snacks_fn, opts or {})
   if not ok then
     fallback()
   end

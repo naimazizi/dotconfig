@@ -6,5 +6,6 @@
       "filetypes": ["python"],
       "rootPatterns": ["pyrefly.toml", "pyproject.toml", ".git"]
     }
-  }
+  },
+  "snippets.ultisnips.pythonPrompt": false
 }
