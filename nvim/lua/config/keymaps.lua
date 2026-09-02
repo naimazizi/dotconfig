@@ -1,5 +1,11 @@
 local map = vim.keymap.set
 
+-- Delete without clobbering the unnamed/yank register (send to black hole register instead)
+map({ "n", "x" }, "d", '"_d', { desc = "Delete (no register)" })
+map("n", "D", '"_D', { desc = "Delete to EOL (no register)" })
+map({ "n", "x" }, "x", '"_x', { desc = "Delete char (no register)" })
+map("n", "X", '"_X', { desc = "Delete char before (no register)" })
+
 -- Terminal escape
 map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
 
