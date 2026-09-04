@@ -18,8 +18,6 @@ Config.options.change_detection.enabled = false
 Config.options.defaults.cond = function(plugin)
   return vim.tbl_contains(enabled, plugin.name) or plugin.vscode
 end
-vim.g.snacks_animate = false
-
 return {
   {
     "nvim-treesitter/nvim-treesitter",

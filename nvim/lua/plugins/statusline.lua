@@ -3,7 +3,7 @@ return {
     "nvim-lualine/lualine.nvim",
     vscode = false,
     event = "VimEnter",
-    dependencies = { "nvim-tree/nvim-web-devicons", "SmiteshP/nvim-navic" },
+    dependencies = { "SmiteshP/nvim-navic" },
     opts = {
       options = {
         component_separators = "",
@@ -33,7 +33,25 @@ return {
           "%=",
         },
         lualine_x = {
-          "overseer",
+          {
+            function()
+              local icons = { FAILURE = "󰅚", CANCELED = "", SUCCESS = "󰄴", RUNNING = "󰑮" }
+              local counts = {}
+              for _, task in ipairs(require("overseer").list_tasks()) do
+                counts[task.status] = (counts[task.status] or 0) + 1
+              end
+              local parts = {}
+              for _, status in ipairs({ "FAILURE", "RUNNING", "SUCCESS", "CANCELED" }) do
+                if counts[status] then
+                  table.insert(parts, icons[status] .. counts[status])
+                end
+              end
+              return table.concat(parts, " ")
+            end,
+            cond = function()
+              return package.loaded["overseer"] ~= nil
+            end,
+          },
           "quickfix",
           {
             function()
@@ -56,7 +74,14 @@ return {
           "fileformat",
           "encoding",
           "lsp_status",
-          require("opencode").statusline,
+          {
+            function()
+              return require("opencode").statusline()
+            end,
+            cond = function()
+              return package.loaded["opencode"] ~= nil
+            end,
+          },
         },
         lualine_z = {
           {
@@ -79,162 +104,6 @@ return {
       },
       tabline = {},
       extensions = { "quickfix" },
-    },
-  },
-  {
-    "b0o/incline.nvim",
-    enabled = false,
-    event = "BufWinEnter",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      window = {
-        padding = 0,
-        margin = { horizontal = 1, vertical = 0 },
-        winhighlight = {
-          active = {
-            Normal = "StatusLine",
-          },
-          inactive = {
-            Normal = "StatusLineNC",
-          },
-        },
-      },
-      render = function(props)
-        local helpers = require("incline.helpers")
-        local devicons = require("nvim-web-devicons")
-
-        local function hl_color(name, attr)
-          local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
-          local val = hl[attr]
-          return val and string.format("#%06x", val) or nil
-        end
-
-        local result = {}
-
-        local fullpath = vim.api.nvim_buf_get_name(props.buf)
-        local reldir
-        if fullpath == "" then
-          reldir = ""
-        else
-          reldir = vim.fn.fnamemodify(fullpath, ":~:.:h")
-          if reldir == "." then
-            reldir = ""
-          end
-        end
-        local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-        ---@diagnostic disable-next-line: call-non-callable
-        local ft_icon, _ = devicons.get_icon(filename)
-        local modified = vim.bo[props.buf].modified
-
-        local bg_color
-        local fg_color = hl_color("Normal", "fg")
-        if props.focused then
-          bg_color = hl_color("StatusLineNC", "fg")
-        else
-          bg_color = helpers.contrast_color(hl_color("StatusLine", "fg"))
-        end
-
-        table.insert(result, {
-          "",
-          guibg = hl_color("StatusLine", "bg"),
-          guifg = bg_color,
-        })
-
-        table.insert(result, ft_icon and {
-          ft_icon,
-          " ",
-          guibg = bg_color,
-          guifg = fg_color,
-        })
-
-        -- Relative path
-        if reldir ~= "" then
-          table.insert(result, {
-            " ",
-            guibg = bg_color,
-            guifg = fg_color,
-          })
-          table.insert(result, {
-            reldir == "" and reldir or (reldir .. "/"),
-            gui = "italic",
-            guibg = bg_color,
-            guifg = fg_color,
-          })
-        end
-
-        local buffer = {
-          {
-            filename,
-            gui = modified and "bold,italic" or "bold",
-            guibg = bg_color,
-            guifg = fg_color,
-          },
-        }
-        table.insert(result, buffer)
-
-        local function get_gitsigns_diff()
-          local dict = vim.b[props.buf].gitsigns_status_dict
-          if type(dict) ~= "table" then
-            return {}
-          end
-
-          local items = {
-            { key = "added", icon = "", group = "GitSignsAdd" },
-            { key = "changed", icon = "", group = "GitSignsChange" },
-            { key = "removed", icon = "", group = "GitSignsDelete" },
-          }
-
-          local labels = {}
-          for _, item in ipairs(items) do
-            local n = tonumber(dict[item.key]) or 0
-            if n > 0 then
-              table.insert(labels, {
-                " ",
-                item.icon .. " " .. n,
-                guibg = bg_color,
-                guifg = hl_color(item.group, "fg"),
-              })
-            end
-          end
-
-          return labels
-        end
-
-        vim.list_extend(result, get_gitsigns_diff())
-
-        local function get_diagnostics()
-          local diag_icons = {
-            error = "",
-            warn = "",
-            info = "",
-            hint = "",
-          }
-          local entries = {}
-
-          for severity, icon in pairs(diag_icons) do
-            local count = #vim.diagnostic.get(props.buf, {
-              severity = vim.diagnostic.severity[string.upper(severity)],
-            })
-            if count > 0 then
-              table.insert(entries, {
-                " " .. icon .. " " .. count,
-                -- group = "DiagnosticSign" .. severity,
-                guibg = bg_color,
-                guifg = hl_color("DiagnosticSign" .. severity, "fg"),
-              })
-            end
-          end
-          return entries
-        end
-        vim.list_extend(result, get_diagnostics())
-        table.insert(result, {
-          "",
-          guibg = hl_color("StatusLine", "bg"),
-          guifg = bg_color,
-        })
-
-        return result
-      end,
     },
   },
   {

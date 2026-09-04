@@ -51,17 +51,6 @@ return {
         { title = "DAP", ft = "dap-repl" },
         { title = "DAP Term", ft = "dap-view-term" },
         {
-          title = "Terminal",
-          ft = "snacks_terminal",
-          pinned = true,
-          open = function()
-            Snacks.terminal()
-          end,
-          filter = function(_, win)
-            return vim.api.nvim_win_get_config(win).relative == ""
-          end,
-        },
-        {
           title = "Quickfix",
           ft = "qf",
         },
@@ -108,7 +97,6 @@ return {
       },
     },
   },
-  { "nvim-tree/nvim-web-devicons", vscode = false, opts = {} },
   {
     "folke/noice.nvim",
     vscode = false,

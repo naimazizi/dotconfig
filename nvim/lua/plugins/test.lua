@@ -1,7 +1,18 @@
 return {
   {
     "nvim-neotest/neotest",
-    event = "VeryLazy",
+    cmd = {
+      "NeotestAttach",
+      "NeotestFile",
+      "NeotestSuite",
+      "NeotestNearest",
+      "NeotestLast",
+      "NeotestSummary",
+      "NeotestOutput",
+      "NeotestOutputPanel",
+      "NeotestStop",
+      "NeotestWatch",
+    },
     vscode = false,
     dependencies = { "nvim-neotest/nvim-nio", "stevearc/overseer.nvim" },
     opts = {

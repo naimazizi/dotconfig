@@ -1,12 +1,80 @@
 local mini_ai = require("utils.mini-ai")
 
+local todo = require("utils.todo")
+
 return {
   {
     "nvim-mini/mini.nvim",
     version = false,
     vscode = true,
-    lazy = not vim.g.vscode,
-    event = vim.g.vscode and nil or "BufReadPre",
+    lazy = false,
+    keys = {
+      { "]t", todo.jump(true), desc = "Next TODO comment" },
+      { "[t", todo.jump(false), desc = "Prev TODO comment" },
+      {
+        "<leader>uf",
+        function()
+          vim.g.disable_autoformat = not vim.g.disable_autoformat
+          vim.notify("Format on Save (global): " .. (vim.g.disable_autoformat and "off" or "on"))
+        end,
+        desc = "Toggle Format on Save",
+      },
+      {
+        "<leader>uw",
+        function()
+          vim.wo.wrap = not vim.wo.wrap
+          vim.notify("Wrap: " .. (vim.wo.wrap and "on" or "off"))
+        end,
+        desc = "Toggle Wrap",
+      },
+      {
+        "<leader>uh",
+        function()
+          local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+          vim.lsp.inlay_hint.enable(not enabled, { bufnr = 0 })
+          vim.notify("Inlay Hints: " .. (enabled and "off" or "on"))
+        end,
+        desc = "Toggle Inlay Hints",
+      },
+      {
+        "<leader>ud",
+        function()
+          local enabled = vim.diagnostic.is_enabled()
+          vim.diagnostic.enable(not enabled)
+          vim.notify("Diagnostics: " .. (enabled and "off" or "on"))
+        end,
+        desc = "Toggle Diagnostics",
+      },
+      {
+        "<leader>qs",
+        function()
+          require("utils.session").restore()
+        end,
+        desc = "Restore Session",
+      },
+      {
+        "<leader>qS",
+        function()
+          require("mini.sessions").select("read")
+        end,
+        desc = "Select Session",
+      },
+      {
+        "<leader>ql",
+        function()
+          require("mini.sessions").read(require("mini.sessions").get_latest())
+        end,
+        desc = "Restore Last Session",
+      },
+      {
+        "<leader>qd",
+        function()
+          vim.g.minisessions_disable = true
+          vim.notify("Session Save: off")
+        end,
+        desc = "Disable Session Save",
+      },
+    },
     config = function()
       require("mini.pairs").setup()
 
@@ -116,8 +184,93 @@ return {
         },
       })
 
-      mini_ai.ai_setup()
-      mini_ai.ai_whichkey()
+      if not vim.g.vscode then
+        require("mini.sessions").setup({
+          autoread = false,
+          autowrite = true,
+          directory = vim.fn.stdpath("state") .. "/sessions/",
+          file = "", -- no per-cwd `Session.vim` file, only the global dir above
+          verbose = { read = true, write = true, delete = true },
+        })
+
+        vim.api.nvim_create_autocmd("VimLeavePre", {
+          callback = function()
+            if vim.g.minisessions_disable then
+              return
+            end
+            local has_buffer = vim.iter(vim.api.nvim_list_bufs()):any(function(b)
+              return vim.bo[b].buflisted
+            end)
+            if has_buffer then
+              require("mini.sessions").write(require("utils.session").name(), { force = true })
+            end
+          end,
+        })
+
+        require("mini.bufremove").setup()
+
+        require("mini.indentscope").setup({
+          symbol = "│",
+          options = { try_as_border = true },
+        })
+
+        mini_ai.ai_setup()
+        mini_ai.ai_whichkey()
+
+        require("mini.icons").setup()
+        require("mini.icons").mock_nvim_web_devicons()
+
+        require("mini.hipatterns").setup({
+          highlighters = {
+            fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+            fix = { pattern = "%f[%w]()FIX()%f[%W]", group = "MiniHipatternsFixme" },
+            hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+            todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+            note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+          },
+        })
+
+        require("mini.starter").setup({
+          header = table.concat({
+            "  ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆",
+            "  ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦",
+            "        ⠈⢿⣿⣟⠦ ⣾⣿⣿⣷    ⠻⠿⢿⣿⣧⣄",
+            "          ⣸⣿⣿⢧ ⢻⠻⣿⣿⣷⣄⣀⠄⠢⣀⡀⠈⠙⠿⠄",
+            "        ⢠⣿⣿⣿⠈    ⣻⣿⣿⣿⣿⣿⣿⣿⣛⣳⣤⣀⣀",
+            "  ⢠⣧⣶⣥⡤⢄ ⣸⣿⣿⠘  ⢀⣴⣿⣿⡿⠛⣿⣿⣧⠈⢿⠿⠟⠛⠻⠿⠄",
+            "⣰⣿⣿⠛⠻⣿⣿⡦⢹⣿⣷   ⢊⣿⣿⡏  ⢸⣿⣿⡇ ⢀⣠⣄⣾⠄",
+            "⣠⣿⠿⠛ ⢀⣿⣿⣷⠘⢿⣿⣦⡀ ⢸⢿⣿⣿⣄ ⣸⣿⣿⡇⣪⣿⡿⠿⣿⣷⡄",
+            "⠙⠃   ⣼⣿⡟  ⠈⠻⣿⣿⣦⣌⡇⠻⣿⣿⣷⣿⣿⣿ ⣿⣿⡇ ⠛⠻⢷⣄",
+            "    ⢻⣿⣿⣄   ⠈⠻⣿⣿⣿⣷⣿⣿⣿⣿⣿⡟ ⠫⢿⣿⡆",
+            "      ⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃",
+          }, "\n"),
+          items = {
+            { name = "Find File", action = "lua require('fzf-lua').files()", section = "Actions" },
+            { name = "Grep Text", action = "lua require('fzf-lua').live_grep()", section = "Actions" },
+            {
+              name = "Session - Restore latest",
+              action = function()
+                require("utils.session").restore()
+              end,
+              section = "Actions",
+            },
+            {
+              name = "Config",
+              action = "lua require('fzf-lua').files({ cwd = vim.fn.stdpath('config') })",
+              section = "Actions",
+            },
+            require("mini.starter").sections.builtin_actions(),
+            require("mini.starter").sections.recent_files(5, false),
+            require("mini.starter").sections.sessions(5, true),
+          },
+          footer = function()
+            local stats = require("lazy").stats()
+            return "⚡ Neovim loaded " .. stats.count .. " plugins in " .. stats.startuptime .. "ms"
+          end,
+          silent = true,
+          evaluate_single = true,
+        })
+      end
     end,
   },
 }

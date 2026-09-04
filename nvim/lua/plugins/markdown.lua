@@ -23,8 +23,8 @@ return {
   },
   {
     "kevalin/mermaid.nvim",
-    event = "VeryLazy",
     vscode = false,
+    ft = vim.g.md_ft,
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("mermaid").setup()
@@ -32,8 +32,8 @@ return {
   },
   {
     "selimacerbas/markdown-preview.nvim",
-    event = "VeryLazy",
     vscode = false,
+    ft = vim.g.md_ft,
     dependencies = { "selimacerbas/live-server.nvim" },
     config = function()
       require("markdown_preview").setup({

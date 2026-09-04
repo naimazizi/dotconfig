@@ -26,7 +26,7 @@ return {
       },
     },
     opts = {
-      preferred_picker = "snacks",
+      preferred_picker = "fzf-lua",
       preferred_completion = "blink",
       default_global_keymaps = true,
       default_mode = "build",
@@ -46,6 +46,7 @@ return {
   {
     "nickjvandyke/opencode.nvim",
     name = "opencode_gui",
+    vscode = false,
     version = "*",
     keys = {
       {
