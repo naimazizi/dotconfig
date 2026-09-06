@@ -230,6 +230,8 @@ return {
           },
         })
 
+        require("mini.statuscolumn").setup()
+
         require("mini.starter").setup({
           header = table.concat({
             "  ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆",
