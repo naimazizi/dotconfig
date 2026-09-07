@@ -40,8 +40,6 @@ function M.ai_setup()
             from_line = math.max(cell_markers[i], 1)
             to_line = cell_markers[i + 1] - 1
           end
-          ---@diagnostic disable-next-line: param-type-mismatch
-          -- for `around cell` on empty line select previous cell
           local to_line_len = #(lines[to_line] or "") + 1
           table.insert(regions, {
             from = { line = from_line, col = 1 },

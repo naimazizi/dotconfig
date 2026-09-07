@@ -112,7 +112,7 @@ if vim.fn.isdirectory(undodir) == 0 then
   vim.fn.mkdir(undodir, "p")
 end
 
--- global floating window border (all vim.lsp, vim.diagnostic, etc.)
+---@diagnostic disable-next-line: assign-type-mismatch
 opt.winborder = "rounded"
 -- completion popup menu border
 opt.pumborder = "rounded"

@@ -1,78 +1,43 @@
-return {
-  {
-    "lewis6991/gitsigns.nvim",
-    vscode = false,
-    event = { "BufReadPre", "BufNewFile" },
-    keys = {
-      {
-        "]h",
-        function()
-          require("gitsigns").next_hunk()
-        end,
-        desc = "Next hunk",
-      },
-      {
-        "[h",
-        function()
-          require("gitsigns").prev_hunk()
-        end,
-        desc = "Prev hunk",
-      },
-      {
-        "<leader>gs",
-        function()
-          require("gitsigns").stage_hunk()
-        end,
-        mode = { "n", "v" },
-        desc = "Stage hunk",
-      },
-      {
-        "<leader>gr",
-        function()
-          require("gitsigns").reset_hunk()
-        end,
-        mode = { "n", "v" },
-        desc = "Reset hunk",
-      },
-      {
-        "<leader>gS",
-        function()
-          require("gitsigns").stage_buffer()
-        end,
-        desc = "Stage buffer",
-      },
-      {
-        "<leader>gR",
-        function()
-          require("gitsigns").reset_buffer()
-        end,
-        desc = "Reset buffer",
-      },
-      {
-        "<leader>gv",
-        function()
-          require("gitsigns").preview_hunk()
-        end,
-        desc = "Preview hunk",
-      },
-      {
-        "<leader>gb",
-        function()
-          require("gitsigns").blame()
-        end,
-        desc = "Git Blame",
-      },
+if vim.g.vscode then
+  return
+end
+
+vim.pack.add({ Config.gh("lewis6991/gitsigns.nvim") })
+
+Config.later(function()
+  require("gitsigns").setup({
+    current_line_blame = true,
+    current_line_blame_opts = {
+      virt_text_pos = "right_align",
+      delay = 500,
     },
-    opts = {
-      current_line_blame = true,
-      current_line_blame_opts = {
-        virt_text_pos = "right_align",
-        delay = 500,
-      },
-    },
-    config = function(_, opts)
-      require("gitsigns").setup(opts)
-      vim.keymap.set({ "o", "x" }, "ih", "<Cmd>Gitsigns select_hunk<CR>")
-    end,
-  },
-}
+  })
+
+  vim.keymap.set({ "o", "x" }, "ih", "<cmd>Gitsigns select_hunk<cr>")
+
+  local map = vim.keymap.set
+  map("n", "]h", function()
+    require("gitsigns").next_hunk()
+  end, { desc = "Next hunk" })
+  map("n", "[h", function()
+    require("gitsigns").prev_hunk()
+  end, { desc = "Prev hunk" })
+  map({ "n", "v" }, "<leader>gs", function()
+    require("gitsigns").stage_hunk()
+  end, { desc = "Stage hunk" })
+  map({ "n", "v" }, "<leader>gr", function()
+    require("gitsigns").reset_hunk()
+  end, { desc = "Reset hunk" })
+  map("n", "<leader>gS", function()
+    require("gitsigns").stage_buffer()
+  end, { desc = "Stage buffer" })
+  map("n", "<leader>gR", function()
+    require("gitsigns").reset_buffer()
+  end, { desc = "Reset buffer" })
+  map("n", "<leader>gv", function()
+    require("gitsigns").preview_hunk()
+  end, { desc = "Preview hunk" })
+  map("n", "<leader>gb", function()
+    require("gitsigns").blame()
+  end, { desc = "Git Blame" })
+end)

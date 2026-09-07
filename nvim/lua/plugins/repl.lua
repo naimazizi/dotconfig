@@ -1,35 +1,14 @@
-return {
-  {
-    "GCBallesteros/NotebookNavigator.nvim",
-    enabled = false,
-    vscode = false,
-    dependencies = {
-      "nvim-mini/mini.comment",
-    },
-    event = "BufRead *.py",
-    config = function()
-      local nn = require("notebook-navigator")
-      vim.keymap.set({ "n", "v" }, "[r", function()
-        nn.move_cell("u")
-      end, { silent = true, desc = "Notebook - Move cell up" })
-      vim.keymap.set({ "n", "v" }, "]r", function()
-        nn.move_cell("d")
-      end, { silent = true, desc = "Notebook - Move cell down" })
-    end,
-  },
-  {
-    "jpalardy/vim-slime",
-    enabled = true,
-    vscode = false,
-    ft = "python",
-    init = function()
-      vim.g.slime_no_mappings = 1
-    end,
-    keys = {
-      { "<localleader>rC", "<cmd>SlimeConfig<cr>", desc = "Slime Config" },
-      { "<localleader>rr", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", desc = "Slime Send Cell" },
-      { "<localleader>rr", ":<C-u>'<,'>SlimeSend<CR>", mode = "v", desc = "Slime Send Selection" },
-      { "<localleader>r<cr>", "<Plug>SlimeLineSend<CR>", mode = "v", desc = "Slime Send Selection" },
-    },
-  },
-}
+if vim.g.vscode then
+  return
+end
+
+vim.g.slime_no_mappings = 1
+vim.pack.add({ Config.gh("jpalardy/vim-slime") })
+
+Config.on_filetype("python", function()
+  local map = vim.keymap.set
+  map("n", "<localleader>rC", "<cmd>SlimeConfig<cr>", { desc = "Slime Config" })
+  map("n", "<localleader>rr", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", { desc = "Slime Send Cell" })
+  map("v", "<localleader>rr", ":<C-u>'<,'>SlimeSend<CR>", { desc = "Slime Send Selection" })
+  map("v", "<localleader>r<cr>", "<Plug>SlimeLineSend<CR>", { desc = "Slime Send Selection" })
+end)

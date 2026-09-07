@@ -5,7 +5,7 @@ map({ "n", "x" }, "d", '"_d', { desc = "Delete (no register)" })
 map("n", "D", '"_D', { desc = "Delete to EOL (no register)" })
 
 -- Terminal escape
-map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
+-- map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
 
 -- Move to other windows from terminal mode (leaves terminal-normal mode first)
 map("t", "<C-w>", "<C-\\><C-n><C-w>", { silent = true, desc = "Window commands" })
@@ -30,6 +30,35 @@ map({ "n", "x", "o" }, "<A-i>", function()
     vim.lsp.buf.selection_range(-vim.v.count1)
   end
 end, { desc = "Select child treesitter node or inner incremental lsp selections" })
+
+-- Multicursor
+map("n", "<A-e>", function()
+  local mc_ns = vim.api.nvim_create_namespace("nvim.multicursor")
+  vim.api.nvim_buf_clear_namespace(0, mc_ns, 0, -1)
+end, { noremap = true, desc = "Multicursor clear All cursor" })
+
+map("n", "<A-n>", function()
+  local ns = vim.api.nvim_create_namespace("nvim.multicursor")
+  local marks = vim.api.nvim_buf_get_extmarks(0, ns, 0, -1)
+  if #marks ~= 0 then
+    vim.api.nvim_feedkeys("Qn", "n", false) -- place a cursor and jump to the next match
+    return
+  end
+  vim.api.nvim_feedkeys("wbQ", "n", false) -- move to the beginning of the word and place a cursor
+  vim.fn.setreg("/", "\\V" .. vim.fn.expand("<cword>")) -- set search pattern to the current word
+  vim.api.nvim_feedkeys("n", "n", false)
+end, { noremap = true, desc = "Multicursor search word under cursor" })
+
+map("n", "<A-C-n>", function()
+  local ns = vim.api.nvim_create_namespace("nvim.multicursor")
+  local _marks = vim.api.nvim_buf_get_extmarks(0, ns, 0, -1)
+  vim.api.nvim_feedkeys("wbQ", "n", false) -- move to the beginning of the word and place a cursor
+  vim.fn.setreg("/", "\\V" .. vim.fn.expand("<cword>")) -- set search pattern to the current word
+  vim.api.nvim_feedkeys("n", "n", false)
+end, { noremap = true, desc = "Multicursor search word under cursor" })
+
+map("n", "<A-f>", "q=", { noremap = true, desc = "Multicursor follow" })
+map("n", "<A-m>", "[CQ", { noremap = true, desc = "Multicursor delete current cursor" })
 
 -- Neovim general keymaps
 if not vim.g.vscode then
@@ -61,9 +90,6 @@ if not vim.g.vscode then
   for _, key in ipairs({ "gra", "gri", "grn", "grr", "grt", "gO", "grx" }) do
     pcall(vim.keymap.del, "n", key)
   end
-
-  -- Lazy
-  map("n", "<leader>l", "<cmd>Lazy<cr>", { noremap = true, silent = true, desc = "Lazy" })
 
   -- Search and replace in line
   map("n", "<leader>fs", ":%s/", { noremap = true, silent = true, desc = "Search and replace" })

@@ -1,49 +1,29 @@
-return {
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    enabled = false,
-    vscode = false,
-    ft = vim.g.md_ft,
-    opts = {
-      render_modes = true, -- enable all modes
-      file_types = vim.g.md_ft,
-      code = {
-        style = "full",
-        width = "full",
-      },
-    },
-  },
-  {
-    "noisesfromspace/touchup.nvim",
-    vscode = false,
-    ft = vim.g.md_ft,
-    opts = {
-      filetypes = vim.g.md_ft,
-    },
-  },
-  {
-    "kevalin/mermaid.nvim",
-    vscode = false,
-    ft = vim.g.md_ft,
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      require("mermaid").setup()
-    end,
-  },
-  {
-    "selimacerbas/markdown-preview.nvim",
-    vscode = false,
-    ft = vim.g.md_ft,
-    dependencies = { "selimacerbas/live-server.nvim" },
-    config = function()
-      require("markdown_preview").setup({
-        -- all optional; sane defaults shown
-        instance_mode = "takeover", -- "takeover" (one tab) or "multi" (tab per instance)
-        port = 0, -- 0 = auto (8421 for takeover, OS-assigned for multi)
-        open_browser = true,
-        default_theme = "dark", -- "dark" or "light"; initial preview theme
-        debounce_ms = 300,
-      })
-    end,
-  },
-}
+-- ponytail: render-markdown.nvim dropped (was `enabled = false` upstream)
+if vim.g.vscode then
+  return
+end
+
+vim.pack.add({
+  Config.gh("noisesfromspace/touchup.nvim"),
+  Config.gh("kevalin/mermaid.nvim"),
+  Config.gh("nvim-treesitter/nvim-treesitter"),
+  Config.gh("selimacerbas/live-server.nvim"),
+  Config.gh("selimacerbas/markdown-preview.nvim"),
+})
+
+Config.on_filetype(table.concat(vim.g.md_ft, ","), function()
+  require("touchup").setup({
+    filetypes = vim.g.md_ft,
+  })
+
+  require("mermaid").setup()
+
+  require("markdown_preview").setup({
+    -- all optional; sane defaults shown
+    instance_mode = "takeover", -- "takeover" (one tab) or "multi" (tab per instance)
+    port = 0, -- 0 = auto (8421 for takeover, OS-assigned for multi)
+    open_browser = true,
+    default_theme = "dark", -- "dark" or "light"; initial preview theme
+    debounce_ms = 300,
+  })
+end)

@@ -41,7 +41,7 @@ else
   vim.api.nvim_create_autocmd("TextYankPost", {
     group = group,
     callback = function()
-      vim.hl.on_yank()
+      vim.hl.hl_op()
     end,
   })
 
@@ -89,21 +89,6 @@ else
     group = group,
   })
 
-  -- Barbar: safe tabline before mksession save
-  vim.api.nvim_create_autocmd("User", {
-    group = group,
-    pattern = "PersistenceSavePre",
-    callback = function()
-      vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
-    end,
-  })
-
-  vim.api.nvim_create_user_command("LspLog", function()
-    vim.cmd.tabnew({ vim.lsp.log.get_filename() })
-  end, {
-    desc = "Opens the Nvim LSP client log.",
-  })
-
   -- Close sidebar windows with q
   vim.api.nvim_create_autocmd("FileType", {
     group = group,
@@ -138,3 +123,16 @@ else
     end,
   })
 end
+
+vim.api.nvim_create_user_command("ClearCursors", function()
+  local mc_ns = vim.api.nvim_create_namespace("nvim.multicursor")
+  vim.api.nvim_buf_clear_namespace(0, mc_ns, 0, -1)
+  -- Force a redraw to update the UI immediately
+  vim.cmd("redraw")
+end, {})
+
+vim.api.nvim_create_user_command("LspLog", function()
+  vim.cmd.tabnew({ vim.lsp.log.get_filename() })
+end, {
+  desc = "Opens the Nvim LSP client log.",
+})

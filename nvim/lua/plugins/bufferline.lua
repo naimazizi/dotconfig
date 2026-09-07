@@ -1,87 +1,67 @@
-return {
-  {
-    "romgrk/barbar.nvim",
-    enabled = true,
-    vscode = false,
-    event = "BufReadPre",
-    dependencies = {
-      "nvim-mini/mini.nvim",
+if vim.g.vscode then
+  return
+end
+
+vim.g.barbar_auto_setup = false
+
+vim.pack.add({ Config.gh("romgrk/barbar.nvim"), Config.gh("nvim-mini/mini.nvim") })
+
+Config.now(function()
+  require("barbar").setup({
+    icons = {
+      -- preset = "powerline",
+      pinned = { button = "", filename = true },
+      alternate = { filetype = { enabled = true } },
+      diagnostics = {
+        [vim.diagnostic.severity.ERROR] = { enabled = true, icon = "󰅚 " },
+        [vim.diagnostic.severity.WARN] = { enabled = true, icon = " " },
+        [vim.diagnostic.severity.INFO] = { enabled = false, icon = " " },
+        [vim.diagnostic.severity.HINT] = { enabled = true, icon = " " },
+      },
     },
-    keys = {
-      { "<S-h>", "<Cmd>BufferPrevious<CR>", desc = "Buffer Previous", noremap = true, silent = true },
-      { "<S-l>", "<Cmd>BufferNext<CR>", desc = "Buffer Next", noremap = true, silent = true },
-      { "[b", "<Cmd>BufferMovePrevious<CR>", desc = "Buffer Move Previous", noremap = true, silent = true },
-      { "]b", "<Cmd>BufferMoveNext<CR>", desc = "Buffer Move Next", noremap = true, silent = true },
-      { "<leader>bp", "<Cmd>BufferPin<CR>", desc = "Buffer Pin", noremap = true, silent = true },
-      {
-        "<leader>bP",
-        "<Cmd>BufferCloseAllButCurrentOrPinned<CR>",
-        desc = "Buffer Close Unpinned",
-        noremap = true,
-        silent = true,
-      },
-      {
-        "<leader>bh",
-        "<Cmd>BufferCloseBuffersLeft<CR>",
-        desc = "Buffer Delete to Left",
-        noremap = true,
-        silent = true,
-      },
-      {
-        "<leader>bl",
-        "<Cmd>BufferCloseBuffersRight<CR>",
-        desc = "Buffer Delete to Right",
-        noremap = true,
-        silent = true,
-      },
-      {
-        "<leader>bd",
-        "<Cmd>BufferClose<CR>",
-        desc = "Buffer Close",
-        noremap = true,
-        silent = true,
-      },
-      {
-        "<leader>bD",
-        "<Cmd>BufferRestore<CR>",
-        desc = "Buffer Restore",
-        noremap = true,
-        silent = true,
-      },
-      {
-        "<leader>bi",
-        "<Cmd>BufferCloseAllButCurrentOrPinned<CR>",
-        desc = "Buffer Close All",
-        noremap = true,
-        silent = true,
-      },
-      { "<A-1>", "<Cmd>BufferGoto 1<CR>", desc = "Buffer 1", noremap = true, silent = true },
-      { "<A-2>", "<Cmd>BufferGoto 2<CR>", desc = "Buffer 2", noremap = true, silent = true },
-      { "<A-3>", "<Cmd>BufferGoto 3<CR>", desc = "Buffer 3", noremap = true, silent = true },
-      { "<A-4>", "<Cmd>BufferGoto 4<CR>", desc = "Buffer 4", noremap = true, silent = true },
-      { "<A-5>", "<Cmd>BufferGoto 5<CR>", desc = "Buffer 5", noremap = true, silent = true },
-      { "<A-6>", "<Cmd>BufferGoto 6<CR>", desc = "Buffer 6", noremap = true, silent = true },
-      { "<A-7>", "<Cmd>BufferGoto 7<CR>", desc = "Buffer 7", noremap = true, silent = true },
-      { "<A-8>", "<Cmd>BufferGoto 8<CR>", desc = "Buffer 8", noremap = true, silent = true },
-      { "<A-9>", "<Cmd>BufferGoto 9<CR>", desc = "Buffer 9", noremap = true, silent = true },
-      { "<A-0>", "<Cmd>BufferLast<CR>", desc = "Buffer Last", noremap = true, silent = true },
-    },
-    init = function()
-      vim.g.barbar_auto_setup = false
-    end,
-    opts = {
-      icons = {
-        -- preset = "powerline",
-        pinned = { button = "", filename = true },
-        alternate = { filetype = { enabled = true } },
-        diagnostics = {
-          [vim.diagnostic.severity.ERROR] = { enabled = true, icon = "󰅚 " },
-          [vim.diagnostic.severity.WARN] = { enabled = true, icon = " " },
-          [vim.diagnostic.severity.INFO] = { enabled = false, icon = " " },
-          [vim.diagnostic.severity.HINT] = { enabled = true, icon = " " },
-        },
-      },
-      animation = false,
-    },
-  },
-}
+    animation = false,
+  })
+
+  local map = vim.keymap.set
+  map("n", "<S-h>", function()
+    vim.cmd("BufferPrevious")
+  end, { desc = "Buffer Previous", noremap = true, silent = true })
+  map("n", "<S-l>", function()
+    vim.cmd("BufferNext")
+  end, { desc = "Buffer Next", noremap = true, silent = true })
+  map("n", "[b", function()
+    vim.cmd("BufferMovePrevious")
+  end, { desc = "Buffer Move Previous", noremap = true, silent = true })
+  map("n", "]b", function()
+    vim.cmd("BufferMoveNext")
+  end, { desc = "Buffer Move Next", noremap = true, silent = true })
+  map("n", "<leader>bp", function()
+    vim.cmd("BufferPin")
+  end, { desc = "Buffer Pin", noremap = true, silent = true })
+  map("n", "<leader>bP", function()
+    vim.cmd("BufferCloseAllButCurrentOrPinned")
+  end, { desc = "Buffer Close Unpinned", noremap = true, silent = true })
+  map("n", "<leader>bh", function()
+    vim.cmd("BufferCloseBuffersLeft")
+  end, { desc = "Buffer Delete to Left", noremap = true, silent = true })
+  map("n", "<leader>bl", function()
+    vim.cmd("BufferCloseBuffersRight")
+  end, { desc = "Buffer Delete to Right", noremap = true, silent = true })
+  map("n", "<leader>bd", function()
+    vim.cmd("BufferClose")
+  end, { desc = "Buffer Close", noremap = true, silent = true })
+  map("n", "<leader>bD", function()
+    vim.cmd("BufferRestore")
+  end, { desc = "Buffer Restore", noremap = true, silent = true })
+  map("n", "<leader>bi", function()
+    vim.cmd("BufferCloseAllButCurrentOrPinned")
+  end, { desc = "Buffer Close All", noremap = true, silent = true })
+  for i = 1, 9 do
+    map("n", "<A-" .. i .. ">", function()
+      vim.cmd("BufferGoto " .. i)
+    end, { desc = "Buffer " .. i, noremap = true, silent = true })
+  end
+  map("n", "<A-0>", function()
+    vim.cmd("BufferLast")
+  end, { desc = "Buffer Last", noremap = true, silent = true })
+end)

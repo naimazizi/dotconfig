@@ -1,226 +1,222 @@
-return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    branch = "main",
-    build = ":TSUpdate",
-    event = { "BufReadPre", "BufNewFile" },
-    cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
-    opts = {
-      indent = { enable = true },
-      highlight = { enable = true },
-      folds = { enable = true },
+vim.pack.add({
+  { src = Config.gh("nvim-treesitter/nvim-treesitter"), version = "main" },
+  { src = Config.gh("nvim-treesitter/nvim-treesitter-textobjects"), version = "main" },
+})
 
-      -- NOTE: nvim-treesitter `main` branch moved away from `nvim-treesitter.configs`
-      -- and the old `ensure_installed/auto_install` options.
-      ensure_installed = {
-        "bash",
-        "c",
-        "diff",
-        "html",
-        "javascript",
-        "jsdoc",
-        "json",
-        "jsonc",
-        "kdl",
-        "lua",
-        "luadoc",
-        "luap",
-        "markdown",
-        "markdown_inline",
-        "mermaid",
-        "printf",
-        "python",
-        "query",
-        "regex",
-        "ron",
-        "rust",
-        "toml",
-        "tsx",
-        "typescript",
-        "vim",
-        "vimdoc",
-        "xml",
-        "yaml",
-        "hurl",
-      },
+Config.on_packchanged("nvim-treesitter", { "install", "update" }, function()
+  vim.cmd("TSUpdate")
+end, "Recompile treesitter parsers")
+
+Config.later(function()
+  -- VSCode owns syntax highlighting/indent/folds; keep parser install/API for
+  -- other plugins (e.g. mini.ai, textobjects) that rely on treesitter queries.
+  local is_vscode = vim.g.vscode
+  local opts = {
+    indent = { enable = not is_vscode },
+    highlight = { enable = not is_vscode },
+    folds = { enable = not is_vscode },
+
+    -- NOTE: nvim-treesitter `main` branch moved away from `nvim-treesitter.configs`
+    -- and the old `ensure_installed/auto_install` options.
+    ensure_installed = {
+      "bash",
+      "c",
+      "diff",
+      "html",
+      "javascript",
+      "jsdoc",
+      "json",
+      "jsonc",
+      "kdl",
+      "lua",
+      "luadoc",
+      "luap",
+      "markdown",
+      "markdown_inline",
+      "mermaid",
+      "printf",
+      "python",
+      "query",
+      "regex",
+      "ron",
+      "rust",
+      "toml",
+      "tsx",
+      "typescript",
+      "vim",
+      "vimdoc",
+      "xml",
+      "yaml",
+      "hurl",
     },
-    config = function(_, opts)
-      local TS = require("nvim-treesitter")
-      TS.setup(opts)
+  }
 
-      local ts_install = require("nvim-treesitter.install")
-      local ts_parsers = require("nvim-treesitter.parsers")
+  local TS = require("nvim-treesitter")
+  ---@diagnostic disable-next-line
+  TS.setup(opts)
 
-      -- Local state for deduplicating background parser installs within a session.
-      local ts_install_queue = {}
+  local ts_install = require("nvim-treesitter.install")
+  local ts_parsers = require("nvim-treesitter.parsers")
 
-      ---Install one or more parsers (best-effort).
-      ---@param languages string[]
-      local function install_parsers(languages)
-        if not languages or #languages == 0 then
-          return
-        end
+  -- Local state for deduplicating background parser installs within a session.
+  local ts_install_queue = {}
 
-        -- Filter out already-installed parsers and anything without an install config.
-        local installed = TS.get_installed("parsers")
-        local to_install = {}
-        for _, lang in ipairs(languages) do
-          if ts_parsers[lang] and not vim.list_contains(installed, lang) then
-            table.insert(to_install, lang)
-          end
-        end
+  ---Install one or more parsers (best-effort).
+  ---@param languages string[]
+  local function install_parsers(languages)
+    if not languages or #languages == 0 then
+      return
+    end
 
-        if #to_install == 0 then
-          return
-        end
+    -- Filter out already-installed parsers and anything without an install config.
+    local installed = TS.get_installed("parsers")
+    local to_install = {}
+    for _, lang in ipairs(languages) do
+      if ts_parsers[lang] and not vim.list_contains(installed, lang) then
+        table.insert(to_install, lang)
+      end
+    end
 
-        -- Install in the background; avoid repeated scheduling.
-        local scheduled = false
-        for _, lang in ipairs(to_install) do
-          if not ts_install_queue[lang] then
-            ts_install_queue[lang] = true
-            scheduled = true
-          end
-        end
+    if #to_install == 0 then
+      return
+    end
 
-        if not scheduled then
-          return
-        end
+    -- Install in the background; avoid repeated scheduling.
+    local scheduled = false
+    for _, lang in ipairs(to_install) do
+      if not ts_install_queue[lang] then
+        ts_install_queue[lang] = true
+        scheduled = true
+      end
+    end
 
-        vim.schedule(function()
-          local langs = {}
-          for lang, _ in pairs(ts_install_queue) do
-            table.insert(langs, lang)
-          end
-          ts_install_queue = {}
+    if not scheduled then
+      return
+    end
 
-          if #langs > 0 then
-            pcall(ts_install.install, langs, { silent = true })
-          end
-        end)
+    vim.schedule(function()
+      local langs = {}
+      for lang, _ in pairs(ts_install_queue) do
+        table.insert(langs, lang)
+      end
+      ts_install_queue = {}
+
+      if #langs > 0 then
+        pcall(ts_install.install, langs, { silent = true })
+      end
+    end)
+  end
+
+  -- Ensure configured languages are installed.
+  install_parsers(opts.ensure_installed or {})
+
+  vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("nvim_minimax_treesitter", { clear = true }),
+    callback = function(ev)
+      local ft = ev.match
+
+      if ft == "quarto" then
+        vim.treesitter.language.register("markdown", { "quarto", "rmd" })
       end
 
-      -- Ensure configured languages are installed.
-      install_parsers(opts.ensure_installed or {})
+      -- Auto-install parser for the current filetype (if available).
+      local lang = vim.treesitter.language.get_lang(ft) or ft
+      install_parsers({ lang })
 
-      vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("nvim_minimax_treesitter", { clear = true }),
-        callback = function(ev)
-          local ft = ev.match
+      local function enabled(feat)
+        local f = opts[feat] or {}
+        return f.enable ~= false
+      end
 
-          if ft == "quarto" then
-            vim.treesitter.language.register("markdown", { "quarto", "rmd" })
+      if enabled("highlight") then
+        pcall(vim.treesitter.start, ev.buf)
+      end
+
+      if enabled("indent") then
+        vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end
+
+      if enabled("folds") then
+        local clients = vim.lsp.get_clients({ bufnr = ev.buf })
+        local supports_folding = false
+        for _, client in ipairs(clients) do
+          if client:supports_method("textDocument/foldingRange") then
+            supports_folding = true
+            break
           end
+        end
 
-          -- Auto-install parser for the current filetype (if available).
-          local lang = vim.treesitter.language.get_lang(ft) or ft
-          install_parsers({ lang })
-
-          local function enabled(feat)
-            local f = opts[feat] or {}
-            return f.enable ~= false
-          end
-
-          if enabled("highlight") then
-            pcall(vim.treesitter.start, ev.buf)
-          end
-
-          if enabled("indent") then
-            vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-          end
-
-          if enabled("folds") then
-            local clients = vim.lsp.get_clients({ bufnr = ev.buf })
-            local supports_folding = false
-            for _, client in ipairs(clients) do
-              if client:supports_method("textDocument/foldingRange") then
-                supports_folding = true
-                break
-              end
-            end
-
-            if not supports_folding then
-              vim.wo.foldmethod = "expr"
-              vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-            end
-          end
-        end,
-      })
+        if not supports_folding then
+          vim.wo.foldmethod = "expr"
+          vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        end
+      end
     end,
-  },
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    branch = "main",
-    event = "BufReadPost",
-    opts = {
-      move = {
-        enable = true,
-        set_jumps = true, -- whether to set jumps in the jumplist
-        -- LazyVim extension to create buffer-local keymaps
-        keys = {
-          goto_next_start = {
-            ["]f"] = "@function.outer",
-            ["]c"] = "@class.outer",
-            ["]a"] = "@parameter.inner",
-          },
-          goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
-          goto_previous_start = {
-            ["[f"] = "@function.outer",
-            ["[c"] = "@class.outer",
-            ["[a"] = "@parameter.inner",
-          },
-          goto_previous_end = {
-            ["[F"] = "@function.outer",
-            ["[C"] = "@class.outer",
-            ["[A"] = "@parameter.inner",
-          },
+  })
+
+  local textobjects_opts = {
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      keys = {
+        goto_next_start = {
+          ["]f"] = "@function.outer",
+          ["]c"] = "@class.outer",
+          ["]a"] = "@parameter.inner",
+        },
+        goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
+        goto_previous_start = {
+          ["[f"] = "@function.outer",
+          ["[c"] = "@class.outer",
+          ["[a"] = "@parameter.inner",
+        },
+        goto_previous_end = {
+          ["[F"] = "@function.outer",
+          ["[A"] = "@parameter.inner",
         },
       },
     },
-    config = function(_, opts)
-      local TS = require("nvim-treesitter-textobjects")
-      TS.setup(opts)
+  }
 
-      local function attach(buf)
-        local _ft = vim.bo[buf].filetype
-        if not (vim.tbl_get(opts, "move", "enable")) then
-          return
+  require("nvim-treesitter-textobjects").setup(textobjects_opts)
+
+  local function attach_textobjects(buf)
+    if not (vim.tbl_get(textobjects_opts, "move", "enable")) then
+      return
+    end
+    ---@type table<string, table<string, string>>
+    local moves = vim.tbl_get(textobjects_opts, "move", "keys") or {}
+
+    for method, keymaps in pairs(moves) do
+      for key, query in pairs(keymaps) do
+        local queries = type(query) == "table" and query or { query }
+        local parts = {}
+        for _, q in ipairs(queries) do
+          local part = q:gsub("@", ""):gsub("%..*", "")
+          part = part:sub(1, 1):upper() .. part:sub(2)
+          table.insert(parts, part)
         end
-        ---@type table<string, table<string, string>>
-        local moves = vim.tbl_get(opts, "move", "keys") or {}
-
-        for method, keymaps in pairs(moves) do
-          for key, query in pairs(keymaps) do
-            local queries = type(query) == "table" and query or { query }
-            local parts = {}
-            for _, q in ipairs(queries) do
-              local part = q:gsub("@", ""):gsub("%..*", "")
-              part = part:sub(1, 1):upper() .. part:sub(2)
-              table.insert(parts, part)
-            end
-            local desc = table.concat(parts, " or ")
-            desc = (key:sub(1, 1) == "[" and "Prev " or "Next ") .. desc
-            desc = desc .. (key:sub(2, 2) == key:sub(2, 2):upper() and " End" or " Start")
-            if not (vim.wo.diff and key:find("[cC]")) then
-              vim.keymap.set({ "n", "x", "o" }, key, function()
-                require("nvim-treesitter-textobjects.move")[method](query, "textobjects")
-              end, {
-                buffer = buf,
-                desc = desc,
-                silent = true,
-              })
-            end
-          end
+        local desc = table.concat(parts, " or ")
+        desc = (key:sub(1, 1) == "[" and "Prev " or "Next ") .. desc
+        desc = desc .. (key:sub(2, 2) == key:sub(2, 2):upper() and " End" or " Start")
+        if not (vim.wo.diff and key:find("[cC]")) then
+          vim.keymap.set({ "n", "x", "o" }, key, function()
+            require("nvim-treesitter-textobjects.move")[method](query, "textobjects")
+          end, {
+            buffer = buf,
+            desc = desc,
+            silent = true,
+          })
         end
       end
+    end
+  end
 
-      vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("nvim_minimax_textobjects", { clear = true }),
-        callback = function(ev)
-          attach(ev.buf)
-        end,
-      })
-      vim.tbl_map(attach, vim.api.nvim_list_bufs())
+  vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("nvim_minimax_textobjects", { clear = true }),
+    callback = function(ev)
+      attach_textobjects(ev.buf)
     end,
-  },
-}
+  })
+  vim.tbl_map(attach_textobjects, vim.api.nvim_list_bufs())
+end)

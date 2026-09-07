@@ -1,122 +1,72 @@
-return {
-  {
-    "thesimonho/kanagawa-paper.nvim",
-    enabled = false,
-    vscode = false,
-    lazy = false,
-    priority = 1000,
-    opts = function()
-      local palette_colors = require("kanagawa-paper.colors").palette
-      return {
-        -- enable undercurls for underlined text
-        undercurl = true,
-        -- transparent background
-        transparent = false,
-        -- highlight background for the left gutter
-        gutter = false,
-        -- background for diagnostic virtual text
-        diag_background = false,
-        -- dim inactive windows. Disabled when transparent
-        dim_inactive = false,
-        -- set colors for terminal buffers
-        terminal_colors = false,
-        -- cache highlights and colors for faster startup.
-        -- see Cache section for more details.
-        cache = true,
+if vim.g.vscode then
+  return
+end
 
-        styles = {
-          -- style for comments
-          comment = { italic = true },
-          -- style for functions
-          functions = { italic = true },
-          -- style for keywords
-          keyword = { italic = false, bold = true },
-          -- style for statements
-          statement = { italic = false, bold = true },
-          -- style for types
-          type = { italic = true },
-        },
-        -- override default palette and theme colors
-        colors = {
-          palette = {},
-          theme = {
-            ink = {
-              syn = {
-                member = palette_colors.dragonYellow,
-              },
-            },
-            canvas = {},
+vim.pack.add({ Config.gh("thesimonho/kanagawa-paper.nvim"), Config.gh("webhooked/kanso.nvim") })
+
+Config.now(function()
+  require("kanagawa-paper").setup({
+    -- enable undercurls for underlined text
+    undercurl = true,
+    -- transparent background
+    transparent = false,
+    -- highlight background for the left gutter
+    gutter = false,
+    -- background for diagnostic virtual text
+    diag_background = false,
+    -- dim inactive windows. Disabled when transparent
+    dim_inactive = false,
+    -- set colors for terminal buffers
+    terminal_colors = false,
+    -- cache highlights and colors for faster startup.
+    -- see Cache section for more details.
+    cache = true,
+
+    styles = {
+      -- style for comments
+      comment = { italic = true },
+      -- style for functions
+      functions = { italic = true },
+      -- style for keywords
+      keyword = { italic = false, bold = true },
+      -- style for statements
+      statement = { italic = false, bold = true },
+      -- style for types
+      type = { italic = true },
+    },
+    -- override default palette and theme colors
+    colors = {
+      palette = {},
+      theme = {
+        ink = {
+          syn = {
+            member = require("kanagawa-paper.colors").palette.dragonYellow,
           },
         },
-        -- adjust overall color balance for each theme [-1, 1]
-        color_offset = {
-          ink = { brightness = 0, saturation = 0 },
-          canvas = { brightness = 0, saturation = 0 },
-        },
+        canvas = {},
+      },
+    },
 
-        overrides = function(c)
-          return {
-            LspInlayHint = { fg = c.theme.syn.comment, bg = "NONE", italic = true },
-            ["@string.documentation"] = { fg = c.theme.syn.comment, italic = true },
-            ["@comment"] = { fg = c.theme.syn.comment, italic = true },
-            -- WinBuf (winbuf.nvim) — per-window buffer tabs
-            WinBufActive = { fg = c.theme.ui.fg, bg = c.theme.ui.bg_p2, bold = true },
-            WinBufActiveSep = { fg = c.theme.ui.special, bg = c.theme.ui.bg_p2 },
-            WinBufInactive = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg_p1 },
-            WinBufInactiveSep = { fg = c.theme.ui.bg_p2, bg = c.theme.ui.bg_p1 },
-            WinBufActiveClose = { fg = c.theme.syn.special1, bg = c.theme.ui.bg_p2 },
-            WinBufInactiveClose = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg_p1 },
-            WinBufActiveModified = { fg = c.theme.syn.string, bg = c.theme.ui.bg_p2 },
-            WinBufInactiveModified = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg_p1 },
-            WinBufActiveDiagError = { fg = c.theme.diag.error, bg = c.theme.ui.bg_p2, bold = true },
-            WinBufActiveDiagWarn = { fg = c.theme.diag.warning, bg = c.theme.ui.bg_p2 },
-            WinBufInactiveDiagError = { fg = c.theme.diag.error, bg = c.theme.ui.bg_p1 },
-            WinBufInactiveDiagWarn = { fg = c.theme.diag.warning, bg = c.theme.ui.bg_p1 },
-            WinBufFill = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg },
-            WinBufActiveUnderline = { fg = c.theme.ui.fg_dim, bg = c.theme.ui.bg },
-          }
-        end,
-
-        -- uses lazy.nvim, if installed, to automatically enable needed plugins
-        auto_plugins = true,
-      }
-    end,
-    config = function(_, opts)
-      require("kanagawa-paper").setup(opts)
-      vim.cmd.colorscheme("kanagawa-paper")
-
-      local kanagawa_paper = require("lualine.themes.kanagawa-paper-ink")
-      require("lualine").setup({
-        options = {
-          theme = kanagawa_paper,
-        },
-      })
-    end,
-  },
-  {
-    "webhooked/kanso.nvim",
-    enabled = true,
-    vscode = false,
-    lazy = false,
-    priority = 1000,
-    opts = function()
+    overrides = function(c)
       return {
-        overrides = function(c)
-          return {
-            LspInlayHint = { fg = c.theme.syn.comment, bg = "NONE", italic = true },
-            ["@string.documentation"] = { fg = c.theme.syn.comment, italic = true },
-            ["@comment"] = { fg = c.theme.syn.comment, italic = true },
-          }
-        end,
-        background = {
-          dark = "zen", -- try "zen", "mist" or "pearl" !
-        },
-        foreground = "default",
+        LspInlayHint = { fg = c.theme.syn.comment, bg = "NONE", italic = true },
+        ["@string.documentation"] = { fg = c.theme.syn.comment, italic = true },
+        ["@comment"] = { fg = c.theme.syn.comment, italic = true },
       }
     end,
-    config = function(_, opts)
-      require("kanso").setup(opts)
-      vim.cmd.colorscheme("kanso")
+
+    all_plugins = package.loaded.lazy == nil,
+  })
+
+  require("kanso").setup({
+    overrides = function(c)
+      return {
+        LspInlayHint = { fg = c.theme.syn.comment, bg = "NONE", italic = true },
+        ["@string.documentation"] = { fg = c.theme.syn.comment, italic = true },
+        ["@comment"] = { fg = c.theme.syn.comment, italic = true },
+      }
     end,
-  },
-}
+  })
+
+  vim.cmd.colorscheme("kanso")
+end)

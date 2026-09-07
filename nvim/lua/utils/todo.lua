@@ -16,8 +16,9 @@ local function todo_positions_in_comments(bufnr)
     return {}
   end
 
+  ---@type {[1]: integer, [2]: integer}[]
   local positions = {}
-  for _, tree in ipairs(parser:parse()) do
+  for _, tree in ipairs(parser:parse() or {}) do
     for id, node in query:iter_captures(tree:root(), bufnr, 0, -1) do
       if query.captures[id] == "comment" then
         local srow, scol, erow, ecol = node:range()
@@ -30,7 +31,7 @@ local function todo_positions_in_comments(bufnr)
             local init = 1
             while true do
               local s, e = segment:find("%f[%w]" .. word .. "%f[%W]", init)
-              if not s then
+              if not s or not e then
                 break
               end
               table.insert(positions, { lnum + 1, from - 1 + s - 1 })
@@ -60,15 +61,20 @@ function M.jump(forward)
           return vim.api.nvim_win_set_cursor(0, pos)
         end
       end
-      vim.api.nvim_win_set_cursor(0, positions[1]) -- wrap to first
+      local first = assert(positions[1])
+      vim.api.nvim_win_set_cursor(0, first) -- wrap to first
     else
       for i = #positions, 1, -1 do
         local pos = positions[i]
+        if not pos then
+          break
+        end
         if pos[1] < cur[1] or (pos[1] == cur[1] and pos[2] < cur[2]) then
           return vim.api.nvim_win_set_cursor(0, pos)
         end
       end
-      vim.api.nvim_win_set_cursor(0, positions[#positions]) -- wrap to last
+      local last = assert(positions[#positions])
+      vim.api.nvim_win_set_cursor(0, last) -- wrap to last
     end
   end
 end
