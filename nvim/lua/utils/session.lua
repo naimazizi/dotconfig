@@ -1,18 +1,9 @@
 local M = {}
 
--- Session name scoped to cwd + git branch, mirroring persistence.nvim's
--- `branch = true` behavior (mini.sessions has no such concept built in).
+-- Session name scoped to cwd only. Opening nvim from a different directory
+-- (even a subdir of the same repo) looks up a different name by design.
 function M.name()
-  local raw_cwd = vim.fn.getcwd()
-  local name = raw_cwd:gsub("[\\/:]", "%%")
-  if vim.fn.executable("git") ~= 1 then
-    return name
-  end
-
-  local ok, proc = pcall(vim.system, { "git", "branch", "--show-current" }, { cwd = raw_cwd, text = true })
-  local result = ok and proc:wait() or nil
-  local branch = (result and result.code == 0) and vim.trim(result.stdout or "") or ""
-  return branch ~= "" and (name .. "%" .. branch) or name
+  return (vim.fn.getcwd():gsub("[\\/:]", "%%"))
 end
 
 -- `mini.sessions.read()` throws if there's no detected session for `name`

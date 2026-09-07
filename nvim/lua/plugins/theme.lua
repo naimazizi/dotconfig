@@ -1,7 +1,7 @@
 return {
   {
     "thesimonho/kanagawa-paper.nvim",
-    enabled = true,
+    enabled = false,
     vscode = false,
     lazy = false,
     priority = 1000,
@@ -91,6 +91,32 @@ return {
           theme = kanagawa_paper,
         },
       })
+    end,
+  },
+  {
+    "webhooked/kanso.nvim",
+    enabled = true,
+    vscode = false,
+    lazy = false,
+    priority = 1000,
+    opts = function()
+      return {
+        overrides = function(c)
+          return {
+            LspInlayHint = { fg = c.theme.syn.comment, bg = "NONE", italic = true },
+            ["@string.documentation"] = { fg = c.theme.syn.comment, italic = true },
+            ["@comment"] = { fg = c.theme.syn.comment, italic = true },
+          }
+        end,
+        background = {
+          dark = "zen", -- try "zen", "mist" or "pearl" !
+        },
+        foreground = "default",
+      }
+    end,
+    config = function(_, opts)
+      require("kanso").setup(opts)
+      vim.cmd.colorscheme("kanso")
     end,
   },
 }

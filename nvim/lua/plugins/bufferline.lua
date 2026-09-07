@@ -71,7 +71,7 @@ return {
     end,
     opts = {
       icons = {
-        preset = "powerline",
+        -- preset = "powerline",
         pinned = { button = "", filename = true },
         alternate = { filetype = { enabled = true } },
         diagnostics = {
