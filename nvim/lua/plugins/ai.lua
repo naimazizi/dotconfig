@@ -8,11 +8,13 @@ vim.pack.add({
 })
 
 Config.on_packchanged("cursortab.nvim", { "install", "update" }, function(data)
-  local result = vim.system({ "go", "build" }, { cwd = data.path .. "/server" }):wait()
-  if result.code ~= 0 then
-    local output = (result.stderr ~= "" and result.stderr) or result.stdout or "No output from build command."
-    vim.notify(("Build failed for cursortab.nvim:\n%s"):format(output), vim.log.levels.ERROR)
-  end
+  vim.async.run(function()
+    local result = vim.async.await(3, vim.system, { "go", "build" }, { cwd = data.path .. "/server" })
+    if result.code ~= 0 then
+      local output = (result.stderr ~= "" and result.stderr) or result.stdout or "No output from build command."
+      vim.notify(("Build failed for cursortab.nvim:\n%s"):format(output), vim.log.levels.ERROR)
+    end
+  end)
 end, "Build cursortab.nvim server")
 
 Config.later(function()

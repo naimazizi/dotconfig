@@ -13,16 +13,18 @@ vim.pack.add({
 })
 
 local function run_build(name, cmd, cwd)
-  local result = vim.system(cmd, { cwd = cwd }):wait()
-  if result.code ~= 0 then
-    local stderr = result.stderr or ""
-    local stdout = result.stdout or ""
-    local output = stderr ~= "" and stderr or stdout
-    if output == "" then
-      output = "No output from build command."
+  vim.async.run(function()
+    local result = vim.async.await(3, vim.system, cmd, { cwd = cwd })
+    if result.code ~= 0 then
+      local stderr = result.stderr or ""
+      local stdout = result.stdout or ""
+      local output = stderr ~= "" and stderr or stdout
+      if output == "" then
+        output = "No output from build command."
+      end
+      vim.notify(("Build failed for %s:\n%s"):format(name, output), vim.log.levels.ERROR)
     end
-    vim.notify(("Build failed for %s:\n%s"):format(name, output), vim.log.levels.ERROR)
-  end
+  end)
 end
 
 local INSTALL_OR_UPDATE = { "install", "update" }
@@ -35,7 +37,7 @@ end, "Build LuaSnip jsregexp support")
 
 Config.on_packchanged("blink.cmp", INSTALL_OR_UPDATE, function()
   -- `fuzzy = { implementation = "rust" }` needs this prebuilt binary.
-  require("blink.cmp").build():pwait()
+  require("blink.cmp").build():raise_on_error()
 end, "Build blink.cmp rust fuzzy matcher")
 
 Config.on_event("InsertEnter", function()
