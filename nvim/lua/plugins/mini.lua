@@ -166,6 +166,11 @@ Config.now(function()
     require("mini.notify").setup()
     require("mini.notify").make_notify()
 
+    require("mini.input").setup({
+      -- Default input scope: cursor/line/buffer/window/tabpage/editor/project
+      scope = "cursor",
+    })
+
     require("mini.starter").setup({
       header = table.concat({
         "  ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆",
