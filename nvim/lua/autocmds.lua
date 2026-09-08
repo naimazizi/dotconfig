@@ -62,20 +62,6 @@ else
     desc = "LSP: Disable hover capability from specific LSP",
   })
 
-  vim.api.nvim_create_autocmd("FocusGained", {
-    desc = "Reload files from disk when we focus vim",
-    pattern = "*",
-    command = "if getcmdwintype() == '' | checktime | endif",
-    group = group,
-  })
-
-  vim.api.nvim_create_autocmd("BufEnter", {
-    desc = "Every time we enter an unmodified buffer, check if it changed on disk",
-    pattern = "*",
-    command = "if &buftype == '' && !&modified && expand('%') != '' | exec 'checktime ' . expand('<abuf>') | endif",
-    group = group,
-  })
-
   -- Toggle relative numbers on entering/leaving visual mode
   vim.api.nvim_create_autocmd("ModeChanged", {
     callback = function()
