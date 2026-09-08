@@ -11,10 +11,7 @@ vim.pack.add({
   Config.gh("WhoIsSethDaniel/mason-tool-installer.nvim"),
 })
 
-Config.later(function()
-  -- Single consolidated list (previously assembled dynamically across files
-  -- via lazy.nvim opts-merging; ast-grep/zk/jq come from grug-far, zk-nvim and
-  -- hurl.nvim respectively).
+Config.now(function()
   local ensure_installed = uniq({
     "ast-grep",
     "bacon",
@@ -23,12 +20,15 @@ Config.later(function()
     "harper-ls",
     "jq",
     "jsonls",
+    "kdlfmt",
     "oxfmt",
     "panache",
     "pyrefly",
     "ruff",
     "rust-analyzer",
     "shfmt",
+    "sqlfmt",
+    "stylua",
     "tinymist",
     "typos-lsp",
     "typstyle",

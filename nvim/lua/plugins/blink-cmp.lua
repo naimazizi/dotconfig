@@ -39,6 +39,9 @@ Config.on_packchanged("blink.cmp", INSTALL_OR_UPDATE, function()
 end, "Build blink.cmp rust fuzzy matcher")
 
 Config.on_event("InsertEnter", function()
+  -- Self-heals if the rust binary is missing/stale; build() no-ops if already built.
+  require("blink.cmp").build():pwait()
+
   -- Snippet Engine
   require("luasnip").setup({
     history = true,
