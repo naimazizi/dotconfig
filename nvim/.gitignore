@@ -1,3 +1,6 @@
 *.vim
 *.serena
 nvim-pack-lock.json
+.agents/
+.claude/
+CLAUDE.md

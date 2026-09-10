@@ -38,12 +38,6 @@
       },
     },
   },
-  "permission": {
-    "bash": "deny",
-    "glob": "deny",
-    "grep": "deny",
-    "read": "deny",
-  },
   "mcp": {
     "bigquery": {
       "type": "local",
@@ -58,7 +52,7 @@
         "{env:BIGQUERY_LOCATION}",
       ],
       "enabled": true,
-      "timeout": 30000,
+      "timeout": 3000,
     },
     "gh_grep": {
       "type": "remote",
@@ -91,15 +85,14 @@
       ],
       "enabled": true,
     },
-    "lean-ctx": {
-      "command": ["lean-ctx"],
-      "enabled": true,
-      "type": "local",
-    },
     "lark-cli": {
       "type": "local",
       "command": ["node", "{env:HOME}/.local/lib/lark-cli-mcp/index.js"],
       "enabled": true,
+    },
+    "memories": {
+      "type": "local",
+      "command": ["npx", "-y", "@memories.sh/cli", "serve"],
     },
   },
 }
