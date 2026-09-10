@@ -37,7 +37,7 @@ end, "Build LuaSnip jsregexp support")
 
 Config.on_packchanged("blink.cmp", INSTALL_OR_UPDATE, function()
   -- `fuzzy = { implementation = "rust" }` needs this prebuilt binary.
-  require("blink.cmp").build():raise_on_error()
+  require("blink.cmp").build():pwait()
 end, "Build blink.cmp rust fuzzy matcher")
 
 Config.on_event("InsertEnter", function()
