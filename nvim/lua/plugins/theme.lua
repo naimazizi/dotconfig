@@ -59,6 +59,16 @@ Config.now(function()
   })
 
   require("kanso").setup({
+    bold = true, -- enable bold fonts
+    italics = true, -- enable italics
+    compile = true, -- enable compiling the colorscheme
+    undercurl = true, -- enable undercurls
+    commentStyle = { italic = true },
+    functionStyle = { bold = true, italic = true },
+    keywordStyle = { italic = true },
+    statementStyle = { bold = true },
+    typeStyle = { italic = true },
+    dimInactive = false,
     overrides = function(c)
       return {
         LspInlayHint = { fg = c.theme.syn.comment, bg = "NONE", italic = true },

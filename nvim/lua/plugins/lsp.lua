@@ -15,6 +15,11 @@ Config.on_event("BufReadPre,BufNewFile", function()
     -- Set LSP keymaps via pick utils
     require("utils.pick").lsp_keymaps(bufnr)
 
+    -- Cap hover float size so it doesn't fill the whole screen
+    vim.keymap.set("n", "K", function()
+      vim.lsp.buf.hover({ max_width = 80, max_height = 20 })
+    end, { buffer = bufnr, desc = "LSP: Hover" })
+
     -- CodeLens
     local clients = vim.lsp.get_clients({ bufnr = bufnr })
     local supports_codelens = false
