@@ -138,7 +138,13 @@ Config.now(function()
       end,
     })
 
-    require("mini.bufremove").setup()
+    require("mini.bufremove").setup({})
+
+    require("mini.cmdline").setup({
+      autocomplete = {
+        enable = false,
+      },
+    })
 
     require("mini.indentscope").setup({
       symbol = "│",
@@ -160,6 +166,15 @@ Config.now(function()
         note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
       },
     })
+
+    require("mini.git").setup({})
+    require("mini.diff").setup({
+      view = {
+        style = "sign",
+      },
+    })
+
+    require("mini.tabline").setup({})
 
     require("mini.statuscolumn").setup()
 
@@ -211,13 +226,41 @@ Config.now(function()
   end
 
   local map = vim.keymap.set
+  -- Buffer
+  map("n", "<leader>bd", function()
+    require("mini.bufremove").delete(0, false)
+  end, { desc = "Buffer Delete" })
+
+  map("n", "<leader>bo", function()
+    local cur = vim.api.nvim_get_current_buf()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if buf ~= cur and vim.bo[buf].buflisted then
+        require("mini.bufremove").delete(buf, false)
+      end
+    end
+  end, { desc = "Buffer Delete Others" })
+
+  -- Jump todo
   map("n", "]t", todo.jump(true), { desc = "Next TODO comment" })
   map("n", "[t", todo.jump(false), { desc = "Prev TODO comment" })
 
+  -- Notification
   map("n", "<leader>n", function()
     require("mini.notify").show_history()
   end, { desc = "Show history" })
 
+  -- Git
+  map("n", "<leader>gv", function()
+    require("mini.diff").toggle_overlay()
+  end, { desc = "Toggle Git changes" })
+  map("n", "<leader>gb", function()
+    require("mini.git").show_at_cursor()
+  end, { desc = "Show history" })
+  map("v", "<leader>gb", function()
+    require("mini.git").show_range_history()
+  end, { desc = "Show history" })
+
+  -- Toggle
   map("n", "<leader>uf", function()
     vim.g.disable_autoformat = not vim.g.disable_autoformat
     vim.notify("Format on Save (global): " .. (vim.g.disable_autoformat and "off" or "on"))
@@ -240,6 +283,7 @@ Config.now(function()
     vim.notify("Diagnostics: " .. (enabled and "off" or "on"))
   end, { desc = "Toggle Diagnostics" })
 
+  -- Session
   map("n", "<leader>qs", function()
     require("utils.session").restore()
   end, { desc = "Restore Session" })

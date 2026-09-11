@@ -5,7 +5,7 @@ map({ "n", "x" }, "d", '"_d', { desc = "Delete (no register)" })
 map("n", "D", '"_D', { desc = "Delete to EOL (no register)" })
 
 -- Terminal escape
--- map("t", "<Esc>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
+map("t", "<C-Esc>", "<C-\\><C-n>", { silent = true, desc = "Exit terminal mode" })
 
 -- Move to other windows from terminal mode (leaves terminal-normal mode first)
 map("t", "<C-w>", "<C-\\><C-n><C-w>", { silent = true, desc = "Window commands" })
@@ -73,7 +73,12 @@ if not vim.g.vscode then
   -- New buffer
   map("n", "<leader>bn", "<cmd>enew<cr>", { silent = true, desc = "New buffer" })
 
-  -- Switch buffers
+  -- Switch buffers (barbar.nvim keymap, ported to native :b commands)
+  map("n", "<S-h>", "<cmd>bprevious<cr>", { silent = true, desc = "Buffer Previous" })
+  map("n", "<S-l>", "<cmd>bnext<cr>", { silent = true, desc = "Buffer Next" })
+  map("n", "[b", "<cmd>bprevious<cr>", { silent = true, desc = "Buffer Previous" })
+  map("n", "]b", "<cmd>bnext<cr>", { silent = true, desc = "Buffer Next" })
+
   -- LSP/diagnostics mappings
   map("n", "<leader>cd", vim.diagnostic.open_float, { silent = true, desc = "Line diagnostics" })
   map("n", "<leader>cl", "<cmd>checkhealth vim.lsp<cr>", { silent = true, desc = "Lsp Info" })
@@ -100,6 +105,45 @@ if not vim.g.vscode then
   -- Quickfix & Loclist
   map("n", "<leader>bq", "<cmd>copen<cr>", { noremap = true, silent = true, desc = "Quickfix" })
   map("n", "<leader>bl", "<cmd>lopen<cr>", { noremap = true, silent = true, desc = "Loclist" })
+
+  -- Git
+  map({ "n", "v" }, "<leader>gB", function()
+    require("utils.gitbrowse").open()
+  end, { desc = "Git Browse" })
+  -- Turn a unix timestamp into "N days/months/years ago"
+  local function time_ago(epoch)
+    local units = { { 31536000, "year" }, { 2592000, "month" }, { 86400, "day" }, { 3600, "hour" }, { 60, "minute" } }
+    local diff = os.time() - epoch
+    for _, unit in ipairs(units) do
+      local secs, name = unit[1], unit[2]
+      if diff >= secs then
+        local n = math.floor(diff / secs)
+        return n .. " " .. name .. (n > 1 and "s" or "") .. " ago"
+      end
+    end
+    return "just now"
+  end
+
+  map({ "n", "v" }, "<leader>gs", function()
+    local line = vim.fn.line(".")
+    local file = vim.fn.expand("%") --[[@as string]]
+    ---@type string[]
+    local cmd = { "git", "blame", "--porcelain", "-L", line .. "," .. line, file }
+    local out = vim.fn.systemlist(cmd)
+    local info = {}
+    for _, l in ipairs(out) do
+      local key, val = l:match("^(%a[%a%-]*)%s+(.*)$")
+      if key then
+        info[key] = val
+      end
+    end
+    local when = info["author-time"] and time_ago(tonumber(info["author-time"])) or "unknown time"
+    vim.notify(
+      string.format("%s (%s)\n%s", info.author or "unknown", when, info.summary or ""),
+      vim.log.levels.INFO,
+      { title = "Git Blame" }
+    )
+  end, { desc = "Git Blame (current line)" })
 end
 
 -- Neovide specific keymap
