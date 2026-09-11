@@ -110,3 +110,6 @@ require("options")
 require("keymaps")
 require("autocmds")
 require("plugins")
+if vim.g.vscode then
+  require("vscode-config")
+end

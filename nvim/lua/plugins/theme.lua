@@ -64,9 +64,9 @@ Config.now(function()
     compile = true, -- enable compiling the colorscheme
     undercurl = true, -- enable undercurls
     commentStyle = { italic = true },
-    functionStyle = { bold = true, italic = true },
-    keywordStyle = { italic = true },
-    statementStyle = { bold = true },
+    functionStyle = { italic = true },
+    keywordStyle = { italic = false, bold = true },
+    statementStyle = { italic = false, bold = true },
     typeStyle = { italic = true },
     dimInactive = false,
     overrides = function(c)

@@ -1,4 +1,3 @@
--- ponytail: render-markdown.nvim dropped (was `enabled = false` upstream)
 if vim.g.vscode then
   return
 end

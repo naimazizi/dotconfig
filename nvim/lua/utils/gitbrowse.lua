@@ -81,16 +81,26 @@ end
 
 ---@async
 local function is_commit_hash(hash, cwd)
-  return hash:match("^%x+$") ~= nil and #hash >= 7 and system({ "git", "-C", cwd, "rev-parse", "--verify", hash }, "") ~= nil
+  if not (hash:match("^%x+$") and #hash >= 7) then
+    return false
+  end
+  -- Probe only: don't use system()'s notify-on-error path, most words under the
+  -- cursor won't be commit hashes and that's not a failure worth surfacing.
+  local result = vim.async.await(function(done)
+    vim.system({ "git", "-C", cwd, "rev-parse", "--verify", hash }, { text = true }, vim.schedule_wrap(done))
+  end)
+  return result.code == 0
 end
 
 ---@param opts? { what?: "file"|"branch"|"commit"|"permalink"|"repo" }
 function M.open(opts)
   -- raise_on_error: this is a fire-and-forget task, so surface failures
   -- instead of letting them vanish silently.
-  vim.async.run(function()
-    M._open(opts)
-  end):raise_on_error()
+  vim.async
+    .run(function()
+      M._open(opts)
+    end)
+    :raise_on_error()
 end
 
 ---@async
@@ -105,11 +115,15 @@ function M._open(opts)
   local branch = system({ "git", "-C", cwd, "rev-parse", "--abbrev-ref", "HEAD" }, "Failed to get current branch")
   local fields = {
     branch = branch and branch[1],
-    file = file and (system({ "git", "-C", cwd, "ls-files", "--full-name", file }, "Failed to get git file path") or {})[1],
+    file = file
+      and (system({ "git", "-C", cwd, "ls-files", "--full-name", file }, "Failed to get git file path") or {})[1],
   }
 
   if what == "permalink" then
-    local commit = system({ "git", "-C", cwd, "log", "-n", "1", "--pretty=format:%H", "--", fields.file or "" }, "Failed to get latest commit")
+    local commit = system(
+      { "git", "-C", cwd, "log", "-n", "1", "--pretty=format:%H", "--", fields.file or "" },
+      "Failed to get latest commit"
+    )
     fields.commit = commit and commit[1]
   else
     local word = vim.fn.expand("<cword>") --[[@as string]]

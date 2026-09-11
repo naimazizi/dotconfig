@@ -15,12 +15,12 @@ Config.now(function()
   local ensure_installed = uniq({
     "ast-grep",
     "bacon",
-    "bacon_ls",
+    "bacon-ls",
     "debugpy",
     "emmylua_ls",
     "harper-ls",
     "jq",
-    "jsonls",
+    "json-lsp",
     "jupytext",
     "kdlfmt",
     "mmdc",
@@ -35,7 +35,7 @@ Config.now(function()
     "tinymist",
     "typos-lsp",
     "typstyle",
-    "yamlls",
+    "yaml-language-server",
     "zk",
   })
 
@@ -49,7 +49,7 @@ Config.now(function()
   end
 
   require("mason-lspconfig").setup({
-    automatic_installation = true,
+    automatic_enable = true,
   })
 
   require("mason-tool-installer").setup({

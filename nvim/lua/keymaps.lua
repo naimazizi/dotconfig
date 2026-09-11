@@ -34,10 +34,8 @@ end, { desc = "Select child treesitter node or inner incremental lsp selections"
 -- Multicursor
 map("n", "<A-d>", "Q", { noremap = true, desc = "Multicursor add cursor" })
 
-map("n", "<A-r>", function()
-  local mc_ns = vim.api.nvim_create_namespace("nvim.multicursor")
-  vim.api.nvim_buf_clear_namespace(0, mc_ns, 0, -1)
-end, { noremap = true, desc = "Multicursor clear All cursor" })
+-- ClearCursors command is defined once in autocmds.lua; reuse it here.
+map("n", "<A-r>", "<cmd>ClearCursors<cr>", { noremap = true, desc = "Multicursor clear All cursor" })
 
 map("n", "<A-n>", function()
   local ns = vim.api.nvim_create_namespace("nvim.multicursor")
@@ -160,5 +158,3 @@ if vim.g.neovide then
   map("c", "<D-v>", "<C-R>+") -- Paste command mode
   map("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
 end
-
-require("vscode-keymaps")

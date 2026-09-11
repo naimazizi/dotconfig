@@ -15,8 +15,8 @@ local function opencode_send_action(selected, opts)
 end
 
 vim.pack.add({
-  "https://github.com/ibhagwan/fzf-lua",
-  "https://github.com/elanmed/fzf-lua-frecency.nvim",
+  Config.gh("ibhagwan/fzf-lua"),
+  Config.gh("elanmed/fzf-lua-frecency.nvim"),
 })
 
 Config.later(function()
@@ -42,9 +42,6 @@ Config.later(function()
     require("fzf-lua-frecency").frecency({ cwd_only = true, display_score = false })
   end, { desc = "Find files" })
   map("n", "<leader>/", function()
-    require("fzf-lua").live_grep()
-  end, { desc = "Live Grep" })
-  map("n", "<leader>fg", function()
     require("fzf-lua").live_grep()
   end, { desc = "Live Grep" })
   map("n", "<leader>sw", function()

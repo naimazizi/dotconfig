@@ -1,3 +1,7 @@
+if vim.g.vscode then
+  return
+end
+
 vim.pack.add({ Config.gh("stevearc/overseer.nvim") })
 
 Config.later(function()

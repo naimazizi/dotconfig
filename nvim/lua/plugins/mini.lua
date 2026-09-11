@@ -1,8 +1,3 @@
-local mini_ai = require("utils.mini-ai")
-local todo = require("utils.todo")
-
-vim.pack.add({ Config.gh("nvim-mini/mini.nvim") })
-
 Config.now(function()
   require("mini.pairs").setup()
 
@@ -150,21 +145,25 @@ Config.now(function()
       options = { try_as_border = true },
     })
 
+    local mini_ai = require("utils.mini-ai")
     mini_ai.ai_setup()
     mini_ai.ai_whichkey()
 
     require("mini.icons").setup()
     require("mini.icons").mock_nvim_web_devicons()
 
-    require("mini.hipatterns").setup({
-      highlighters = {
-        fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-        fix = { pattern = "%f[%w]()FIX()%f[%W]", group = "MiniHipatternsFixme" },
-        hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-        todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-        note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
-      },
-    })
+    local hipatterns_group = {
+      TODO = "MiniHipatternsTodo",
+      FIX = "MiniHipatternsFixme",
+      FIXME = "MiniHipatternsFixme",
+      HACK = "MiniHipatternsHack",
+      NOTE = "MiniHipatternsNote",
+    }
+    local highlighters = {}
+    for _, word in ipairs(require("utils.todo").words) do
+      highlighters[word:lower()] = { pattern = "%f[%w]()" .. word .. "()%f[%W]", group = hipatterns_group[word] }
+    end
+    require("mini.hipatterns").setup({ highlighters = highlighters })
 
     require("mini.git").setup({})
     require("mini.diff").setup({
@@ -237,6 +236,7 @@ Config.now(function()
   end, { desc = "Buffer Delete Others" })
 
   -- Jump todo
+  local todo = require("utils.todo")
   map("n", "]t", todo.jump(true), { desc = "Next TODO comment" })
   map("n", "[t", todo.jump(false), { desc = "Prev TODO comment" })
 

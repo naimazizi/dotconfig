@@ -1,6 +1,9 @@
 local M = {}
 
-local todo_words = { "TODO", "FIX", "FIXME", "HACK", "NOTE" }
+-- Single source of truth for the TODO-like keyword vocabulary; also
+-- consumed by mini.hipatterns in plugins/mini.lua to keep both in sync.
+M.words = { "TODO", "FIX", "FIXME", "HACK", "NOTE" }
+local todo_words = M.words
 
 -- Collect {line (1-indexed), col (0-indexed)} for every TODO-like keyword
 -- that lives inside a treesitter `@comment` capture. Falls back to nothing

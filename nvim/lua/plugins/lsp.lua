@@ -4,8 +4,6 @@ end
 
 vim.pack.add({
   Config.gh("neovim/nvim-lspconfig"),
-  Config.gh("saghen/blink.lib"), -- blink.cmp v2 dependency
-  Config.gh("saghen/blink.cmp"),
   Config.gh("rachartier/tiny-inline-diagnostic.nvim"),
   Config.gh("Wansmer/symbol-usage.nvim"),
 })
@@ -30,9 +28,9 @@ Config.on_event("BufReadPre,BufNewFile", function()
       end
     end
 
-    if supports_codelens then
-      -- vim.lsp.codelens.enable()
-    end
+    -- if supports_codelens then
+    --   vim.lsp.codelens.enable()
+    -- end
 
     -- Inlay hints (conditionally enabled; not all servers support it)
     local supports_inlay_hints = false
@@ -161,19 +159,6 @@ Config.on_event("BufReadPre,BufNewFile", function()
         },
       },
     },
-  })
-
-  -- Enabled LSP
-  vim.lsp.enable({
-    "jsonls",
-    "emmylua_ls",
-    "panache",
-    "pyrefly",
-    "ruff",
-    "bacon_ls",
-    "typos_lsp",
-    "tinymist",
-    "yamlls",
   })
 
   vim.api.nvim_create_autocmd("LspAttach", {

@@ -1,8 +1,45 @@
--- VScode specific keymap
-if not vim.g.vscode then
-  return
-end
+-- VScode specific config
 
+-- Autocmds
+-- Redraw fixes for VSCode visual artifacts (moved from autocmds.lua)
+local redraw_fix = vim.api.nvim_create_augroup("VSCodeRedrawFix", { clear = true })
+
+-- Redraw on cursor hold to fix visual artifacts
+vim.api.nvim_create_autocmd("CursorHold", {
+  group = redraw_fix,
+  callback = function()
+    vim.cmd("silent! mode") -- triggers a lightweight redraw
+  end,
+})
+
+-- Redraw immediately after text changes (e.g., visual delete)
+local redraw_group = vim.api.nvim_create_augroup("RedrawOnDelete", { clear = true })
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+  group = redraw_group,
+  callback = function()
+    if vim.fn.mode() == "n" then
+      vim.cmd("silent! mode") -- refresh UI after delete/insert
+    end
+  end,
+})
+
+-- Redraw on visual mode exit to fix selection artifacts
+vim.api.nvim_create_autocmd("ModeChanged", {
+  group = redraw_fix,
+  callback = function()
+    vim.cmd("silent! mode")
+  end,
+})
+
+-- Redraw on window operations
+vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
+  group = redraw_fix,
+  callback = function()
+    vim.cmd("silent! mode")
+  end,
+})
+
+-- KEYMAPS
 local map = vim.keymap.set
 local vscode = require("vscode")
 
@@ -25,10 +62,6 @@ map("n", "<leader>/", function()
 end, { noremap = true, desc = "search text in files" })
 
 -- editor
-map("n", "<leader>cf", function()
-  vscode.call("editor.action.formatDocument")
-end, { noremap = true, desc = "Format Text" })
-
 map("v", "gc", function()
   vscode.call("editor.action.commentLine")
 end, { noremap = true, desc = "Toggle Comment Line (Visual) -- it mimics ctrl+/" })
@@ -115,7 +148,6 @@ map("n", "<leader>co", function()
 end, { noremap = true, desc = "organize import" })
 
 map("n", "<leader>cs", function()
-  print("go to symbols in editor")
   vscode.call("outline.focus")
 end, { noremap = true, silent = true, desc = "Focus outline" })
 
@@ -228,13 +260,12 @@ map("n", "zC", function()
   vscode.call("editor.foldRecursively")
 end, { noremap = true, desc = "Fold All Recursively" })
 
-map("n", "zm", function()
-  vscode.call("editor.foldAllExcept")
-end, { noremap = true, desc = "Fold All Except this region" })
-
+-- zm/zr (incremental foldlevel +-1) have no VSCode equivalent (no command
+-- to query/step the current fold level), so they're intentionally left
+-- unmapped; zM/zR below cover the common "close/open everything" case.
 map("n", "zM", function()
-  vscode.call("editor.unfoldAllExcept")
-end, { noremap = true, desc = "Unfold All Except this region" })
+  vscode.call("editor.foldAll")
+end, { noremap = true, desc = "Close All Folds" })
 
 map("n", "zo", function()
   vscode.call("editor.unfold")
@@ -243,10 +274,6 @@ end, { noremap = true, desc = "Open Fold" })
 map("n", "zO", function()
   vscode.call("editor.unfoldRecursively")
 end, { noremap = true, desc = "Open Fold Recursively" })
-
-map("n", "zr", function()
-  vscode.call("editor.unfold")
-end, { noremap = true, desc = "Open Fold" })
 
 map("n", "zR", function()
   vscode.call("editor.unfoldAll")
@@ -276,6 +303,23 @@ map("n", "z5", function()
   vscode.call("editor.foldLevel5")
 end, { noremap = true, desc = "Fold level 5" })
 
+map("n", "z6", function()
+  vscode.call("editor.foldLevel6")
+end, { noremap = true, desc = "Fold level 6" })
+
+map("n", "z7", function()
+  vscode.call("editor.foldLevel7")
+end, { noremap = true, desc = "Fold level 7" })
+
+-- Move between folds (matches native zj/zk)
+map("n", "zj", function()
+  vscode.call("editor.gotoNextFold")
+end, { noremap = true, desc = "Go to Next Fold" })
+
+map("n", "zk", function()
+  vscode.call("editor.gotoPreviousFold")
+end, { noremap = true, desc = "Go to Previous Fold" })
+
 -- Tests
 map("n", "<leader>td", function()
   vscode.call("testing.debugAtCursor")
@@ -300,7 +344,7 @@ end, { noremap = true, desc = "Show Test Results" })
 -- Source Control
 map("n", "<leader>gg", function()
   vscode.call("lazygit-vscode.toggle")
-end, { noremap = true, desc = "Show Test Results" })
+end, { noremap = true, desc = "Toggle Lazygit" })
 
 -- Debugging
 map("n", "<leader>dd", function()

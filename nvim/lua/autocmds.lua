@@ -1,41 +1,17 @@
-if vim.g.vscode then
-  local redraw_fix = vim.api.nvim_create_augroup("VSCodeRedrawFix", { clear = true })
+vim.api.nvim_create_user_command("ClearCursors", function()
+  local mc_ns = vim.api.nvim_create_namespace("nvim.multicursor")
+  vim.api.nvim_buf_clear_namespace(0, mc_ns, 0, -1)
+  -- Force a redraw to update the UI immediately
+  vim.cmd("redraw")
+end, {})
 
-  -- Redraw on cursor hold to fix visual artifacts
-  vim.api.nvim_create_autocmd("CursorHold", {
-    group = redraw_fix,
-    callback = function()
-      vim.cmd("silent! mode") -- triggers a lightweight redraw
-    end,
-  })
+vim.api.nvim_create_user_command("LspLog", function()
+  vim.cmd.tabnew({ vim.lsp.log.get_filename() })
+end, {
+  desc = "Opens the Nvim LSP client log.",
+})
 
-  -- Redraw immediately after text changes (e.g., visual delete)
-  local redraw_group = vim.api.nvim_create_augroup("RedrawOnDelete", { clear = true })
-  vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-    group = redraw_group,
-    callback = function()
-      if vim.fn.mode() == "n" then
-        vim.cmd("silent! mode") -- refresh UI after delete/insert
-      end
-    end,
-  })
-
-  -- Redraw on visual mode exit to fix selection artifacts
-  vim.api.nvim_create_autocmd("ModeChanged", {
-    group = redraw_fix,
-    callback = function()
-      vim.cmd("silent! mode")
-    end,
-  })
-
-  -- Redraw on window operations
-  vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
-    group = redraw_fix,
-    callback = function()
-      vim.cmd("silent! mode")
-    end,
-  })
-else
+if not vim.g.vscode then
   local group = vim.api.nvim_create_augroup("nvim_minimax", { clear = true })
 
   vim.api.nvim_create_autocmd("TextYankPost", {
@@ -109,112 +85,3 @@ else
     end,
   })
 end
-
-local ui2 = require("vim._core.ui2")
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "msg",
-  callback = function()
-    local win = ui2.wins and ui2.wins.msg
-    if win and vim.api.nvim_win_is_valid(win) then
-      vim.api.nvim_set_option_value(
-        "winhighlight",
-        "Normal:NormalFloat,FloatBorder:FloatBorder",
-        { scope = "local", win = win }
-      )
-    end
-  end,
-})
-
-local msgs = require("vim._core.ui2.messages")
-local orig_set_pos = msgs.set_pos
----@diagnostic disable-next-line: duplicate-set-field
-msgs.set_pos = function(tgt)
-  orig_set_pos(tgt)
-  if (tgt == "msg" or tgt == nil) and vim.api.nvim_win_is_valid(ui2.wins.msg) then
-    pcall(vim.api.nvim_win_set_config, ui2.wins.msg, {
-      relative = "editor",
-      anchor = "SE",
-      row = vim.o.lines - 3,
-      col = vim.o.columns - 1,
-      border = "rounded",
-    })
-  end
-end
-
-vim.api.nvim_create_autocmd("LspProgress", {
-  callback = function(ev)
-    local value = ev.data.params.value
-    vim.api.nvim_echo({ { value.message or "done" } }, true, {
-      id = "lsp." .. ev.data.client_id,
-      kind = "progress",
-      source = "vim.lsp",
-      title = value.title,
-      status = value.kind ~= "end" and "running" or "success",
-      percent = value.percentage,
-    })
-  end,
-})
-
--- Handle OpenCode events
-local OPENCODE_BUILTIN_TOOLS = {
-  invalid = true,
-  question = true,
-  bash = true,
-  read = true,
-  glob = true,
-  grep = true,
-  edit = true,
-  write = true,
-  task = true,
-  webfetch = true,
-  todowrite = true,
-  websearch = true,
-  skill = true,
-  apply_patch = true,
-  submit_plan = true,
-}
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "OpencodeEvent:*", -- Optionally filter event types
-  callback = function(args)
-    ---@type opencode.server.Event
-    local event = args.data.event
-
-    if event.type == "server.connected" then
-      vim.notify("OpenCode connected", vim.log.levels.INFO)
-    elseif event.type == "server.instance.disposed" then
-      vim.notify("OpenCode disconnected", vim.log.levels.WARN)
-    elseif event.type == "file.edited" then
-      vim.notify("OpenCode edited a file", vim.log.levels.INFO)
-    elseif event.type == "permission.asked" and event.properties then
-      vim.notify("OpenCode wants permission: " .. event.properties.permission, vim.log.levels.WARN)
-    elseif event.type == "session.status" and event.properties then
-      local status = event.properties.status.type
-      if status == "idle" then
-        vim.notify("OpenCode finished", vim.log.levels.INFO)
-      elseif status == "error" then
-        vim.notify("OpenCode error", vim.log.levels.ERROR)
-      end
-    elseif event.type == "message.part.updated" and event.properties then
-      local part = event.properties.part
-      ---@diagnostic disable-next-line: unnecessary-if
-      if part.type == "tool" and part.state.status == "completed" and not OPENCODE_BUILTIN_TOOLS[part.tool] then
-        vim.notify("OpenCode used MCP tool: " .. part.tool, vim.log.levels.INFO)
-      end
-    end
-  end,
-})
-
-vim.api.nvim_create_user_command("ClearCursors", function()
-  local mc_ns = vim.api.nvim_create_namespace("nvim.multicursor")
-  vim.api.nvim_buf_clear_namespace(0, mc_ns, 0, -1)
-  -- Force a redraw to update the UI immediately
-  vim.cmd("redraw")
-end, {})
-
-vim.api.nvim_create_user_command("LspLog", function()
-  vim.cmd.tabnew({ vim.lsp.log.get_filename() })
-end, {
-  desc = "Opens the Nvim LSP client log.",
-})
