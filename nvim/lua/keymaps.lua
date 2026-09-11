@@ -144,6 +144,9 @@ if not vim.g.vscode then
       { title = "Git Blame" }
     )
   end, { desc = "Git Blame (current line)" })
+
+  -- Notification
+  map("n", "<leader>n", "<cmd>messages<cr>", { desc = "Show Notification" })
 end
 
 -- Neovide specific keymap

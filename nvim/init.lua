@@ -1,3 +1,8 @@
+if vim.fn.has("nvim-0.13") == 0 then
+  vim.notify("This config requires Neovim >= 0.13 (found " .. tostring(vim.version()) .. ")", vim.log.levels.ERROR)
+  return
+end
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 

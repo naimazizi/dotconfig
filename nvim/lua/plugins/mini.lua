@@ -46,7 +46,6 @@ Config.now(function()
       -- Whether to reindent new text to match previous indent
       reindent_linewise = true,
     },
-
     -- Multiply (duplicate) text
     multiply = {
       prefix = "gm",
@@ -178,9 +177,6 @@ Config.now(function()
 
     require("mini.statuscolumn").setup()
 
-    require("mini.notify").setup()
-    require("mini.notify").make_notify()
-
     require("mini.input").setup({
       -- Default input scope: cursor/line/buffer/window/tabpage/editor/project
       scope = "cursor",
@@ -243,11 +239,6 @@ Config.now(function()
   -- Jump todo
   map("n", "]t", todo.jump(true), { desc = "Next TODO comment" })
   map("n", "[t", todo.jump(false), { desc = "Prev TODO comment" })
-
-  -- Notification
-  map("n", "<leader>n", function()
-    require("mini.notify").show_history()
-  end, { desc = "Show history" })
 
   -- Git
   map("n", "<leader>gv", function()
