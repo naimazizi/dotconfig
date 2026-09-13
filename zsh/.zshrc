@@ -97,6 +97,10 @@ zinit wait lucid light-mode for \
 	blockf atpull'zinit creinstall -q .' \
 	zsh-users/zsh-completions
 
+# compinit (defines compdef; must load before completion blocks registration below)
+zinit ice wait lucid atload'autoload -Uz compinit; compinit -C'
+zinit light zdharma-continuum/null
+
 # syntax highlighting (patina)
 zinit ice wait lucid as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload'eval "$(zsh-patina activate)"'
 zinit light michel-kraemer/zsh-patina

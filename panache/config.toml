@@ -1,0 +1,26 @@
+# Markdown flavor and line width
+flavor = "gfm"
+
+# Formatting style
+[format]
+wrap = "semantic"
+line-width = 80
+line-ending = "auto"
+
+
+# External code formatters (opt-in)
+[formatters]
+python = ["ruff"]
+latex = "badness"
+javascript = ["oxfmt"]
+typescript = ["oxfmt"]
+
+[formatters.oxfmt]
+cmd = "oxfmt"
+args = ["--stdin-filepath=stdin.js"]
+stdin = true
+
+
+# External code linters
+[linters]
+python = "ruff"

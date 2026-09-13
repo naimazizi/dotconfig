@@ -1,36 +1,43 @@
 {
-  "effortLevel": "medium",
   "enabledPlugins": {
     "claude-coat@claude-coat": true,
     "plannotator@plannotator": true,
     "ponytail@ponytail": true,
-    "pyrefly-lsp@pyrefly-lsp-claude-plugin": true
+    "pyrefly-lsp@pyrefly-lsp-claude-plugin": true,
+    "iwe@iwe-org": true
   },
   "extraKnownMarketplaces": {
     "claude-coat": {
       "source": {
-        "repo": "efebolukbasi/claude-coat",
-        "source": "github"
+        "source": "github",
+        "repo": "efebolukbasi/claude-coat"
       }
     },
     "plannotator": {
       "source": {
-        "repo": "backnotprop/plannotator",
-        "source": "github"
+        "source": "github",
+        "repo": "backnotprop/plannotator"
       }
     },
     "ponytail": {
       "source": {
-        "repo": "dietrichgebert/ponytail",
-        "source": "github"
+        "source": "github",
+        "repo": "dietrichgebert/ponytail"
       }
     },
     "pyrefly-lsp-claude-plugin": {
       "source": {
-        "repo": "lolpack/pyrefly-lsp-claude-plugin",
-        "source": "github"
+        "source": "github",
+        "repo": "lolpack/pyrefly-lsp-claude-plugin"
+      }
+    },
+    "iwe-org": {
+      "source": {
+        "source": "github",
+        "repo": "iwe-org/skills"
       }
     }
   },
+  "effortLevel": "medium",
   "theme": "custom:claude-coat:kanagawa-wave"
 }

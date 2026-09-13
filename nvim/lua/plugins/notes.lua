@@ -2,11 +2,11 @@ if vim.g.vscode then
   return
 end
 
+vim.pack.add({ Config.gh("iwe-org/iwe.nvim") })
+
 if not vim.uv.fs_stat(".iwe") then
   return
 end
-
-vim.pack.add({ Config.gh("iwe-org/iwe.nvim") })
 
 Config.now(function()
   -- Disable panache in favor of iwe-lsp
