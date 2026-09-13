@@ -28,9 +28,10 @@ Config.now(function()
       { "<localleader>s", group = "Quarto", icon = "" },
       { "<localleader>c", group = "Curl (hurl)", icon = "󱂛" },
       { "gs", group = "Surround" },
-      { "go", group = "Coerce" },
       { "<leader>dD", group = "DAP ft-specific" },
       { "<leader>h", group = "Haunting Notes", icon = "󱙝" },
+      { "<leader>m", group = "notes (iwe)", icon = "󰚸" },
+      { "<leader>mp", group = "preview" },
     },
   })
 

@@ -36,7 +36,6 @@ Config.now(function()
     "typos-lsp",
     "typstyle",
     "yaml-language-server",
-    "zk",
   })
 
   require("mason").setup({

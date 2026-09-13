@@ -66,6 +66,10 @@ for dir in "${PATH_DIRS[@]}"; do
 done
 export PATH # Single export instead of per-loop exports
 
+# pick up static #compdef files from brew-installed completion formulae
+# (e.g. tmuxinator-completion) for tools with no completion-generator subcommand
+[[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]] && fpath+=$HOMEBREW_PREFIX/share/zsh/site-functions
+
 # micromamba
 if command -v micromamba &>/dev/null; then
 	export MAMBA_ROOT_PREFIX="$HOME/micromamba"
@@ -113,6 +117,14 @@ zinit light sunlei/zsh-ssh
 
 # Atuin (defer: shell-hooked, safe to load after prompt)
 zinit ice wait lucid atload'eval "$(atuin init zsh)"'
+zinit light zdharma-continuum/null
+
+# iwe completions: generated fresh each shell so it always tracks the installed version
+zinit ice wait lucid atload'command -v iwe &>/dev/null && source <(iwe completions zsh)'
+zinit light zdharma-continuum/null
+
+# bob completions: generated fresh each shell so it always tracks the installed version
+zinit ice wait lucid atload'command -v bob &>/dev/null && source <(bob complete zsh)'
 zinit light zdharma-continuum/null
 
 # lean-ctx shell hook — begin

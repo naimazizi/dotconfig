@@ -90,9 +90,10 @@
       "command": ["node", "{env:HOME}/.local/lib/lark-cli-mcp/index.js"],
       "enabled": true,
     },
-    "memories": {
+    "iwe": {
       "type": "local",
-      "command": ["npx", "-y", "@memories.sh/cli", "serve"],
+      "command": ["npx", "-y", "@iwe-org/mcp"],
+      "cwd": "{env:HOME}/notes",
     },
   },
 }

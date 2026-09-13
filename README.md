@@ -64,6 +64,11 @@ brew install \
 mkdir -p ~/Applications
 brew install --cask ghostty font-monaspace-nf --appdir=~/Applications
 brew install alchemmist/tap/lazy-tmux
+brew install iwe-org/iwe/iwe
+
+
+# Agent skill
+npx skills add iwe-org/skills
 ```
 
 ## MacOS Specifics
