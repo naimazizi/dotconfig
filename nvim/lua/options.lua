@@ -63,7 +63,7 @@ opt.virtualedit = "block" -- Allow cursor to move where there is no text in visu
 opt.winminwidth = 5 -- Minimum window width
 
 opt.updatetime = 500
-opt.timeoutlen = 300 -- Lower than default (1000) to quickly trigger which-key
+opt.timeoutlen = 300 -- Lower than default (1000) for snappier ambiguous mappings
 opt.ttimeoutlen = 0 -- Key code timeout
 opt.autoread = true -- Auto reload files changed outside vim
 opt.autowrite = true -- Auto save

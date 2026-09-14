@@ -2,14 +2,12 @@
 -- `vim.pack.add` for its own plugin(s) and configures them immediately
 --
 -- Order matters only where setup() has a real runtime dependency:
---   which-key before mini/editor/notes (they call require('which-key').add()),
 --   mason before lsp/debug, overseer before debug (enable_dap()).
 --
 -- Modules with a real load-order dependency go first (see comment above);
 -- everything else under `lua/plugins/**` is discovered automatically, so
 -- adding a new plugin module needs no edit here.
 local priority = {
-  "plugins.whichkey",
   "plugins.mini",
   "plugins.mason",
   "plugins.overseer",

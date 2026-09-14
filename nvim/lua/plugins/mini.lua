@@ -106,6 +106,8 @@ Config.now(function()
   })
 
   if not vim.g.vscode then
+    require("utils.mini-clue").setup()
+
     require("mini.sessions").setup({
       autoread = false,
       autowrite = true,
@@ -145,9 +147,8 @@ Config.now(function()
       options = { try_as_border = true },
     })
 
-    local mini_ai = require("utils.mini-ai")
-    mini_ai.ai_setup()
-    mini_ai.ai_whichkey()
+    require("utils.mini-ai").ai_setup()
+    require("utils.mini-clue").ai_clues()
 
     require("mini.icons").setup()
     require("mini.icons").mock_nvim_web_devicons()
