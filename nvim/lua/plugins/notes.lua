@@ -4,6 +4,8 @@ end
 
 vim.pack.add({ Config.gh("iwe-org/iwe.nvim") })
 
+require("iwe.config").defaults.telescope.enabled = false
+
 if not vim.uv.fs_stat(".iwe") then
   return
 end

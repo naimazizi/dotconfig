@@ -181,6 +181,9 @@ Config.now(function()
       scope = "cursor",
     })
 
+    require("mini.notify").setup()
+    require("mini.notify").make_notify()
+
     require("mini.starter").setup({
       header = table.concat({
         "  ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆",
@@ -291,4 +294,9 @@ Config.now(function()
     vim.g.minisessions_disable = true
     vim.notify("Session Save: off")
   end, { desc = "Disable Session Save" })
+
+  -- Notification
+  map("n", "<leader>n", function()
+    require("mini.notify").show_history()
+  end, { desc = "Show Notification" })
 end)
