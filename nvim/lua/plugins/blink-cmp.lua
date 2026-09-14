@@ -148,6 +148,13 @@ Config.on_event("InsertEnter", function()
           name = "dap",
           module = "blink-cmp-dap",
         },
+        cursortab = {
+          module = "cursortab.blink",
+          name = "cursortab",
+          async = true,
+          timeout_ms = 5000,
+          score_offset = 50, -- Higher priority among suggestions
+        },
       },
     },
 

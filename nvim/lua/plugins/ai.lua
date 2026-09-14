@@ -13,6 +13,8 @@ Config.on_packchanged("cursortab.nvim", { "install", "update" }, function(data)
     if result.code ~= 0 then
       local output = (result.stderr ~= "" and result.stderr) or result.stdout or "No output from build command."
       vim.notify(("Build failed for cursortab.nvim:\n%s"):format(output), vim.log.levels.ERROR)
+    else
+      vim.notify("Built cursortab.nvim server successfully", vim.log.levels.INFO)
     end
   end)
 end, "Build cursortab.nvim server")
@@ -89,7 +91,6 @@ Config.later(function()
   })
 end)
 
--- cursortab.nvim -- was `lazy = false` ("The server is already lazy loaded")
 Config.now(function()
   require("cursortab").setup({
     keymaps = {
@@ -97,9 +98,12 @@ Config.now(function()
       partial_accept = false, -- <S-Tab> is driven by blink's keymap instead
     },
     provider = {
+      type = "mercuryapi",
+      api_key_env = "MERCURY_AI_TOKEN",
+
       -- Qwen3.5-0.8B (fastest local, defaults to "inline")
-      url = "http://localhost:8000",
-      model = "mlx-community/Qwen3.5-0.8B-MLX-4bit",
+      -- url = "http://localhost:8000",
+      -- model = "mlx-community/Qwen3.5-0.8B-MLX-4bit",
 
       -- sweep-next-edit-0.5B/1.5B (fastest local)
       -- type = "sweep",

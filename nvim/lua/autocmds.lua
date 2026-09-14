@@ -6,7 +6,7 @@ vim.api.nvim_create_user_command("ClearCursors", function()
 end, {})
 
 vim.api.nvim_create_user_command("LspLog", function()
-  vim.cmd.tabnew({ vim.lsp.log.get_filename() })
+  vim.cmd.view(vim.lsp.log.get_filename())
 end, {
   desc = "Opens the Nvim LSP client log.",
 })
