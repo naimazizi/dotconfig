@@ -58,25 +58,5 @@ Config.now(function()
     all_plugins = package.loaded.lazy == nil,
   })
 
-  require("kanso").setup({
-    bold = true, -- enable bold fonts
-    italics = true, -- enable italics
-    compile = true, -- enable compiling the colorscheme
-    undercurl = true, -- enable undercurls
-    commentStyle = { italic = true },
-    functionStyle = { italic = true },
-    keywordStyle = { italic = false, bold = true },
-    statementStyle = { italic = false, bold = true },
-    typeStyle = { italic = true },
-    dimInactive = false,
-    overrides = function(c)
-      return {
-        LspInlayHint = { fg = c.theme.syn.comment, bg = "NONE", italic = true },
-        ["@string.documentation"] = { fg = c.theme.syn.comment, italic = true },
-        ["@comment"] = { fg = c.theme.syn.comment, italic = true },
-      }
-    end,
-  })
-
-  vim.cmd.colorscheme("kanso")
+  vim.cmd.colorscheme("kanagawa-paper")
 end)

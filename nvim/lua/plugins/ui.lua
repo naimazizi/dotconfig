@@ -3,99 +3,12 @@ if vim.g.vscode then
 end
 
 vim.pack.add({
-  Config.gh("folke/edgy.nvim"),
   Config.gh("MunifTanjim/nui.nvim"),
   Config.gh("petertriho/nvim-scrollbar"),
   Config.gh("hedyhli/outline.nvim"),
   Config.gh("shortcuts/no-neck-pain.nvim"),
   Config.gh("TheNoeTrevino/haunt.nvim"),
 })
-
-Config.later(function()
-  require("edgy").setup({
-    animate = { enabled = false },
-    options = {
-      left = { size = 0.20 },
-      bottom = { size = 0.15 },
-      right = { size = 0.30 },
-    },
-    keys = {
-      -- increase width
-      ["<c-Right>"] = function(win)
-        win:resize("width", 2)
-      end,
-      -- decrease width
-      ["<c-Left>"] = function(win)
-        win:resize("width", -2)
-      end,
-      -- increase height
-      ["<c-Up>"] = function(win)
-        win:resize("height", 2)
-      end,
-      -- decrease height
-      ["<c-Down>"] = function(win)
-        win:resize("height", -2)
-      end,
-    },
-    bottom = {
-      { title = "Neotest Output", ft = "neotest-output-panel" },
-      { title = "Overseer Output", ft = "OverseerOutput" },
-      { title = "DAP", ft = "dap-view" },
-      { title = "DAP", ft = "dap-repl" },
-      { title = "DAP Term", ft = "dap-view-term" },
-      {
-        title = "Quickfix",
-        ft = "qf",
-      },
-    },
-    left = {
-      {
-        title = "Explorer",
-        ft = "neo-tree",
-        size = { height = 0.4 },
-        pinned = false,
-        open = function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
-        end,
-        filter = function(buf)
-          return vim.b[buf].neo_tree_source == "filesystem"
-        end,
-      },
-      {
-        title = "Outline",
-        ft = "Outline",
-        pinned = false,
-        open = "Outline",
-        size = { height = 0.50 },
-      },
-      {
-        title = "Overseer",
-        ft = "OverseerList",
-        open = function()
-          require("overseer").open()
-        end,
-        size = { height = 0.4 },
-      },
-      { title = "Neotest Summary", ft = "neotest-summary" },
-      {
-        title = "Help",
-        ft = "help",
-        filter = function(buf)
-          return vim.bo[buf].buftype == "help"
-        end,
-      },
-    },
-    right = {
-      { title = "Grug Far", ft = "grug-far", size = { width = 0.30 } },
-    },
-  })
-  vim.keymap.set("n", "<leader>uE", function()
-    require("edgy").toggle()
-  end, { desc = "Edgy Toggle" })
-  vim.keymap.set("n", "<A-w>", function()
-    require("edgy").select()
-  end, { desc = "Edgy Select Window" })
-end)
 
 Config.on_event("BufRead", function()
   require("scrollbar").setup({})

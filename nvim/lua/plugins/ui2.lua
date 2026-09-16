@@ -2,8 +2,6 @@ if vim.g.vscode then
   return
 end
 
-vim.pack.add({ "https://github.com/rachartier/tiny-cmdline.nvim" })
-
 require("vim._core.ui2").enable({
   enable = true,
   msg = {
@@ -41,13 +39,6 @@ require("vim._core.ui2").enable({
   },
 })
 
-vim.g.tiny_cmdline = {
-  width = { value = "70%" },
-}
-require("tiny-cmdline").setup({
-  on_reposition = require("tiny-cmdline").adapters.blink,
-})
-
 local ui2 = require("vim._core.ui2")
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -75,7 +66,6 @@ msgs.set_pos = function(tgt)
       anchor = "SE",
       row = vim.o.lines - 3,
       col = vim.o.columns - 1,
-      border = "rounded",
     })
   end
 end

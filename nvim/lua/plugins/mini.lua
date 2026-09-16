@@ -1,3 +1,7 @@
+if not vim.g.vscode then
+  vim.pack.add({ Config.gh("SmiteshP/nvim-navic") })
+end
+
 Config.now(function()
   require("mini.pairs").setup()
 
@@ -176,6 +180,14 @@ Config.now(function()
     require("mini.tabline").setup({})
 
     require("mini.statuscolumn").setup()
+
+    require("mini.statusline").setup({
+      content = {
+        active = require("utils.statusline").active,
+        inactive = require("utils.statusline").inactive,
+      },
+    })
+    require("utils.statusline").attach_navic()
 
     require("mini.input").setup({
       -- Default input scope: cursor/line/buffer/window/tabpage/editor/project

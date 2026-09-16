@@ -47,7 +47,7 @@ opt.incsearch = true -- Show matches as you type
 opt.termguicolors = true -- Enable 24-bit colors
 opt.signcolumn = "yes" -- Always show sign column
 opt.showmatch = true -- Highlight matching brackets
-opt.cmdheight = 0 -- Hide command line when not in use
+opt.cmdheight = 1 -- Reserve cmdline row always; avoids statusline shifting when entering cmdline mode
 opt.showmode = false -- Don't show mode in command line
 opt.pumheight = 10 -- Popup menu height
 opt.pumblend = 10 -- Popup menu transparency
@@ -113,7 +113,6 @@ if vim.fn.isdirectory(undodir) == 0 then
 end
 
 ---@diagnostic disable-next-line: assign-type-mismatch
-opt.winborder = "rounded"
 -- completion popup menu border
 opt.pumborder = "rounded"
 opt.messagesopt = "hit-enter,history:500,progress:c"

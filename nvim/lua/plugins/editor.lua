@@ -130,7 +130,7 @@ if not vim.g.vscode then
       })
     end, { desc = "Search/Replace (grug-far)" })
 
-    vim.keymap.set("v", "<leader>sr", function()
+    vim.keymap.set("v", "<leader>fr", function()
       local grug = require("grug-far")
       grug.toggle_instance({
         instanceName = "grugfar_within_instance",

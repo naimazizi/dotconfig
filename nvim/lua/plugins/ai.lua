@@ -97,6 +97,10 @@ Config.now(function()
       accept = false, -- <Tab> is driven by blink's keymap instead
       partial_accept = false, -- <S-Tab> is driven by blink's keymap instead
     },
+    blink = {
+      enabled = true,
+      ghost_text = false, -- Disable native ghost text
+    },
     provider = {
       type = "mercuryapi",
       api_key_env = "MERCURY_AI_TOKEN",

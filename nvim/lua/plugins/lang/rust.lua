@@ -72,6 +72,3 @@ Config.on_filetype("rust", function()
   }
   vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts)
 end)
-
--- rustaceanvim.neotest adapter registration lives in plugins/test.lua
--- directly (was a lazy.nvim `optional = true` opts-merge contribution here).
