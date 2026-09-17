@@ -13,7 +13,6 @@
   "packages": [
     "npm:pi-provider-litellm",
     "npm:@dietrichgebert/ponytail",
-    "npm:pi-lean-ctx",
     "npm:pi-mcp-adapter",
     "npm:@plannotator/pi-extension"
   ],
