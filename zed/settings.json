@@ -1,8 +1,24 @@
 {
+  "title_bar": {
+    "show_menus": false,
+    "show_branch_status_icon": true
+  },
+  "status_bar": {
+    "show_active_file": true
+  },
+  "agent_ui_font_size": 16.0,
+  "agent_buffer_font_size": 12.0,
+  "markdown_preview": {
+    "font_size": 12.0
+  },
+  "edit_predictions": {
+    "provider": "mercury",
+    "allow_data_collection": "no"
+  },
   "agent_servers": {
     "opencode": {
       "default_config_options": {
-        "model": "anthropic/claude-sonnet-4-6"
+        "model": "anthropic/claude-sonnet-5"
       },
       "favorite_config_option_values": {
         "model": ["anthropic/claude-sonnet-4-6", "litellm_tvlk/claude-sonnet-4.6"]
@@ -42,7 +58,7 @@
   },
   "icon_theme": "Catppuccin Mocha",
   "base_keymap": "VSCode",
-  "ui_font_size": 17,
+  "ui_font_size": 15.0,
   "buffer_font_size": 12,
   "file_finder": {
     "modal_max_width": "medium"
@@ -69,6 +85,8 @@
     "right_padding": 0.15
   },
   "agent": {
+    "default_width": 240.0,
+    "dock": "right",
     "default_model": {
       "effort": "low",
       "enable_thinking": true,
@@ -81,6 +99,7 @@
     "enabled": true
   },
   "terminal": {
+    "show_count_badge": true,
     "font_family": "Monaspace Krypton NF",
     "env": {
       "EDITOR": "zed --wait"
@@ -117,8 +136,10 @@
     "metrics": false
   },
   "project_panel": {
+    "diagnostic_badges": true,
+    "git_status_indicator": true,
     "button": true,
-    "dock": "right",
+    "dock": "left",
     "git_status": true
   },
   "outline_panel": {
