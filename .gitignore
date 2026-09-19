@@ -37,7 +37,6 @@ pi/**
 !/lazygit/
 !/mcp/
 !/neovide/
-!/niri/
 !/nvim/
 !/opencode/
 !/panache/
@@ -65,7 +64,6 @@ zsh/.zinit/
 zsh/.zsh_history
 zsh/.zsh_sessions/
 zsh/.zshenv
-niri/dms/
 yazi/flavors/
 yazi/plugins/
 

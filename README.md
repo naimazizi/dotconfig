@@ -13,7 +13,6 @@
 - lazygit
 - neovide
 - neovim
-- niri
 - opencode
 - tmux
 - tmuxinator
