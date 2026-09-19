@@ -16,7 +16,7 @@ end)
 
 Config.later(function()
   require("outline").setup({
-    outline_window = { position = "left", auto_jump = true, wrap = false },
+    outline_window = { position = "right", auto_jump = true, wrap = false },
     keymaps = {
       down_and_jump = {},
       up_and_jump = {},

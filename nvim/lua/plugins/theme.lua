@@ -2,7 +2,7 @@ if vim.g.vscode then
   return
 end
 
-vim.pack.add({ Config.gh("thesimonho/kanagawa-paper.nvim"), Config.gh("webhooked/kanso.nvim") })
+vim.pack.add({ Config.gh("thesimonho/kanagawa-paper.nvim"), Config.gh("ilof2/posterpole.nvim") })
 
 Config.now(function()
   require("kanagawa-paper").setup({
@@ -12,8 +12,7 @@ Config.now(function()
     transparent = false,
     -- highlight background for the left gutter
     gutter = false,
-    -- background for diagnostic virtual text
-    diag_background = false,
+    -- background for diagnostic virtual text diag_background = false,
     -- dim inactive windows. Disabled when transparent
     dim_inactive = false,
     -- set colors for terminal buffers
@@ -58,5 +57,19 @@ Config.now(function()
     all_plugins = package.loaded.lazy == nil,
   })
 
-  vim.cmd.colorscheme("kanagawa-paper")
+  require("posterpole").setup({
+    transparent = false,
+    dim_inactive = true, -- highlight inactive splits
+    custom_groups = {
+      posterpole = {
+        ["@string.documentation"] = { link = "Comment" },
+        ["@pythonString"] = { link = "Comment" },
+      },
+    },
+    lualine = {
+      transparent = true,
+    },
+  })
+
+  vim.cmd.colorscheme("posterpole")
 end)
