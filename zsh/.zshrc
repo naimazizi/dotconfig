@@ -59,6 +59,7 @@ PATH_DIRS=(
 	"$HOME/.local/share/bob/nvim-bin"
 	"$HOME/.local/share/bob"
 	"$(brew --prefix rustup)/bin"
+	"$HOME/.opencode/bin/"
 )
 
 for dir in "${PATH_DIRS[@]}"; do

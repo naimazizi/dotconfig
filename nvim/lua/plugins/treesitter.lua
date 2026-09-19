@@ -163,12 +163,14 @@ Config.later(function()
           ["]f"] = "@function.outer",
           ["]c"] = "@class.outer",
           ["]a"] = "@parameter.inner",
+          ["]o"] = "@comment.outer",
         },
         goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
         goto_previous_start = {
           ["[f"] = "@function.outer",
           ["[c"] = "@class.outer",
           ["[a"] = "@parameter.inner",
+          ["[o"] = "@comment.outer",
         },
         goto_previous_end = {
           ["[F"] = "@function.outer",

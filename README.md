@@ -68,6 +68,9 @@ brew install iwe-org/iwe/iwe
 
 # Agent skill
 npx skills add iwe-org/skills
+
+# Yazi plugins
+xargs ya pkg add < ~/.config/yazi/plugins.txt
 ```
 
 ## MacOS Specifics

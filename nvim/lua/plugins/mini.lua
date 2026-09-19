@@ -3,6 +3,9 @@ if not vim.g.vscode then
 end
 
 Config.now(function()
+  require("mini.misc").setup_restore_cursor()
+  require("mini.misc").setup_termbg_sync()
+
   require("mini.pairs").setup()
 
   require("mini.surround").setup({

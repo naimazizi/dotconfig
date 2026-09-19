@@ -66,6 +66,7 @@ zsh/.zsh_sessions/
 zsh/.zshenv
 yazi/flavors/
 yazi/plugins/
+yazi/package.toml
 
 foot/dank-colors.ini
 /opencode/package-lock.json

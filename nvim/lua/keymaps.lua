@@ -82,10 +82,22 @@ if not vim.g.vscode then
   -- LSP/diagnostics mappings
   map("n", "<leader>cd", vim.diagnostic.open_float, { silent = true, desc = "Line diagnostics" })
   map("n", "<leader>cl", "<cmd>checkhealth vim.lsp<cr>", { silent = true, desc = "Lsp Info" })
+  map("n", "[d", function()
+    vim.diagnostic.jump({ count = -1 })
+  end, { desc = "Previous diagnostic" })
+  map("n", "]d", function()
+    vim.diagnostic.jump({ count = 1 })
+  end, { desc = "Next diagnostic" })
 
   -- Quickfix / location list (LazyVim-ish)
+  map("n", "[q", "<cmd>cprev<cr>", { silent = true, desc = "Previous quickfix item" })
+  map("n", "]q", "<cmd>cnext<cr>", { silent = true, desc = "Next quickfix item" })
   map("n", "[l", "<cmd>lprev<cr>", { silent = true, desc = "Prev location" })
   map("n", "]l", "<cmd>lnext<cr>", { silent = true, desc = "Next location" })
+
+  -- Window navigation
+  map("n", "[w", "<C-w>W", { silent = true, desc = "Previous window" })
+  map("n", "]w", "<C-w>w", { silent = true, desc = "Next window" })
 
   -- Split window
   map("n", "<leader>-", "<cmd>split<cr>", { noremap = true, desc = "Split window below" })

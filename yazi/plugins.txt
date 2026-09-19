@@ -1,0 +1,9 @@
+wylie102/duckdb
+passion0102/mermaid
+AnirudhG07/nbpreview
+ndtoan96/ouch
+dimi1357/pickle
+KKV9/compress
+yazi-rs/plugins:chmod
+yazi-rs/plugins:smart-filter
+yazi-rs/plugins:git
