@@ -5,6 +5,7 @@
   "plugin": [
     "@dietrichgebert/ponytail",
     "@plannotator/opencode@latest",
+    "caveman-opencode-plugin@latest",
     // "opencode-claude-auth@latest",
   ],
   "provider": {
