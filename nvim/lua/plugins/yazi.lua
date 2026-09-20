@@ -12,6 +12,9 @@ Config.later(function()
     },
   })
 
+  vim.g.loaded_nvim_dir_plugin = false
+
   vim.keymap.set({ "n", "v" }, "<leader>fE", "<cmd>Yazi<cr>", { desc = "Open yazi at the current file" })
   vim.keymap.set("n", "<leader>fe", "<cmd>Yazi toggle<cr>", { desc = "Resume the last yazi session" })
+  vim.keymap.set("n", "-", "<cmd>Yazi toggle<cr>", { desc = "Resume the last yazi session" })
 end)
