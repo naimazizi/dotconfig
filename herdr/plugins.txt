@@ -1,2 +1,3 @@
 kryptamine/herdr-auto-title
 hhdebb/herdr-radar
+thanhdat77/herdr-navigator

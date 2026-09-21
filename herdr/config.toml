@@ -148,6 +148,12 @@ type = "plugin_action"
 command = "herdr.auto-title.restart"
 description = "restart auto title"
 
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "herdr-navigator.open"
+description = "jump to anything"
+
 
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
