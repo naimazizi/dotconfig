@@ -57,6 +57,9 @@ function M.setup()
       { mode = "n", keys = "<leader>h", desc = "+Haunting Notes" },
       { mode = "n", keys = "<leader>m", desc = "+notes (iwe)" },
       { mode = "n", keys = "<leader>mp", desc = "+preview" },
+
+      { mode = "n", keys = "[C", desc = "Prev cursor" },
+      { mode = "n", keys = "]C", desc = "Next cursor" },
     },
     window = { delay = 100 },
   })
