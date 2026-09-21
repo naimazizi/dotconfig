@@ -4,11 +4,11 @@
 
 - amethyst
 - atuin
-- claude
 - fish
 - ghostty
 - gitui
 - helix
+- herdr
 - kitty
 - lazygit
 - neovide
@@ -42,6 +42,7 @@ brew install \
   fd \
   fzf \
   gh \
+  herdr \
   hurl \
   just \
   lazygit \
@@ -71,6 +72,9 @@ npx skills add iwe-org/skills
 
 # Yazi plugins
 xargs ya pkg add < ~/.config/yazi/plugins.txt
+
+# Herdr plugins
+xargs -I{} herdr plugin install {} --yes < ~/.config/herdr/plugins.txt
 ```
 
 ## MacOS Specifics

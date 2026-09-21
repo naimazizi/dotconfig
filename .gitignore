@@ -3,6 +3,7 @@
 **/node_modules/
 claude/**
 pi/**
+herdr/**
 
 # Files to not ignore
 !/.gitignore
@@ -18,16 +19,16 @@ pi/**
 !/.condarc
 !/.oxfmtrc.json
 !/.styleua.toml
-!claude/settings.json
-!claude/README.md
 !pi/settings.json
 !mcp/mcp.json
 
 # Folder to not ignore
 !/amethyst/
 !/atuin/
-!/claude/
 !/fish/
+!/herdr/
+!herdr/config.toml
+!herdr/plugins.txt
 !/foot/
 !/ghostty/
 !/gitui/

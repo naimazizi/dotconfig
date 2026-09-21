@@ -3,11 +3,6 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Force Emacs style inside neovim terminal
-if [[ -n $NVIM ]]; then
-	bindkey -e
-fi
-
 # fpath config - load early for plugin functions
 fpath+=${ZDOTDIR}/.zfunc
 autoload -Uz fzg
@@ -131,22 +126,3 @@ zinit light zdharma-continuum/null
 # bob completions: generated fresh each shell so it always tracks the installed version
 zinit ice wait lucid atload'command -v bob &>/dev/null && source <(bob complete zsh)'
 zinit light zdharma-continuum/null
-
-# lean-ctx shell hook — begin
-if [ -f "$HOME/.config/lean-ctx/shell-hook.zsh" ]; then
-	. "$HOME/.config/lean-ctx/shell-hook.zsh"
-fi
-# lean-ctx shell hook — end
-
-# >>> lean-ctx agent aliases >>>
-alias claude='LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.bashenv" claude'
-alias codebuddy='LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.bashenv" codebuddy'
-alias codex='LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.bashenv" codex'
-alias gemini='LEAN_CTX_AGENT=1 BASH_ENV="$HOME/.bashenv" gemini'
-# <<< lean-ctx agent aliases <<<
-
-# >>> lean-ctx proxy env >>>
-# ANTHROPIC_BASE_URL omitted: Claude Pro/Max subscription authenticates against api.anthropic.com directly (set ANTHROPIC_API_KEY to route Claude through the proxy)
-export OPENAI_BASE_URL="http://127.0.0.1:4444/v1"
-export GEMINI_API_BASE_URL="http://127.0.0.1:4444"
-# <<< lean-ctx proxy env <<<
