@@ -171,6 +171,7 @@ Config.now(function()
     for _, word in ipairs(require("utils.todo").words) do
       highlighters[word:lower()] = { pattern = "%f[%w]()" .. word .. "()%f[%W]", group = hipatterns_group[word] }
     end
+    highlighters["hex_color"] = require("mini.hipatterns").gen_highlighter.hex_color()
     require("mini.hipatterns").setup({ highlighters = highlighters })
 
     require("mini.git").setup({})

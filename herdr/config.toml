@@ -75,7 +75,7 @@ prefix = "ctrl+a"
 # help = "prefix+?"
 # settings = "prefix+s"
 # detach = "prefix+q"
-# reload_config = "prefix+shift+r"
+reload_config = "prefix+shift+r"
 # open_notification_target = "prefix+o"
 # workspace_picker = "prefix+w"
 # goto = "prefix+g"
@@ -98,7 +98,7 @@ focus_agent = "prefix+alt+1..9" # optional indexed binding, e.g. "prefix+alt+1..
 # move_tab_previous = ""   # optional, e.g. "alt+shift+left" moves the tab toward the front
 # move_tab_next = ""       # optional, e.g. "alt+shift+right" moves the tab toward the back
 # switch_tab = "prefix+1..9"
-# switch_workspace = ""   # optional indexed binding, e.g. "prefix+shift+1..9"
+switch_workspace = "prefix+shift+1..9" # optional indexed binding, e.g. "prefix+shift+1..9"
 # close_tab = "prefix+shift+x"
 # rename_pane = "prefix+shift+p"
 # edit_scrollback = "prefix+e"
@@ -143,7 +143,7 @@ width = "80%"
 height = "80%"
 
 [[keys.command]]
-key = "prefix+R"
+key = "prefix+alt+r"
 type = "plugin_action"
 command = "herdr.auto-title.restart"
 description = "restart auto title"

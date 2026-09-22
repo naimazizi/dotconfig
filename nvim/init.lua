@@ -40,6 +40,18 @@ Config.gh = function(repo)
   return "https://github.com/" .. repo
 end
 
+-- Record declared packages so `:Packclean` can remove stale installations.
+Config.pack_names = {}
+local pack_add = vim.pack.add
+vim.pack.add = function(specs, ...)
+  for _, spec in ipairs(specs) do
+    local src = type(spec) == "table" and spec.src or spec
+    local name = type(spec) == "table" and spec.name or nil
+    Config.pack_names[name or vim.fn.fnamemodify(src, ":t"):gsub("%.git$", "")] = true
+  end
+  return pack_add(specs, ...)
+end
+
 -- Define custom autocommand group and helper to create an autocommand.
 -- Autocommands are Neovim's way to define actions that are executed on events
 -- (like creating a buffer, setting an option, etc.).

@@ -11,6 +11,25 @@ end, {
   desc = "Opens the Nvim LSP client log.",
 })
 
+vim.api.nvim_create_user_command("PackClean", function()
+  local unused = vim.tbl_filter(function(plugin)
+    return not Config.pack_names[plugin.spec.name]
+  end, vim.pack.get())
+  if #unused == 0 then
+    vim.notify("No unused vim.pack plugins.")
+    return
+  end
+
+  local names = vim.tbl_map(function(plugin)
+    return plugin.spec.name
+  end, unused)
+  if vim.fn.confirm("Delete unused vim.pack plugins?\n" .. table.concat(names, "\n"), "&Delete\n&Cancel") == 1 then
+    vim.pack.del(names)
+  end
+end, {
+  desc = "Deletes installed vim.pack plugins absent from config.",
+})
+
 if not vim.g.vscode then
   local group = vim.api.nvim_create_augroup("nvim_minimax", { clear = true })
 
