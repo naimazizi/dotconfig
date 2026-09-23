@@ -1,105 +1,127 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "autoupdate": false,
+  "update": "disable",
   "model": "openai/gpt-5.6-terra",
-  "plugin": [
-    "@dietrichgebert/ponytail",
+  "compaction": {
+    "auto": true,
+    "keep": {
+      "tokens": 20000,
+    },
+    "buffer": 64000,
+  },
+  "plugins": [
+    // "@dietrichgebert/ponytail",
     "@plannotator/opencode@latest",
-    "caveman-opencode-plugin@latest",
-    // "opencode-claude-auth@latest",
   ],
-  "agent": {
+  "agents": {
     "general": {
       "model": "openai/gpt-5.6-luna",
     },
   },
-  "provider": {
+  "providers": {
     "litellm_tvlk": {
-      "npm": "@ai-sdk/openai-compatible",
+      "package": "aisdk:@ai-sdk/openai-compatible",
       "name": "LiteLLM TVLK",
-      "options": {
+      "settings": {
         "baseURL": "{env:LITELLM_API_ENDPOINT}",
       },
       "models": {
         "claude-opus-4.7": {
           "name": "claude-opus-4.7",
-          "attachment": true,
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
         },
         "claude-sonnet-4.6": {
           "name": "claude-sonnet-4.6",
-          "attachment": true,
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
         },
         "claude-haiku-4.5": {
           "name": "claude-haiku-4.5",
-          "attachment": true,
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
         },
         "claude-sonnet-5": {
           "name": "claude-sonnet-5",
-          "attachment": true,
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
         },
       },
     },
   },
   "mcp": {
-    "bigquery": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "--with",
-        "mcp<1.10",
-        "mcp-server-bigquery",
-        "--project",
-        "{env:BIGQUERY_PROJECT}",
-        "--location",
-        "{env:BIGQUERY_LOCATION}",
-      ],
-      "enabled": true,
-      "timeout": 3000,
-    },
-    "gh_grep": {
-      "type": "remote",
-      "url": "https://mcp.grep.app",
-    },
-    "jupyter": {
-      "type": "local",
-      "timeout": 6000,
-      "command": ["uvx", "jupyter-mcp-server@latest"],
-      "env": {
-        "JUPYTER_URL": "{env:JUPYTER_URL}",
-        "JUPYTER_TOKEN": "{env:JUPYTER_TOKEN}",
-        "ALLOW_IMG_OUTPUT": "true",
+    "servers": {
+      "bigquery": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "--with",
+          "mcp<1.10",
+          "mcp-server-bigquery",
+          "--project",
+          "{env:BIGQUERY_PROJECT}",
+          "--location",
+          "{env:BIGQUERY_LOCATION}",
+        ],
+        "timeout": {
+          "catalog": 3000,
+          "execution": 3000,
+        },
       },
-      "enabled": true,
-    },
-    "serena": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena",
-        "start-mcp-server",
-        "--project-from-cwd",
-        "--context",
-        "agent",
-        "--open-web-dashboard",
-        "False",
-      ],
-      "enabled": true,
-    },
-    "lark-cli": {
-      "type": "local",
-      "command": ["node", "{env:HOME}/.local/lib/lark-cli-mcp/index.js"],
-      "enabled": true,
-    },
-    "iwe": {
-      "type": "local",
-      "command": ["npx", "-y", "@iwe-org/mcp"],
-      "cwd": "{env:HOME}/notes",
+      "gh_grep": {
+        "type": "remote",
+        "url": "https://mcp.grep.app",
+      },
+      "jupyter": {
+        "type": "local",
+        "disabled": true,
+        "timeout": {
+          "catalog": 6000,
+          "execution": 6000,
+        },
+        "command": ["uvx", "jupyter-mcp-server@latest"],
+        "environment": {
+          "JUPYTER_URL": "{env:JUPYTER_URL}",
+          "JUPYTER_TOKEN": "{env:JUPYTER_TOKEN}",
+          "ALLOW_IMG_OUTPUT": "true",
+        },
+      },
+      "serena": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "--from",
+          "git+https://github.com/oraios/serena",
+          "serena",
+          "start-mcp-server",
+          "--project-from-cwd",
+          "--context",
+          "agent",
+          "--open-web-dashboard",
+          "False",
+        ],
+      },
+      "lark-cli": {
+        "type": "local",
+        "command": ["node", "{env:HOME}/.local/lib/lark-cli-mcp/index.js"],
+      },
+      "iwe": {
+        "type": "local",
+        "command": ["npx", "-y", "@iwe-org/mcp"],
+        "cwd": "{env:HOME}/notes",
+      },
     },
   },
 }
