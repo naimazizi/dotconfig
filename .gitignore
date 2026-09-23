@@ -2,7 +2,6 @@
 /*
 **/node_modules/
 claude/**
-pi/**
 herdr/**
 
 # Files to not ignore
@@ -19,16 +18,14 @@ herdr/**
 !/.condarc
 !/.oxfmtrc.json
 !/.styleua.toml
-!pi/settings.json
-!mcp/mcp.json
+!herdr/config.toml
+!herdr/plugins.txt
 
 # Folder to not ignore
 !/amethyst/
 !/atuin/
 !/fish/
 !/herdr/
-!herdr/config.toml
-!herdr/plugins.txt
 !/foot/
 !/ghostty/
 !/gitui/
@@ -36,12 +33,10 @@ herdr/**
 !/hypr/
 !/kitty/
 !/lazygit/
-!/mcp/
 !/neovide/
 !/nvim/
 !/opencode/
 !/panache/
-!/pi
 !/tmux/
 !/tmuxinator/
 !/vim/

@@ -11,7 +11,6 @@
 - herdr
 - kitty
 - lazygit
-- neovide
 - neovim
 - opencode
 - tmux
@@ -29,14 +28,20 @@
 
 ## Installation
 
-```text {bash}
+```bash
 mkdir -p ~/.config
-cd ~/.config
-git clone https://github.com/naimazizi/dotconfig .
+
+if [ ! -d ~/.config/.git ]; then
+  git -C ~/.config init
+  git -C ~/.config remote add origin git@github.com:naimazizi/dotconfig.git
+fi
+
+git -C ~/.config pull --ff-only origin main
 
 brew install \
   atuin \
   bat \
+  bob \
   delta \
   direnv \
   fd \
@@ -47,16 +52,14 @@ brew install \
   just \
   lazygit \
   lsd \
-  micromamba \
-  neovide \
-  neovim \
   node \
-  opencode \
   ripgrep \
   sk \
   tmuxinator \
   tree-sitter-cli \
   yazi \
+  uv \
+  rustup \
   z \
   zellij \
   zoxide
