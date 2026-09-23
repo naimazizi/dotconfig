@@ -55,6 +55,9 @@ Config.later(function()
   -- kdl formatter
   formatters_by_ft["kdl"] = { "kdlfmt" }
 
+  -- terraform formatter
+  formatters_by_ft["terraform"] = { "terraform_fmt" }
+
   -- oxfmt for various web-related filetypes
   for _, ft in ipairs(oxfmt_supported_ft) do
     formatters_by_ft[ft] = formatters_by_ft[ft] or {}

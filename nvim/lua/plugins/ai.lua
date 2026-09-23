@@ -94,8 +94,8 @@ end)
 Config.now(function()
   require("cursortab").setup({
     keymaps = {
-      accept = false, -- <Tab> is driven by blink's keymap instead
-      partial_accept = false, -- <S-Tab> is driven by blink's keymap instead
+      accept = "<Tab>", -- Blink overrides this in insert mode.
+      partial_accept = "<S-Tab>", -- Blink overrides this in insert mode.
     },
     blink = {
       enabled = true,
