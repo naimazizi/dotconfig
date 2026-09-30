@@ -13,6 +13,7 @@
 - lazygit
 - neovim
 - opencode
+- pi-coding-agent
 - tmux
 - tmuxinator
 - vim
@@ -53,6 +54,7 @@ brew install \
   lazygit \
   lsd \
   node \
+  pi-coding-agent \
   ripgrep \
   sk \
   tmuxinator \
@@ -71,7 +73,19 @@ brew install iwe-org/iwe/iwe
 
 
 # Agent skill
-npx skills add iwe-org/skills
+npx skills add iwe-org/skills --skill graph -g
+npx skills add tt-a1i/archify -g
+
+# Pi plugin
+pi install npm:pi-mcp-adapter
+pi install git:github.com/DietrichGebert/ponytail
+pi install npm:pi-caveman
+pi install npm:@plannotator/pi-extension
+pi install npm:@bacnh85/pi-serena
+pi install npm:@juicesharp/rpiv-ask-user-question
+pi install npm:@juicesharp/rpiv-todo
+pi install npm:pi-subagents
+pi install npm:pi-web-access
 
 # Yazi plugins
 xargs ya pkg add < ~/.config/yazi/plugins.txt

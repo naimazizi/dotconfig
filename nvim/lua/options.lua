@@ -1,6 +1,7 @@
 local opt = vim.opt
 
 -- custom global variables
+vim.g.ai_harness = "pi" -- "pi" or "opencode"
 vim.g.md_ft = { "markdown", "quarto", "copilot-chat", "opencode_output", "Avante" }
 vim.g.md_injected_ft = { "markdown", "quarto" }
 vim.g.sql_ft = { "sql", "mysql", "plsql" }

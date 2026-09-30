@@ -1,0 +1,21 @@
+{
+  "lastChangelogVersion": "0.87.1",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-6.1-sol",
+  "defaultThinkingLevel": "medium",
+  "theme": "dark",
+  "autocompleteMaxVisible": 10,
+  "enableInstallTelemetry": false,
+  "enableAnalytics": false,
+  "packages": [
+    "git:github.com/DietrichGebert/ponytail",
+    "npm:pi-caveman",
+    "npm:pi-mcp-adapter",
+    "npm:@plannotator/pi-extension",
+    "npm:@bacnh85/pi-serena",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:pi-subagents",
+    "npm:pi-web-access"
+  ]
+}

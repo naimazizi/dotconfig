@@ -33,10 +33,12 @@ herdr/**
 !/hypr/
 !/kitty/
 !/lazygit/
+!/mcp/
 !/neovide/
 !/nvim/
 !/opencode/
 !/panache/
+!/pi/
 !/tmux/
 !/tmuxinator/
 !/vim/

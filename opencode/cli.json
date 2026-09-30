@@ -17,5 +17,6 @@
   },
   "prompt": {
     "image_preview": true
-  }
+  },
+  "plugins": ["./herdr-opencode"]
 }
