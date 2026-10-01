@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.87.1",
+  "lastChangelogVersion": "0.99.2",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6.1-sol",
   "defaultThinkingLevel": "medium",
@@ -10,7 +10,6 @@
   "packages": [
     "git:github.com/DietrichGebert/ponytail",
     "npm:pi-caveman",
-    "npm:pi-mcp-adapter",
     "npm:@plannotator/pi-extension",
     "npm:@bacnh85/pi-serena",
     "npm:@juicesharp/rpiv-ask-user-question",

@@ -1,17 +1,16 @@
 {
   "mcpServers": {
     "bigquery": {
-      "command": "uvx",
+      "command": "sh",
       "args": [
-        "--with",
-        "mcp<1.10",
-        "mcp-server-bigquery",
-        "--project",
-        "${BIGQUERY_PROJECT}",
-        "--location",
-        "${BIGQUERY_LOCATION}"
+        "-c",
+        "exec uvx --with 'mcp<1.10' mcp-server-bigquery --project \"${BIGQUERY_PROJECT:?BIGQUERY_PROJECT is required}\" --location \"${BIGQUERY_LOCATION:?BIGQUERY_LOCATION is required}\""
       ],
-      "requestTimeoutMs": 3000
+      "env": {
+        "BIGQUERY_PROJECT": "${BIGQUERY_PROJECT}",
+        "BIGQUERY_LOCATION": "${BIGQUERY_LOCATION}"
+      },
+      "timeout": 60
     },
     "gh_grep": {
       "url": "https://mcp.grep.app"
@@ -19,8 +18,8 @@
     "jupyter": {
       "command": "uvx",
       "args": ["jupyter-mcp-server@latest"],
-      "disabled": true,
-      "requestTimeoutMs": 6000,
+      "enabled": false,
+      "timeout": 60,
       "env": {
         "JUPYTER_URL": "${JUPYTER_URL}",
         "JUPYTER_TOKEN": "${JUPYTER_TOKEN}",
@@ -29,12 +28,12 @@
     },
     "lark-cli": {
       "command": "node",
-      "args": ["${HOME}/.local/lib/lark-cli-mcp/index.js"]
+      "args": ["~/.local/lib/lark-cli-mcp/index.js"]
     },
     "iwe": {
       "command": "npx",
       "args": ["-y", "@iwe-org/mcp"],
-      "cwd": "${HOME}/notes"
+      "cwd": "~/notes"
     }
   }
 }
