@@ -16,7 +16,6 @@ end
 
 vim.pack.add({
   Config.gh("ibhagwan/fzf-lua"),
-  Config.gh("elanmed/fzf-lua-frecency.nvim"),
 })
 
 Config.later(function()
@@ -39,7 +38,7 @@ Config.later(function()
 
   local map = vim.keymap.set
   map("n", "<leader><leader>", function()
-    require("fzf-lua-frecency").frecency({ cwd_only = true, display_score = false })
+    require("fzf-lua").files({ cwd_only = true })
   end, { desc = "Find files" })
   map("n", "<leader>/", function()
     require("fzf-lua").live_grep()
