@@ -24,6 +24,7 @@ herdr/**
 # Folder to not ignore
 !/amethyst/
 !/atuin/
+!/bob/
 !/fish/
 !/herdr/
 !/foot/
@@ -49,6 +50,7 @@ herdr/**
 !/zed/task.json
 !/zellij/
 !/zsh/
+!/vscodium/
 
 # Files to ignore
 coc/memos.json
