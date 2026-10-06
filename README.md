@@ -22,6 +22,7 @@
 - zed
 - zellij
 - zsh
+- vscodium
 
 ## Requirements
 
@@ -70,6 +71,7 @@ mkdir -p ~/Applications
 brew install --cask ghostty font-monaspace-nf --appdir=~/Applications
 brew install alchemmist/tap/lazy-tmux
 brew install iwe-org/iwe/iwe
+brew tap 1jehuang/mmdr && brew install mmdr
 
 
 # Agent skill
@@ -92,6 +94,10 @@ xargs ya pkg add < ~/.config/yazi/plugins.txt
 
 # Herdr plugins
 xargs -I{} herdr plugin install {} --yes < ~/.config/herdr/plugins.txt
+
+# VScodium (Sync setting)
+```
+profile: main repository: type: file path: \~/.config/vscodium ```
 ```
 
 ## MacOS Specifics

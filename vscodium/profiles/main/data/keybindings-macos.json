@@ -1,0 +1,91 @@
+[
+  {
+    "key": "alt+shift+a",
+    "command": "cursor-harpoon.addEditor"
+  },
+  {
+    "key": "shift+alt+p",
+    "command": "cursor-harpoon.editorQuickPick",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "alt+shift+e",
+    "command": "cursor-harpoon.editEditors"
+  },
+  {
+    "key": "alt+shift+p",
+    "command": "cursor-harpoon.editorQuickPick"
+  },
+  {
+    "key": "alt+1",
+    "command": "cursor-harpoon.gotoEditor1"
+  },
+  {
+    "key": "alt+2",
+    "command": "cursor-harpoon.gotoEditor2"
+  },
+  {
+    "key": "alt+3",
+    "command": "cursor-harpoon.gotoEditor3"
+  },
+  {
+    "key": "alt+4",
+    "command": "cursor-harpoon.gotoEditor4"
+  },
+  {
+    "key": "alt+p",
+    "command": "cursor-harpoon.editorQuickPick"
+  },
+  {
+    "key": "alt+shift+1",
+    "command": "cursor-harpoon.addEditor1"
+  },
+  {
+    "key": "alt+shift+2",
+    "command": "cursor-harpoon.addEditor2"
+  },
+  {
+    "key": "alt+shift+3",
+    "command": "cursor-harpoon.addEditor3"
+  },
+  {
+    "key": "alt+shift+4",
+    "command": "cursor-harpoon.addEditor4"
+  },
+  {
+    "key": "alt+d",
+    "command": "vscode-neovim.send",
+    "args": "<A-d>",
+    "when": "editorTextFocus && neovim.init && neovim.mode == normal"
+  },
+  {
+    "key": "alt+r",
+    "command": "vscode-neovim.send",
+    "args": "<A-r>",
+    "when": "editorTextFocus && neovim.init && neovim.mode == normal"
+  },
+  {
+    "key": "alt+n",
+    "command": "vscode-neovim.send",
+    "args": "<A-n>",
+    "when": "editorTextFocus && neovim.init && neovim.mode == normal"
+  },
+  {
+    "key": "ctrl+alt+n",
+    "command": "vscode-neovim.send",
+    "args": "<A-C-n>",
+    "when": "editorTextFocus && neovim.init && neovim.mode == normal"
+  },
+  {
+    "key": "alt+f",
+    "command": "vscode-neovim.send",
+    "args": "<A-f>",
+    "when": "editorTextFocus && neovim.init && neovim.mode == normal"
+  },
+  {
+    "key": "alt+e",
+    "command": "vscode-neovim.send",
+    "args": "<A-e>",
+    "when": "editorTextFocus && neovim.init && neovim.mode == normal"
+  }
+]

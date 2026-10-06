@@ -58,7 +58,7 @@ end
 
 -- Search text in files
 map("n", "<leader>/", function()
-  vscode.call("leaderkey.ripgrep")
+  vscode.call("omnigrep.open")
 end, { noremap = true, desc = "search text in files" })
 
 -- editor
@@ -117,10 +117,6 @@ end, { noremap = true, desc = "focus to file explorer" })
 map("n", "<leader>fe", function()
   vscode.call("workbench.files.action.focusFilesExplorer")
 end, { noremap = true, desc = "focus to file explorer" })
-
-map("n", "<leader>ff", function()
-  vscode.call("leaderkey.findFile")
-end, { noremap = true, desc = "open files" })
 
 -- Code Action
 map("n", "<leader>cr", function()
