@@ -114,8 +114,8 @@
         ],
       },
       "lark-cli": {
-        "type": "local",
-        "command": ["node", "{env:HOME}/.local/lib/lark-cli-mcp/index.js"],
+        "type": "remote",
+        "url": "https://mcp.larksuite.com/mcp",
       },
       "iwe": {
         "type": "local",
