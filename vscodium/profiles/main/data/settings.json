@@ -233,5 +233,9 @@
   },
   "remote.extensionKind": {
     "asvetliakov.vscode-neovim": ["workspace"]
-  }
+  },
+  "varro.chat.showFileDiffs": true,
+  "varro.chat.autoRenameUntitledSessions": true,
+  "varro.chat.showChangedFiles": true,
+  "varro.chat.autoCompactionReservedTokens": null
 }

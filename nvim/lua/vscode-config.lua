@@ -371,15 +371,6 @@ map("n", "<leader>dO", function()
   vscode.call("workbench.action.debug.stepOver")
 end, { noremap = true, desc = "Debug - step over" })
 
--- Copilot
-map("n", "<leader>aa", function()
-  vscode.call("workbench.action.chat.open")
-end, { noremap = true, desc = "Ask Copilot" })
-
-map("n", "<leader>at", function()
-  vscode.call("workbench.action.toggleAuxiliaryBar")
-end, { noremap = true, desc = "Toggle Copilot chat" })
-
 -- Http Client
 map("n", "<leader>Rs", function()
   vscode.call("vscode-hurl-runner.runHurl")
@@ -410,3 +401,16 @@ end, { noremap = true, desc = "Quarto Next code block" })
 map("n", "[4", function()
   vscode.call("quarto.goToPreviousCell")
 end, { noremap = true, desc = "Quarto Prev code block" })
+
+-- AI
+map("n", "<leader>aa", function()
+  vscode.call("varro.chat.focus")
+end, { noremap = true, desc = "Focus Varro chat" })
+
+map("n", "<leader>as", function()
+  vscode.call("varro.chat.searchSessions")
+end, { noremap = true, desc = "Search Varro sessions" })
+
+map("n", "<leader>ac", function()
+  vscode.call("varro.chat.addToContext")
+end, { noremap = true, desc = "Add to Varro context" })
