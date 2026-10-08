@@ -1,5 +1,19 @@
 local map = vim.keymap.set
 
+map({ "n", "x" }, "gY", function()
+  local path = vim.fn.expand("%:.")
+  if path == "" then
+    vim.notify("Cannot copy location: buffer has no file name", vim.log.levels.WARN)
+    return
+  end
+  local first, last = vim.fn.line("."), vim.fn.line(".")
+  if vim.fn.mode() ~= "n" then
+    first, last = math.min(first, vim.fn.line("v")), math.max(last, vim.fn.line("v"))
+  end
+  local location = path .. ":" .. first .. (last ~= first and "-" .. last or "")
+  vim.fn.setreg("+", location, "v")
+end, { desc = "Copy relative path and line range" })
+
 -- Delete without clobbering the unnamed/yank register (send to black hole register instead)
 map({ "n", "x" }, "d", '"_d', { desc = "Delete (no register)" })
 map("n", "D", '"_D', { desc = "Delete to EOL (no register)" })
