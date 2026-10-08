@@ -37,25 +37,33 @@ map("n", "<A-d>", "Q", { noremap = true, desc = "Multicursor add cursor" })
 -- ClearCursors command is defined once in autocmds.lua; reuse it here.
 map("n", "<A-r>", "<cmd>ClearCursors<cr>", { noremap = true, desc = "Multicursor clear All cursor" })
 
-map("n", "<A-n>", function()
-  local ns = vim.api.nvim_create_namespace("nvim.multicursor")
-  local marks = vim.api.nvim_buf_get_extmarks(0, ns, 0, -1)
-  if #marks ~= 0 then
-    vim.api.nvim_feedkeys("Qn", "n", false) -- place a cursor and jump to the next match
-    return
+--- Place a cursor and then perform a motion
+--- @param opts? {visual_mode?: boolean}
+local select_all = function(opts)
+  local lopts = opts or {}
+  if lopts.visual_mode then
+    local selection = vim.fn.getregion(vim.fn.getpos("v"), vim.fn.getpos("."))
+    vim.fn.setreg("/", "\\V" .. table.concat(selection, "\\n"))
+    vim.api.nvim_feedkeys("v`<mx", "n", false)
+  else
+    vim.api.nvim_feedkeys("wbmx", "n", false) -- move to the beginning of the word and place a cursor
+    vim.fn.setreg("/", "\\V\\<" .. vim.fn.expand("<cword>") .. "\\>") -- set search pattern to the current word
   end
-  vim.api.nvim_feedkeys("wbQ", "n", false) -- move to the beginning of the word and place a cursor
-  vim.fn.setreg("/", "\\V" .. vim.fn.expand("<cword>")) -- set search pattern to the current word
-  vim.api.nvim_feedkeys("n", "n", false)
-end, { noremap = true, desc = "Multicursor search word under cursor" })
+  vim.schedule(function()
+    -- local pos = vim.api.nvim_win_get_cursor(0)
+    vim.api.nvim_feedkeys("Valzqn`x", "n", false)
+    -- FIXME: Somehow setting the cursor doesn't work - I use the x-mark as a workaround instead
+    -- vim.api.nvim_win_set_cursor(0, pos) -- place cursor back in its original position before placing cursors on the whole document
+  end)
+end
 
-map("n", "<A-C-n>", function()
-  local ns = vim.api.nvim_create_namespace("nvim.multicursor")
-  local _marks = vim.api.nvim_buf_get_extmarks(0, ns, 0, -1)
-  vim.api.nvim_feedkeys("wbQ", "n", false) -- move to the beginning of the word and place a cursor
-  vim.fn.setreg("/", "\\V" .. vim.fn.expand("<cword>")) -- set search pattern to the current word
-  vim.api.nvim_feedkeys("n", "n", false)
-end, { noremap = true, desc = "Multicursor search word under cursor" })
+map("n", "<M-n>", function()
+  select_all()
+end, { noremap = true, desc = "Multicursor add all word occurrences" })
+
+map("x", "<M-n>", function()
+  select_all({ visual_mode = true })
+end, { noremap = true, desc = "Multicursor add all selection occurrences" })
 
 map("n", "<A-f>", "q=", { noremap = true, desc = "Multicursor follow" })
 map("n", "<A-e>", "[CQ", { noremap = true, desc = "Multicursor delete current cursor" })
