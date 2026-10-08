@@ -10,7 +10,7 @@
     "buffer": 64000,
   },
   "plugins": [
-    // "@dietrichgebert/ponytail",
+    "@dietrichgebert/ponytail",
     "@plannotator/opencode@latest",
   ],
   "agents": {
