@@ -2,3 +2,4 @@ kryptamine/herdr-auto-title
 hhdebb/herdr-radar
 thanhdat77/herdr-navigator
 AVGVSTVS96/herdr-drovr
+aimdevlee/herdr-nvim-nav
