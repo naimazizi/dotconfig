@@ -144,40 +144,6 @@ if not vim.g.vscode then
   map({ "n", "v" }, "<leader>gB", function()
     require("utils.gitbrowse").open()
   end, { desc = "Git Browse" })
-  -- Turn a unix timestamp into "N days/months/years ago"
-  local function time_ago(epoch)
-    local units = { { 31536000, "year" }, { 2592000, "month" }, { 86400, "day" }, { 3600, "hour" }, { 60, "minute" } }
-    local diff = os.time() - epoch
-    for _, unit in ipairs(units) do
-      local secs, name = unit[1], unit[2]
-      if diff >= secs then
-        local n = math.floor(diff / secs)
-        return n .. " " .. name .. (n > 1 and "s" or "") .. " ago"
-      end
-    end
-    return "just now"
-  end
-
-  map({ "n", "v" }, "<leader>gs", function()
-    local line = vim.fn.line(".")
-    local file = vim.fn.expand("%") --[[@as string]]
-    ---@type string[]
-    local cmd = { "git", "blame", "--porcelain", "-L", line .. "," .. line, file }
-    local out = vim.fn.systemlist(cmd)
-    local info = {}
-    for _, l in ipairs(out) do
-      local key, val = l:match("^(%a[%a%-]*)%s+(.*)$")
-      if key then
-        info[key] = val
-      end
-    end
-    local when = info["author-time"] and time_ago(tonumber(info["author-time"])) or "unknown time"
-    vim.notify(
-      string.format("%s (%s)\n%s", info.author or "unknown", when, info.summary or ""),
-      vim.log.levels.INFO,
-      { title = "Git Blame" }
-    )
-  end, { desc = "Git Blame (current line)" })
 end
 
 -- Neovide specific keymap

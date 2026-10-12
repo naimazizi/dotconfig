@@ -113,6 +113,15 @@ Config.now(function()
   })
 
   if not vim.g.vscode then
+    local map_combo = require("mini.keymap").map_combo
+    local opts = { delay = 100 }
+    map_combo({ "i", "s" }, "jk", "<BS><BS><Esc>", opts)
+    map_combo("i", "jj", "<BS><BS><Esc>", opts)
+    map_combo("c", "jk", "<BS><BS><C-c>", opts)
+    map_combo("c", "jj", "<BS><BS><C-c>", opts)
+    map_combo("x", "jk", "<Esc>", opts)
+    map_combo("t", "jk", "<BS><BS><C-\\><C-n>", opts)
+
     require("utils.mini-clue").setup()
 
     require("mini.sessions").setup({
@@ -173,13 +182,6 @@ Config.now(function()
     end
     highlighters["hex_color"] = require("mini.hipatterns").gen_highlighter.hex_color()
     require("mini.hipatterns").setup({ highlighters = highlighters })
-
-    require("mini.git").setup({})
-    require("mini.diff").setup({
-      view = {
-        style = "sign",
-      },
-    })
 
     require("mini.tabline").setup({})
 
@@ -259,17 +261,6 @@ Config.now(function()
   local todo = require("utils.todo")
   map("n", "]t", todo.jump(true), { desc = "Next TODO comment" })
   map("n", "[t", todo.jump(false), { desc = "Prev TODO comment" })
-
-  -- Git
-  map("n", "<leader>gv", function()
-    require("mini.diff").toggle_overlay()
-  end, { desc = "Toggle Git changes" })
-  map("n", "<leader>gb", function()
-    require("mini.git").show_at_cursor()
-  end, { desc = "Show history" })
-  map("v", "<leader>gb", function()
-    require("mini.git").show_range_history()
-  end, { desc = "Show history" })
 
   -- Toggle
   map("n", "<leader>uf", function()

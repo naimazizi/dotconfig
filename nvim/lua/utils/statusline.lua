@@ -75,11 +75,25 @@ local function venv_section()
   return "󱔎 " .. vim.fn.fnamemodify(venv_path, ":t")
 end
 
+local function diff_section()
+  local status = vim.b.vgit_status
+  if not status or ministatusline().is_truncated(75) then
+    return ""
+  end
+  local parts = {}
+  for _, item in ipairs({ { "added", "+" }, { "changed", "~" }, { "removed", "-" } }) do
+    if status[item[1]] > 0 then
+      table.insert(parts, item[2] .. status[item[1]])
+    end
+  end
+  return #parts > 0 and " " .. table.concat(parts, " ") or ""
+end
+
 function M.active()
   local mini = ministatusline()
   local mode, mode_hl = mode_section()
   local git = mini.section_git({ trunc_width = 40 })
-  local diff = mini.section_diff({ trunc_width = 75 })
+  local diff = diff_section()
   local diagnostics = mini.section_diagnostics({ trunc_width = 75 })
   local filename = mini.section_filename({ trunc_width = 140 })
   local fileinfo = mini.section_fileinfo({ trunc_width = 120 })

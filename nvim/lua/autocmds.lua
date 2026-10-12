@@ -11,6 +11,14 @@ end, {
   desc = "Opens the Nvim LSP client log.",
 })
 
+vim.api.nvim_create_user_command("DiffFile", function(opts)
+  vim.cmd.diffsplit({ args = { opts.args }, mods = { vertical = true } })
+end, {
+  nargs = 1,
+  complete = "file",
+  desc = "Diffs the current buffer against another file side by side.",
+})
+
 vim.api.nvim_create_user_command("PackClean", function()
   local unused = vim.tbl_filter(function(plugin)
     return not Config.pack_names[plugin.spec.name]
