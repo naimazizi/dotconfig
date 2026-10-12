@@ -27,6 +27,7 @@ alias neovide_remote="neovide --neovim-bin ~/.config/nvim-remote.sh"
 alias ls_arch_packages="pacman -Qi | grep -E '^(Name|Installed)' | cut -f2 -d':' | paste - - | column -t | sort -nrk 2 | grep MiB | less"
 alias ss="zsh $HOME/.config/skim_search.sh"
 alias zz="zoxide query -i"
+alias oc="opencode"
 
 # Consolidated PATH construction for better performance
 # Build PATH array with deduplication instead of repeated concatenations

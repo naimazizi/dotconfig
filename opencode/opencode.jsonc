@@ -7,7 +7,7 @@
     "keep": {
       "tokens": 20000,
     },
-    "buffer": 64000,
+    "buffer": 16000,
   },
   "plugins": [
     "@dietrichgebert/ponytail",
@@ -88,8 +88,8 @@
         "type": "local",
         "disabled": true,
         "timeout": {
-          "catalog": 6000,
-          "execution": 6000,
+          "catalog": 60000,
+          "execution": 60000,
         },
         "command": ["uvx", "jupyter-mcp-server@latest"],
         "environment": {
