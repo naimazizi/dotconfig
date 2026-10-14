@@ -5,8 +5,6 @@ end
 vim.pack.add({
   Config.gh("quarto-dev/quarto-nvim"),
   Config.gh("jmbuhr/otter.nvim"),
-  Config.gh("nvim-treesitter/nvim-treesitter"),
-  Config.gh("GCBallesteros/jupytext.nvim"),
 })
 
 Config.later(function()
@@ -39,21 +37,4 @@ Config.later(function()
   vim.keymap.set("n", "<localleader>sf", function()
     runner.run_all(true)
   end, { desc = "run all cells of all languages", silent = true })
-end)
-
-Config.on_filetype("ipynb", function()
-  require("jupytext").setup({
-    custom_language_formatting = {
-      python = {
-        extension = "qmd",
-        style = "quarto",
-        force_ft = "quarto",
-      },
-      r = {
-        extension = "qmd",
-        style = "quarto",
-        force_ft = "quarto",
-      },
-    },
-  })
 end)

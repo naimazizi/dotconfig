@@ -304,7 +304,7 @@ Config.now(function()
   end, { desc = "Disable Session Save" })
 
   -- Notification
-  map("n", "<leader>n", function()
+  map("n", "<localleader><localleader>", function()
     require("mini.notify").show_history()
   end, { desc = "Show Notification" })
 end)

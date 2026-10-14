@@ -4,7 +4,7 @@ end
 
 vim.pack.add({
   Config.gh("nvim-lua/plenary.nvim"),
-  Config.gh("pwntester/octo.nvim"),
+  Config.gh("emrearmagan/atlas.nvim"),
   Config.gh("tanvirtin/vgit.nvim"),
 })
 
@@ -27,18 +27,20 @@ Config.on_event("VimEnter", function()
 end)
 
 Config.later(function()
-  require("octo").setup({
-    picker = "fzf-lua",
-    enable_builtin = true,
-    file_panel = {
-      icons = function(name, _ext)
-        return require("mini.icons").get("file", name)
-      end,
+  require("atlas").setup({
+    ui = { picker = "fzf-lua" },
+
+    providers = {
+      ---@type AtlasGitHubConfig
+      github = {
+        -- hostname = "github.company.com", -- Defaults to GH_HOST, then github.com.
+        cache_ttl = 300, -- Set to 0 to disable caching.
+      },
     },
   })
 
   local map = vim.keymap.set
-  map("n", "<leader>go", "<cmd>Octo<cr>", { desc = "Octo actions" })
-  map("n", "<leader>gi", "<cmd>Octo issue list<cr>", { desc = "List GitHub Issues" })
-  map("n", "<leader>gP", "<cmd>Octo pr list<cr>", { desc = "List GitHub PRs" })
+  map("n", "<leader>go", "<cmd>Atlas<cr>", { desc = "Atlas actions" })
+  map("n", "<leader>gi", "<cmd>Atlas issues github<cr>", { desc = "List GitHub Issues" })
+  map("n", "<leader>gP", "<cmd>Atlas pulls github<cr>", { desc = "List GitHub PRs" })
 end)
