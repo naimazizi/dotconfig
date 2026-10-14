@@ -63,23 +63,6 @@
   },
   "mcp": {
     "servers": {
-      "bigquery": {
-        "type": "local",
-        "command": [
-          "uvx",
-          "--with",
-          "mcp<1.10",
-          "mcp-server-bigquery",
-          "--project",
-          "{env:BIGQUERY_PROJECT}",
-          "--location",
-          "{env:BIGQUERY_LOCATION}",
-        ],
-        "timeout": {
-          "catalog": 3000,
-          "execution": 3000,
-        },
-      },
       "gh_grep": {
         "type": "remote",
         "url": "https://mcp.grep.app",
