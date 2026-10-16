@@ -6,8 +6,6 @@ Config.now(function()
   require("mini.misc").setup_restore_cursor()
   require("mini.misc").setup_termbg_sync()
 
-  require("mini.pairs").setup()
-
   require("mini.surround").setup({
     mappings = {
       add = "gsa", -- Add surrounding in Normal and Visual modes
@@ -162,6 +160,8 @@ Config.now(function()
       symbol = "│",
       options = { try_as_border = true },
     })
+
+    require("mini.pairs").setup()
 
     require("utils.mini-ai").ai_setup()
     require("utils.mini-clue").ai_clues()

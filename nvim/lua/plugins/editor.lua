@@ -1,11 +1,7 @@
 vim.pack.add({
   Config.gh("RRethy/vim-illuminate"),
-  Config.gh("chrisgrieser/nvim-origami"),
   Config.gh("chrisgrieser/nvim-various-textobjs"),
   Config.gh("sQVe/sort.nvim"),
-  Config.gh("andymass/vim-matchup"),
-  Config.gh("otavioschwanck/arrow.nvim"),
-  Config.gh("MagicDuck/grug-far.nvim"),
   Config.gh("NMAC427/guess-indent.nvim"),
   Config.gh("nemanjamalesija/smart-paste.nvim"),
 })
@@ -59,6 +55,13 @@ Config.later(function()
 end)
 
 if not vim.g.vscode then
+  vim.pack.add({
+    Config.gh("andymass/vim-matchup"),
+    Config.gh("MagicDuck/grug-far.nvim"),
+    Config.gh("otavioschwanck/arrow.nvim"),
+    Config.gh("chrisgrieser/nvim-origami"),
+  })
+
   Config.on_event("BufRead", function()
     require("origami").setup({
       useLspFoldsWithTreesitterFallback = {
