@@ -102,7 +102,7 @@
       },
       "iwe": {
         "type": "local",
-        "command": ["npx", "-y", "@iwe-org/mcp"],
+        "command": ["iwec"],
         "cwd": "{env:HOME}/notes",
       },
       "datadog": {
