@@ -57,6 +57,7 @@ Config.on_event("BufReadPre,BufNewFile", function()
         [vim.diagnostic.severity.INFO] = " ",
         [vim.diagnostic.severity.HINT] = " ",
       },
+      severity = { min = 0 }, -- remove diagnostic icon in columnsign
     },
     virtual_text = false,
   })

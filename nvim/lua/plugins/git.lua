@@ -9,7 +9,17 @@ vim.pack.add({
 })
 
 Config.on_event("VimEnter", function()
-  require("vgit").setup()
+  require("vgit").setup({
+    settings = {
+      signs = {
+        definitions = {
+          GitSignsAdd = { text = "▌", numhl = "GitSignsAdd" },
+          GitSignsChange = { text = "▌", numhl = "GitSignsChange" },
+          GitSignsDelete = { text = "▔", numhl = "GitSignsDelete" },
+        },
+      },
+    },
+  })
 
   local map = vim.keymap.set
   map("n", "<leader>gv", "<cmd>VGit buffer_diff_preview<cr>", { desc = "Preview Git changes" })
