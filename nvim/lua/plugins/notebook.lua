@@ -2,10 +2,6 @@ if vim.g.vscode then
   return
 end
 
-vim.pack.add({
-  { src = "https://github.com/sheng-tse/jupynvim", version = vim.version.range("*") },
-})
-
 vim.api.nvim_create_autocmd("PackChanged", {
   callback = function(ev)
     local d = ev.data
@@ -13,6 +9,10 @@ vim.api.nvim_create_autocmd("PackChanged", {
       dofile(d.path .. "/lua/jupynvim/install.lua").run({ dir = d.path })
     end
   end,
+})
+
+vim.pack.add({
+  { src = "https://github.com/sheng-tse/jupynvim", version = vim.version.range("*") },
 })
 
 Config.later(function()

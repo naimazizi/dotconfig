@@ -89,6 +89,8 @@ end
 vim.pack.add({ Config.gh("nvim-mini/mini.nvim") })
 
 -- Loading helpers used to organize config into fail-safe parts. Example usage:
+-- - `disabled` - never execute. Keep the plugin's `vim.pack.add()` and setup
+--   inside the callback to prevent installation and loading.
 -- - `now` - execute immediately. Use for what must be executed during startup.
 --   Like colorscheme, statusline, tabline, dashboard, etc.
 -- - `later` - execute a bit later. Use for things not needed during startup.
@@ -104,6 +106,7 @@ vim.pack.add({ Config.gh("nvim-mini/mini.nvim") })
 -- See also:
 -- - `:h MiniMisc.safely()`
 local misc = require("mini.misc")
+Config.disabled = function(_f) end
 Config.now = function(f)
   misc.safely("now", f)
 end

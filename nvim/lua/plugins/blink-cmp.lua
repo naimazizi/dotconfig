@@ -2,16 +2,6 @@ if vim.g.vscode then
   return
 end
 
-vim.pack.add({
-  Config.gh("L3MON4D3/LuaSnip"),
-  Config.gh("rafamadriz/friendly-snippets"),
-  Config.gh("jmbuhr/cmp-pandoc-references"),
-  Config.gh("mayromr/blink-cmp-dap"),
-  Config.gh("cursortab/cursortab.nvim"),
-  Config.gh("saghen/blink.lib"), -- blink.cmp v2 dependency
-  Config.gh("saghen/blink.cmp"),
-})
-
 local function run_build(name, cmd, cwd)
   vim.async.run(function()
     local result = vim.async.await(3, vim.system, cmd, { cwd = cwd })
@@ -39,6 +29,17 @@ Config.on_packchanged("blink.cmp", INSTALL_OR_UPDATE, function()
   -- `fuzzy = { implementation = "rust" }` needs this prebuilt binary.
   require("blink.cmp").build():pwait()
 end, "Build blink.cmp rust fuzzy matcher")
+
+vim.pack.add({
+  Config.gh("L3MON4D3/LuaSnip"),
+  Config.gh("rafamadriz/friendly-snippets"),
+  Config.gh("jmbuhr/cmp-pandoc-references"),
+  Config.gh("mayromr/blink-cmp-dap"),
+  Config.gh("Kaiser-Yang/blink-cmp-avante"),
+  Config.gh("cursortab/cursortab.nvim"),
+  Config.gh("saghen/blink.lib"), -- blink.cmp v2 dependency
+  Config.gh("saghen/blink.cmp"),
+})
 
 Config.on_event("InsertEnter", function()
   -- Self-heals if the rust binary is missing/stale; build() no-ops if already built.
@@ -129,6 +130,7 @@ Config.on_event("InsertEnter", function()
 
     sources = {
       default = {
+        "avante",
         "lsp",
         "snippets",
         "buffer",
@@ -139,6 +141,10 @@ Config.on_event("InsertEnter", function()
         ["opencode_ask"] = { "lsp", "buffer" },
       },
       providers = {
+        avante = {
+          name = "Avante",
+          module = "blink-cmp-avante",
+        },
         lsp = { fallbacks = {} },
         references = {
           name = "pandoc_references",

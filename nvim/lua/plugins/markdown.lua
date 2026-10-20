@@ -3,7 +3,7 @@ if vim.g.vscode then
 end
 
 vim.pack.add({
-  Config.gh("noisesfromspace/touchup.nvim"),
+  Config.gh("MeanderingProgrammer/render-markdown.nvim"),
   Config.gh("kevalin/mermaid.nvim"),
   Config.gh("nvim-treesitter/nvim-treesitter"),
   Config.gh("selimacerbas/kitehost.nvim"),
@@ -11,8 +11,13 @@ vim.pack.add({
 })
 
 Config.on_filetype(table.concat(vim.g.md_ft, ","), function()
-  require("touchup").setup({
-    filetypes = vim.g.md_ft,
+  require("render-markdown").setup({
+    render_modes = true,
+    file_types = vim.g.md_ft,
+    code = {
+      style = "full",
+      width = "full",
+    },
   })
 
   require("mermaid").setup()

@@ -2,14 +2,14 @@ if vim.g.vscode then
   return
 end
 
-vim.pack.add({ Config.gh("minigian/juan-logs.nvim") })
-
 Config.on_packchanged("juan-logs.nvim", { "install", "update" }, function(data)
   local buildfile = data.path .. "/build.lua"
   if vim.uv.fs_stat(buildfile) then
     dofile(buildfile)
   end
 end, "Run juan-logs.nvim build.lua")
+
+vim.pack.add({ Config.gh("minigian/juan-logs.nvim") })
 
 Config.on_filetype("log,txt,csv,json,tsv", function()
   require("juanlog").setup({

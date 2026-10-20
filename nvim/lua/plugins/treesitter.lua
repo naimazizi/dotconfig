@@ -1,11 +1,11 @@
+Config.on_packchanged("nvim-treesitter", { "install", "update" }, function()
+  vim.cmd("TSUpdate")
+end, "Recompile treesitter parsers")
+
 vim.pack.add({
   { src = Config.gh("nvim-treesitter/nvim-treesitter"), version = "main" },
   { src = Config.gh("nvim-treesitter/nvim-treesitter-textobjects"), version = "main" },
 })
-
-Config.on_packchanged("nvim-treesitter", { "install", "update" }, function()
-  vim.cmd("TSUpdate")
-end, "Recompile treesitter parsers")
 
 Config.later(function()
   -- VSCode owns syntax highlighting/indent/folds; keep parser install/API for
@@ -114,8 +114,12 @@ Config.later(function()
     group = vim.api.nvim_create_augroup("nvim_minimax_treesitter", { clear = true }),
     callback = function(ev)
       local ft = ev.match
+      -- Avoid enabling extra highlighting, indentation and folding work in streaming Avante buffers.
+      if ft:match("^Avante") then
+        return
+      end
 
-      if ft == "quarto" then
+      if ft:match("^quarto") then
         vim.treesitter.language.register("markdown", { "quarto", "rmd" })
       end
 
