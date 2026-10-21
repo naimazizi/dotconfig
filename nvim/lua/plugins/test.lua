@@ -8,7 +8,6 @@ vim.pack.add({
   Config.gh("stevearc/overseer.nvim"),
   -- Adapters contributed by language-specific files
   Config.gh("nvim-neotest/neotest-python"),
-  Config.gh("mrcjkb/rustaceanvim"),
 })
 
 Config.later(function()

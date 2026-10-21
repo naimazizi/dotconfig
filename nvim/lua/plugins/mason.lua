@@ -48,7 +48,9 @@ Config.now(function()
   end
 
   require("mason-lspconfig").setup({
-    automatic_enable = true,
+    automatic_enable = {
+      exclude = { "rust_analyzer" }, -- Rustaceanvim starts its own client.
+    },
   })
 
   require("mason-tool-installer").setup({

@@ -46,6 +46,7 @@ Config.on_event("BufReadPost", function()
 
   local map = vim.keymap.set
   local prefix = "<leader>h"
+  table.insert(require("mini.clue").config.clues, { mode = "n", keys = prefix, desc = "+Haunting Notes" })
 
   -- annotations
   map("n", prefix .. "a", function()

@@ -37,6 +37,11 @@ Config.now(function()
     },
   })
 
+  vim.list_extend(require("mini.clue").config.clues, {
+    { mode = "n", keys = "<leader>m", desc = "+Notes (IWE)" },
+    { mode = "n", keys = "<leader>mp", desc = "+Preview" },
+  })
+
   -- Picker keybindings
   vim.keymap.set("n", "<leader>mf", "<Plug>(iwe-picker-find-files)", { desc = "Find files" })
   vim.keymap.set("n", "<leader>ms", "<Plug>(iwe-picker-paths)", { desc = "Paths" })

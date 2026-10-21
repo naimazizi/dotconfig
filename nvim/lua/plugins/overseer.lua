@@ -21,6 +21,7 @@ Config.later(function()
   })
 
   local map = vim.keymap.set
+  table.insert(require("mini.clue").config.clues, { mode = "n", keys = "<leader>o", desc = "+Overseer" })
   map("n", "<leader>ow", "<cmd>OverseerToggle<cr>", { desc = "Task list" })
   map("n", "<leader>oo", "<cmd>OverseerRun<cr>", { desc = "Run task" })
   map("n", "<leader>oq", "<cmd>OverseerQuickAction<cr>", { desc = "Action recent task" })

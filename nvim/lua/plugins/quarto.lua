@@ -29,6 +29,7 @@ Config.later(function()
     },
   })
   local runner = require("quarto.runner")
+  table.insert(require("mini.clue").config.clues, { mode = "n", keys = "<localleader>s", desc = "+Quarto" })
   vim.keymap.set("n", "<localleader>ss", runner.run_cell, { desc = "run cell", silent = true })
   vim.keymap.set("n", "<localleader>sa", runner.run_above, { desc = "run cell and above", silent = true })
   vim.keymap.set("n", "<localleader>sA", runner.run_all, { desc = "run all cells", silent = true })

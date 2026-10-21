@@ -6,6 +6,7 @@ vim.g.slime_no_mappings = 1
 vim.pack.add({ Config.gh("jpalardy/vim-slime") })
 
 Config.on_filetype("python", function()
+  table.insert(require("mini.clue").config.clues, { mode = "n", keys = "<localleader>r", desc = "+REPL" })
   local map = vim.keymap.set
   map("n", "<localleader>rC", "<cmd>SlimeConfig<cr>", { desc = "Slime Config" })
   map("n", "<localleader>rr", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", { desc = "Slime Send Cell" })

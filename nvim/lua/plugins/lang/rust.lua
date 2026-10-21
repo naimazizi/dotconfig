@@ -8,22 +8,15 @@ Config.on_event("BufReadPre~Cargo.toml", function()
       },
     },
     lsp = {
-      enabled = false,
+      enabled = true,
+      completion = true,
     },
   })
 end)
 
-Config.on_filetype("rust", function()
+vim.g.rustaceanvim = function()
   local opts = {
     server = {
-      on_attach = function(_, bufnr)
-        vim.keymap.set("n", "<leader>cR", function()
-          vim.cmd.RustLsp("codeAction")
-        end, { desc = "Code Action", buffer = bufnr })
-        vim.keymap.set("n", "<leader>dD", function()
-          vim.cmd.RustLsp("debuggables")
-        end, { desc = "DAP ft-specific", buffer = bufnr })
-      end,
       default_settings = {
         -- rust-analyzer language server configuration
         ["rust-analyzer"] = {
@@ -34,9 +27,7 @@ Config.on_filetype("rust", function()
               enable = true,
             },
           },
-          -- Add clippy lints for Rust if using rust-analyzer
           checkOnSave = false,
-          -- Enable diagnostics if using rust-analyzer
           diagnostics = {
             enable = false,
           },
@@ -70,5 +61,5 @@ Config.on_filetype("rust", function()
   opts.dap = {
     adapter = require("rustaceanvim.config").get_codelldb_adapter(codelldb, library_path),
   }
-  vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts)
-end)
+  return opts
+end

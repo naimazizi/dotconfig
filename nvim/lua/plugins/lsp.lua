@@ -83,9 +83,14 @@ Config.on_event("BufReadPre,BufNewFile", function()
 
   -- Rust
   vim.lsp.config("bacon_ls", {
-    init_options = {
-      updateOnSave = true,
-      updateOnSaveWaitMillis = 1000,
+    settings = {
+      bacon_ls = {
+        backend = "cargo",
+        cargo = {
+          command = "clippy",
+          checkOnSave = true,
+        },
+      },
     },
   })
 

@@ -121,6 +121,7 @@ Config.now(function()
     map_combo("t", "jk", "<BS><BS><C-\\><C-n>", opts)
 
     require("utils.mini-clue").setup()
+    table.insert(require("mini.clue").config.clues, { mode = { "n", "x" }, keys = "gs", desc = "+Surround" })
 
     require("mini.sessions").setup({
       autoread = false,

@@ -30,6 +30,7 @@ Config.on_filetype("hurl", function()
   })
 
   local map = vim.keymap.set
+  table.insert(require("mini.clue").config.clues, { mode = "n", keys = "<localleader>c", desc = "+Curl (hurl)" })
   -- Run API request
   map("n", "<localleader>cC", "<cmd>HurlRunner<CR>", { desc = "Run All requests" })
   map("n", "<localleader>cc", "<cmd>HurlRunnerAt<CR>", { desc = "Run Api request" })
