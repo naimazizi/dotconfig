@@ -8,6 +8,8 @@ fpath+=${ZDOTDIR}/.zfunc
 autoload -Uz fzg
 
 # Additional Config
+# Allow Neovim and language servers to open more files without lowering the hard limit.
+ulimit -Sn 4096
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export EDITOR='nvim'

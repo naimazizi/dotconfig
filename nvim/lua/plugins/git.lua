@@ -39,6 +39,12 @@ end)
 Config.later(function()
   require("atlas").setup({
     ui = { picker = "fzf-lua" },
+    pulls = {
+      diff = {
+        open_cmd = "AtlasDiff",
+        lsp = { enabled = true },
+      },
+    },
 
     providers = {
       ---@type AtlasGitHubConfig
