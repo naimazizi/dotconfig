@@ -5,16 +5,6 @@ local function ministatusline()
   return require("mini.statusline")
 end
 
--- Mode section, showing "Recording @<register>" while recording a macro
--- (mini.statusline has no built-in equivalent).
-local function mode_section()
-  local reg = vim.fn.reg_recording()
-  if reg ~= "" then
-    return "Recording @" .. reg, "MiniStatuslineModeOther"
-  end
-  return ministatusline().section_mode({ trunc_width = 120 })
-end
-
 local function navic_section()
   local ok, navic = pcall(require, "nvim-navic")
   if not ok or not navic.is_available() then
@@ -91,7 +81,10 @@ end
 
 function M.active()
   local mini = ministatusline()
-  local mode, mode_hl = mode_section()
+  local mode, mode_hl = mini.section_mode({ trunc_width = 120 })
+  local recorder = package.loaded["recorder"]
+  local macro_slots = recorder and recorder.displaySlots() or ""
+  local recording = recorder and recorder.recordingStatus() or ""
   local git = mini.section_git({ trunc_width = 40 })
   local diff = diff_section()
   local diagnostics = mini.section_diagnostics({ trunc_width = 75 })
@@ -106,7 +99,10 @@ function M.active()
     "%<",
     { hl = "MiniStatuslineFilename", strings = { filename, navic_section() } },
     "%=",
-    { hl = "MiniStatuslineFileinfo", strings = { lsp, opencode_section(), venv_section(), fileinfo } },
+    {
+      hl = "MiniStatuslineFileinfo",
+      strings = { recording, macro_slots, lsp, opencode_section(), venv_section(), fileinfo },
+    },
     { hl = mode_hl, strings = { "%p%%", location } },
   })
 end

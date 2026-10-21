@@ -60,6 +60,7 @@ if not vim.g.vscode then
     Config.gh("MagicDuck/grug-far.nvim"),
     Config.gh("otavioschwanck/arrow.nvim"),
     Config.gh("chrisgrieser/nvim-origami"),
+    Config.gh("chrisgrieser/nvim-recorder"),
   })
 
   Config.on_event("BufRead", function()
@@ -142,5 +143,12 @@ if not vim.g.vscode then
         visualSelectionUsage = "operate-within-range",
       })
     end, { desc = "Search/Replace Within (grug-far)" })
+  end)
+
+  Config.now(function()
+    require("recorder").setup({
+      lessNotifications = true,
+      logLevel = vim.log.levels.TRACE,
+    })
   end)
 end

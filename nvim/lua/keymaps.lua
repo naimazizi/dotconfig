@@ -46,6 +46,7 @@ map({ "n", "x", "o" }, "<A-i>", function()
 end, { desc = "Select child treesitter node or inner incremental lsp selections" })
 
 -- Multicursor
+map("n", "Q", "<Nop>", { desc = "Reserved for macro playback" })
 map("n", "<A-d>", "Q", { noremap = true, desc = "Multicursor add cursor" })
 
 -- ClearCursors command is defined once in autocmds.lua; reuse it here.
