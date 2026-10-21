@@ -50,11 +50,8 @@ Config.later(function()
         buffer = buf,
         once = true,
         callback = function()
-          if package.loaded["neo-tree.events"] then
-            require("neo-tree.events").fire_event("git_event")
-          end
-          if package.loaded["neo-tree.sources.manager"] then
-            require("neo-tree.sources.manager").refresh("filesystem")
+          if package.loaded["nvim-tree.api"] then
+            require("nvim-tree.api").tree.reload()
           end
           vim.schedule(function()
             local win = vim.fn.bufwinid(buf)
