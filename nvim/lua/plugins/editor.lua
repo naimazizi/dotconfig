@@ -9,6 +9,7 @@ vim.pack.add({
 Config.on_event("BufReadPost", function()
   require("illuminate").configure({
     delay = 200,
+    filetypes_denylist = { "dirbuf", "dirvish", "fugitive", "NvimTree" },
     large_file_cutoff = 2000,
     large_file_overrides = {
       providers = { "lsp" },
