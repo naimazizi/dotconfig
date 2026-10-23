@@ -133,7 +133,8 @@ opt.shiftround = true -- Round indent
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
 
 -- session options
-opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
+opt.sessionoptions =
+  { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds", "localoptions", "blank" }
 
 if vim.g.neovide then
   vim.env.PATH = "/opt/homebrew/bin:" .. vim.env.PATH

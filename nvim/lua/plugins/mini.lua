@@ -128,6 +128,7 @@ Config.now(function()
       autowrite = true,
       directory = vim.fn.stdpath("state") .. "/sessions/",
       file = "", -- no per-cwd `Session.vim` file, only the global dir above
+      hooks = require("utils.session").hooks,
       verbose = { read = true, write = true, delete = true },
     })
 
