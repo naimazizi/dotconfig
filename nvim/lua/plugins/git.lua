@@ -11,6 +11,9 @@ vim.pack.add({
 Config.on_event("VimEnter", function()
   require("vgit").setup({
     settings = {
+      scene = {
+        keymaps = { quit = "q" },
+      },
       signs = {
         definitions = {
           GitSignsAdd = { text = "▌", numhl = "GitSignsAdd" },

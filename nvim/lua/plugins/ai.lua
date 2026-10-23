@@ -81,6 +81,25 @@ Config.later(function()
   })
 
   local map = vim.keymap.set
+  map("n", "<C-;>", function()
+    require("avante.api").focus()
+  end, { desc = "avante: toggle focus between chat and buffer" })
+  map("i", "<C-;>", function()
+    if require("avante.utils").is_sidebar_buffer(0) then
+      require("avante.api").focus()
+      return
+    end
+    local line = vim.api.nvim_get_current_line()
+    local lnum = vim.api.nvim_win_get_cursor(0)[1]
+    local range = require("avante.range"):new({ lnum = lnum, col = 1 }, { lnum = lnum, col = math.max(#line, 1) })
+    local selection = require("avante.selection_result"):new(vim.api.nvim_buf_get_name(0), vim.bo.filetype, line, range)
+    require("avante.api").ask({ selection = selection, floating = false })
+    require("avante").get():focus_input()
+  end, { desc = "avante: attach current line as context / return to code" })
+  map("x", "<C-;>", function()
+    require("avante.api").ask({ floating = false })
+    require("avante").get():focus_input()
+  end, { desc = "avante: attach selected code as context" })
   map("n", "<leader>al", "<cmd>Avante acp sessions<cr>", { desc = "avante: acp session" })
   map("n", "<leader>ae", function()
     local sidebar = require("avante").get(false)

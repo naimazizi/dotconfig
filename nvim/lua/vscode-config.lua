@@ -1,4 +1,5 @@
 -- VScode specific config
+local vscode = require("vscode")
 
 -- Autocmds
 -- Redraw fixes for VSCode visual artifacts (moved from autocmds.lua)
@@ -23,10 +24,22 @@ vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
   end,
 })
 
--- Redraw on visual mode exit to fix selection artifacts
+-- Update line numbers on mode changes and redraw to fix selection artifacts.
 vim.api.nvim_create_autocmd("ModeChanged", {
   group = redraw_fix,
   callback = function()
+    local mode = vim.api.nvim_get_mode().mode
+    vscode.eval_async(
+      [[
+      const editor = vscode.window.activeTextEditor;
+      if (editor) {
+        editor.options.lineNumbers = args
+          ? vscode.TextEditorLineNumbersStyle.Relative
+          : vscode.TextEditorLineNumbersStyle.On;
+      }
+    ]],
+      { args = mode == "v" or mode == "V" or mode == "\22" }
+    )
     vim.cmd("silent! mode")
   end,
 })
@@ -41,7 +54,6 @@ vim.api.nvim_create_autocmd({ "WinEnter", "WinLeave" }, {
 
 -- KEYMAPS
 local map = vim.keymap.set
-local vscode = require("vscode")
 
 -- Code Telescope finders, using Neovim's leader-key layout.
 for _, finder in ipairs({
