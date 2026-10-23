@@ -7,6 +7,7 @@ herdr/**
 # Files to not ignore
 !/.gitignore
 !/README.md
+!/AGENTS.md
 !/lima-box.yaml
 !/nvim-remote.sh
 !/skim_search.sh
