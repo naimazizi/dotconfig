@@ -1,9 +1,8 @@
 [default]
+extend-ignore-re = ['<leader>[A-Za-z]+']
 
 [default.extend-words]
 enew = "enew"
-ba = "ba"
-ot = "ot"
 Noice = "Noice"
 sme = "sme"
 cpy = "cpy"

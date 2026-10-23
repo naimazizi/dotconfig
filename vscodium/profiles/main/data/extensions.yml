@@ -1,6 +1,7 @@
+builtin:
+  disabled:
+    - GitHub.copilot-chat
 disabled:
-  - id: asvetliakov.vscode-neovim
-    uuid: caf8995c-5426-4bf7-9d01-f7968ebd49bb
   - id: MatteoBigoi.bacon-ls-vscode
     uuid: f1b3c18c-6005-41f0-8985-1d26e1ad1602
 enabled:
@@ -8,16 +9,18 @@ enabled:
     uuid: 7a0110bb-231a-4598-aa1b-0769ea46d28b
   - id: alefragnani.project-manager
     uuid: 1b747f06-3789-4ebd-ac99-f1fe430c3347
+  - id: asvetliakov.vscode-neovim
+    uuid: caf8995c-5426-4bf7-9d01-f7968ebd49bb
   - id: chanhx.crabviz
     uuid: f4a2b496-ab61-490e-928e-4f8bd332ec2c
   - id: charliermarsh.ruff
     uuid: c2ca9b43-fa38-44fc-928e-5125970b9c00
   - id: dautroc.yazi-vscode
     uuid: 8313a057-cd22-45f5-a890-e8fdc36abbb1
-  - id: jeanp413.open-remote-ssh
-    uuid: 9fc16cea-08e2-4ae5-bf75-224004d722ff
+  - id: guichina.code-telescope
+    uuid: 848cf120-2f2a-475b-a72b-31ccdd949d69
   - id: koltyakov.varro
-    uuid: 0db7ab0e-aa2c-4caf-a611-dc19f2e1179c
+    uuid: 1974f6ba-ff70-406c-8d43-e3c735f9e452
   - id: meta.pyrefly
     uuid: 53872426-67ef-4956-afb1-bdae83866fd2
   - id: ms-python.debugpy
@@ -37,13 +40,11 @@ enabled:
   - id: ms-toolsai.vscode-jupyter-slideshow
     uuid: e153ca70-b543-4865-b4c5-b31d34185948
   - id: mxz7.kanso-bordered-vscode
-    uuid: fb05fc3a-f8e6-40e3-8499-3c0acf57e6d6
+    uuid: 9c3d0010-c001-46c3-8dbb-dacb0e1664e4
   - id: oderwat.indent-rainbow
     uuid: eaa2127d-cb69-4ab9-8505-a60c9ee5f28b
   - id: oxc.oxc-vscode
     uuid: 1303f9b3-746c-42de-869c-5f72364302f5
-  - id: przybylski.cursor-harpoon
-    uuid: 8529c3d2-ec5a-44d5-b175-c8200d1c43e1
   - id: richie5um2.vscode-sort-json
     uuid: 3fb77af3-b8b3-4cb9-9137-f555bd80e2b1
   - id: rust-lang.rust-analyzer

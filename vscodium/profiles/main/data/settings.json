@@ -237,5 +237,19 @@
   "varro.chat.showFileDiffs": true,
   "varro.chat.autoRenameUntitledSessions": true,
   "varro.chat.showChangedFiles": true,
-  "varro.chat.autoCompactionReservedTokens": null
+  "codeTelescope.preview.showLineNumbers": true,
+  "codeTelescope.layout.previewFontSize": 12,
+  "codeTelescope.layout.resultsFontSize": 12,
+  "codeTelescope.layout.promptFontSize": 10,
+  "workbench.experimental.modernUIUppercaseViewHeaders": true,
+  "workbench.experimental.modernUIEditorTabStyle": "pill",
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "python": false
+  },
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "chat.disableAIFeatures": true
 }

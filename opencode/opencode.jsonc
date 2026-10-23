@@ -105,11 +105,6 @@
         "command": ["iwec"],
         "cwd": "{env:HOME}/notes",
       },
-      "datadog": {
-        "type": "remote",
-        "url": "https://mcp.datadoghq.com/v1/mcp",
-        "enabled": true,
-      },
     },
   },
 }

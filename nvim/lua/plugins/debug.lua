@@ -107,9 +107,7 @@ Config.later(function()
     return vim.json.decode(json.json_strip_comments(str))
   end
 
-  local dap, dv = require("dap"), require("dap-view")
-  -- dap.defaults.fallback.force_external_terminal = true
-  -- dap.defaults.fallback.terminal_win_cmd = "belowright new | resize 15"
+  local dv = require("dap-view")
   dv.setup({
     winbar = {
       default_section = "watches",
@@ -118,38 +116,10 @@ Config.later(function()
         position = "right",
       },
     },
-    windows = {
-      terminal = {
-        hide = { "delve", "debugpy" },
-      },
-      anchor = function()
-        local windows = vim.api.nvim_tabpage_list_wins(0)
-
-        for _, win in ipairs(windows) do
-          local bufnr = vim.api.nvim_win_get_buf(win)
-          if vim.bo[bufnr].buftype == "terminal" then
-            return win
-          end
-        end
-      end,
-    },
     virtual_text = {
       enabled = true,
     },
   })
-
-  dap.listeners.before.attach["dap-view-config"] = function()
-    dv.open()
-  end
-  dap.listeners.before.launch["dap-view-config"] = function()
-    dv.open()
-  end
-  dap.listeners.before.event_terminated["dap-view-config"] = function()
-    dv.close()
-  end
-  dap.listeners.before.event_exited["dap-view-config"] = function()
-    dv.close()
-  end
 
   local map = vim.keymap.set
   map("n", "<leader>db", "<cmd>DapToggleBreakpoint<CR>", { desc = "Toggle breakpoint" })
