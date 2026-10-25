@@ -9,10 +9,10 @@
     },
     "buffer": 16000,
   },
-  "plugins": [
-    "@dietrichgebert/ponytail",
-    "@plannotator/opencode@latest",
-  ],
+  "experimental": {
+    "background_compaction": true,
+  },
+  "plugins": ["@dietrichgebert/ponytail", "@plannotator/opencode@latest"],
   "agents": {
     "general": {
       "model": "openai/gpt-6-luna",

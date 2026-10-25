@@ -4,12 +4,15 @@
     "name": "kanagawa"
   },
   "diffs": {
-    "wrap": "word"
+    "wrap": "word",
+    "single": true
   },
   "session": {
     "sidebar": "auto",
     "scrollbar": true,
-    "thinking": "hide"
+    "thinking": "hide",
+    "markdown": "rendered",
+    "verbosity": "medium"
   },
   "animations": true,
   "scroll": {
@@ -18,5 +21,11 @@
   "prompt": {
     "image_preview": true
   },
-  "plugins": ["./herdr-opencode"]
+  "plugins": ["./herdr-opencode"],
+  "tabs": {
+    "mode": "auto",
+    "scope": "cwd",
+    "layout": "vertical",
+    "indicators": "status"
+  }
 }
