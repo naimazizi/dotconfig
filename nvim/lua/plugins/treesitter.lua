@@ -114,8 +114,11 @@ Config.later(function()
     group = vim.api.nvim_create_augroup("nvim_minimax_treesitter", { clear = true }),
     callback = function(ev)
       local ft = ev.match
-      -- Avoid enabling extra highlighting, indentation and folding work in streaming Avante buffers.
+      -- Highlight Avante output without enabling indentation or folding in its UI buffers.
       if ft:match("^Avante") then
+        if ft == "Avante" and opts.highlight.enable then
+          vim.treesitter.start(ev.buf, "markdown")
+        end
         return
       end
 
