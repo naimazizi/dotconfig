@@ -10,7 +10,13 @@ vim.pack.add({ Config.gh("ingur/floatty.nvim") })
 -- child, so no extra wiring is needed on our side.
 local function configure_lazygit_nvim_remote()
   local override = vim.fn.stdpath("cache") .. "/lazygit-nvim-remote.yml"
-  vim.fn.writefile({ "os:", '  editPreset: "nvim-remote"' }, override)
+  -- Leave the terminal float before --remote opens the file in the current tab.
+  vim.fn.writefile({
+    "os:",
+    '  editPreset: "nvim-remote"',
+    [[  edit: 'nvim --server "$NVIM" --remote-send "q<C-\><C-n><C-w>p" && nvim --server "$NVIM" --remote {{filename}}']],
+    [[  editAtLine: 'nvim --server "$NVIM" --remote-send "q<C-\><C-n><C-w>p" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"']],
+  }, override)
 
   local files = {}
   local out = vim.fn.system({ "lazygit", "-cd" })
