@@ -29,6 +29,7 @@ Config.now(function()
     },
     on_attach = function(bufnr)
       vim.b[bufnr].miniindentscope_disable = true
+      vim.b[bufnr].minicursorword_disable = true
       api.map.on_attach.default(bufnr)
       local function opts(desc)
         return { buffer = bufnr, desc = "nvim-tree: " .. desc, silent = true, nowait = true }

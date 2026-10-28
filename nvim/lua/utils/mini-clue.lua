@@ -57,7 +57,7 @@ function M.setup()
   -- Triggers are buffer-local mappings and must stay the most recent one to
   -- work (see `:h MiniClue-key-query-process` caveats). Plugins that add
   -- their own buffer-local mappings on these events (LSP keymaps, treesitter
-  -- textobjects, illuminate's `]]`/`[[`, ...) would otherwise silently break
+  -- textobjects, reference navigation's `]]`/`[[`, ...) would otherwise silently break
   -- the `g`/`[`/`]`/`<leader>` triggers for that buffer.
   vim.api.nvim_create_autocmd({ "LspAttach", "FileType" }, {
     callback = function()

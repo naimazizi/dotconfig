@@ -1,5 +1,7 @@
 local map = vim.keymap.set
 
+require("utils.references").setup()
+
 map({ "n", "x" }, "gY", function()
   local path = vim.fn.expand("%:.")
   if path == "" then

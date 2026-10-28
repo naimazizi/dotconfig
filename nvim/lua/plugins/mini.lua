@@ -111,6 +111,8 @@ Config.now(function()
   })
 
   if not vim.g.vscode then
+    require("mini.cursorword").setup()
+
     local map_combo = require("mini.keymap").map_combo
     local opts = { delay = 100 }
     map_combo({ "i", "s" }, "jk", "<BS><BS><Esc>", opts)

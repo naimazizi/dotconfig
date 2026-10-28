@@ -1,39 +1,9 @@
 vim.pack.add({
-  Config.gh("RRethy/vim-illuminate"),
   Config.gh("chrisgrieser/nvim-various-textobjs"),
   Config.gh("sQVe/sort.nvim"),
   Config.gh("NMAC427/guess-indent.nvim"),
   Config.gh("nemanjamalesija/smart-paste.nvim"),
 })
-
-Config.on_event("BufReadPost", function()
-  require("illuminate").configure({
-    delay = 200,
-    filetypes_denylist = { "dirbuf", "dirvish", "fugitive", "NvimTree" },
-    large_file_cutoff = 2000,
-    large_file_overrides = {
-      providers = { "lsp" },
-    },
-  })
-
-  local function illuminate_map(key, dir, buffer)
-    vim.keymap.set("n", key, function()
-      require("illuminate")["goto_" .. dir .. "_reference"](false)
-    end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
-  end
-
-  illuminate_map("]]", "next")
-  illuminate_map("[[", "prev")
-
-  -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
-  vim.api.nvim_create_autocmd("FileType", {
-    callback = function()
-      local buffer = vim.api.nvim_get_current_buf()
-      illuminate_map("]]", "next", buffer)
-      illuminate_map("[[", "prev", buffer)
-    end,
-  })
-end)
 
 Config.on_event("BufRead", function()
   require("various-textobjs").setup({
