@@ -194,10 +194,10 @@ for _, binding in ipairs({
   { "<leader>dO", "workbench.action.debug.stepOut", "Debug - step out" },
 
   -- HTTP, Yazi, Quarto, and AI
-  { "<leader>Rs", "vscode-hurl-runner.runHurl", "Send HTTP request" },
-  { "<leader>Ra", "vscode-hurl-runner.runHurlFile", "Send HTTP all requests" },
-  { "<leader>Rr", "vscode-hurl-runner.rerunLastCommand", "Replay HTTP requests" },
-  { "<leader>Rv", "vscode-hurl-runner.viewLastResponse", "View Last Response" },
+  { "<localleader>cc", "vscode-hurl-runner.runHurl", "Run Api request" },
+  { "<localleader>cC", "vscode-hurl-runner.runHurlFile", "Run All requests" },
+  { "<localleader>cr", "vscode-hurl-runner.rerunLastCommand", "Replay HTTP requests" },
+  { "<localleader>cv", "vscode-hurl-runner.viewLastResponse", "View Last Response" },
   { "<leader>-", "yazi-vscode.toggle", "Toggle Yazi" },
   { "]4", "quarto.goToNextCell", "Quarto Next code block" },
   { "[4", "quarto.goToPreviousCell", "Quarto Prev code block" },

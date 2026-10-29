@@ -19,6 +19,8 @@ enabled:
     uuid: 8313a057-cd22-45f5-a890-e8fdc36abbb1
   - id: guichina.code-telescope
     uuid: 848cf120-2f2a-475b-a72b-31ccdd949d69
+  - id: jellydn.vscode-hurl-runner
+    uuid: 9e29d5fa-cf70-4e67-b3ac-587d5c94ef18
   - id: koltyakov.varro
     uuid: 1974f6ba-ff70-406c-8d43-e3c735f9e452
   - id: meta.pyrefly
