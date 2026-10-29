@@ -62,6 +62,15 @@ Config.on_event("BufReadPre,BufNewFile", function()
     virtual_text = false,
   })
 
+  -- dbt SQL
+  vim.lsp.config("dbt", {
+    cmd = { "dbt-language-server" },
+    filetypes = { "sql", "yaml" },
+    root_markers = { "dbt_project.yml" },
+    workspace_required = true,
+  })
+  vim.lsp.enable("dbt")
+
   -- Lua
   vim.lsp.config("emmylua_ls", {
     cmd = { "emmylua_ls" },

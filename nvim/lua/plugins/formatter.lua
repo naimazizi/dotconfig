@@ -47,6 +47,9 @@ Config.later(function()
   -- Lua formatter
   formatters_by_ft["lua"] = { "stylua" }
 
+  -- Hurl formatter
+  formatters_by_ft["hurl"] = { "hurlfmt" }
+
   -- shell formatter
   for _, ft in ipairs(vim.g.sh_ft or {}) do
     formatters_by_ft[ft] = { "shfmt" }
