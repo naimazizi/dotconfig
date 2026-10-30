@@ -11,6 +11,7 @@ function M.lsp_keymaps(bufnr)
   map("n", "gd", fzf.lsp_definitions, "Goto definition")
   map("n", "gD", fzf.lsp_declarations, "Goto Declaration")
   map("n", "gr", fzf.lsp_references, "References")
+  require("utils.dbt").keymap(bufnr)
   map("n", "gi", fzf.lsp_implementations, "Goto implementation")
   map("n", "gy", fzf.lsp_typedefs, "Goto type definition")
 

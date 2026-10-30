@@ -41,6 +41,14 @@ end, {
 if not vim.g.vscode then
   local group = vim.api.nvim_create_augroup("nvim_minimax", { clear = true })
 
+  vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("dbt_references", { clear = true }),
+    pattern = { "sql" },
+    callback = function(ev)
+      require("utils.dbt").keymap(ev.buf)
+    end,
+  })
+
   vim.api.nvim_create_autocmd("TextYankPost", {
     group = group,
     callback = function()
