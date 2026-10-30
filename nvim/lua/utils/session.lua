@@ -1,5 +1,27 @@
 local M = {}
 
+local function restore_highlighting()
+  if vim.g.vscode then
+    return
+  end
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if
+      vim.api.nvim_buf_is_loaded(buf)
+      and vim.bo[buf].buftype == ""
+      and vim.bo[buf].filetype ~= ""
+      and vim.treesitter.get_parser(buf, nil, { error = false })
+    then
+      local ok, err = pcall(vim.treesitter.start, buf)
+      if not ok then
+        vim.notify(
+          "Cannot restore Tree-sitter highlighting for " .. vim.api.nvim_buf_get_name(buf) .. ": " .. tostring(err),
+          vim.log.levels.WARN
+        )
+      end
+    end
+  end
+end
+
 local function save_breakpoints()
   local saved = {}
   if package.loaded["dap"] then
@@ -105,6 +127,8 @@ M.hooks = {
         require("nvim-tree.session").restore()
       end
       vim.schedule(function()
+        -- Restored buffers may already have fired FileType before Tree-sitter setup.
+        restore_highlighting()
         for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
           restore_avante(tab)
         end
