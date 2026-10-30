@@ -251,5 +251,6 @@
     "python": false
   },
   "github.copilot.nextEditSuggestions.enabled": false,
-  "chat.disableAIFeatures": true
+  "chat.disableAIFeatures": true,
+  "window.density.layout": "compact"
 }
