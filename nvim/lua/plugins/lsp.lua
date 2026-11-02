@@ -86,6 +86,12 @@ Config.on_event("BufReadPre,BufNewFile", function()
   -- Markdown
   vim.lsp.config("panache", {})
 
+  -- Shell
+  vim.lsp.config("shuck", {
+    filetypes = vim.g.sh_ft,
+    root_markers = { ".shuck.toml", "shuck.toml", ".git" },
+  })
+
   -- Python
   vim.lsp.config("pyrefly", {})
   vim.lsp.config("ruff", {})

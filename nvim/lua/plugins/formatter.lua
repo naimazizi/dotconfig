@@ -52,8 +52,13 @@ Config.later(function()
 
   -- shell formatter
   for _, ft in ipairs(vim.g.sh_ft or {}) do
-    formatters_by_ft[ft] = { "shfmt" }
+    formatters_by_ft[ft] = { "shuck" }
   end
+  formatters.shuck = {
+    command = "shuck",
+    args = { "format", "--stdin-filename", "$FILENAME", "-" },
+    stdin = true,
+  }
 
   -- kdl formatter
   formatters_by_ft["kdl"] = { "kdlfmt" }

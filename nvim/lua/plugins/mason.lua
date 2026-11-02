@@ -28,7 +28,7 @@ Config.now(function()
     "pyrefly",
     "ruff",
     "rust-analyzer",
-    "shfmt",
+    "shuck",
     "sqlfmt",
     "stylua",
     "terraform",
