@@ -4,7 +4,7 @@ end
 
 vim.pack.add({ Config.gh("kevinhwang91/nvim-bqf") })
 
-Config.on_filetype("qf", function()
+Config.later(function()
   require("bqf").setup({
     auto_enable = true,
     auto_resize_height = true,
@@ -19,6 +19,15 @@ Config.on_filetype("qf", function()
       buf_label = true,
     },
   })
+
+  -- shortcut: Neotest reuses the quickfix buffer in a temporary float; remove when bqf handles it.
+  local bqf = require("bqf.main")
+  local save_win_view = bqf.saveWinView
+  bqf.saveWinView = function()
+    if vim.api.nvim_win_get_config(0).relative == "" then
+      save_win_view()
+    end
+  end
 
   local function delete_qf_items(visual)
     local qflist = vim.fn.getqflist()

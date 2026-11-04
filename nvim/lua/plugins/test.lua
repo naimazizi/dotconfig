@@ -18,11 +18,7 @@ Config.later(function()
     },
     status = { virtual_text = true },
     output = { open_on_run = true },
-    quickfix = {
-      open = function()
-        vim.cmd("copen")
-      end,
-    },
+    quickfix = { open = true },
   }
 
   local neotest_ns = vim.api.nvim_create_namespace("neotest")
