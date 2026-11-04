@@ -44,6 +44,8 @@ opt.hlsearch = true -- Highlight search results
 opt.incsearch = true -- Show matches as you type
 
 -- Visual settings
+opt.title = true
+opt.titlestring = "nvim — %{fnamemodify(getcwd(), ':~')}"
 opt.termguicolors = true -- Enable 24-bit colors
 opt.signcolumn = "yes" -- Always show sign column
 opt.showmatch = true -- Highlight matching brackets
