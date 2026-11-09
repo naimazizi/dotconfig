@@ -33,11 +33,17 @@ vim.pack.add({
 Config.later(function()
   require("avante").setup({
     provider = "opencode",
+    behaviour = {
+      auto_approve_tool_permissions = true, -- Show tool permission requests.
+      acp_follow_agent_locations = true, -- Keep your cursor where you are.
+      show_token_usage = true,
+    },
     prompt_logger = {
       prev_prompt = { normal = "<Up>", insert = "<Up>" },
       next_prompt = { normal = "<Down>", insert = "<Down>" },
     },
     windows = {
+      width = 38, -- Percentage of editor width.
       input = { height = 12 },
     },
     slash_commands = {
@@ -127,16 +133,28 @@ Config.later(function()
       ["]]"] = "Next code block",
     }
     -- Real mappings override standalone clues, even when their desc is empty.
-    for _, map in ipairs(vim.api.nvim_buf_get_keymap(buf, "n")) do
-      local desc = descriptions[map.lhs]
-      if desc and map.desc ~= desc then
+    for _, _map in ipairs(vim.api.nvim_buf_get_keymap(buf, "n")) do
+      local desc = descriptions[_map.lhs]
+      if desc and _map.desc ~= desc then
         vim.api.nvim_buf_call(buf, function()
-          miniclue.set_mapping_desc("n", map.lhs, desc)
+          miniclue.set_mapping_desc("n", _map.lhs, desc)
         end)
       end
     end
     miniclue.ensure_buf_triggers(buf)
   end
+
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "Avante", "markdown.Avante" },
+    callback = function(ev)
+      -- Wait for Avante to render the saved chat without changing focus.
+      vim.schedule(function()
+        if vim.api.nvim_buf_is_valid(ev.buf) then
+          require("avante.utils").buf_scroll_to_end(ev.buf)
+        end
+      end)
+    end,
+  })
 
   vim.api.nvim_create_autocmd("BufEnter", {
     callback = function(ev)

@@ -69,7 +69,10 @@ local function restore_avante(tab)
   local placeholders, source = {}, nil
   for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
     local buf = vim.api.nvim_win_get_buf(win)
-    if vim.bo[buf].buftype == "nofile" and vim.bo[buf].filetype:match("^Avante") then
+    if
+      vim.bo[buf].buftype == "nofile"
+      and (vim.bo[buf].filetype:match("^Avante") or vim.bo[buf].filetype == "markdown.Avante")
+    then
       table.insert(placeholders, win)
     elseif vim.bo[buf].buftype == "" and vim.fn.win_gettype(win) == "" then
       if not source or vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(source)) == "" then

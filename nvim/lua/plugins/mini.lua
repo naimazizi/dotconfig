@@ -223,9 +223,9 @@ Config.now(function()
       }, "\n"),
       items = {
         { name = "Find File", action = "lua require('fzf-lua').files()", section = "Actions" },
-        { name = "Grep Text", action = "lua require('fzf-lua').live_grep()", section = "Actions" },
+        { name = "Search Text", action = "lua require('fzf-lua').live_grep()", section = "Actions" },
         {
-          name = "Session - Restore latest",
+          name = "Restore Last Session",
           action = function()
             require("utils.session").restore()
           end,
