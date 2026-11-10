@@ -14,8 +14,12 @@
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:@juicesharp/rpiv-todo",
     "npm:pi-subagents",
-    "npm:pi-web-access"
+    "npm:pi-web-access",
+    "npm:pi-vim"
   ],
+  "piVim": {
+    "clipboardMirror": "yank"
+  },
   "collapseChangelog": true,
   "quietStartup": true,
   "defaultProjectTrust": "always",
