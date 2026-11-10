@@ -36,23 +36,38 @@ repos:
         types: [lua]
         pass_filenames: true
 
-  # Shell script formatting with shfmt
+  # Shell script formatting and linting with shuck
   - repo: local
     hooks:
-      - id: shfmt
-        name: shfmt format
-        entry: shfmt -l -w
+      - id: shuck-format
+        name: Shuck format
+        entry: shuck format
+        language: system
+        types: [shell]
+        pass_filenames: true
+      - id: shuck-check
+        name: Shuck lint
+        entry: shuck check
         language: system
         types: [shell]
         pass_filenames: true
 
   # Markdown linter & formatting with panache
-  - repo: https://github.com/jolars/panache-pre-commit
-    rev: v3.17.0
+  - repo: local
     hooks:
       - id: panache-format
+        name: Panache format
+        entry: panache --config panache/config.toml format --force-exclude
+        language: system
+        files: '\.(qmd|Rmd|md|markdown|mdown|mkd)$'
+        require_serial: true
         exclude: "^opencode/"
       - id: panache-lint
+        name: Panache lint
+        entry: panache --config panache/config.toml lint --force-exclude
+        language: system
+        files: '\.(qmd|Rmd|md|markdown|mdown|mkd)$'
+        require_serial: true
         exclude: "^opencode/"
 
   # Typst formatting with typstyle

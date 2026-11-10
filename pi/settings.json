@@ -1,9 +1,8 @@
 {
-  "lastChangelogVersion": "0.99.2",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6.1-sol",
   "defaultThinkingLevel": "medium",
-  "theme": "dark",
+  "theme": "system",
   "autocompleteMaxVisible": 10,
   "enableInstallTelemetry": false,
   "enableAnalytics": false,
@@ -16,5 +15,9 @@
     "npm:@juicesharp/rpiv-todo",
     "npm:pi-subagents",
     "npm:pi-web-access"
-  ]
+  ],
+  "collapseChangelog": true,
+  "quietStartup": true,
+  "defaultProjectTrust": "always",
+  "treeFilterMode": "default"
 }

@@ -33,6 +33,7 @@ Config.now(function()
     "stylua",
     "terraform",
     "tinymist",
+    "tsc",
     "typos-lsp",
     "typstyle",
     "yaml-language-server",

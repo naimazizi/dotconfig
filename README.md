@@ -34,38 +34,38 @@
 mkdir -p ~/.config
 
 if [ ! -d ~/.config/.git ]; then
-  git -C ~/.config init
-  git -C ~/.config remote add origin git@github.com:naimazizi/dotconfig.git
+    git -C ~/.config init
+    git -C ~/.config remote add origin git@github.com:naimazizi/dotconfig.git
 fi
 
 git -C ~/.config pull --ff-only origin main
 
 brew install \
-  atuin \
-  bat \
-  bob \
-  delta \
-  direnv \
-  fd \
-  fzf \
-  gh \
-  herdr \
-  hurl \
-  just \
-  lazygit \
-  lsd \
-  node \
-  pi-coding-agent \
-  ripgrep \
-  sk \
-  tmuxinator \
-  tree-sitter-cli \
-  yazi \
-  uv \
-  rustup \
-  z \
-  zellij \
-  zoxide
+    atuin \
+    bat \
+    bob \
+    delta \
+    direnv \
+    fd \
+    fzf \
+    gh \
+    herdr \
+    hurl \
+    just \
+    lazygit \
+    lsd \
+    node \
+    pi-coding-agent \
+    ripgrep \
+    sk \
+    tmuxinator \
+    tree-sitter-cli \
+    yazi \
+    uv \
+    rustup \
+    z \
+    zellij \
+    zoxide
 
 mkdir -p ~/Applications
 brew install --cask ghostty font-monaspace-nf --appdir=~/Applications
@@ -73,32 +73,27 @@ brew install alchemmist/tap/lazy-tmux
 brew install iwe-org/iwe/iwe
 brew tap 1jehuang/mmdr && brew install mmdr
 
-
 # Agent skill
 npx skills add iwe-org/skills --skill graph -g
 npx skills add tt-a1i/archify -g
 
-# Pi plugin
-pi install npm:pi-mcp-adapter
-pi install git:github.com/DietrichGebert/ponytail
-pi install npm:pi-caveman
-pi install npm:@plannotator/pi-extension
-pi install npm:@bacnh85/pi-serena
-pi install npm:@juicesharp/rpiv-ask-user-question
-pi install npm:@juicesharp/rpiv-todo
-pi install npm:pi-subagents
-pi install npm:pi-web-access
+# Serena for Pi
+uv tool install -p 3.13 serena-agent
+
+# Pi ACP adapter for Avante
+npm install -g pi-acp
 
 # Yazi plugins
-xargs ya pkg add < ~/.config/yazi/plugins.txt
+xargs ya pkg add <~/.config/yazi/plugins.txt
 
 # Herdr plugins
-xargs -I{} herdr plugin install {} --yes < ~/.config/herdr/plugins.txt
+xargs -I{} herdr plugin install {} --yes <~/.config/herdr/plugins.txt
 
 # VScodium (Sync setting)
 ```
-profile: main repository: type: file path: \~/.config/vscodium ```
-```
+profile: main repository: type: file path: \~/.config/vscodium \`\`\`
+
+````
 
 ## MacOS Specifics
 
@@ -106,4 +101,4 @@ profile: main repository: type: file path: \~/.config/vscodium ```
 
 ```text {bash}
 ln -s "~/.config/amethyst/Layouts/center_or_tall.js" "~/Library/Application Support/Amethyst/Layouts/center_or_tall.js
-```
+````

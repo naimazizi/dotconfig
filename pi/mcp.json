@@ -1,17 +1,5 @@
 {
   "mcpServers": {
-    "bigquery": {
-      "command": "sh",
-      "args": [
-        "-c",
-        "exec uvx --with 'mcp<1.10' mcp-server-bigquery --project \"${BIGQUERY_PROJECT:?BIGQUERY_PROJECT is required}\" --location \"${BIGQUERY_LOCATION:?BIGQUERY_LOCATION is required}\""
-      ],
-      "env": {
-        "BIGQUERY_PROJECT": "${BIGQUERY_PROJECT}",
-        "BIGQUERY_LOCATION": "${BIGQUERY_LOCATION}"
-      },
-      "timeout": 60
-    },
     "gh_grep": {
       "url": "https://mcp.grep.app"
     },
@@ -26,13 +14,25 @@
         "ALLOW_IMG_OUTPUT": "true"
       }
     },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--project-from-cwd",
+        "--context",
+        "agent",
+        "--open-web-dashboard",
+        "False"
+      ]
+    },
     "lark-cli": {
-      "command": "node",
-      "args": ["~/.local/lib/lark-cli-mcp/index.js"]
+      "url": "https://mcp.larksuite.com/mcp"
     },
     "iwe": {
-      "command": "npx",
-      "args": ["-y", "@iwe-org/mcp"],
+      "command": "iwec",
       "cwd": "~/notes"
     }
   }

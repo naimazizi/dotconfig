@@ -32,7 +32,13 @@ vim.pack.add({
 
 Config.later(function()
   require("avante").setup({
-    provider = "opencode",
+    provider = "pi",
+    acp_providers = {
+      pi = {
+        command = "pi-acp",
+        args = {},
+      },
+    },
     behaviour = {
       auto_approve_tool_permissions = true, -- Show tool permission requests.
       acp_follow_agent_locations = true, -- Keep your cursor where you are.

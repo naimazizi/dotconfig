@@ -29,6 +29,10 @@ Config.later(function()
     table.insert(formatters_by_ft[ft], "panache")
   end
 
+  formatters.panache = {
+    env = { PANACHE_CONFIG = vim.fn.expand("~/.config/panache/config.toml") },
+  }
+
   -- Typst formatters
   formatters_by_ft["typst"] = { "typstyle" }
 
@@ -71,41 +75,6 @@ Config.later(function()
     formatters_by_ft[ft] = formatters_by_ft[ft] or {}
     table.insert(formatters_by_ft[ft], "oxfmt")
   end
-
-  -- Injected formatter for code blocks in markdown-like file
-  for _, ft in ipairs(vim.g.md_injected_ft or {}) do
-    formatters_by_ft[ft] = formatters_by_ft[ft] or {}
-    table.insert(formatters_by_ft[ft], "injected")
-  end
-  -- Customize the "injected" formatter
-  formatters.injected = {
-    -- Set the options field
-    options = {
-      -- Set to true to ignore errors
-      ignore_errors = true,
-      -- Map of treesitter language to file extension
-      -- A temporary file name with this extension will be generated during formatting
-      -- because some formatters care about the filename.
-      lang_to_ext = {
-        bash = "sh",
-        c_sharp = "cs",
-        elixir = "exs",
-        javascript = "js",
-        julia = "jl",
-        latex = "tex",
-        markdown = "md",
-        python = "py",
-        ruby = "rb",
-        rust = "rs",
-        teal = "tl",
-        r = "r",
-        typescript = "ts",
-      },
-      -- Map of treesitter language to formatters to use
-      -- (defaults to the value from formatters_by_ft)
-      lang_to_formatters = {},
-    },
-  }
 
   require("conform").setup({
     formatters_by_ft = formatters_by_ft,

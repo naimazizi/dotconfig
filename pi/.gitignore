@@ -1,0 +1,11 @@
+/*
+!/.gitignore
+!/settings.json
+!/mcp.json
+!/AGENTS.md
+!/agents/
+/agents/*
+!/agents/general.md
+!/extensions/
+/extensions/*
+!/extensions/litellm.ts

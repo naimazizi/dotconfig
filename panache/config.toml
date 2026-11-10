@@ -10,10 +10,23 @@ line-ending = "auto"
 
 # External code formatters (opt-in)
 [formatters]
+bash = ["shuck"]
+sh = ["shuck"]
+zsh = ["shuck-zsh"]
 python = ["ruff"]
 latex = "badness"
 javascript = ["oxfmt"]
 typescript = ["oxfmt"]
+
+[formatters.shuck]
+cmd = "shuck"
+args = ["format", "--stdin-filename", "stdin.sh", "-"]
+stdin = true
+
+[formatters.shuck-zsh]
+cmd = "shuck"
+args = ["format", "--stdin-filename", "stdin.zsh", "-"]
+stdin = true
 
 [formatters.oxfmt]
 cmd = "oxfmt"

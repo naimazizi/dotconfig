@@ -92,6 +92,9 @@ Config.on_event("BufReadPre,BufNewFile", function()
     root_markers = { ".shuck.toml", "shuck.toml", ".git" },
   })
 
+  -- TypeScript / JavaScript
+  vim.lsp.config("tsc", {})
+
   -- Python
   vim.lsp.config("pyrefly", {})
   vim.lsp.config("ruff", {})
