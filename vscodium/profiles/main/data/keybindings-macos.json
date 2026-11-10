@@ -1,8 +1,13 @@
 [
   {
     "key": "ctrl+;",
-    "command": "varro.chat.focus",
-    "when": "editorTextFocus"
+    "command": "pendant.focusInput",
+    "when": "editorTextFocus && !editorHasSelection"
+  },
+  {
+    "key": "ctrl+;",
+    "command": "pendant.addSelectionToChat",
+    "when": "editorTextFocus && editorHasSelection"
   },
   {
     "key": "ctrl+;",

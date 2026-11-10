@@ -234,9 +234,6 @@
   "remote.extensionKind": {
     "asvetliakov.vscode-neovim": ["workspace"]
   },
-  "varro.chat.showFileDiffs": true,
-  "varro.chat.autoRenameUntitledSessions": true,
-  "varro.chat.showChangedFiles": true,
   "codeTelescope.preview.showLineNumbers": true,
   "codeTelescope.layout.previewFontSize": 12,
   "codeTelescope.layout.resultsFontSize": 12,
@@ -252,5 +249,11 @@
   },
   "github.copilot.nextEditSuggestions.enabled": false,
   "chat.disableAIFeatures": true,
-  "window.density.layout": "compact"
+  "window.density.layout": "compact",
+  "pendant.extensionWidgets.checklist.tracking": true,
+  "pendant.sessionRailPosition": "right",
+  "pendant.hideStartPageSessionsWhenRailHidden": false,
+  "pendant.groupRunningSessions": true,
+  "pendant.chatWidth": "adaptive",
+  "pendant.disableAnimations": true
 }
