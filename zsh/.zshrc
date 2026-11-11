@@ -1,6 +1,7 @@
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+# shuck: source=../../.local/share/zinit/zinit.git/zinit.zsh
 source "${ZINIT_HOME}/zinit.zsh"
 
 # fpath config - load early for plugin functions
@@ -30,6 +31,11 @@ alias ls_arch_packages="pacman -Qi | grep -E '^(Name|Installed)' | cut -f2 -d':'
 alias ss="zsh $HOME/.config/skim_search.sh"
 alias zz="zoxide query -i"
 alias oc="opencode"
+if [[ "$TERM" == "xterm-kitty" ]]; then
+	alias ssh='kitten ssh'
+	alias icat='kitten icat'
+	alias diff='kitten diff'
+fi
 
 # Consolidated PATH construction for better performance
 # Build PATH array with deduplication instead of repeated concatenations
@@ -102,7 +108,7 @@ zinit ice wait lucid atload'autoload -Uz compinit; compinit -C'
 zinit light zdharma-continuum/null
 
 # syntax highlighting (patina)
-zinit ice wait lucid as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload'eval "$(zsh-patina activate)"'
+zinit ice wait lucid as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload"eval \"\$(zsh-patina activate)\""
 zinit light michel-kraemer/zsh-patina
 
 # zoxide
@@ -120,7 +126,7 @@ zinit ice wait lucid
 zinit light sunlei/zsh-ssh
 
 # Atuin (defer: shell-hooked, safe to load after prompt)
-zinit ice wait lucid atload'eval "$(atuin init zsh)"'
+zinit ice wait lucid atload"eval \"\$(atuin init zsh)\""
 zinit light zdharma-continuum/null
 
 # iwe completions: generated fresh each shell so it always tracks the installed version

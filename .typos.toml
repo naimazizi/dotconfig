@@ -1,5 +1,5 @@
 [default]
-extend-ignore-re = ['<leader>[A-Za-z]+']
+extend-ignore-re = ['<leader>[A-Za-z]+', '\bU\+[0-9A-Fa-f]{4,6}\b']
 
 [default.extend-words]
 enew = "enew"
