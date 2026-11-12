@@ -37,6 +37,7 @@ Config.later(function()
       pi = {
         command = "pi-acp",
         args = {},
+        env = { PI_ACP_PI_COMMAND = "pi-bolt" },
       },
     },
     behaviour = {
