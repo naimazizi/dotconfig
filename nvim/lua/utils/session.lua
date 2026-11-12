@@ -65,42 +65,27 @@ local function restore_breakpoints()
   end
 end
 
-local function restore_avante(tab)
-  local placeholders, source = {}, nil
-  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
-    local buf = vim.api.nvim_win_get_buf(win)
-    if
-      vim.bo[buf].buftype == "nofile"
-      and (vim.bo[buf].filetype:match("^Avante") or vim.bo[buf].filetype == "markdown.Avante")
-    then
-      table.insert(placeholders, win)
-    elseif vim.bo[buf].buftype == "" and vim.fn.win_gettype(win) == "" then
-      if not source or vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(source)) == "" then
-        source = win
+local function close_avante()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    -- Closing one Avante window can also close the rest of its sidebar.
+    if vim.api.nvim_win_is_valid(win) then
+      local buf = vim.api.nvim_win_get_buf(win)
+      local ft = vim.bo[buf].filetype
+      if vim.bo[buf].buftype == "nofile" and (ft:match("^Avante") or ft == "markdown.Avante") then
+        if #vim.api.nvim_list_wins() == 1 then
+          vim.api.nvim_win_set_buf(win, vim.api.nvim_create_buf(true, false))
+        else
+          vim.api.nvim_win_close(win, true)
+        end
       end
     end
   end
-
-  if #placeholders == 0 then
-    return
-  end
-  if not source then
-    vim.notify("Cannot restore Avante: the saved tab has no source window", vim.log.levels.WARN)
-    return
-  end
-
-  -- Rebuild Avante's UI instead of keeping disconnected session windows.
-  for _, win in ipairs(placeholders) do
-    vim.api.nvim_win_close(win, true)
-  end
-  vim.api.nvim_win_call(source, function()
-    require("avante").open_sidebar({})
-  end)
 end
 
 M.hooks = {
   pre = {
     write = function()
+      close_avante()
       save_breakpoints()
       if package.loaded["dap-view"] then
         require("dap-view.vim-sessions").save_state()
@@ -121,6 +106,7 @@ M.hooks = {
       end
     end,
     read = function()
+      close_avante()
       restore_breakpoints()
       if package.loaded["dap-view"] then
         require("dap-view.vim-sessions").restore_state()
@@ -132,9 +118,6 @@ M.hooks = {
       vim.schedule(function()
         -- Restored buffers may already have fired FileType before Tree-sitter setup.
         restore_highlighting()
-        for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
-          restore_avante(tab)
-        end
       end)
     end,
   },
