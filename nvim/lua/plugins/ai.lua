@@ -35,9 +35,8 @@ Config.later(function()
     provider = "pi",
     acp_providers = {
       pi = {
-        command = "pi-acp",
-        args = {},
-        env = { PI_ACP_PI_COMMAND = "pi-bolt" },
+        command = "pi-bolt",
+        args = { "--acp" },
       },
     },
     behaviour = {

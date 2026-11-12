@@ -31,6 +31,7 @@ alias ls_arch_packages="pacman -Qi | grep -E '^(Name|Installed)' | cut -f2 -d':'
 alias ss="zsh $HOME/.config/skim_search.sh"
 alias zz="zoxide query -i"
 alias oc="opencode"
+alias pi="pi-bolt"
 if [[ "$TERM" == "xterm-kitty" ]]; then
 	alias ssh='kitten ssh'
 	alias icat='kitten icat'

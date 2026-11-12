@@ -80,9 +80,6 @@ npx skills add tt-a1i/archify -g
 # Serena for Pi
 uv tool install -p 3.13 serena-agent
 
-# Pi ACP adapter for Avante
-npm install -g pi-acp
-
 # Yazi plugins
 xargs ya pkg add <~/.config/yazi/plugins.txt
 

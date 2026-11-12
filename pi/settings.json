@@ -24,5 +24,9 @@
   "collapseChangelog": true,
   "quietStartup": true,
   "defaultProjectTrust": "always",
-  "treeFilterMode": "default"
+  "treeFilterMode": "default",
+  "piBolt": {
+    "packages": ["npm:opensec-pi-fff@0.11.2"],
+    "packagesOverlay": true
+  }
 }
