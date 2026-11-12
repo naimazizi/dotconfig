@@ -15,7 +15,8 @@
     "npm:@juicesharp/rpiv-todo",
     "npm:pi-subagents",
     "npm:pi-web-access",
-    "npm:pi-vim"
+    "npm:pi-vim",
+    "git:github.com/edxeth/pi-auto-session-titles"
   ],
   "piVim": {
     "clipboardMirror": "yank"
