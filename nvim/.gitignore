@@ -4,3 +4,4 @@ nvim-pack-lock.json
 .agents/
 .claude/
 CLAUDE.md
+tests/

@@ -34,24 +34,44 @@ local function locations(lines, node)
   return items
 end
 
-function M.references(root)
-  local manifest_path = root .. "/target/manifest.json"
-  local ok, manifest = pcall(function()
-    return vim.json.decode(table.concat(vim.fn.readfile(manifest_path), "\n"))
+local function load_manifest(root, file)
+  -- Workers have separate Lua states; send only relevant nodes back to the UI thread.
+  local ok, result, err = pcall(function()
+    local handle, open_err = io.open(root .. "/target/manifest.json", "rb")
+    if not handle then
+      return nil, open_err
+    end
+    local content, read_err = handle:read("*a")
+    local closed, close_err = handle:close()
+    if not content then
+      return nil, read_err
+    end
+    if not closed then
+      return nil, close_err
+    end
+    local manifest = vim.json.decode(content)
+    if type(manifest) ~= "table" or type(manifest.nodes) ~= "table" or type(manifest.child_map) ~= "table" then
+      return nil, "Invalid dbt manifest: expected nodes and child_map"
+    end
+    local selected = { nodes = {}, child_map = {} }
+    for id, node in pairs(manifest.nodes) do
+      if node.original_file_path and vim.uv.fs_realpath(root .. "/" .. node.original_file_path) == file then
+        selected.nodes[id] = node
+        selected.child_map[id] = manifest.child_map[id]
+        for _, child_id in ipairs(manifest.child_map[id] or {}) do
+          selected.nodes[child_id] = manifest.nodes[child_id]
+        end
+      end
+    end
+    return vim.mpack.encode(selected)
   end)
-  if not ok then
-    vim.notify(
-      "Cannot read dbt manifest: " .. tostring(manifest) .. ". Run dbt parse in " .. root,
-      vim.log.levels.ERROR
-    )
-    return
+  if ok then
+    return result, err
   end
-  if type(manifest) ~= "table" or type(manifest.nodes) ~= "table" or type(manifest.child_map) ~= "table" then
-    vim.notify("Invalid dbt manifest: expected nodes and child_map in " .. manifest_path, vim.log.levels.ERROR)
-    return
-  end
+  return nil, tostring(result)
+end
 
-  local file = vim.fs.normalize(vim.fn.resolve(vim.api.nvim_buf_get_name(0)))
+local function show_references(root, file, manifest)
   local found, seen, items = false, {}, {}
   for id, node in pairs(manifest.nodes) do
     if node.original_file_path and vim.fs.normalize(vim.fn.resolve(root .. "/" .. node.original_file_path)) == file then
@@ -120,6 +140,31 @@ function M.references(root)
       vim.cmd("normal! zv")
     end
   end)
+end
+
+function M.references(root)
+  local buf = vim.api.nvim_get_current_buf()
+  local file = vim.fs.normalize(vim.fn.resolve(vim.api.nvim_buf_get_name(buf)))
+  local work = vim.uv.new_work(
+    load_manifest,
+    vim.schedule_wrap(function(result, err)
+      if not result then
+        vim.notify("Cannot read dbt manifest: " .. tostring(err) .. ". Run dbt parse in " .. root, vim.log.levels.ERROR)
+        return
+      end
+      if
+        vim.api.nvim_get_current_buf() ~= buf
+        or vim.fs.normalize(vim.fn.resolve(vim.api.nvim_buf_get_name(buf))) ~= file
+      then
+        return
+      end
+      show_references(root, file, vim.mpack.decode(result))
+    end)
+  )
+  local queued, err = work:queue(root, file)
+  if not queued then
+    vim.notify("Cannot queue dbt manifest worker: " .. tostring(err), vim.log.levels.ERROR)
+  end
 end
 
 function M.keymap(buf)
