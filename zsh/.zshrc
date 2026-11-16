@@ -13,18 +13,15 @@ autoload -Uz fzg
 ulimit -Sn 4096
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-export EDITOR='nvim'
-export VISUAL='nvim'
+export EDITOR="${EDITOR:-nvim}"
+export VISUAL="${VISUAL:-$EDITOR}"
 export BOB_CONFIG="$HOME/.config/bob/config.toml"
 export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 export PI_CODING_AGENT_DIR="$HOME/.config/pi"
 
 # Aliases
-alias ls='lsd'
-alias ll="lsd -ltr"
-alias find='fd'
 alias gg='lazygit'
-alias vv='nvim'
+alias vv='$EDITOR'
 alias nvim_update='nvim --headless "+Lazy! sync" +qa'
 alias neovide_remote="neovide --neovim-bin ~/.config/nvim-remote.sh"
 alias ls_arch_packages="pacman -Qi | grep -E '^(Name|Installed)' | cut -f2 -d':' | paste - - | column -t | sort -nrk 2 | grep MiB | less"
@@ -64,14 +61,22 @@ PATH_DIRS=(
 	"$HOME/.cargo/bin"
 	"$HOME/.local/share/bob/nvim-bin"
 	"$HOME/.local/share/bob"
-	"$(brew --prefix rustup)/bin"
 	"$HOME/.opencode/bin/"
 )
+
+[[ -n "$HOMEBREW_PREFIX" ]] && PATH_DIRS+=("$HOMEBREW_PREFIX/opt/rustup/bin")
 
 for dir in "${PATH_DIRS[@]}"; do
 	[[ -d "$dir" ]] && PATH="$dir:$PATH"
 done
 export PATH # Single export instead of per-loop exports
+
+# Keep standard commands usable on minimal remote hosts.
+if command -v lsd &>/dev/null; then
+	alias ls='lsd'
+	alias ll='lsd -ltr'
+fi
+command -v fd &>/dev/null && alias find='fd'
 
 # pick up static #compdef files from brew-installed completion formulae
 # (e.g. tmuxinator-completion) for tools with no completion-generator subcommand
@@ -113,8 +118,10 @@ zinit ice wait lucid as"program" from"gh-r" pick"zsh-patina-*/zsh-patina" atload
 zinit light michel-kraemer/zsh-patina
 
 # zoxide
-zinit ice lucid wait="0"
-zinit snippet https://github.com/ajeetdsouza/zoxide/blob/main/zoxide.plugin.zsh
+if command -v zoxide &>/dev/null; then
+	zinit ice lucid wait="0"
+	zinit snippet https://github.com/ajeetdsouza/zoxide/blob/main/zoxide.plugin.zsh
+fi
 
 # direnv
 zinit ice wait lucid from"gh-r" as"program" mv"direnv* -> direnv" \
@@ -127,7 +134,7 @@ zinit ice wait lucid
 zinit light sunlei/zsh-ssh
 
 # Atuin (defer: shell-hooked, safe to load after prompt)
-zinit ice wait lucid atload"eval \"\$(atuin init zsh)\""
+zinit ice wait lucid atload"if command -v atuin &>/dev/null; then eval \"\$(atuin init zsh)\"; fi"
 zinit light zdharma-continuum/null
 
 # iwe completions: generated fresh each shell so it always tracks the installed version
