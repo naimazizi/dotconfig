@@ -92,32 +92,7 @@ Config.later(function()
     },
   })
 
-  local map = vim.keymap.set
-  map("n", "<C-;>", function()
-    require("avante.api").focus()
-  end, { desc = "avante: toggle focus between chat and buffer" })
-  map("i", "<C-;>", function()
-    if require("avante.utils").is_sidebar_buffer(0) then
-      require("avante.api").focus()
-      return
-    end
-    local line = vim.api.nvim_get_current_line()
-    local lnum = vim.api.nvim_win_get_cursor(0)[1]
-    local range = require("avante.range"):new({ lnum = lnum, col = 1 }, { lnum = lnum, col = math.max(#line, 1) })
-    local selection = require("avante.selection_result"):new(vim.api.nvim_buf_get_name(0), vim.bo.filetype, line, range)
-    require("avante.api").ask({ selection = selection, floating = false })
-    require("avante").get():focus_input()
-  end, { desc = "avante: attach current line as context / return to code" })
-  map("x", "<C-;>", function()
-    require("avante.api").ask({ floating = false })
-    require("avante").get():focus_input()
-  end, { desc = "avante: attach selected code as context" })
-  map("n", "<leader>al", "<cmd>Avante acp sessions<cr>", { desc = "avante: acp session" })
-  map("n", "<leader>ae", function()
-    local sidebar = require("avante").get(false)
-    if not sidebar then
-      return
-    end
+  local function clear_selected_code(sidebar)
     sidebar.code.selection = nil
     local selected_code = sidebar.containers.selected_code
     -- Detach first so Avante's WinClosed handler does not close the whole sidebar.
@@ -125,6 +100,88 @@ Config.later(function()
     if selected_code then
       selected_code:unmount()
     end
+  end
+
+  local function focus_avante(selection)
+    local utils = require("avante.utils")
+    if utils.is_sidebar_buffer(0) then
+      require("avante.api").focus()
+      return
+    end
+    local bufnr = vim.api.nvim_get_current_buf()
+    local filename = vim.api.nvim_buf_get_name(bufnr)
+    if vim.bo[bufnr].buftype ~= "" or filename == "" then
+      vim.notify("Avante context requires a named file buffer", vim.log.levels.WARN)
+      return
+    end
+    local sidebar = require("avante").get(false)
+    if sidebar and not sidebar:can_open() then
+      return
+    end
+    if selection then
+      vim.cmd("normal! \27")
+    end
+    if sidebar and sidebar:is_open() then
+      local winid = vim.api.nvim_get_current_win()
+      if sidebar.code.winid ~= winid then
+        sidebar:recover_code_winhl()
+        sidebar.code.winid = winid
+        sidebar:set_code_winhl()
+      end
+      if sidebar.code.bufnr ~= bufnr or not vim.deep_equal(sidebar.file_selector.selected_filepaths, { filename }) then
+        sidebar.code.bufnr = bufnr
+        if not selection then
+          clear_selected_code(sidebar)
+        end
+        -- reset() drops listeners; replace context and notify the existing view instead.
+        sidebar.file_selector.selected_filepaths = { filename }
+        sidebar.file_selector:emit("update")
+      end
+      if selection then
+        sidebar.code.selection = selection
+        if not sidebar.containers.selected_code then
+          sidebar:create_selected_code_container()
+        end
+        local codebuf = sidebar.containers.selected_code.bufnr
+        utils.unlock_buf(codebuf)
+        vim.api.nvim_buf_set_lines(codebuf, 0, -1, false, vim.split(selection.content, "\n"))
+        utils.lock_buf(codebuf)
+        vim.treesitter.stop(codebuf)
+        vim.bo[codebuf].syntax = vim.bo[bufnr].syntax
+        sidebar:adjust_selected_code_container_layout()
+        sidebar:render_selected_code()
+      end
+      sidebar:focus_input()
+      return
+    end
+    if require("avante.api").ask({ selection = selection, floating = false }) then
+      require("avante").get():focus_input()
+    end
+  end
+
+  local map = vim.keymap.set
+  map("n", "<C-;>", focus_avante, { desc = "avante: select current file / return to code" })
+  map("i", "<C-;>", function()
+    if require("avante.utils").is_sidebar_buffer(0) then
+      focus_avante()
+      return
+    end
+    local line = vim.api.nvim_get_current_line()
+    local lnum = vim.api.nvim_win_get_cursor(0)[1]
+    local range = require("avante.range"):new({ lnum = lnum, col = 1 }, { lnum = lnum, col = math.max(#line, 1) })
+    local selection = require("avante.selection_result"):new(vim.api.nvim_buf_get_name(0), vim.bo.filetype, line, range)
+    focus_avante(selection)
+  end, { desc = "avante: attach current line as context / return to code" })
+  map("x", "<C-;>", function()
+    focus_avante(require("avante.utils").get_visual_selection_and_range())
+  end, { desc = "avante: attach selected code as context" })
+  map("n", "<leader>al", "<cmd>Avante acp sessions<cr>", { desc = "avante: acp session" })
+  map("n", "<leader>ae", function()
+    local sidebar = require("avante").get(false)
+    if not sidebar then
+      return
+    end
+    clear_selected_code(sidebar)
   end, { desc = "avante: clear selected code" })
 
   local function refresh_avante(buf)
