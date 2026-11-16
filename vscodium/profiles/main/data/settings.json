@@ -251,9 +251,16 @@
   "chat.disableAIFeatures": true,
   "window.density.layout": "compact",
   "pendant.extensionWidgets.checklist.tracking": true,
-  "pendant.sessionRailPosition": "right",
+  "pendant.sessionRailPosition": "hidden",
   "pendant.hideStartPageSessionsWhenRailHidden": false,
   "pendant.groupRunningSessions": true,
   "pendant.chatWidth": "adaptive",
-  "pendant.disableAnimations": true
+  "pendant.disableAnimations": true,
+  "pendant.subagents.delegation": "disabled",
+  "pendant.chat.promptSuggestionsEnabled": false,
+  "pendant.chat.promptSuggestions": {
+    "model": "openai-codex/gpt-5.6-luna",
+    "thinking": "minimal"
+  },
+  "pendant.chat.promptSuggestionLanguage": ""
 }
