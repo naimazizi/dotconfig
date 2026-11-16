@@ -20,7 +20,7 @@ vim.pack.add({
 
 Config.later(function()
   require("fzf-lua").setup({
-    { "telescope", "hide" },
+    { "telescope", "hide", "skim" },
     grep = {
       multiline = 2,
       rg_glob = true,
