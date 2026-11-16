@@ -25,6 +25,9 @@ if !filereadable(vimplug_exists)
 endif
 
 " Required:
+set runtimepath^=~/.vim
+let g:coc_config_home = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+let $PANACHE_CONFIG = fnamemodify(g:coc_config_home, ':h') . '/panache/config.toml'
 call plug#begin(expand('~/.vim/plugged'))
 
 "*****************************************************************************
@@ -48,11 +51,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'justinmk/vim-sneak'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'liuchengxu/vim-which-key'
-Plug 'github/copilot.vim'
 Plug 'Konfekt/FastFold'
 Plug 'machakann/vim-sandwich'
 Plug 'tommcdo/vim-exchange'
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
+Plug 'liuchengxu/vim-clap', { 'do': ':call clap#installer#force_download()' }
 Plug 'sheerun/vim-polyglot'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'brooth/far.vim'
@@ -63,7 +65,6 @@ Plug 'inkarkat/vim-ingo-library'
 Plug 'jdhao/better-escape.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'vim-test/vim-test'
-Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -71,10 +72,7 @@ else
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
   Plug 'junegunn/fzf.vim'
 endif
-let g:make = 'gmake'
-if exists('make')
-        let g:make = 'make'
-endif
+let g:make = executable('gmake') ? 'gmake' : 'make'
 Plug 'Shougo/vimproc.vim', {'do': g:make}
 
 "" Vim-Session
@@ -118,9 +116,9 @@ set softtabstop=0
 set shiftwidth=4
 set expandtab
 
-"" Map leader to ,
+"" Match Neovim leaders
 let g:mapleader = "\<Space>"
-let g:maplocalleader = ','
+let g:maplocalleader = "\\"
 
 "" Enable hidden buffers
 set hidden
@@ -262,24 +260,12 @@ nnoremap <silent> <leader>e :NERDTreeToggle<CR>
 " terminal emulation
 nnoremap <silent> <leader>ft :terminal<CR>
 
-" vim-test (LazyVim-style)
-" t: test
-nnoremap <silent> <leader>tt :TestNearest<CR>
-nnoremap <silent> <leader>tT :TestFile<CR>
-nnoremap <silent> <leader>ta :TestSuite<CR>
+" vim-test (same run scopes as Neovim)
+nnoremap <silent> <leader>tt :TestFile<CR>
+nnoremap <silent> <leader>tT :TestSuite<CR>
+nnoremap <silent> <leader>tr :TestNearest<CR>
 nnoremap <silent> <leader>tl :TestLast<CR>
 nnoremap <silent> <leader>tg :TestVisit<CR>
-
-" vimspector (LazyVim-style)
-" d: debug
-nnoremap <silent> <leader>db :call vimspector#ToggleBreakpoint()<CR>
-nnoremap <silent> <leader>dB :call vimspector#ClearBreakpoints()<CR>
-nnoremap <silent> <leader>dc :call vimspector#Continue()<CR>
-nnoremap <silent> <leader>di :call vimspector#StepInto()<CR>
-nnoremap <silent> <leader>do :call vimspector#StepOver()<CR>
-nnoremap <silent> <leader>dO :call vimspector#StepOut()<CR>
-nnoremap <silent> <leader>dr :call vimspector#Restart()<CR>
-nnoremap <silent> <leader>dq :call vimspector#Stop()<CR>
 
 
 "*****************************************************************************
@@ -292,10 +278,6 @@ command! FixWhitespace :%s/\s\+$//e
 let g:test#strategy = 'vimterminal'
 let g:test#python#runner = 'pytest'
 let g:test#python#pytest#options = '-q'
-
-" vimspector (python)
-let g:vimspector_enable_mappings = 'HUMAN'
-let g:vimspector_install_gadgets = ['debugpy']
 
 "*****************************************************************************
 "" Functions
@@ -342,44 +324,63 @@ set autoread
 "" Mappings
 "*****************************************************************************
 noremap <Leader>f. :e <C-R>=expand("%:p:h") . "/" <CR>
-noremap <Leader>cf :Format<CR>
+nnoremap <silent> <leader>cf :Format<CR>
+xmap <silent> <leader>cf <Plug>(coc-format-selected)
+nnoremap <silent> <leader>fs :%s/
+xnoremap <silent> <leader>fs :s/\%V
+nnoremap z1 zM
+nnoremap z2 zM1zr
+nnoremap z3 zM2zr
+nnoremap z4 zM3zr
+nnoremap <silent> <leader>uw :setlocal wrap!<CR>
+nnoremap <silent> <leader>ud :call CocAction('diagnosticToggle')<CR>
 
 "" Split
 noremap <Leader>- :<C-u>split<CR>
 noremap <Leader><Bar> :<C-u>vsplit<CR>
 
 "" Git
-noremap <Leader>ga :Gwrite<CR>
-noremap <Leader>gc :Git commit --verbose<CR>
-noremap <Leader>gsh :Git push<CR>
-noremap <Leader>gll :Git pull<CR>
-noremap <Leader>gg :Git<CR>
-noremap <Leader>gb :Git blame<CR>
-noremap <Leader>gd :Gvdiffsplit<CR>
-noremap <Leader>gr :GRemove<CR>
-noremap <Leader>gs :Clap bcommits<CR>
-"" Open current line on GitHub
-nnoremap <Leader>go :.GBrowse<CR>
+nnoremap <leader>ga :Gwrite<CR>
+nnoremap <leader>gc :Clap bcommits<CR>
+nnoremap <leader>gC :Clap commits<CR>
+nnoremap <leader>gg :Git<CR>
+nnoremap <leader>gb :Git blame<CR>
+nnoremap <leader>gd :Gvdiffsplit<CR>
+nnoremap <leader>gv :Gdiffsplit<CR>
+nnoremap <leader>gh :Gclog<CR>
+nnoremap <leader>gs :GitGutterStageHunk<CR>
+nnoremap <leader>gr :GitGutterUndoHunk<CR>
+nnoremap <leader>gp :GitGutterPreviewHunk<CR>
+nmap [h <Plug>(GitGutterPrevHunk)
+nmap ]h <Plug>(GitGutterNextHunk)
+"" Open current line or selection on GitHub
+nnoremap <leader>gB :.GBrowse<CR>
+xnoremap <leader>gB :GBrowse<CR>
 
 "" Search
-noremap <Leader>sm :Clap marks<CR>
-noremap <leader>sc :Clap command_history<CR>
-noremap <leader>sh :Clap history<CR>
-noremap <leader>sk :Clap maps<CR>
-noremap <leader>s" :Clap registers<CR>
+nnoremap <leader>sm :Clap marks<CR>
+nnoremap <leader>sc :Clap command_history<CR>
+nnoremap <leader>s/ :Clap command_history<CR>
+nnoremap <leader>sh :Clap history<CR>
+nnoremap <leader>sk :Clap maps<CR>
+nnoremap <leader>s" :Clap registers<CR>
+nnoremap <leader>sq :Clap quickfix<CR>
+nnoremap <leader>sl :Clap loclist<CR>
+nnoremap <leader>fh :Clap help_tags<CR>
+nnoremap <leader>uc :Clap colors<CR>
 
 
 " session management
-nnoremap <leader>qs :OpenSession<Space>
-nnoremap <leader>qS :SaveSession<Space>
-nnoremap <leader>qd :DeleteSession<CR>
-nnoremap <leader>qq :CloseSession<CR>
+nnoremap <leader>qs :OpenSession<CR>
+nnoremap <leader>qS :OpenSession<Space>
+nnoremap <leader>qd :let g:session_autosave = 'no'<CR>
+nnoremap <leader>qq :qa<CR>
 
 "" Tabs
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
 nnoremap <silent> <S-t> :tabnew<CR>
-nnoremap <silent> <leader>bn :tabnew<CR>
+nnoremap <silent> <leader>bn :enew<CR>
 
 "" Set working directory
 nnoremap <leader>. :lcd %:p:h<CR>
@@ -436,20 +437,44 @@ if has('macunix')
 endif
 
 "" Buffer nav
-noremap <S-h> :bp<CR>
-noremap <S-l> :bn<CR>
+nnoremap <S-h> :bp<CR>
+nnoremap <S-l> :bn<CR>
+nnoremap [b :bprevious<CR>
+nnoremap ]b :bnext<CR>
+nnoremap [q :cprevious<CR>
+nnoremap ]q :cnext<CR>
+nnoremap [l :lprevious<CR>
+nnoremap ]l :lnext<CR>
+nnoremap [w <C-w>W
+nnoremap ]w <C-w>w
+nnoremap <leader>bq :copen<CR>
+nnoremap <leader>bl :lopen<CR>
 
 "" Close buffer
 noremap <leader>bd :bd<CR>
 
 "" Clean search (highlight)
-nnoremap <silent> <leader><esc> :noh<cr>
+nnoremap <silent> <esc> :nohlsearch<CR>
+nnoremap <silent> <leader><esc> :nohlsearch<CR>
 
 "" Switching windows
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 noremap <C-h> <C-w>h
+
+" Delete without changing yank registers, like Neovim
+nnoremap d "_d
+xnoremap d "_d
+nnoremap D "_D
+
+" Vim terminal-normal mode uses <C-w>N instead of Neovim's <C-\><C-n>
+tnoremap <C-Esc> <C-w>N
+tnoremap <C-w> <C-w>N<C-w>
+tnoremap <C-h> <C-w>N<C-w>h
+tnoremap <C-j> <C-w>N<C-w>j
+tnoremap <C-k> <C-w>N<C-w>k
+tnoremap <C-l> <C-w>N<C-w>l
 
 "" Vmap for maintain Visual Mode after shifting > and <
 vmap < <gv
@@ -463,76 +488,92 @@ vnoremap K :m '<-2<CR>gv=gv
 "" WhichKey
 "*****************************************************************************
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey '<Bslash>'<CR>
+" Descriptions only: keep actions in the mappings above and below.
 let g:which_key_map = {}
 let g:which_key_map['b'] = {
       \ 'name' : '+Buffers',
-        \ 'd' : [':bd', 'Delete current buffer'],
-        \ 'b' : [':Clap buffers', 'List Buffers'],
-        \ 'n' : [":tabnew", 'New Buffer'],
+      \ 'd' : 'Delete buffer',
+      \ 'b' : 'List buffers',
+      \ 'n' : 'New buffer',
+      \ 'q' : 'Quickfix',
+      \ 'l' : 'Location list',
     \ }
 let g:which_key_map['c'] = {
       \ 'name' : '+Code',
-        \ 'a' : ['<Plug>(coc-codeaction-selected)', 'Code Actions'],
-        \ 'f' : [':Format', 'Format Code'],
-        \ 'F' : ['<Plug>(coc-format-selected)', 'Format Selected Code'],
-        \ 'r' : ['<Plug>(coc-rename)', 'Rename Symbol'],
+      \ 'a' : 'Code actions',
+      \ 'c' : 'CodeLens',
+      \ 'd' : 'Line diagnostics',
+      \ 'f' : 'Format code',
+      \ 'F' : 'Format selection',
+      \ 'i' : 'Incoming calls',
+      \ 'l' : 'LSP info',
+      \ 'o' : 'Outgoing calls',
+      \ 'r' : 'Rename symbol',
+      \ 's' : 'Toggle outline',
     \ }
 let g:which_key_map['f'] = {
-      \ 'name' : '+Files',
+      \ 'name' : '+Find',
+      \ 'h' : 'Help tags',
+      \ 's' : 'Search and replace',
+      \ 't' : 'Terminal',
     \ }
 let g:which_key_map['g'] = {
       \ 'name' : '+Git',
-        \ 'a' : [':Gwrite', 'Stage current file'],
-        \ 'c' : [':Git commit --verbose', 'Commit changes'],
-        \ 'd' : [':Gvdiffsplit', 'Diff current file'],
-        \ 'll' : [':Git pull', 'Pull changes'],
-        \ 's' : [':Clap bcommits', 'Show commits for current buffer'],
-        \ 'r' : [':GRemove', 'Remove current file from git'],
-        \ 'b' : [':Git blame', 'Blame current file'],
-    \ }
-let g:which_key_map['h'] = {
-      \ 'name' : '+Hunk',
-        \ 's' : ['<Plug>(GitGutterStageHunk)', 'Stage Hunk'],
-        \ 'u' : ['<Plug>(GitGutterUndoHunk)', 'Undo Hunk'],
-        \ 'p' : ['<Plug>(GitGutterPreviewHunk)', 'Preview Hunk'],
+      \ 'a' : 'Stage file',
+      \ 'b' : 'Blame file',
+      \ 'B' : 'Browse on GitHub',
+      \ 'c' : 'Buffer commits',
+      \ 'C' : 'Repository commits',
+      \ 'd' : 'Diff file',
+      \ 'g' : 'Git status (Fugitive)',
+      \ 'h' : 'File history',
+      \ 'p' : 'Preview hunk',
+      \ 'r' : 'Reset hunk',
+      \ 's' : 'Stage hunk',
+      \ 'v' : 'Preview diff',
     \ }
 let g:which_key_map['s'] = {
       \ 'name' : '+Search',
-        \ 'm' : [':Clap marks', 'Marks'],
-        \ 'c' : [':Clap command_history', 'Command History'],
-        \ 'h' : [':Clap history', 'History'],
-        \ 'k' : [':Clap maps', 'Maps'],
-        \ '"': [':Clap registers', 'Registers'],
-        \ "d": [':CoCList Diagnostics', 'Diagnostics'],
+      \ 'm' : 'Marks',
+      \ 'c' : 'Command history',
+      \ '/' : 'Command history',
+      \ 'h' : 'File history',
+      \ 'k' : 'Keymaps',
+      \ '"' : 'Registers',
+      \ 'd' : 'Buffer diagnostics',
+      \ 'D' : 'Workspace diagnostics',
+      \ 'q' : 'Quickfix picker',
+      \ 'l' : 'Location list picker',
+      \ 's' : 'Document symbols',
+      \ 'S' : 'Workspace symbols',
     \ }
-
 let g:which_key_map['t'] = {
       \ 'name' : '+Test',
-        \ 't' : [':TestNearest', 'Test Nearest'],
-        \ 'T' : [':TestFile', 'Test File'],
-        \ 'a' : [':TestSuite', 'Test Suite'],
-        \ 'l' : [':TestLast', 'Test Last'],
-        \ 'g' : [':TestVisit', 'Test Visit'],
-    \ }
-
-let g:which_key_map['d'] = {
-      \ 'name' : '+Debug',
-        \ 'b' : [':call vimspector#ToggleBreakpoint()', 'Breakpoint'],
-        \ 'B' : [':call vimspector#ClearBreakpoints()', 'Clear Breakpoints'],
-        \ 'c' : [':call vimspector#Continue()', 'Continue'],
-        \ 'i' : [':call vimspector#StepInto()', 'Step Into'],
-        \ 'o' : [':call vimspector#StepOver()', 'Step Over'],
-        \ 'O' : [':call vimspector#StepOut()', 'Step Out'],
-        \ 'r' : [':call vimspector#Restart()', 'Restart'],
-        \ 'q' : [':call vimspector#Stop()', 'Stop'],
+      \ 't' : 'Run file',
+      \ 'T' : 'Run suite',
+      \ 'r' : 'Run nearest',
+      \ 'l' : 'Run last',
+      \ 'g' : 'Visit test file',
     \ }
 let g:which_key_map['q'] = {
-      \ 'name' : '+Session',
-        \ 's' : [':OpenSession ', 'Open Session'],
-        \ 'S' : [':SaveSession ', 'Save Session'],
-        \ 'd' : [':DeleteSession', 'Delete Session'],
-        \ 'q' : [':CloseSession', 'Close Session'],
+      \ 'name' : '+Quit/Session',
+      \ 's' : 'Restore session',
+      \ 'S' : 'Select session name',
+      \ 'd' : 'Disable session autosave',
+      \ 'q' : 'Quit all',
+    \ }
+let g:which_key_map['u'] = {
+      \ 'name' : '+UI',
+      \ 'c' : 'Colorschemes',
+      \ 'd' : 'Toggle diagnostics',
+      \ 'w' : 'Toggle wrap',
+    \ }
+let g:which_key_map['h'] = {
+      \ 'name' : '+Hunk',
+      \ 's' : ['<Plug>(GitGutterStageHunk)', 'Stage hunk'],
+      \ 'u' : ['<Plug>(GitGutterUndoHunk)', 'Undo hunk'],
+      \ 'p' : ['<Plug>(GitGutterPreviewHunk)', 'Preview hunk'],
     \ }
 
 
@@ -663,9 +704,15 @@ endif
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
 nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
 nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
+nmap <silent><nowait> [d <Plug>(coc-diagnostic-prev)
+nmap <silent><nowait> ]d <Plug>(coc-diagnostic-next)
+nnoremap <silent> [[ :CocCommand document.jumpToPrevSymbol<CR>
+nnoremap <silent> ]] :CocCommand document.jumpToNextSymbol<CR>
+nnoremap <silent> <leader>cd :call CocAction('diagnosticInfo')<CR>
 
 " GoTo code navigation
 nmap <silent><nowait> gd <Plug>(coc-definition)
+nmap <silent><nowait> gD <Plug>(coc-declaration)
 nmap <silent><nowait> gy <Plug>(coc-type-definition)
 nmap <silent><nowait> gi <Plug>(coc-implementation)
 nmap <silent><nowait> gr <Plug>(coc-references)
@@ -697,9 +744,6 @@ xmap <leader>ca  <Plug>(coc-codeaction-selected)
 nmap <leader>ca  <Plug>(coc-codeaction-selected)
 
 
-" Remap keys for applying refactor code actions
-xmap <silent> <leader>cr  <Plug>(coc-codeaction-refactor-selected)
-nmap <silent> <leader>cr  <Plug>(coc-codeaction-refactor-selected)
 
 
 " Map function and class text objects
@@ -727,6 +771,10 @@ endif
 " Requires 'textDocument/selectionRange' support of language server
 nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
+nnoremap <silent> <A-o> :call CocAction('rangeSelect', '', v:true)<CR>
+xnoremap <silent> <A-o> :<C-u>call CocAction('rangeSelect', visualmode(), v:true)<CR>
+nnoremap <silent> <A-i> :call CocAction('rangeSelect', '', v:false)<CR>
+xnoremap <silent> <A-i> :<C-u>call CocAction('rangeSelect', visualmode(), v:false)<CR>
 
 " Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocActionAsync('format')
@@ -742,17 +790,17 @@ command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.org
 " provide custom statusline: lightline.vim, vim-airline
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" Mappings for CoCList
-" Show all diagnostics
-nnoremap <silent><nowait> <leader>sd :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent><nowait> <leader>cl :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent><nowait> <leader>cc  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent><nowait> <leader>co  :<C-u>CocOutline<cr>
-" Search workspace symbols
-nnoremap <silent><nowait> <leader>cs  :<C-u>CocList symbols<cr>
+" CoC navigation, lists, and actions
+" Buffer and workspace diagnostics
+nnoremap <silent><nowait> <leader>sd :<C-u>CocList diagnostics --buffer<CR>
+nnoremap <silent><nowait> <leader>sD :<C-u>CocList diagnostics<CR>
+nnoremap <silent><nowait> <leader>cl :CocInfo<CR>
+nmap <silent><nowait> <leader>cc <Plug>(coc-codelens-action)
+nnoremap <silent><nowait> <leader>ci :call CocActionAsync('incomingCalls')<CR>
+nnoremap <silent><nowait> <leader>co :call CocActionAsync('outgoingCalls')<CR>
+nnoremap <silent><nowait> <leader>cs :CocOutline<CR>
+nnoremap <silent><nowait> <leader>ss :CocList outline<CR>
+nnoremap <silent><nowait> <leader>sS :CocList symbols<CR>
 " Do default action for next item
 nnoremap <silent><nowait> <leader>cj  :<C-u>CocNext<CR>
 " Do default action for previous item

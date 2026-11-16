@@ -1,5 +1,56 @@
 {
   "languageserver": {
+    "emmylua": {
+      "command": "emmylua_ls",
+      "filetypes": ["lua"],
+      "rootPatterns": [".emmyrc.json", ".luarc.json", ".git"],
+      "disabledFeatures": ["documentFormatting", "documentRangeFormatting"]
+    },
+    "stylua": {
+      "command": "stylua",
+      "args": ["--lsp"],
+      "filetypes": ["lua"],
+      "rootPatterns": ["stylua.toml", ".stylua.toml", ".git"]
+    },
+    "typescript": {
+      "command": "tsc",
+      "args": ["--lsp", "--stdio"],
+      "filetypes": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
+      "rootPatterns": ["tsconfig.json", "jsconfig.json", "package.json", ".git"],
+      "disabledFeatures": ["documentFormatting", "documentRangeFormatting"]
+    },
+    "yaml": {
+      "command": "yaml-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["yaml"],
+      "rootPatterns": [".yamllint", ".yamllint.yml", ".git"],
+      "disabledFeatures": ["documentFormatting", "documentRangeFormatting"]
+    },
+    "oxfmt": {
+      "command": "oxfmt",
+      "args": ["--lsp"],
+      "filetypes": ["typescript", "typescriptreact", "javascript", "javascriptreact", "yaml"],
+      "rootPatterns": [".oxfmtrc.json", ".oxfmtrc.jsonc", "package.json", ".git"]
+    },
+    "shuck": {
+      "command": "shuck",
+      "args": ["server"],
+      "filetypes": ["sh", "bash", "zsh"],
+      "rootPatterns": [".shuck.toml", "shuck.toml", ".git"]
+    },
+    "panache": {
+      "command": "panache",
+      "args": ["lsp"],
+      "filetypes": ["markdown", "quarto"],
+      "rootPatterns": [".panache.toml", "panache.toml", ".git"]
+    },
+    "ruff": {
+      "command": "ruff",
+      "args": ["server"],
+      "filetypes": ["python"],
+      "rootPatterns": ["ruff.toml", ".ruff.toml", "pyproject.toml", ".git"],
+      "disabledFeatures": ["hover"]
+    },
     "pyrefly": {
       "command": "pyrefly",
       "args": ["lsp"],
