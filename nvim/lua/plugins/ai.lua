@@ -2,13 +2,6 @@ if vim.g.vscode then
   return
 end
 
-Config.on_packchanged("avante.nvim", { "install", "update" }, function(data)
-  local result = vim.system({ "make" }, { cwd = data.path, text = true }):wait()
-  if result.code ~= 0 then
-    error(("Avante build failed (requires make and cargo):\n%s\n%s"):format(result.stderr, result.stdout))
-  end
-end, "Build Avante native libraries")
-
 Config.on_packchanged("cursortab.nvim", { "install", "update" }, function(data)
   vim.async.run(function()
     local result = vim.async.await(3, vim.system, { "go", "build" }, { cwd = data.path .. "/server" })
@@ -22,221 +15,149 @@ Config.on_packchanged("cursortab.nvim", { "install", "update" }, function(data)
 end, "Build cursortab.nvim server")
 
 vim.pack.add({
-  Config.gh("nvim-lua/plenary.nvim"),
-  Config.gh("MunifTanjim/nui.nvim"),
-  Config.gh("ColinKennedy/mega.logging"),
-  Config.gh("ColinKennedy/mega.cmdparse"),
-  Config.gh("yetone/avante.nvim"),
+  Config.gh("carderne/pi-nvim"),
+  Config.gh("ingur/floatty.nvim"),
   Config.gh("cursortab/cursortab.nvim"),
 })
 
 Config.later(function()
-  require("avante").setup({
-    provider = "pi",
-    acp_providers = {
-      pi = {
-        command = "pi-bolt",
-        args = { "--acp" },
-      },
-    },
-    behaviour = {
-      auto_approve_tool_permissions = false, -- ACP also uses permission requests for user questions.
-      acp_follow_agent_locations = true, -- Keep your cursor where you are.
-      show_token_usage = true,
-    },
-    prompt_logger = {
-      prev_prompt = { normal = "<Up>", insert = "<Up>" },
-      next_prompt = { normal = "<Down>", insert = "<Down>" },
-    },
-    windows = {
-      width = 38, -- Percentage of editor width.
-      input = { height = 12 },
-    },
-    slash_commands = {
-      {
-        name = "diagnostics",
-        description = "Ask about the source buffer's errors and warnings",
-        callback = function(sidebar, args)
-          local bufnr = sidebar.code.bufnr
-          if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
-            vim.notify("Avante source buffer is unavailable", vim.log.levels.ERROR)
-            return
-          end
-          local diagnostics = vim.diagnostic.get(bufnr, {
-            severity = { min = vim.diagnostic.severity.WARN, max = vim.diagnostic.severity.ERROR },
-          })
-          if #diagnostics == 0 then
-            vim.notify("No errors or warnings in the source buffer", vim.log.levels.INFO)
-            return
-          end
+  require("pi-nvim").setup({ set_default_keymaps = false })
 
-          local lines = {}
-          for _, diagnostic in ipairs(diagnostics) do
-            lines[#lines + 1] = ("%s %d:%d [%s] %s"):format(
-              vim.diagnostic.severity[diagnostic.severity],
-              diagnostic.lnum + 1,
-              diagnostic.col + 1,
-              diagnostic.source or "unknown",
-              diagnostic.message
-            )
-          end
-          sidebar:handle_submit(
-            ("%s\nDiagnostics for %s:\n%s"):format(
-              args ~= "" and args or "Explain and fix these diagnostics.",
-              vim.api.nvim_buf_get_name(bufnr),
-              table.concat(lines, "\n")
-            )
-          )
-        end,
-      },
+  local pi = require("floatty").setup({
+    cmd = "pi-bolt",
+    id = 1,
+    window = {
+      width = 0.30,
+      height = function()
+        return vim.o.lines - 10
+      end,
+      h_align = "right",
+      v_align = "center",
+      border = "single",
     },
+    on_open = function(_, buf)
+      vim.bo[buf].bufhidden = "hide"
+      vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, desc = "Hide Pi-Bolt sidebar" })
+      vim.keymap.set("t", "<leader>ac", "<C-\\><C-n><cmd>close<cr>", {
+        buffer = buf,
+        desc = "Hide Pi-Bolt sidebar",
+      })
+      -- Floatty reuses exited terminals unless their buffers are wiped.
+      vim.api.nvim_create_autocmd("TermClose", {
+        buffer = buf,
+        once = true,
+        callback = function()
+          vim.schedule(function()
+            local win = vim.fn.bufwinid(buf)
+            if win ~= -1 then
+              vim.api.nvim_win_close(win, true)
+            end
+            if vim.api.nvim_buf_is_valid(buf) then
+              vim.api.nvim_buf_delete(buf, { force = true })
+            end
+          end)
+        end,
+      })
+    end,
   })
 
-  local function clear_selected_code(sidebar)
-    sidebar.code.selection = nil
-    local selected_code = sidebar.containers.selected_code
-    -- Detach first so Avante's WinClosed handler does not close the whole sidebar.
-    sidebar.containers.selected_code = nil
-    if selected_code then
-      selected_code:unmount()
-    end
-  end
-
-  local function focus_avante(selection)
-    local utils = require("avante.utils")
-    if utils.is_sidebar_buffer(0) then
-      require("avante.api").focus()
-      return
-    end
-    local bufnr = vim.api.nvim_get_current_buf()
-    local filename = vim.api.nvim_buf_get_name(bufnr)
-    if vim.bo[bufnr].buftype ~= "" or filename == "" then
-      vim.notify("Avante context requires a named file buffer", vim.log.levels.WARN)
-      return
-    end
-    local sidebar = require("avante").get(false)
-    if sidebar and not sidebar:can_open() then
-      return
-    end
-    if selection then
-      vim.cmd("normal! \27")
-    end
-    if sidebar and sidebar:is_open() then
-      local winid = vim.api.nvim_get_current_win()
-      if sidebar.code.winid ~= winid then
-        sidebar:recover_code_winhl()
-        sidebar.code.winid = winid
-        sidebar:set_code_winhl()
-      end
-      if sidebar.code.bufnr ~= bufnr or not vim.deep_equal(sidebar.file_selector.selected_filepaths, { filename }) then
-        sidebar.code.bufnr = bufnr
-        if not selection then
-          clear_selected_code(sidebar)
+  ---@type integer|nil
+  local source_win
+  local function toggle_pi_focus()
+    local term = pi.terms[1]
+    if term and term.win and vim.api.nvim_win_is_valid(term.win) then
+      if vim.api.nvim_get_current_win() == term.win then
+        if source_win and vim.api.nvim_win_is_valid(source_win) then
+          vim.api.nvim_set_current_win(source_win)
+          vim.cmd.stopinsert()
         end
-        -- reset() drops listeners; replace context and notify the existing view instead.
-        sidebar.file_selector.selected_filepaths = { filename }
-        sidebar.file_selector:emit("update")
+      else
+        source_win = vim.api.nvim_get_current_win()
+        vim.api.nvim_set_current_win(term.win)
+        vim.cmd.startinsert()
       end
-      if selection then
-        sidebar.code.selection = selection
-        if not sidebar.containers.selected_code then
-          sidebar:create_selected_code_container()
-        end
-        local codebuf = sidebar.containers.selected_code.bufnr
-        utils.unlock_buf(codebuf)
-        vim.api.nvim_buf_set_lines(codebuf, 0, -1, false, vim.split(selection.content, "\n"))
-        utils.lock_buf(codebuf)
-        vim.treesitter.stop(codebuf)
-        vim.bo[codebuf].syntax = vim.bo[bufnr].syntax
-        sidebar:adjust_selected_code_container_layout()
-        sidebar:render_selected_code()
-      end
-      sidebar:focus_input()
-      return
-    end
-    if require("avante.api").ask({ selection = selection, floating = false }) then
-      require("avante").get():focus_input()
+    else
+      source_win = vim.api.nvim_get_current_win()
+      pi.toggle()
     end
   end
 
   local map = vim.keymap.set
-  map("n", "<C-;>", focus_avante, { desc = "avante: select current file / return to code" })
-  map("i", "<C-;>", function()
-    if require("avante.utils").is_sidebar_buffer(0) then
-      focus_avante()
+  map({ "n", "i", "t" }, "<C-;>", toggle_pi_focus, { desc = "Focus Pi-Bolt / source buffer" })
+  map("n", "<leader>ac", function()
+    source_win = vim.api.nvim_get_current_win()
+    pi.toggle()
+  end, { desc = "Toggle Pi-Bolt sidebar" })
+  map("n", "<leader>aa", "<cmd>PiSendFile<cr>", { desc = "Send buffer to Pi" })
+  map("n", "<leader>aA", "<cmd>PiSend<cr>", { desc = "Send prompt to Pi" })
+  map("x", "<leader>aa", ":PiSendSelection<cr>", { silent = true, desc = "Send selection to Pi" })
+  map("n", "<leader>ad", function()
+    local buf = vim.api.nvim_get_current_buf()
+    local diagnostics = vim.diagnostic.get(buf, {
+      severity = { min = vim.diagnostic.severity.WARN, max = vim.diagnostic.severity.ERROR },
+    })
+    if #diagnostics == 0 then
+      vim.notify("No errors or warnings in current file", vim.log.levels.INFO)
       return
     end
-    local line = vim.api.nvim_get_current_line()
-    local lnum = vim.api.nvim_win_get_cursor(0)[1]
-    local range = require("avante.range"):new({ lnum = lnum, col = 1 }, { lnum = lnum, col = math.max(#line, 1) })
-    local selection = require("avante.selection_result"):new(vim.api.nvim_buf_get_name(0), vim.bo.filetype, line, range)
-    focus_avante(selection)
-  end, { desc = "avante: attach current line as context / return to code" })
-  map("x", "<C-;>", function()
-    focus_avante(require("avante.utils").get_visual_selection_and_range())
-  end, { desc = "avante: attach selected code as context" })
-  map("n", "<leader>al", "<cmd>Avante acp sessions<cr>", { desc = "avante: acp session" })
-  map("n", "<leader>ae", function()
-    local sidebar = require("avante").get(false)
-    if not sidebar then
+    local path = vim.api.nvim_buf_get_name(buf)
+    if path == "" or vim.bo[buf].buftype ~= "" then
+      vim.notify("Pi diagnostics require a named file buffer", vim.log.levels.WARN)
       return
     end
-    clear_selected_code(sidebar)
-  end, { desc = "avante: clear selected code" })
-
-  local function refresh_avante(buf)
-    if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].filetype ~= "Avante" then
+    local lines = { "Explain and fix these diagnostics from the current file only:" }
+    for _, diagnostic in ipairs(diagnostics) do
+      lines[#lines + 1] = ("%s:%d:%d [%s] %s"):format(
+        path,
+        diagnostic.lnum + 1,
+        diagnostic.col + 1,
+        vim.diagnostic.severity[diagnostic.severity],
+        diagnostic.message
+      )
+    end
+    require("pi-nvim").prompt(table.concat(lines, "\n"))
+  end, { desc = "Send current file diagnostics to Pi" })
+  map("n", "<leader>aD", function()
+    local diagnostics = vim.diagnostic.get()
+    if #diagnostics == 0 then
+      vim.notify("No diagnostics available", vim.log.levels.INFO)
       return
     end
-    local miniclue = require("mini.clue")
-    local descriptions = {
-      ["[p"] = "Previous prompt",
-      ["]p"] = "Next prompt",
-      ["[["] = "Previous code block",
-      ["]]"] = "Next code block",
-    }
-    -- Real mappings override standalone clues, even when their desc is empty.
-    for _, _map in ipairs(vim.api.nvim_buf_get_keymap(buf, "n")) do
-      local desc = descriptions[_map.lhs]
-      if desc and _map.desc ~= desc then
-        vim.api.nvim_buf_call(buf, function()
-          miniclue.set_mapping_desc("n", _map.lhs, desc)
-        end)
+    local lines = { "Explain and fix these diagnostics across files:" }
+    for _, diagnostic in ipairs(diagnostics) do
+      local path = vim.api.nvim_buf_get_name(diagnostic.bufnr)
+      if path == "" then
+        path = ("[unnamed buffer %d]"):format(diagnostic.bufnr)
       end
+      lines[#lines + 1] = ("%s:%d:%d [%s] %s"):format(
+        path,
+        diagnostic.lnum + 1,
+        diagnostic.col + 1,
+        vim.diagnostic.severity[diagnostic.severity],
+        diagnostic.message
+      )
     end
-    miniclue.ensure_buf_triggers(buf)
-  end
-
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "Avante", "markdown.Avante" },
-    callback = function(ev)
-      -- Wait for Avante to render the saved chat without changing focus.
-      vim.schedule(function()
-        if vim.api.nvim_buf_is_valid(ev.buf) then
-          require("avante.utils").buf_scroll_to_end(ev.buf)
-        end
-      end)
-    end,
-  })
-
-  vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function(ev)
-      vim.schedule(function()
-        refresh_avante(ev.buf)
-      end)
-    end,
-  })
-
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "AvanteViewBufferUpdated",
-    callback = function()
-      vim.schedule(function()
-        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-          refresh_avante(buf)
-        end
-      end)
-    end,
-  })
+    require("pi-nvim").prompt(table.concat(lines, "\n"))
+  end, { desc = "Send all diagnostics to Pi" })
+  map("n", "<leader>aq", function()
+    local items = vim.fn.getqflist()
+    if #items == 0 then
+      vim.notify("Quickfix list is empty", vim.log.levels.INFO)
+      return
+    end
+    local lines = { "Explain and fix the issues in this quickfix list:" }
+    for _, item in ipairs(items) do
+      local path = item.bufnr > 0 and vim.api.nvim_buf_get_name(item.bufnr) or "[no file]"
+      lines[#lines + 1] = ("%s:%d:%d %s%s"):format(
+        path,
+        item.lnum,
+        item.col,
+        item.type ~= "" and ("[" .. item.type .. "] ") or "",
+        item.text
+      )
+    end
+    require("pi-nvim").prompt(table.concat(lines, "\n"))
+  end, { desc = "Send quickfix list to Pi" })
 end)
 
 Config.disabled(function()

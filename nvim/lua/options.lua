@@ -1,7 +1,7 @@
 local opt = vim.opt
 
 -- custom global variables
-vim.g.md_ft = { "markdown", "quarto", "copilot-chat", "opencode_output", "Avante" }
+vim.g.md_ft = { "markdown", "quarto", "copilot-chat", "opencode_output" }
 vim.g.sql_ft = { "sql", "mysql", "plsql" }
 vim.g.sh_ft = { "sh", "bash", "zsh" }
 

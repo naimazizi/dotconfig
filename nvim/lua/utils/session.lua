@@ -65,27 +65,9 @@ local function restore_breakpoints()
   end
 end
 
-local function close_avante()
-  for _, win in ipairs(vim.api.nvim_list_wins()) do
-    -- Closing one Avante window can also close the rest of its sidebar.
-    if vim.api.nvim_win_is_valid(win) then
-      local buf = vim.api.nvim_win_get_buf(win)
-      local ft = vim.bo[buf].filetype
-      if vim.bo[buf].buftype == "nofile" and (ft:match("^Avante") or ft == "markdown.Avante") then
-        if #vim.api.nvim_list_wins() == 1 then
-          vim.api.nvim_win_set_buf(win, vim.api.nvim_create_buf(true, false))
-        else
-          vim.api.nvim_win_close(win, true)
-        end
-      end
-    end
-  end
-end
-
 M.hooks = {
   pre = {
     write = function()
-      close_avante()
       save_breakpoints()
       if package.loaded["dap-view"] then
         require("dap-view.vim-sessions").save_state()
@@ -106,7 +88,6 @@ M.hooks = {
       end
     end,
     read = function()
-      close_avante()
       restore_breakpoints()
       if package.loaded["dap-view"] then
         require("dap-view.vim-sessions").restore_state()

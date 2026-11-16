@@ -102,8 +102,6 @@ if not vim.g.vscode then
       "opencode",
       "opencode_output",
       "qf",
-      "Avante",
-      "AvanteInput",
     },
     callback = function(event)
       vim.bo[event.buf].buflisted = false

@@ -201,7 +201,7 @@ for _, binding in ipairs({
   { "<leader>-", "yazi-vscode.toggle", "Toggle Yazi" },
   { "]4", "quarto.goToNextCell", "Quarto Next code block" },
   { "[4", "quarto.goToPreviousCell", "Quarto Prev code block" },
-  -- Match Avante ask, new chat, focus, file context, and model keys.
+  -- Pendant chat, context, and model keys.
   { "<leader>aa", "pendant.focusInput", "Focus Pendant chat" },
   { "<leader>aa", "pendant.addSelectionToChat", "Add selection to Pendant chat", mode = "x" },
   { "<leader>an", "pendant.newChat", "New Pendant chat", mode = { "n", "x" } },
