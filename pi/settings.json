@@ -10,9 +10,7 @@
     "git:github.com/DietrichGebert/ponytail",
     "npm:pi-caveman",
     "npm:@plannotator/pi-extension",
-    "npm:@bacnh85/pi-serena",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:@juicesharp/rpiv-todo",
     "npm:pi-subagents",
     "npm:pi-web-access",
     "npm:pi-vim",
@@ -26,7 +24,7 @@
   "defaultProjectTrust": "always",
   "treeFilterMode": "default",
   "piBolt": {
-    "packages": ["npm:opensec-pi-fff@0.11.2"],
+    "packages": ["npm:opensec-pi-fff", "npm:opensec-pi-todo"],
     "packagesOverlay": true
   }
 }
