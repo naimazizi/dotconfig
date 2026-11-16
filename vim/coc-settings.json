@@ -51,6 +51,12 @@
       "rootPatterns": ["ruff.toml", ".ruff.toml", "pyproject.toml", ".git"],
       "disabledFeatures": ["hover"]
     },
+    "terraform": {
+      "command": "terraform-ls",
+      "args": ["serve"],
+      "filetypes": ["terraform", "terraform-vars"],
+      "rootPatterns": [".terraform", ".git"]
+    },
     "pyrefly": {
       "command": "pyrefly",
       "args": ["lsp"],
