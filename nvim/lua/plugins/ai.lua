@@ -40,7 +40,7 @@ Config.later(function()
       },
     },
     behaviour = {
-      auto_approve_tool_permissions = true, -- Show tool permission requests.
+      auto_approve_tool_permissions = false, -- ACP also uses permission requests for user questions.
       acp_follow_agent_locations = true, -- Keep your cursor where you are.
       show_token_usage = true,
     },
