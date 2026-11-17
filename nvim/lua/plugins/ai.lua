@@ -39,8 +39,13 @@ Config.later(function()
     },
     on_open = function(_, buf)
       vim.bo[buf].bufhidden = "hide"
+      vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+        buffer = buf,
+        command = "startinsert",
+        desc = "Enter Pi terminal-input mode on focus",
+      })
       vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, desc = "Hide Pi-Bolt sidebar" })
-      vim.keymap.set("t", "<leader>ac", "<C-\\><C-n><cmd>close<cr>", {
+      vim.keymap.set("t", "<S-C-;>", "<C-\\><C-n><cmd>close<cr>", {
         buffer = buf,
         desc = "Hide Pi-Bolt sidebar",
       })
@@ -62,6 +67,20 @@ Config.later(function()
       })
     end,
   })
+
+  for _, key in ipairs({ "<ScrollWheelUp>", "<ScrollWheelDown>", "<ScrollWheelLeft>", "<ScrollWheelRight>" }) do
+    vim.keymap.set({ "n", "x", "i", "t" }, key, function()
+      local term = pi.terms[1]
+      if
+        term
+        and vim.fn.getmousepos().winid == term.win
+        and (vim.api.nvim_get_current_win() ~= term.win or vim.api.nvim_get_mode().mode ~= "t")
+      then
+        return ""
+      end
+      return key
+    end, { expr = true, desc = "Scroll Pi sidebar only in terminal-input mode" })
+  end
 
   -- Target only Floatty's Pi process, never another session in the same directory.
   ---@type { get_socket_path: fun(): string? }
@@ -101,7 +120,7 @@ Config.later(function()
 
   local map = vim.keymap.set
   map({ "n", "i", "t" }, "<C-;>", toggle_pi_focus, { desc = "Focus Pi-Bolt / source buffer" })
-  map("n", "<leader>ac", function()
+  map("n", "<S-C-;>", function()
     source_win = vim.api.nvim_get_current_win()
     pi.toggle()
   end, { desc = "Toggle Pi-Bolt sidebar" })
