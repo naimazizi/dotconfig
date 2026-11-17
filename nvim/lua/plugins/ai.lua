@@ -24,14 +24,16 @@ Config.later(function()
   require("pi-nvim").setup({ set_default_keymaps = false })
 
   local pi = require("floatty").setup({
-    cmd = "pi-bolt",
+    cmd = { "pi-bolt", "--continue" },
     id = 1,
     window = {
       width = 0.30,
       height = function()
         return vim.o.lines - 10
       end,
-      h_align = "right",
+      col = function()
+        return vim.o.columns - math.floor(vim.o.columns * 0.30) - 4 -- Border plus two-column gap.
+      end,
       v_align = "center",
       border = "single",
     },
@@ -60,6 +62,21 @@ Config.later(function()
       })
     end,
   })
+
+  -- Target only Floatty's Pi process, never another session in the same directory.
+  ---@type { get_socket_path: fun(): string? }
+  local pi_bridge = require("pi-nvim")
+  pi_bridge.get_socket_path = function()
+    local term = pi.terms[1]
+    if not term or not vim.api.nvim_buf_is_valid(term.buf) then
+      return nil
+    end
+    local pid = vim.b[term.buf].terminal_job_pid
+    if not pid then
+      return nil
+    end
+    return vim.fn.glob("/tmp/pi-nvim-sockets/*-" .. pid .. ".sock", false, true)[1]
+  end
 
   ---@type integer|nil
   local source_win
