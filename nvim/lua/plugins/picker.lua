@@ -21,7 +21,7 @@ vim.pack.add({
 
 Config.later(function()
   require("fzf-lua").setup({
-    { "telescope", "hide", "skim" },
+    { "telescope", "hide" },
     grep = {
       multiline = 2,
       rg_glob = true,
@@ -38,11 +38,6 @@ Config.later(function()
   require("fzf-lua").register_ui_select()
   require("fzf-lua-frecency").setup({
     display_score = false,
-    fzf_opts = {
-      ["--no-sort"] = false,
-      ["--scheme"] = "default",
-      ["--tiebreak"] = "score,index", -- Equal fuzzy scores keep frecency order.
-    },
   })
 
   local map = vim.keymap.set
