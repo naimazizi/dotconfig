@@ -16,6 +16,7 @@ end
 
 vim.pack.add({
   Config.gh("ibhagwan/fzf-lua"),
+  Config.gh("elanmed/fzf-lua-frecency.nvim"),
 })
 
 Config.later(function()
@@ -35,11 +36,19 @@ Config.later(function()
     },
   })
   require("fzf-lua").register_ui_select()
+  require("fzf-lua-frecency").setup({
+    display_score = false,
+    fzf_opts = {
+      ["--no-sort"] = false,
+      ["--scheme"] = "default",
+      ["--tiebreak"] = "score,index", -- Equal fuzzy scores keep frecency order.
+    },
+  })
 
   local map = vim.keymap.set
   map("n", "<leader><leader>", function()
-    require("fzf-lua").files({ cwd_only = true })
-  end, { desc = "Find files" })
+    require("fzf-lua-frecency").frecency({ cwd_only = true })
+  end, { desc = "Find files (frecency)" })
   map("n", "<leader>/", function()
     require("fzf-lua").live_grep()
   end, { desc = "Live Grep" })
