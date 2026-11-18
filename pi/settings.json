@@ -8,7 +8,6 @@
   "enableAnalytics": false,
   "packages": [
     "git:github.com/DietrichGebert/ponytail",
-    "npm:pi-caveman",
     "npm:@plannotator/pi-extension",
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:pi-subagents",
