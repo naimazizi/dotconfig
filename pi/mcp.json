@@ -23,7 +23,7 @@
         "start-mcp-server",
         "--project-from-cwd",
         "--context",
-        "agent",
+        "ide",
         "--open-web-dashboard",
         "False"
       ]
