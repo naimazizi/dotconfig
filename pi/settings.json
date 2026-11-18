@@ -14,7 +14,9 @@
     "npm:pi-web-access",
     "npm:pi-vim",
     "git:github.com/edxeth/pi-auto-session-titles",
-    "npm:pi-nvim"
+    "npm:pi-nvim",
+    "npm:pi-compass",
+    "npm:pi-hermes-memory"
   ],
   "piVim": {
     "clipboardMirror": "yank"
