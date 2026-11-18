@@ -26,12 +26,22 @@ It is shared human-and-agent memory; use IWE MCP tools, not ad-hoc note searches
 
 ## Delegation
 
-Delegate only independent research or review tasks when parallel work saves time.
+You may delegate without asking for permission.
+Prefer subagents for bounded code investigation, routine implementation, tests, and mechanical edits.
+Use the configured subagent model unless the user requests another model.
+Keep planning, ambiguous decisions, and final review with the main agent.
 Check which agents are available before choosing one; do not assume agent names exist.
 Use a read-only agent for research or review when available.
-Give each agent a bounded task and the context it needs.
-Synthesize results before editing.
-Do not delegate small, sequential, or simple tasks.
+Give each subagent clear file boundaries, the context it needs, and acceptance checks.
+Prefer `scout` for local investigation and `worker` for routine implementation or tests.
+Use `general` when a task needs broader context, skills, or integrations.
+Send a focused brief with the goal, relevant paths, constraints, and checks instead of the full conversation.
+Prefer fresh context.
+Reuse the same child for follow-up fixes; use fresh context for independent review.
+Request a compact handoff with file references or changed files, check results, blockers, and risks.
+Use one writer per working directory.
+Delegate complete small tasks, not individual tool calls.
+Handle trivial reads and edits directly.
 
 State material omissions or tradeoffs.
 

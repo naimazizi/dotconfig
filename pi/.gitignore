@@ -7,6 +7,8 @@
 !/agents/
 /agents/*
 !/agents/general.md
+!/agents/scout.md
+!/agents/worker.md
 !/extensions/
 /extensions/*
 !/extensions/litellm.ts

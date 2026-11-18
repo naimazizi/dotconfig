@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "update": "disable",
-  "model": "openai/gpt-6.1-sol",
+  "model": "openai/gpt-6.1-terra",
   "compaction": {
     "auto": true,
     "keep": {
@@ -17,6 +17,70 @@
     "general": {
       "model": "openai/gpt-6-luna",
     },
+    "explore": {
+      "model": "openai/gpt-6-luna",
+    },
+    "scout": {
+      "description": "Read-only local code investigation with a compact handoff",
+      "mode": "subagent",
+      "model": "openai/gpt-6-luna",
+      "system": "Investigate only the assigned question and relevant paths. Follow inherited safety and repository instructions. Read only enough code to identify behavior, callers, and risks. Do not edit files, run shell commands, load skills, or delegate. Report missing context or decisions to the parent. Return file and line references, findings, uncertainties, and the next recommended action in under 200 words unless more evidence is required.",
+      "permissions": [
+        {
+          "action": "*",
+          "resource": "*",
+          "effect": "deny",
+        },
+        {
+          "action": "read",
+          "resource": "*",
+          "effect": "allow",
+        },
+        {
+          "action": "glob",
+          "resource": "*",
+          "effect": "allow",
+        },
+        {
+          "action": "grep",
+          "resource": "*",
+          "effect": "allow",
+        },
+        {
+          "action": "read",
+          "resource": "*.env",
+          "effect": "ask",
+        },
+        {
+          "action": "read",
+          "resource": "*.env.*",
+          "effect": "ask",
+        },
+        {
+          "action": "read",
+          "resource": "*.env.example",
+          "effect": "allow",
+        },
+      ],
+    },
+    "worker": {
+      "description": "Bounded implementation and tests with a compact handoff",
+      "mode": "subagent",
+      "model": "openai/gpt-6-luna",
+      "system": "Complete the assigned change within the provided file boundaries. Follow inherited safety and repository instructions. Preserve unrelated changes and use the smallest complete implementation. Run the narrowest relevant checks and report failures without hiding them. Do not install dependencies, change shared settings, or perform destructive operations without approval. Do not load skills or delegate. Report missing context or unapproved decisions to the parent. Return changed files, checks and results, blockers, and remaining risks in under 200 words unless more evidence is required.",
+      "permissions": [
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny",
+        },
+        {
+          "action": "skill",
+          "resource": "*",
+          "effect": "deny",
+        },
+      ],
+    },
   },
   "providers": {
     "litellm_tvlk": {
@@ -27,11 +91,59 @@
         "baseURL": "{env:LITELLM_API_ENDPOINT}",
       },
       "models": {
+        "claude-haiku-4.5": {
+          "name": "claude-haiku-4.5",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+        "claude-haiku-5.5": {
+          "name": "claude-haiku-5.5",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
         "claude-opus-4.7": {
           "name": "claude-opus-4.7",
           "capabilities": {
             "tools": true,
             "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+        "claude-opus-4.8": {
+          "name": "claude-opus-4.8",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "claude-opus-5": {
+          "name": "claude-opus-5",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "claude-opus-5.5": {
+          "name": "claude-opus-5.5",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "claude-sonnet-4-6@default": {
+          "name": "claude-sonnet-4-6@default",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
             "output": ["text"],
           },
         },
@@ -43,19 +155,131 @@
             "output": ["text"],
           },
         },
-        "claude-haiku-4.5": {
-          "name": "claude-haiku-4.5",
+        "claude-sonnet-5": {
+          "name": "claude-sonnet-5",
           "capabilities": {
             "tools": true,
             "input": ["text", "image", "pdf"],
             "output": ["text"],
           },
         },
-        "claude-sonnet-5": {
-          "name": "claude-sonnet-5",
+        "claude-sonnet-5.5": {
+          "name": "claude-sonnet-5.5",
           "capabilities": {
             "tools": true,
-            "input": ["text", "image", "pdf"],
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-5.4": {
+          "name": "gpt-5.4",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-5.4-mini": {
+          "name": "gpt-5.4-mini",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-5.5": {
+          "name": "gpt-5.5",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-5.6-luna": {
+          "name": "gpt-5.6-luna",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-5.6-sol": {
+          "name": "gpt-5.6-sol",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-5.6-terra": {
+          "name": "gpt-5.6-terra",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-6-astra": {
+          "name": "gpt-6-astra",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-6-luna": {
+          "name": "gpt-6-luna",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-6-sol": {
+          "name": "gpt-6-sol",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-6.1-sol": {
+          "name": "gpt-6.1-sol",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-6.1-terra": {
+          "name": "gpt-6.1-terra",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "gpt-oss-120b": {
+          "name": "gpt-oss-120b",
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"],
+          },
+        },
+        "grok-4.7": {
+          "name": "grok-4.7",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"],
+          },
+        },
+        "kimi-k3": {
+          "name": "kimi-k3",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
             "output": ["text"],
           },
         },

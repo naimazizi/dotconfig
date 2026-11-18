@@ -1,7 +1,6 @@
 ---
 name: general
 description: General-purpose investigation and implementation
-model: inherit
 systemPromptMode: append
 inheritProjectContext: true
 inheritGlobalContext: true

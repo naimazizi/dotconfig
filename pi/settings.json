@@ -1,6 +1,9 @@
 {
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6.1-sol",
+  "defaultModel": "gpt-6.1-terra",
+  "subagents": {
+    "defaultModel": "openai-codex/gpt-6-luna"
+  },
   "defaultThinkingLevel": "medium",
   "theme": "system",
   "autocompleteMaxVisible": 10,
