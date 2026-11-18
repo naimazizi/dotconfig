@@ -16,17 +16,19 @@ end, "Build cursortab.nvim server")
 
 vim.pack.add({
   Config.gh("carderne/pi-nvim"),
-  Config.gh("ingur/floatty.nvim"),
   Config.gh("cursortab/cursortab.nvim"),
 })
 
 Config.later(function()
   require("pi-nvim").setup({ set_default_keymaps = false })
 
-  local pi = require("floatty").setup({
-    cmd = { "pi-bolt", "--continue" },
-    id = 1,
-    window = {
+  local pi
+  local pi_opts = {
+    count = 1,
+    cwd = vim.fn.getcwd(),
+    win = {
+      position = "float",
+      backdrop = false,
       width = 0.30,
       height = function()
         return vim.o.lines - 10
@@ -34,43 +36,32 @@ Config.later(function()
       col = function()
         return vim.o.columns - math.floor(vim.o.columns * 0.30) - 4 -- Border plus two-column gap.
       end,
-      v_align = "center",
       border = "single",
+      keys = {
+        hide_pi = { "<S-C-;>", "hide", mode = "t", desc = "Hide Pi-Bolt sidebar" },
+      },
+      on_buf = function(term)
+        local buf = term.buf
+        vim.bo[buf].bufhidden = "hide"
+        vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+          buffer = buf,
+          command = "startinsert",
+          desc = "Enter Pi terminal-input mode on focus",
+        })
+      end,
     },
-    on_open = function(_, buf)
-      vim.bo[buf].bufhidden = "hide"
-      vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
-        buffer = buf,
-        command = "startinsert",
-        desc = "Enter Pi terminal-input mode on focus",
-      })
-      vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, desc = "Hide Pi-Bolt sidebar" })
-      vim.keymap.set("t", "<S-C-;>", "<C-\\><C-n><cmd>close<cr>", {
-        buffer = buf,
-        desc = "Hide Pi-Bolt sidebar",
-      })
-      -- Floatty reuses exited terminals unless their buffers are wiped.
-      vim.api.nvim_create_autocmd("TermClose", {
-        buffer = buf,
-        once = true,
-        callback = function()
-          vim.schedule(function()
-            local win = vim.fn.bufwinid(buf)
-            if win ~= -1 then
-              vim.api.nvim_win_close(win, true)
-            end
-            if vim.api.nvim_buf_is_valid(buf) then
-              vim.api.nvim_buf_delete(buf, { force = true })
-            end
-          end)
-        end,
-      })
-    end,
-  })
+  }
+  local function toggle_pi()
+    if not pi or not pi:buf_valid() then
+      pi = Snacks.terminal.open({ "pi-bolt", "--continue" }, pi_opts)
+    else
+      pi:toggle()
+    end
+  end
 
   for _, key in ipairs({ "<ScrollWheelUp>", "<ScrollWheelDown>", "<ScrollWheelLeft>", "<ScrollWheelRight>" }) do
     vim.keymap.set({ "n", "x", "i", "t" }, key, function()
-      local term = pi.terms[1]
+      local term = pi
       if
         term
         and vim.fn.getmousepos().winid == term.win
@@ -82,11 +73,11 @@ Config.later(function()
     end, { expr = true, desc = "Scroll Pi sidebar only in terminal-input mode" })
   end
 
-  -- Target only Floatty's Pi process, never another session in the same directory.
+  -- Target only this sidebar's Pi process, never another session in the same directory.
   ---@type { get_socket_path: fun(): string? }
   local pi_bridge = require("pi-nvim")
   pi_bridge.get_socket_path = function()
-    local term = pi.terms[1]
+    local term = pi
     if not term or not vim.api.nvim_buf_is_valid(term.buf) then
       return nil
     end
@@ -100,7 +91,7 @@ Config.later(function()
   ---@type integer|nil
   local source_win
   local function toggle_pi_focus()
-    local term = pi.terms[1]
+    local term = pi
     if term and term.win and vim.api.nvim_win_is_valid(term.win) then
       if vim.api.nvim_get_current_win() == term.win then
         if source_win and vim.api.nvim_win_is_valid(source_win) then
@@ -114,7 +105,7 @@ Config.later(function()
       end
     else
       source_win = vim.api.nvim_get_current_win()
-      pi.toggle()
+      toggle_pi()
     end
   end
 
@@ -122,7 +113,7 @@ Config.later(function()
   map({ "n", "i", "t" }, "<C-;>", toggle_pi_focus, { desc = "Focus Pi-Bolt / source buffer" })
   map("n", "<S-C-;>", function()
     source_win = vim.api.nvim_get_current_win()
-    pi.toggle()
+    toggle_pi()
   end, { desc = "Toggle Pi-Bolt sidebar" })
   map("n", "<leader>aa", "<cmd>PiSendFile<cr>", { desc = "Send buffer to Pi" })
   map("n", "<leader>aA", "<cmd>PiSend<cr>", { desc = "Send prompt to Pi" })

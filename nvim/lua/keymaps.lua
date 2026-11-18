@@ -150,11 +150,6 @@ if not vim.g.vscode then
   -- Quickfix & Loclist
   map("n", "<leader>bq", "<cmd>copen<cr>", { noremap = true, silent = true, desc = "Quickfix" })
   map("n", "<leader>bl", "<cmd>lopen<cr>", { noremap = true, silent = true, desc = "Loclist" })
-
-  -- Git
-  map({ "n", "v" }, "<leader>gB", function()
-    require("utils.gitbrowse").open()
-  end, { desc = "Git Browse" })
 end
 
 -- Neovide specific keymap

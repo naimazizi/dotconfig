@@ -7,7 +7,6 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.pack.add({
   Config.gh("nvim-tree/nvim-tree.lua"),
-  Config.gh("antosha417/nvim-lsp-file-operations"),
 })
 
 Config.now(function()
@@ -28,7 +27,8 @@ Config.now(function()
       },
     },
     on_attach = function(bufnr)
-      vim.b[bufnr].miniindentscope_disable = true
+      vim.b[bufnr].snacks_indent = false
+      vim.b[bufnr].snacks_scope = false
       vim.b[bufnr].minicursorword_disable = true
       api.map.on_attach.default(bufnr)
       local function opts(desc)
@@ -109,7 +109,9 @@ Config.now(function()
     },
   })
 
-  require("lsp-file-operations").setup()
+  api.events.subscribe(api.events.Event.NodeRenamed, function(data)
+    Snacks.rename.on_rename_file(data.old_name, data.new_name)
+  end)
 
   Config.tree_tabline = function()
     local tabline = require("mini.tabline").make_tabline_string()

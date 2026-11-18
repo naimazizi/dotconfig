@@ -2,12 +2,13 @@
 -- `vim.pack.add` for its own plugin(s) and configures them immediately
 --
 -- Order matters only where setup() has a real runtime dependency:
---   mason before lsp/debug, overseer before debug (enable_dap()).
+--   snacks before file events, mason before lsp/debug, overseer before debug (enable_dap()).
 --
 -- Modules with a real load-order dependency go first (see comment above);
 -- everything else under `lua/plugins/**` is discovered automatically, so
 -- adding a new plugin module needs no edit here.
 local priority = {
+  "plugins.snacks",
   "plugins.mini",
   "plugins.mason",
   "plugins.overseer",
