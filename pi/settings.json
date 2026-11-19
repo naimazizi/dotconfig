@@ -2,7 +2,7 @@
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6.1-terra",
   "subagents": {
-    "defaultModel": "openai-codex/gpt-6-luna"
+    "defaultModel": "local-router/subagent-luna"
   },
   "defaultThinkingLevel": "medium",
   "theme": "system",

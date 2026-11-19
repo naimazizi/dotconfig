@@ -2,7 +2,72 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
   const baseUrl = process.env.LITELLM_API_ENDPOINT?.trim();
-  if (baseUrl && process.env.LITELLM_API_KEY?.trim())
+  const apiKey = process.env.LITELLM_API_KEY?.trim();
+
+  async function checkLiteLLM(signal?: AbortSignal) {
+    if (!baseUrl || !apiKey) throw new Error("LiteLLM endpoint or API key is missing");
+    const response = await fetch(`${baseUrl.replace(/\/+$/, "")}/models`, {
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(2000)]) : AbortSignal.timeout(2000),
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  }
+
+  pi.registerVirtualModel<{ provider: string }>({
+    provider: "local-router",
+    id: "subagent-luna",
+    name: "Subagent Luna (LiteLLM or Codex)",
+    contextWindow: 272000,
+    maxTokens: 128000,
+    thinkingLevels: ["off", "minimal", "low", "medium", "high", "xhigh"],
+    async route(request, ctx) {
+      let provider = request.state?.provider;
+      if (!provider) {
+        try {
+          await checkLiteLLM(request.signal);
+          provider = "litellm_tvlk";
+        } catch (error) {
+          if (request.signal.aborted) throw error;
+          provider = "openai-codex";
+          const reason = error instanceof Error ? error.message : String(error);
+          ctx.ui.notify(`LiteLLM unavailable (${reason}); using Codex for the subagent.`, "warning");
+        }
+      }
+      const model = ctx.modelRegistry.find(provider, "gpt-6-luna");
+      if (!model) throw new Error(`Model ${provider}/gpt-6-luna is unavailable`);
+      return { model, thinkingLevel: request.thinkingLevel, state: request.state ?? { provider } };
+    },
+  });
+
+  pi.on("session_start", async (event, ctx) => {
+    if (
+      event.reason !== "startup" ||
+      process.argv.some((arg) =>
+        ["-c", "--continue", "-r", "--resume", "--session", "--fork"].some((flag) => arg === flag || arg.startsWith(`${flag}=`)),
+      ) ||
+      ctx.sessionManager.getEntries().some((entry) => entry.type === "message") ||
+      process.argv.some((arg) =>
+        ["--model", "--models"].some((flag) => arg === flag || arg.startsWith(`${flag}=`)),
+      )
+    ) return;
+
+    if (!baseUrl || !apiKey) {
+      ctx.ui.notify("LiteLLM endpoint or API key is missing; keeping the configured model.", "warning");
+      return;
+    }
+
+    try {
+      await checkLiteLLM();
+      const model = ctx.modelRegistry.find("litellm_tvlk", "gpt-6.1-terra");
+      if (!model || !(await pi.setModel(model))) throw new Error("LiteLLM model is unavailable or has no credentials");
+      ctx.ui.notify("Using LiteLLM gpt-6.1-terra.", "info");
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : String(error);
+      ctx.ui.notify(`LiteLLM unavailable (${reason}); keeping the configured model.`, "warning");
+    }
+  });
+
+  if (baseUrl && apiKey)
     pi.registerProvider("litellm_tvlk", {
       name: "LiteLLM TVLK",
       baseUrl,
