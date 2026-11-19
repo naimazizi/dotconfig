@@ -19,7 +19,8 @@
     "git:github.com/edxeth/pi-auto-session-titles",
     "npm:pi-nvim",
     "npm:pi-compass",
-    "npm:pi-hermes-memory"
+    "npm:pi-hermes-memory",
+    "npm:pi-open-tui"
   ],
   "piVim": {
     "clipboardMirror": "yank"
