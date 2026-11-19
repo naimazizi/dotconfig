@@ -85,12 +85,16 @@ xargs ya pkg add <~/.config/yazi/plugins.txt
 
 # Herdr plugins
 xargs -I{} herdr plugin install {} --yes <~/.config/herdr/plugins.txt
+```
 
 # VScodium (Sync setting)
-```
-profile: main repository: type: file path: \~/.config/vscodium \`\`\`
 
-````
+```yaml
+profile: main
+repository:
+    type: file
+    path: ~/.config/vscodium
+```
 
 ## MacOS Specifics
 
@@ -98,4 +102,34 @@ profile: main repository: type: file path: \~/.config/vscodium \`\`\`
 
 ```text {bash}
 ln -s "~/.config/amethyst/Layouts/center_or_tall.js" "~/Library/Application Support/Amethyst/Layouts/center_or_tall.js
-````
+```
+
+## OpenSpec and Plannotator
+
+Install the CLIs on macOS or Linux:
+
+```bash
+brew install openspec
+curl -fsSL https://plannotator.ai/install.sh | bash
+
+openspec --version
+plannotator --version
+```
+
+Initialize OpenSpec in each project and select Pi when prompted:
+
+```bash
+cd /path/to/project
+openspec init
+```
+
+Create and review a change in Pi-Bolt:
+
+```text
+/skill:openspec-propose Describe the change
+/openspec-review <change-name>
+```
+
+`/openspec-review` opens the change artifacts in Plannotator on request.
+After review, run `/skill:openspec-apply-change <change-name>` to implement the tasks, then `/skill:openspec-archive-change <change-name>` when the work is complete.
+The Plannotator Pi extension is listed in `pi/settings.json`; its standalone CLI and extension are separate installations.
