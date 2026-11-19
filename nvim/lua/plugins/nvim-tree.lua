@@ -123,7 +123,7 @@ Config.now(function()
       return tabline
     end
     local width = vim.api.nvim_win_get_width(win) + 1
-    local label = ("  Explorer "):sub(1, width)
+    local label = ("  Sidebar"):sub(1, width)
     return "%#MiniTablineFill#" .. label .. string.rep(" ", width - #label) .. tabline
   end
   vim.o.tabline = "%!v:lua.Config.tree_tabline()"

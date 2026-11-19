@@ -36,7 +36,7 @@ Config.later(function()
       col = function()
         return vim.o.columns - math.floor(vim.o.columns * 0.30) - 4 -- Border plus two-column gap.
       end,
-      border = "single",
+      border = "rounded",
       keys = {
         hide_pi = { "<S-C-;>", "hide", mode = "t", desc = "Hide Pi-Bolt sidebar" },
       },

@@ -17,6 +17,7 @@ Config.on_filetype("hurl", function()
     show_notification = false,
     -- Show response in popup or split
     mode = "split",
+    auto_close = false,
     -- Default formatter
     formatters = {
       json = { "jq" }, -- Make sure you have install jq in your system, e.g: brew install jq
@@ -28,6 +29,23 @@ Config.on_filetype("hurl", function()
       prev_panel = "<C-p>", -- Move to the previous response popup window
     },
   })
+
+  local split = require("hurl.split")
+  local show = split.show
+  split.show = function(...)
+    local autocmd = vim.api.nvim_create_autocmd("FileType", {
+      pattern = "markdown",
+      callback = function(event)
+        vim.b[event.buf].hurl_response = true
+      end,
+    })
+    local ok, result = pcall(show, ...)
+    vim.api.nvim_del_autocmd(autocmd)
+    if not ok then
+      error(result)
+    end
+    return result
+  end
 
   local map = vim.keymap.set
   table.insert(require("mini.clue").config.clues, { mode = "n", keys = "<localleader>c", desc = "+Curl (hurl)" })

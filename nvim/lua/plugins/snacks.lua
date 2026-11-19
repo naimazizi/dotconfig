@@ -25,9 +25,22 @@ Config.now(function()
     scratch = { enabled = true },
     scroll = { enabled = true },
     terminal = { enabled = true },
+    zen = {
+      enabled = true,
+      toggles = {
+        dim = true,
+        git_signs = true,
+        mini_diff_signs = true,
+        diagnostics = true,
+        inlay_hints = true,
+      },
+    },
   })
 
   local map = vim.keymap.set
+  map("n", "<leader>uz", function()
+    Snacks.zen()
+  end, { desc = "Toggle zen mode" })
   map("n", "<leader>cR", function()
     Snacks.rename.rename_file()
   end, { desc = "Rename file" })

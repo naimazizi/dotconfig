@@ -3,12 +3,43 @@ if vim.g.vscode then
 end
 
 vim.pack.add({
+  Config.gh("folke/edgy.nvim"),
   Config.gh("MunifTanjim/nui.nvim"),
   Config.gh("petertriho/nvim-scrollbar"),
   Config.gh("hedyhli/outline.nvim"),
-  Config.gh("shortcuts/no-neck-pain.nvim"),
   Config.gh("TheNoeTrevino/haunt.nvim"),
 })
+
+Config.later(function()
+  require("edgy").setup({
+    animate = { enabled = false },
+    options = { left = { size = 45 }, right = { size = 45 } },
+    left = {
+      { title = "Explorer", ft = "NvimTree", size = { height = 0.5 } },
+      { title = "Outline", ft = "Outline", size = { height = 0.5 } },
+      { title = "Test Summary", ft = "neotest-summary" },
+    },
+    right = {
+      { title = "Find and Replace", ft = "grug-far" },
+      {
+        title = "Hurl Response",
+        ft = "markdown",
+        filter = function(buf)
+          return vim.b[buf].hurl_response == true
+        end,
+      },
+    },
+    bottom = {
+      { title = "Overseer", ft = "OverseerList" },
+      { title = "Overseer Output", ft = "OverseerOutput" },
+      { title = "Test Output", ft = "neotest-output-panel" },
+      { title = "Debugger", ft = "dap-view" },
+      { title = "Debug Terminal", ft = "dap-view-term" },
+      { title = "Debug REPL", ft = "dap-repl" },
+      { title = "Quickfix", ft = "qf" },
+    },
+  })
+end)
 
 Config.on_event("BufRead", function()
   require("scrollbar").setup({})
@@ -16,17 +47,13 @@ end)
 
 Config.later(function()
   require("outline").setup({
-    outline_window = { position = "right", auto_jump = true, wrap = false },
+    outline_window = { position = "left", auto_jump = true, wrap = false },
     keymaps = {
       down_and_jump = {},
       up_and_jump = {},
     },
   })
   vim.keymap.set("n", "<leader>cs", "<cmd>Outline<cr>", { desc = "Toggle Outline" })
-end)
-
-Config.later(function()
-  vim.keymap.set("n", "<leader>uz", "<cmd>NoNeckPain<cr>", { desc = "Toggle zen-mode" })
 end)
 
 Config.on_event("BufReadPost", function()

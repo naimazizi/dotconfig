@@ -54,6 +54,7 @@ opt.pumheight = 10 -- Popup menu height
 opt.pumblend = 10 -- Popup menu transparency
 opt.pummaxwidth = 60 -- cap completion popup width
 opt.winblend = 0 -- Floating window transparency
+opt.winborder = "rounded"
 opt.completeopt = "menu,menuone,noselect,popup" -- popup shows completionItem/resolve preview
 opt.conceallevel = 2 -- Hide * markup for bold and italic, but not markers with substitutions
 opt.confirm = true -- Confirm to save changes before exiting modified buffer
