@@ -4,10 +4,15 @@ end
 
 vim.pack.add({
   Config.gh("MunifTanjim/nui.nvim"),
+  Config.gh("petertriho/nvim-scrollbar"),
   Config.gh("hedyhli/outline.nvim"),
   Config.gh("shortcuts/no-neck-pain.nvim"),
   Config.gh("TheNoeTrevino/haunt.nvim"),
 })
+
+Config.on_event("BufRead", function()
+  require("scrollbar").setup({})
+end)
 
 Config.later(function()
   require("outline").setup({
