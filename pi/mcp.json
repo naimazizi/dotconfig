@@ -34,6 +34,11 @@
     "iwe": {
       "command": "iwec",
       "cwd": "~/notes"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--extension"],
+      "description": "Control browser tabs through the Playwright browser extension"
     }
   }
 }

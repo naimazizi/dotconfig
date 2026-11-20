@@ -77,6 +77,10 @@ brew tap 1jehuang/mmdr && brew install mmdr
 npx skills add iwe-org/skills --skill graph -g
 npx skills add tt-a1i/archify -g
 
+# Playwright CLI and agent skills
+npm install -g @playwright/cli@latest
+playwright-cli install --skills=agents
+
 # Serena for Pi
 uv tool install -p 3.13 serena-agent
 
