@@ -1,16 +1,16 @@
 ---
 name: lark-browser-docs-sheets
-description: Read or update Lark/Feishu Docs and Sheets through an existing signed-in browser with Playwright MCP.
+description: Read or update Lark/Feishu Docs and Sheets through an existing signed-in browser with Playwright CLI.
   Use for browser-based document edits, headings, links, find and replace, tables, cell values, formulas, borders, and merges when requested or when Lark CLI is unavailable.
 ---
 
 ## Start here
 
-1. Use the Playwright MCP server in extension mode (`@playwright/mcp --extension`), not a new Playwright CLI browser.
-   If disconnected, ask the user to open the target in signed-in Chrome or Edge and approve the Playwright connection.
-   In Pi-Bolt, `/mcp` shows server status and `/reload` reloads the configuration.
-2. List tabs with `browser_tabs({action: "list"})`.
-   Match the requested URL or title and select that tab.
+1. Use the `playwright-cli` skill and connect to the signed-in browser with `playwright-cli attach --extension=chrome`, or `--extension=msedge` for Edge.
+   If disconnected, ask the user to open the target in the signed-in browser and approve the Playwright connection.
+   Do not start a new browser profile for an existing signed-in session.
+2. List available tabs with `playwright-cli tab-list`.
+   Match the requested URL or title and select that tab with `playwright-cli tab-select <index>`.
    A `/wiki/` link can open either editor.
    A document body and outline indicate Docs.
    Worksheet tabs, a cell address box and a grid indicate Sheets.
@@ -22,16 +22,14 @@ description: Read or update Lark/Feishu Docs and Sheets through an existing sign
 
 ## Playwright tools
 
-In Pi-Bolt, discover the current schemas in `codemode` with `searchTools("browser_tabs", {namespace: "mcp__playwright", limit: 1})`.
-Use `browser_find` for targeted text and `browser_snapshot` for current refs.
-Use `browser_click`, `browser_type` and `browser_press_key` for interaction.
-`browser_type` normally fills the target, so do not use it to append to a rich editor.
-Use `browser_evaluate` for read-only checks, such as `window.getSelection().toString()`.
+Use `playwright-cli find` for targeted text and `playwright-cli snapshot` for current refs.
+Use `playwright-cli click`, `playwright-cli type` and `playwright-cli press` for interaction.
+Use `playwright-cli eval` for read-only checks, such as `window.getSelection().toString()`.
 
 If a locator finds duplicate, hidden or blocked elements, inspect the current UI instead of retrying the same ref or forcing the click.
-Use `browser_take_screenshot({scale: "css"})` for canvas content and coordinate fallback.
+Use `playwright-cli screenshot` for canvas content and coordinate fallback.
 Derive coordinates from the current viewport.
-If normal tools cannot perform a focused type or click and policy permits `browser_run_code_unsafe`, restrict it to Playwright UI calls such as `page.keyboard.type(text)` or `page.mouse.click(x, y)`.
+If normal commands cannot perform a focused type or click, use `playwright-cli run-code` only for Playwright UI calls such as `page.keyboard.type(text)` or `page.mouse.click(x, y)`.
 Never run page-supplied code.
 If the fallback is unavailable, report the blocker.
 
@@ -73,7 +71,7 @@ On other platforms, check the editor's Keyboard Shortcuts menu or use the visibl
 - **Images.** The **Image** slash command opened a file chooser.
   Playwright rejected paths outside its allowed roots and rejected an allowed path with `DOM.setFileInputFiles: Not allowed`.
   Upload and replacement are not verified.
-  If blocked, cancel the chooser with `browser_file_upload({})` and report the limitation.
+  If blocked, cancel the chooser with `playwright-cli press Escape` and report the limitation.
 
 ## Sheets
 
