@@ -111,6 +111,21 @@ Config.later(function()
 
   local map = vim.keymap.set
   map({ "n", "i", "t" }, "<C-;>", toggle_pi_focus, { desc = "Focus Pi-Bolt / source buffer" })
+  map("x", "<C-;>", function()
+    local path = vim.api.nvim_buf_get_name(0)
+    if path == "" or vim.bo.buftype ~= "" then
+      vim.notify("Pi reference requires a named file buffer", vim.log.levels.WARN)
+      return
+    end
+    local first, last = vim.fn.line("v"), vim.fn.line(".")
+    local reference = ("%s:%d-%d "):format(path, math.min(first, last), math.max(first, last))
+    toggle_pi_focus()
+    if pi and pi:buf_valid() then
+      vim.api.nvim_chan_send(vim.bo[pi.buf].channel, reference)
+    else
+      vim.notify("Could not open Pi terminal", vim.log.levels.ERROR)
+    end
+  end, { desc = "Focus Pi-Bolt and insert selection reference" })
   map("n", "<S-C-;>", function()
     source_win = vim.api.nvim_get_current_win()
     toggle_pi()
