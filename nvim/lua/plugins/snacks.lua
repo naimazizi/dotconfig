@@ -8,6 +8,7 @@ Config.now(function()
   require("snacks").setup({
     image = { enabled = true },
     bigfile = { enabled = true },
+    bufdelete = { enabled = true },
     indent = {
       enabled = true,
       indent = { char = "┊" },
@@ -38,6 +39,12 @@ Config.now(function()
   })
 
   local map = vim.keymap.set
+  map("n", "<leader>bd", function()
+    Snacks.bufdelete()
+  end, { desc = "Buffer Delete" })
+  map("n", "<leader>bo", function()
+    Snacks.bufdelete.other()
+  end, { desc = "Buffer Delete Others" })
   map("n", "<leader>uz", function()
     Snacks.zen()
   end, { desc = "Toggle zen mode" })

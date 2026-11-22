@@ -152,8 +152,6 @@ Config.now(function()
       end,
     })
 
-    require("mini.bufremove").setup({})
-
     require("mini.cmdline").setup({
       autocomplete = {
         enable = false,
@@ -242,20 +240,6 @@ Config.now(function()
   end
 
   local map = vim.keymap.set
-  -- Buffer
-  map("n", "<leader>bd", function()
-    require("mini.bufremove").delete(0, false)
-  end, { desc = "Buffer Delete" })
-
-  map("n", "<leader>bo", function()
-    local cur = vim.api.nvim_get_current_buf()
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      if buf ~= cur and vim.bo[buf].buflisted then
-        require("mini.bufremove").delete(buf, false)
-      end
-    end
-  end, { desc = "Buffer Delete Others" })
-
   -- Jump todo
   local todo = require("utils.todo")
   map("n", "]t", todo.jump(true), { desc = "Next TODO comment" })
