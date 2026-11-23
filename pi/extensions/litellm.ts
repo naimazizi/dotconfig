@@ -42,6 +42,10 @@ export default function (pi: ExtensionAPI) {
   pi.on("session_start", async (event, ctx) => {
     if (
       event.reason !== "startup" ||
+      process.env.PI_SUBAGENT_CHILD === "1" ||
+      ctx.sessionManager.getHeader()?.parentSession ||
+      (ctx.model &&
+        (ctx.model.provider !== pi.getSettings().defaultProvider || ctx.model.id !== pi.getSettings().defaultModel)) ||
       process.argv.some((arg) =>
         ["-c", "--continue", "-r", "--resume", "--session", "--fork"].some((flag) => arg === flag || arg.startsWith(`${flag}=`)),
       ) ||

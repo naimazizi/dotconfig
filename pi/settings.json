@@ -2,7 +2,8 @@
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6.1-terra",
   "subagents": {
-    "defaultModel": "local-router/subagent-luna"
+    "defaultModel": "local-router/subagent-luna",
+    "defaultSubagentOnlyExtensions": ["~/.config/pi/extensions/litellm.ts"]
   },
   "defaultThinkingLevel": "medium",
   "theme": "system",
