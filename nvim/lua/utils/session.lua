@@ -65,6 +65,36 @@ local function restore_breakpoints()
   end
 end
 
+local function close_stale_picker_layouts()
+  local active = {}
+  if package.loaded["snacks.picker"] then
+    for _, picker in ipairs(Snacks.picker.get({ tab = false })) do
+      if picker.layout and picker.layout.root and picker.layout.root.win then
+        active[picker.layout.root.win] = true
+      end
+    end
+  end
+
+  for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      if vim.bo[buf].filetype == "snacks_layout_box" and not active[win] then
+        local normal_windows = 0
+        for _, other in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+          if vim.api.nvim_win_get_config(other).relative == "" then
+            normal_windows = normal_windows + 1
+          end
+        end
+        if normal_windows > 1 then
+          vim.api.nvim_win_close(win, false)
+        else
+          vim.api.nvim_win_set_buf(win, vim.api.nvim_create_buf(true, false))
+        end
+      end
+    end
+  end
+end
+
 M.hooks = {
   pre = {
     write = function()
@@ -81,20 +111,11 @@ M.hooks = {
     end,
   },
   post = {
-    write = function()
-      if package.loaded["nvim-tree"] then
-        -- Save synchronously after mini.sessions updates v:this_session, including on exit.
-        require("nvim-tree.session").save()
-      end
-    end,
     read = function()
+      close_stale_picker_layouts()
       restore_breakpoints()
       if package.loaded["dap-view"] then
         require("dap-view.vim-sessions").restore_state()
-      end
-      if package.loaded["nvim-tree"] then
-        -- NvimTree's native SessionLoadPost handler is one-shot; also support later reads.
-        require("nvim-tree.session").restore()
       end
       vim.schedule(function()
         -- Restored buffers may already have fired FileType before Tree-sitter setup.

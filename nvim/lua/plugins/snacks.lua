@@ -9,6 +9,54 @@ Config.now(function()
     image = { enabled = true },
     bigfile = { enabled = true },
     bufdelete = { enabled = true },
+    explorer = { enabled = true },
+    picker = {
+      enabled = true,
+      ui_select = false,
+      sources = {
+        explorer = {
+          layout = { layout = { width = 45 } },
+          actions = {
+            copy_path = function(_, item)
+              if not item or not item.file then
+                vim.notify("No node selected.", vim.log.levels.WARN)
+                return
+              end
+              if vim.fn.has("clipboard") == 0 then
+                vim.notify("System clipboard is not available.", vim.log.levels.ERROR)
+                return
+              end
+
+              local filepath = item.file
+              local modify = vim.fn.fnamemodify
+              local filename = modify(filepath, ":t")
+              local choices = {
+                { label = "Absolute path", value = filepath },
+                { label = "Path relative to CWD", value = modify(filepath, ":.") },
+                { label = "Path relative to HOME", value = modify(filepath, ":~") },
+                { label = "Filename", value = filename },
+                { label = "Filename without extension", value = modify(filename, ":r") },
+                { label = "Extension of the filename", value = modify(filename, ":e") },
+              }
+              vim.ui.select(choices, {
+                prompt = "Choose to copy to clipboard:",
+                format_item = function(choice)
+                  return string.format("%-30s %s", choice.label, choice.value)
+                end,
+              }, function(choice)
+                if not choice then
+                  vim.notify("Copy cancelled.", vim.log.levels.INFO)
+                  return
+                end
+                vim.fn.setreg("+", choice.value)
+                vim.notify("Copied to clipboard: " .. choice.value)
+              end)
+            end,
+          },
+          win = { list = { keys = { ["Y"] = { "copy_path", desc = "Copy path" } } } },
+        },
+      },
+    },
     indent = {
       enabled = true,
       indent = { char = "┊" },
@@ -39,6 +87,9 @@ Config.now(function()
   })
 
   local map = vim.keymap.set
+  map("n", "<leader>e", function()
+    Snacks.explorer({ cwd = vim.uv.cwd() })
+  end, { desc = "Toggle Explorer" })
   map("n", "<leader>bd", function()
     Snacks.bufdelete()
   end, { desc = "Buffer Delete" })
@@ -58,7 +109,6 @@ Config.now(function()
     Snacks.scratch()
   end, { desc = "Toggle scratch buffer" })
   map("n", "<leader>bs", function()
-    -- Snacks.scratch.select() uses Snacks picker even when it is disabled.
     vim.ui.select(Snacks.scratch.list(), {
       prompt = "Select scratch buffer",
       format_item = function(item)

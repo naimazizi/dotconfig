@@ -15,7 +15,19 @@ Config.later(function()
     animate = { enabled = false },
     options = { left = { size = 45 }, right = { size = 45 } },
     left = {
-      { title = "Explorer", ft = "NvimTree", size = { height = 0.5 } },
+      {
+        title = "Explorer",
+        ft = "snacks_layout_box",
+        size = { height = 0.5 },
+        filter = function(_, win)
+          for _, picker in ipairs(Snacks.picker.get({ source = "explorer" })) do
+            if picker.layout and picker.layout.root and picker.layout.root.win == win then
+              return true
+            end
+          end
+          return false
+        end,
+      },
       { title = "Outline", ft = "Outline", size = { height = 0.5 } },
       { title = "Test Summary", ft = "neotest-summary" },
     },

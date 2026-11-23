@@ -43,16 +43,6 @@ Config.later(function()
   map({ "n", "t" }, "<C-/>", toggle_terminal, { desc = "Toggle terminal" })
   map({ "n", "t" }, "<C-`>", toggle_terminal, { desc = "Toggle terminal" })
   map("n", "<leader>gg", function()
-    Snacks.terminal.toggle("lazygit", {
-      win = {
-        on_buf = function(term)
-          term:on("TermClose", function()
-            if package.loaded["nvim-tree.api"] then
-              require("nvim-tree.api").tree.reload()
-            end
-          end, { buf = true })
-        end,
-      },
-    })
+    Snacks.terminal.toggle("lazygit")
   end, { desc = "Lazygit" })
 end)
