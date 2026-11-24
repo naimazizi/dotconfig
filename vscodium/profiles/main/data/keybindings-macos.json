@@ -1,17 +1,12 @@
 [
   {
     "key": "ctrl+;",
-    "command": "pendant.focusInput",
-    "when": "editorTextFocus && !editorHasSelection"
-  },
-  {
-    "key": "ctrl+;",
-    "command": "pendant.addSelectionToChat",
-    "when": "editorTextFocus && editorHasSelection"
+    "command": "workbench.action.terminal.focus",
+    "when": "editorTextFocus"
   },
   {
     "key": "ctrl+;",
     "command": "workbench.action.focusActiveEditorGroup",
-    "when": "!editorTextFocus"
+    "when": "terminalFocus"
   }
 ]

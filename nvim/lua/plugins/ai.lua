@@ -14,13 +14,22 @@ Config.on_packchanged("cursortab.nvim", { "install", "update" }, function(data)
   end)
 end, "Build cursortab.nvim server")
 
+Config.on_packchanged("pi-x-ide", { "update" }, function(data)
+  vim.opt.rtp:prepend(data.path .. "/ide-plugins/nvim")
+  if not require("pi_x_ide.download").run({ refresh = true }) then
+    vim.notify("Failed to refresh pi-x-ide sidecar; check the preceding warning", vim.log.levels.WARN)
+  end
+end, "Refresh pi-x-ide sidecar")
+
 vim.pack.add({
-  Config.gh("carderne/pi-nvim"),
+  Config.gh("balaenis/pi-x-ide"),
   Config.gh("cursortab/cursortab.nvim"),
 })
 
 Config.later(function()
-  require("pi-nvim").setup({ set_default_keymaps = false })
+  local plugin = vim.pack.get({ "pi-x-ide" })[1]
+  vim.opt.rtp:prepend(plugin.path .. "/ide-plugins/nvim")
+  require("pi_x_ide").setup({ keymap = "<leader>aa" })
 
   local pi
   local pi_opts = {
@@ -73,21 +82,6 @@ Config.later(function()
     end, { expr = true, desc = "Scroll Pi sidebar only in terminal-input mode" })
   end
 
-  -- Target only this sidebar's Pi process, never another session in the same directory.
-  ---@type { get_socket_path: fun(): string? }
-  local pi_bridge = require("pi-nvim")
-  pi_bridge.get_socket_path = function()
-    local term = pi
-    if not term or not vim.api.nvim_buf_is_valid(term.buf) then
-      return nil
-    end
-    local pid = vim.b[term.buf].terminal_job_pid
-    if not pid then
-      return nil
-    end
-    return vim.fn.glob("/tmp/pi-nvim-sockets/*-" .. pid .. ".sock", false, true)[1]
-  end
-
   ---@type integer|nil
   local source_win
   local function toggle_pi_focus()
@@ -110,96 +104,11 @@ Config.later(function()
   end
 
   local map = vim.keymap.set
-  map({ "n", "i", "t" }, "<C-;>", toggle_pi_focus, { desc = "Focus Pi-Bolt / source buffer" })
-  map("x", "<C-;>", function()
-    local path = vim.api.nvim_buf_get_name(0)
-    if path == "" or vim.bo.buftype ~= "" then
-      vim.notify("Pi reference requires a named file buffer", vim.log.levels.WARN)
-      return
-    end
-    local first, last = vim.fn.line("v"), vim.fn.line(".")
-    local reference = ("%s:%d-%d "):format(path, math.min(first, last), math.max(first, last))
-    toggle_pi_focus()
-    if pi and pi:buf_valid() then
-      vim.api.nvim_chan_send(vim.bo[pi.buf].channel, reference)
-    else
-      vim.notify("Could not open Pi terminal", vim.log.levels.ERROR)
-    end
-  end, { desc = "Focus Pi-Bolt and insert selection reference" })
+  map({ "n", "i", "t", "x" }, "<C-;>", toggle_pi_focus, { desc = "Focus Pi-Bolt / source buffer" })
   map("n", "<S-C-;>", function()
     source_win = vim.api.nvim_get_current_win()
     toggle_pi()
   end, { desc = "Toggle Pi-Bolt sidebar" })
-  map("n", "<leader>aa", "<cmd>PiSendFile<cr>", { desc = "Send buffer to Pi" })
-  map("n", "<leader>aA", "<cmd>PiSend<cr>", { desc = "Send prompt to Pi" })
-  map("x", "<leader>aa", ":PiSendSelection<cr>", { silent = true, desc = "Send selection to Pi" })
-  map("n", "<leader>ad", function()
-    local buf = vim.api.nvim_get_current_buf()
-    local diagnostics = vim.diagnostic.get(buf, {
-      severity = { min = vim.diagnostic.severity.WARN, max = vim.diagnostic.severity.ERROR },
-    })
-    if #diagnostics == 0 then
-      vim.notify("No errors or warnings in current file", vim.log.levels.INFO)
-      return
-    end
-    local path = vim.api.nvim_buf_get_name(buf)
-    if path == "" or vim.bo[buf].buftype ~= "" then
-      vim.notify("Pi diagnostics require a named file buffer", vim.log.levels.WARN)
-      return
-    end
-    local lines = { "Explain and fix these diagnostics from the current file only:" }
-    for _, diagnostic in ipairs(diagnostics) do
-      lines[#lines + 1] = ("%s:%d:%d [%s] %s"):format(
-        path,
-        diagnostic.lnum + 1,
-        diagnostic.col + 1,
-        vim.diagnostic.severity[diagnostic.severity],
-        diagnostic.message
-      )
-    end
-    require("pi-nvim").prompt(table.concat(lines, "\n"))
-  end, { desc = "Send current file diagnostics to Pi" })
-  map("n", "<leader>aD", function()
-    local diagnostics = vim.diagnostic.get()
-    if #diagnostics == 0 then
-      vim.notify("No diagnostics available", vim.log.levels.INFO)
-      return
-    end
-    local lines = { "Explain and fix these diagnostics across files:" }
-    for _, diagnostic in ipairs(diagnostics) do
-      local path = vim.api.nvim_buf_get_name(diagnostic.bufnr)
-      if path == "" then
-        path = ("[unnamed buffer %d]"):format(diagnostic.bufnr)
-      end
-      lines[#lines + 1] = ("%s:%d:%d [%s] %s"):format(
-        path,
-        diagnostic.lnum + 1,
-        diagnostic.col + 1,
-        vim.diagnostic.severity[diagnostic.severity],
-        diagnostic.message
-      )
-    end
-    require("pi-nvim").prompt(table.concat(lines, "\n"))
-  end, { desc = "Send all diagnostics to Pi" })
-  map("n", "<leader>aq", function()
-    local items = vim.fn.getqflist()
-    if #items == 0 then
-      vim.notify("Quickfix list is empty", vim.log.levels.INFO)
-      return
-    end
-    local lines = { "Explain and fix the issues in this quickfix list:" }
-    for _, item in ipairs(items) do
-      local path = item.bufnr > 0 and vim.api.nvim_buf_get_name(item.bufnr) or "[no file]"
-      lines[#lines + 1] = ("%s:%d:%d %s%s"):format(
-        path,
-        item.lnum,
-        item.col,
-        item.type ~= "" and ("[" .. item.type .. "] ") or "",
-        item.text
-      )
-    end
-    require("pi-nvim").prompt(table.concat(lines, "\n"))
-  end, { desc = "Send quickfix list to Pi" })
 end)
 
 Config.disabled(function()

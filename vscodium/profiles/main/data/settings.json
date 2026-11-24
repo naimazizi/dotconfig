@@ -7,7 +7,6 @@
     "editor.formatOnSave": false
   },
   "application.shellEnvironmentResolutionTimeout": 30,
-  "chat.agentHost.allowSignedOutWhenUsable": true,
   "chat.editor.fontSize": 11,
   "chat.editor.wordWrap": "on",
   "chat.experimental.incrementalRendering.enabled": true,
@@ -144,11 +143,9 @@
   "python.languageServer": "Default",
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false,
-  "quarto.path": "/Users/naim.azizi/quarto/bin/quarto",
   "ruff.enable": true,
   "ruff.format.preview": true,
   "ruff.importStrategy": "useBundled",
-  "ruff.nativeServer": true,
   "rust-analyzer.check.command": "clippy",
   "rust-analyzer.checkOnSave": false,
   "rust-analyzer.diagnostics.enable": false,
@@ -240,27 +237,6 @@
   "codeTelescope.layout.promptFontSize": 10,
   "workbench.experimental.modernUIUppercaseViewHeaders": true,
   "workbench.experimental.modernUIEditorTabStyle": "pill",
-  "github.copilot.enable": {
-    "*": false,
-    "plaintext": false,
-    "markdown": false,
-    "scminput": false,
-    "python": false
-  },
-  "github.copilot.nextEditSuggestions.enabled": false,
   "chat.disableAIFeatures": true,
-  "window.density.layout": "compact",
-  "pendant.extensionWidgets.checklist.tracking": true,
-  "pendant.sessionRailPosition": "hidden",
-  "pendant.hideStartPageSessionsWhenRailHidden": false,
-  "pendant.groupRunningSessions": true,
-  "pendant.chatWidth": "adaptive",
-  "pendant.disableAnimations": true,
-  "pendant.subagents.delegation": "disabled",
-  "pendant.chat.promptSuggestionsEnabled": false,
-  "pendant.chat.promptSuggestions": {
-    "model": "openai-codex/gpt-5.6-luna",
-    "thinking": "minimal"
-  },
-  "pendant.chat.promptSuggestionLanguage": ""
+  "window.density.layout": "compact"
 }

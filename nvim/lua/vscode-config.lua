@@ -201,14 +201,8 @@ for _, binding in ipairs({
   { "<leader>-", "yazi-vscode.toggle", "Toggle Yazi" },
   { "]4", "quarto.goToNextCell", "Quarto Next code block" },
   { "[4", "quarto.goToPreviousCell", "Quarto Prev code block" },
-  -- Pendant chat, context, and model keys.
-  { "<leader>aa", "pendant.focusInput", "Focus Pendant chat" },
-  { "<leader>aa", "pendant.addSelectionToChat", "Add selection to Pendant chat", mode = "x" },
-  { "<leader>an", "pendant.newChat", "New Pendant chat", mode = { "n", "x" } },
-  { "<leader>af", "pendant.focusInput", "Focus Pendant chat", mode = { "n", "x" } },
-  { "<leader>ac", "pendant.addFileToChat", "Add file to Pendant chat" },
-  { "<leader>a?", "pendant.switchModel", "Select Pendant model" },
-  { "<leader>aM", "pendant.switchModel", "Select Pendant model" },
+  -- Pi x IDE attaches the current file or selection to Pi in the terminal.
+  { "<leader>aa", "pi-x-ide.attachSelection", "Attach file or selection to Pi", mode = { "n", "x" } },
 }) do
   map(binding.mode or "n", binding[1], function()
     vscode.call(binding[2])
