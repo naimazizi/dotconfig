@@ -16,9 +16,13 @@ vim.pack.add({
 
 Config.later(function()
   local plugin = vim.pack.get({ "pi-x-ide" })[1]
+  if not plugin then
+    error("pi-x-ide package is not installed")
+  end
   vim.opt.rtp:prepend(plugin.path .. "/ide-plugins/nvim")
   require("pi_x_ide").setup({ keymap = "<leader>aa" })
 
+  ---@type { buf_valid: fun(self: table): boolean, toggle: fun(self: table), win: integer? }?
   local pi
   local pi_opts = {
     count = 1,

@@ -36,6 +36,8 @@ _G.Config = {}
 
 -- Shorthand for building a GitHub repo URL, used by every `vim.pack.add()`
 -- call across `lua/plugins/*.lua`.
+---@param repo string
+---@return string
 Config.gh = function(repo)
   return "https://github.com/" .. repo
 end
@@ -61,6 +63,10 @@ end
 -- - `:h nvim_create_augroup()`
 -- - `:h nvim_create_autocmd()`
 local gr = vim.api.nvim_create_augroup("custom-config", {})
+---@param event vim.api.keyset.events|vim.api.keyset.events[]
+---@param pattern string|string[]
+---@param callback fun(event: vim.api.keyset.create_autocmd.callback_args): boolean?
+---@param desc string
 Config.new_autocmd = function(event, pattern, callback, desc)
   local opts = { group = gr, pattern = pattern, callback = callback, desc = desc }
   vim.api.nvim_create_autocmd(event, opts)
@@ -70,6 +76,10 @@ end
 -- argument to the callback. See `:h vim.pack-events`.
 -- If any plugin requires installation hooks, add them after this function
 -- and before the first `vim.pack.add()` call.
+---@param plugin_name string
+---@param kinds string[]
+---@param callback fun(data: vim.pack.PlugData)
+---@param desc string
 Config.on_packchanged = function(plugin_name, kinds, callback, desc)
   local f = function(ev)
     local name, kind = ev.data.spec.name, ev.data.kind
@@ -106,17 +116,25 @@ vim.pack.add({ Config.gh("nvim-mini/mini.nvim") })
 -- See also:
 -- - `:h MiniMisc.safely()`
 local misc = require("mini.misc")
+---@param _f fun()
 Config.disabled = function(_f) end
+---@param f fun()
 Config.now = function(f)
   misc.safely("now", f)
 end
+---@param f fun()
 Config.later = function(f)
   misc.safely("later", f)
 end
+---@type fun(f: fun())
 Config.now_if_args = vim.fn.argc(-1) > 0 and Config.now or Config.later
+---@param ev string
+---@param f fun()
 Config.on_event = function(ev, f)
   misc.safely("event:" .. ev, f)
 end
+---@param ft string
+---@param f fun()
 Config.on_filetype = function(ft, f)
   misc.safely("filetype:" .. ft, f)
 end
