@@ -35,7 +35,6 @@ vim.pack.add({
   Config.gh("rafamadriz/friendly-snippets"),
   Config.gh("jmbuhr/cmp-pandoc-references"),
   Config.gh("mayromr/blink-cmp-dap"),
-  Config.gh("cursortab/cursortab.nvim"),
   Config.gh("saghen/blink.lib"), -- blink.cmp v2 dependency
   Config.gh("saghen/blink.cmp"),
 })
@@ -148,13 +147,6 @@ Config.on_event("InsertEnter", function()
           name = "dap",
           module = "blink-cmp-dap",
         },
-        cursortab = {
-          module = "cursortab.blink",
-          name = "cursortab",
-          async = true,
-          timeout_ms = 5000,
-          score_offset = 50, -- Higher priority among suggestions
-        },
       },
     },
 
@@ -168,25 +160,7 @@ Config.on_event("InsertEnter", function()
     },
 
     keymap = {
-      preset = "enter",
-      ["<Tab>"] = {
-        function()
-          return require("cursortab").accept()
-        end,
-        "snippet_forward",
-        "fallback",
-      },
-      ["<S-Tab>"] = {
-        function()
-          if require("cursortab.ui").has_completion() then
-            require("cursortab.daemon").send_event("partial_accept")
-            return true
-          end
-          return false
-        end,
-        "snippet_backward",
-        "fallback",
-      },
+      preset = "super-tab",
     },
   }
 

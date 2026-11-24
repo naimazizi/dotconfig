@@ -2,18 +2,6 @@ if vim.g.vscode then
   return
 end
 
-Config.on_packchanged("cursortab.nvim", { "install", "update" }, function(data)
-  vim.async.run(function()
-    local result = vim.async.await(3, vim.system, { "go", "build" }, { cwd = data.path .. "/server" })
-    if result.code ~= 0 then
-      local output = (result.stderr ~= "" and result.stderr) or result.stdout or "No output from build command."
-      vim.notify(("Build failed for cursortab.nvim:\n%s"):format(output), vim.log.levels.ERROR)
-    else
-      vim.notify("Built cursortab.nvim server successfully", vim.log.levels.INFO)
-    end
-  end)
-end, "Build cursortab.nvim server")
-
 Config.on_packchanged("pi-x-ide", { "update" }, function(data)
   vim.opt.rtp:prepend(data.path .. "/ide-plugins/nvim")
   if not require("pi_x_ide.download").run({ refresh = true }) then
@@ -23,7 +11,7 @@ end, "Refresh pi-x-ide sidecar")
 
 vim.pack.add({
   Config.gh("balaenis/pi-x-ide"),
-  Config.gh("cursortab/cursortab.nvim"),
+  Config.gh("milanglacier/minuet-ai.nvim"),
 })
 
 Config.later(function()
@@ -109,6 +97,88 @@ Config.later(function()
     source_win = vim.api.nvim_get_current_win()
     toggle_pi()
   end, { desc = "Toggle Pi-Bolt sidebar" })
+
+  local function copy_pi_prompt(lines)
+    if vim.fn.has("clipboard") == 0 then
+      vim.notify("Could not copy Pi prompt: clipboard provider unavailable", vim.log.levels.ERROR)
+      return
+    end
+    local ok, result = pcall(vim.fn.setreg, "+", table.concat(lines, "\n"))
+    if not ok or result ~= 0 then
+      vim.notify("Could not copy Pi prompt: " .. tostring(result), vim.log.levels.ERROR)
+      return
+    end
+    vim.notify("Copied Pi prompt to clipboard", vim.log.levels.INFO)
+  end
+
+  local function format_pi_diagnostic(path, diagnostic)
+    local namespace = vim.diagnostic.get_namespace(diagnostic.namespace).name
+    local lsp = namespace and namespace:match("^nvim%.lsp%.(.-)%.%d+")
+    local details = vim.diagnostic.severity[diagnostic.severity]
+    if lsp then
+      details = details .. ", LSP: " .. lsp
+    end
+    if diagnostic.source and diagnostic.source ~= "" then
+      details = details .. ", source: " .. diagnostic.source
+    end
+    return ("%s:%d:%d [%s] %s"):format(path, diagnostic.lnum + 1, diagnostic.col + 1, details, diagnostic.message)
+  end
+
+  map("n", "<leader>ad", function()
+    local buf = vim.api.nvim_get_current_buf()
+    local diagnostics = vim.diagnostic.get(buf, {
+      severity = { min = vim.diagnostic.severity.WARN, max = vim.diagnostic.severity.ERROR },
+    })
+    if #diagnostics == 0 then
+      vim.notify("No errors or warnings in current file", vim.log.levels.INFO)
+      return
+    end
+    local path = vim.api.nvim_buf_get_name(buf)
+    if path == "" or vim.bo[buf].buftype ~= "" then
+      vim.notify("Pi diagnostics require a named file buffer", vim.log.levels.WARN)
+      return
+    end
+    local lines = { "Explain and fix these diagnostics from the current file only:" }
+    for _, diagnostic in ipairs(diagnostics) do
+      lines[#lines + 1] = format_pi_diagnostic(path, diagnostic)
+    end
+    copy_pi_prompt(lines)
+  end, { desc = "Copy current file diagnostics for Pi" })
+  map("n", "<leader>aD", function()
+    local diagnostics = vim.diagnostic.get()
+    if #diagnostics == 0 then
+      vim.notify("No diagnostics available", vim.log.levels.INFO)
+      return
+    end
+    local lines = { "Explain and fix these diagnostics across files:" }
+    for _, diagnostic in ipairs(diagnostics) do
+      local path = vim.api.nvim_buf_get_name(diagnostic.bufnr)
+      if path == "" then
+        path = ("[unnamed buffer %d]"):format(diagnostic.bufnr)
+      end
+      lines[#lines + 1] = format_pi_diagnostic(path, diagnostic)
+    end
+    copy_pi_prompt(lines)
+  end, { desc = "Copy all diagnostics for Pi" })
+  map("n", "<leader>aq", function()
+    local items = vim.fn.getqflist()
+    if #items == 0 then
+      vim.notify("Quickfix list is empty", vim.log.levels.INFO)
+      return
+    end
+    local lines = { "Explain and fix the issues in this quickfix list:" }
+    for _, item in ipairs(items) do
+      local path = item.bufnr > 0 and vim.api.nvim_buf_get_name(item.bufnr) or "[no file]"
+      lines[#lines + 1] = ("%s:%d:%d %s%s"):format(
+        path,
+        item.lnum,
+        item.col,
+        item.type ~= "" and ("[" .. item.type .. "] ") or "",
+        item.text
+      )
+    end
+    copy_pi_prompt(lines)
+  end, { desc = "Copy quickfix list for Pi" })
 end)
 
 Config.disabled(function()
@@ -185,27 +255,111 @@ Config.disabled(function()
 end)
 
 Config.now(function()
-  require("cursortab").setup({
-    keymaps = {
-      accept = "<Tab>", -- Blink overrides this in insert mode.
-      partial_accept = "<S-Tab>", -- Blink overrides this in insert mode.
-    },
-    blink = {
-      enabled = true,
-      ghost_text = false, -- Disable native ghost text
-    },
-    provider = {
-      type = "mercuryapi",
-      api_key_env = "MERCURY_AI_TOKEN",
+  local ignored_patterns = vim.tbl_map(vim.fn.glob2regpat, {
+    "*.min.js",
+    "*.min.css",
+    "*.map",
+    "*-lock.json",
+    "*.lock",
+    "*.sum",
+    "*.csv",
+    "*.tsv",
+    "*.parquet",
+    "*.zip",
+    "*.tar",
+    "*.gz",
+    "*.pem",
+    "*.key",
+    ".env",
+    ".env.*",
+    "*.log",
+  })
+  local ignored = {}
+  Config.new_autocmd({ "BufEnter", "BufFilePost", "DirChanged" }, "*", function()
+    ignored = {}
+  end, "Refresh Minuet file exclusions")
 
-      -- Qwen3.5-0.8B (fastest local, defaults to "inline")
-      -- url = "http://localhost:8000",
-      -- model = "mlx-community/Qwen3.5-0.8B-MLX-4bit",
+  local function completion_allowed(bufnr)
+    local path = vim.api.nvim_buf_get_name(bufnr)
+    local name = vim.fn.fnamemodify(path, ":t")
+    if
+      path == ""
+      or vim.bo[bufnr].buftype ~= ""
+      or vim.bo[bufnr].filetype == ""
+      or not vim.bo[bufnr].modifiable
+      or vim.bo[bufnr].readonly
+    then
+      return false
+    end
+    for _, pattern in ipairs(ignored_patterns) do
+      if vim.fn.match(name, pattern) >= 0 then
+        return false
+      end
+    end
+    if ignored[path] == nil then
+      if vim.fn.executable("git") == 0 then
+        ignored[path] = true
+        vim.notify("Minuet disabled: install git to check ignored files", vim.log.levels.WARN)
+      else
+        local result =
+          vim.system({ "git", "-C", vim.fn.fnamemodify(path, ":h"), "check-ignore", "--quiet", "--", path }):wait()
+        local outside_repo = result.code == 128 and (result.stderr or ""):find("not a git repository", 1, true)
+        ignored[path] = result.code ~= 1 and not outside_repo
+        if ignored[path] and result.code ~= 0 then
+          vim.notify("Minuet disabled: git could not check whether this file is ignored", vim.log.levels.WARN)
+        end
+      end
+    end
+    return not ignored[path]
+  end
 
-      -- sweep-next-edit-0.5B/1.5B (fastest local)
-      -- type = "sweep",
-      -- url = "http://localhost:8000",
-      -- model = "Chris-Kode/sweep-next-edit-1.5b-mlx",
+  local function current_completion_allowed()
+    return completion_allowed(vim.api.nvim_get_current_buf())
+  end
+
+  require("minuet").setup({
+    provider = "openai_fim_compatible",
+    provider_options = {
+      openai_fim_compatible = {
+        name = "Mercury",
+        end_point = "https://api.inceptionlabs.ai/v1/fim/completions",
+        api_key = "MERCURY_AI_TOKEN",
+        model = "mercury-edit-2",
+      },
+    },
+    n_completions = 1,
+    virtualtext = {
+      auto_trigger_ft = { "*" },
+      keymap = { accept = "<M-a>", accept_line = "<M-s>" },
+    },
+    enable_predicates = { current_completion_allowed },
+    duet = {
+      provider = "openai_compatible",
+      provider_options = {
+        openai_compatible = {
+          name = "Mercury",
+          end_point = "https://api.inceptionlabs.ai/v1/chat/completions",
+          api_key = "MERCURY_AI_TOKEN",
+          model = "mercury-3",
+          optional = { reasoning_effort = "instant" },
+        },
+      },
+      recent_edits = { enable_predicates = { completion_allowed } },
+      auto_trigger = { enable_predicates = { current_completion_allowed } },
     },
   })
+
+  vim.keymap.set("n", "<leader>ap", function()
+    if not current_completion_allowed() then
+      vim.notify("Minuet prediction disabled for this file", vim.log.levels.WARN)
+      return
+    end
+    require("minuet.duet").action.predict()
+  end, { desc = "Predict next edit" })
+  vim.keymap.set("n", "<leader>ae", function()
+    require("minuet.duet").action.apply()
+  end, { desc = "Apply predicted edit" })
+  vim.keymap.set("n", "<leader>ax", function()
+    require("minuet.duet").action.dismiss()
+  end, { desc = "Dismiss predicted edit" })
 end)
