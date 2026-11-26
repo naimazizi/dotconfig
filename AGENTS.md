@@ -66,13 +66,17 @@ For example, Fish includes third-party function/completion files, while Yazi lis
 ## Safe validation
 
 There is no repository-wide application build or dedicated automated test suite.
+Focus on the requested change.
+Do not create test files or add assertions unless the user asks.
+Use existing tests or a targeted syntax check when appropriate.
+If a significant risk needs a new test, explain the risk and ask first.
 Run commands from the repository root unless stated otherwise.
 
 - Review whitespace with `git diff --check` (and inspect `git diff`).
 - Do not manually hard-wrap Markdown or insert line breaks for formatting; write the content and let Panache handle formatting with `panache --config panache/config.toml format <changed-files>`.
 - Check Lua formatting without rewriting files: `stylua --check --config-path nvim/stylua.toml nvim/lua/path/to/file.lua`.
 - Parse a Lua file without loading the full editor configuration: `nvim --headless -u NONE '+lua assert(loadfile("nvim/lua/path/to/file.lua"))' +qa`.
-  This checks syntax only; for changed callbacks/branches, add a small focused assertion-based check, mocking host APIs when needed.
+  This checks syntax only and does not validate callback or branch behavior.
 - Check Bash scripts with `bash -n path/to/script.sh`, Zsh with `zsh -n zsh/.zshrc`, and Fish with `fish --no-execute path/to/file.fish`.
   Syntax checks do not require sourcing shell startup files.
 - Check Markdown with `panache --config panache/config.toml format --check AGENTS.md` and `panache --config panache/config.toml lint AGENTS.md`.

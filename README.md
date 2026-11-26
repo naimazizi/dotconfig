@@ -72,6 +72,7 @@ brew install --cask ghostty font-monaspace-nf --appdir=~/Applications
 brew install alchemmist/tap/lazy-tmux
 brew install iwe-org/iwe/iwe
 brew tap 1jehuang/mmdr && brew install mmdr
+brew tap dondai44423/donsetch && brew install donsetch
 
 # Agent skill
 npx skills add iwe-org/skills --skill graph -g
